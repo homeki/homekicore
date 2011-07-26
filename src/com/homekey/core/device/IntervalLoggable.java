@@ -1,5 +1,5 @@
 package com.homekey.core.device;
 
-public interface IntervalLoggable {
+public interface IntervalLoggable extends Queryable{
 
 }
