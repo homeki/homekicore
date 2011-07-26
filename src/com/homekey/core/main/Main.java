@@ -64,7 +64,5 @@ public class Main {
 		MockDeviceSwitcher sw = new MockDeviceSwitcher(2, "test", false);
 		
 		b.registerDevice(sw);
-		
-		
 	}
 }
