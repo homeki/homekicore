@@ -1,5 +1,7 @@
 package com.homekey.core.device.onewire;
 
-public class OneWireTemperatureSensor {
+import com.homekey.core.device.Device;
+
+public class OneWireTemperatureSensor extends Device {
 
 }
