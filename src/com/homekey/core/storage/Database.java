@@ -26,6 +26,31 @@ public class Database {
 		ensureSystemTables();
 	}
 	
+	public void loadDevice(Device device) {
+		Statement stat;
+		
+		try {
+			stat = conn.createStatement();
+			
+			ResultSet rs = stat.executeQuery("SELECT * FROM devices WHERE internalid = '" + device.getInternalId() + "';");
+			rs.next();
+			
+			try {
+				if (!rs.getString("type").equals(device.getClass().getSimpleName())) {
+					throw new ClassCastException("The device sent to function was of type " + device.getClass().getSimpleName() + ", but corresponding object in database was of type " + rs.getString("type") + ".");
+				}
+				
+				device.setId(rs.getInt("id"));
+				device.setName(rs.getString("name"));
+				device.setActive(rs.getBoolean("active"));
+			} finally {
+				rs.close();
+			}
+		} catch (SQLException ex) {
+			System.err.println("loadDevice(): Couldn't execute SQL query.");
+		}
+	}
+	
 	public boolean deviceExists(Device device) {
 		return executeScalar("SELECT COUNT(internalid) FROM devices WHERE internalid = '" + device.getInternalId() + "';") > 0;
 	}
@@ -52,7 +77,7 @@ public class Database {
 	}
 	
 	public int getNextId() {
-		return -1;
+		return executeScalar("SELECT MAX(id) FROM devices") + 1;
 	}
 	
 	private void addDevice(Device device) {
@@ -63,11 +88,10 @@ public class Database {
 			stat.setString(1, device.getInternalId());
 			stat.setString(2, device.getClass().getSimpleName());
 			stat.setString(3, device.getName());
-			stat.setDate(4, new java.sql.Date(Calendar.getInstance().getTime().getTime()));
-			stat.setBoolean(5, true);
+			stat.setDate(4, new java.sql.Date(device.getAdded().getTime()));
+			stat.setBoolean(5, device.isActive());
 			stat.execute();
-		}
-		catch (SQLException ex) {
+		} catch (SQLException ex) {
 			System.err.println("addDevice(): Couldn't execute SQL.");
 		}
 	}
@@ -134,8 +158,7 @@ public class Database {
 		try {
 			stat = conn.createStatement();
 			stat.executeUpdate(sql);
-		}
-		catch (SQLException ex) {
+		} catch (SQLException ex) {
 			System.err.println("executeUpdate(): Couldn't execute SQL command.");
 		}
 	}
@@ -146,13 +169,12 @@ public class Database {
 		
 		try {
 			stat = conn.createStatement();
-
+			
 			ResultSet rs = stat.executeQuery(sql);
 			rs.next();
 			count = rs.getInt(1);
-		    rs.close();
-		}
-		catch (SQLException ex) {
+			rs.close();
+		} catch (SQLException ex) {
 			System.err.println("executeScalar(): Couldn't execute SQL query.");
 		}
 		

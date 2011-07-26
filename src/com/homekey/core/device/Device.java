@@ -1,16 +1,37 @@
 package com.homekey.core.device;
 
+import java.util.Date;
+
 import com.homekey.core.storage.DatabaseTable;
 
 public abstract class Device {
 	private int id;
 	private String name;
 	private String internalId;
+	private Date added;
+	private boolean active;
+	
+	public Device(String internalId) {
+		this.internalId = internalId;
+	}
 
 	public Device(int id,String internalId, String name) {
 		this.id = id;
 		this.name = name;
 		this.internalId = internalId;
+		this.active = true;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 	
 	public String getName(){
@@ -23,6 +44,14 @@ public abstract class Device {
 	
 	public String getInternalId(){
 		return internalId;
+	}
+	
+	public Date getAdded() {
+		return added;
+	}
+	
+	public boolean isActive() {
+		return active;
 	}
 	
 	@Override

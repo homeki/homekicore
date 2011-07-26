@@ -66,5 +66,7 @@ public class Main {
 		if (!b.deviceExists(sw)) {
 			b.registerDevice(sw);
 		}
+		
+		System.out.println("NextID: " + b.getNextId());
 	}
 }
