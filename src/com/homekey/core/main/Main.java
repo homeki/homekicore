@@ -22,7 +22,7 @@ public class Main {
 		
 		CommandsThread ct = new CommandsThread();
 		Monitor m = new Monitor(ct);
-
+		
 		new HttpListenerThread(m).start();
 		ct.start();
 		
@@ -30,26 +30,26 @@ public class Main {
 		
 		System.out.println("Starting server '" + m.getServerName() + "'");
 		
-		DoSomeTesting(m, ct,b);
+		DoSomeTesting(m, ct, b);
 		DoSomeMoreTesting(b);
 		
 		b.close();
 	}
-
+	
 	private static void DoSomeTesting(Monitor m, CommandsThread ct, Database b) {
 		// Create devices
-		Device dev1 = new MockDeviceSwitcher(1, "My MockDevice #1", true);
-		Device dev2 = new MockDeviceDimmer(2, "My MockDevice #2", true);
+		Device dev1 = new MockDeviceSwitcher(1, "DA", "My MockDevice #1", true);
+		Device dev2 = new MockDeviceDimmer(2, "DDD", "My MockDevice #2", true);
 		// Add devices
 		m.forceAddDevice(dev1);
 		m.forceAddDevice(dev2);
 		// Query devices by ID
-		Switchable switchable = (Switchable)m.getDevice(dev1.getId());
-		Dimmable dimmable = (Dimmable)m.getDevice(dev2.getId());
+		Switchable switchable = (Switchable) m.getDevice(dev1.getId());
+		Dimmable dimmable = (Dimmable) m.getDevice(dev2.getId());
 		// Create commands
-		DimDeviceCommand ddc = new DimDeviceCommand(dimmable,50);
-		SwitchDeviceCommand sdcOn = new SwitchDeviceCommand(switchable,true);
-		SwitchDeviceCommand sdcOff = new SwitchDeviceCommand(switchable,false);
+		DimDeviceCommand ddc = new DimDeviceCommand(dimmable, 50);
+		SwitchDeviceCommand sdcOn = new SwitchDeviceCommand(switchable, true);
+		SwitchDeviceCommand sdcOff = new SwitchDeviceCommand(switchable, false);
 		// Post commands
 		ct.post(sdcOn);
 		ct.post(ddc);
@@ -61,10 +61,10 @@ public class Main {
 	}
 	
 	private static void DoSomeMoreTesting(Database b) {
-		MockDeviceSwitcher sw = new MockDeviceSwitcher(2, "test", false);
+		MockDeviceSwitcher sw = new MockDeviceSwitcher(2, "ID123", "test", false);
 		
-		b.registerDevice(sw);
-		
-		
+		if (!b.deviceExists(sw)) {
+			b.registerDevice(sw);
+		}
 	}
 }

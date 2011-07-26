@@ -5,10 +5,12 @@ import com.homekey.core.storage.DatabaseTable;
 public abstract class Device {
 	private int id;
 	private String name;
+	private String internalId;
 
-	public Device(int id, String name) {
+	public Device(int id,String internalId, String name) {
 		this.id = id;
 		this.name = name;
+		this.internalId = internalId;
 	}
 	
 	public String getName(){
@@ -17,6 +19,10 @@ public abstract class Device {
 	
 	public int getId(){
 		return id;
+	}
+	
+	public String getInternalId(){
+		return internalId;
 	}
 	
 	@Override
