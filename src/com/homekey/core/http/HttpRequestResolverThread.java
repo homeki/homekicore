@@ -45,11 +45,13 @@ public class HttpRequestResolverThread extends Thread {
 				} else {
 					System.out.println(httpQueryString);
 					String[] query = httpQueryString.split("/");
-					if (query[1].equals("get")) {						
-						if (query[2].equals("status")) {							
+					if (query[1].equals("get")) {
+						if (query[2].equals("status")) {
 							int id = Integer.parseInt(query[3]);
 							Queryable q = (Queryable) monitor.getDevice(id);
 							sendResponse(200, monitor.getStatus(q));
+						} else if (query[2].equals("devices")) {
+							sendResponse(200, monitor.getDevices());
 						} else {
 							throw new Exception();
 						}
