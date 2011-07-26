@@ -4,27 +4,27 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class CommandsThread extends Thread {
-	BlockingQueue<Runnable> workQueue;
-
+	BlockingQueue<Command<?>> workQueue;
+	
 	@Override
 	public void run() {
-		workQueue = new LinkedBlockingQueue<Runnable>();
+		workQueue = new LinkedBlockingQueue<Command<?>>();
 		while (true) {
-			Runnable r = null;
+			Runnable c = null;
 			try {
-				r = workQueue.take();
+				c = workQueue.take();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-
-			if (r != null) {
-				r.run();
+			
+			if (c != null) {
+				c.run();
 			}
 		}
 	}
-
-	public void post(Runnable r) {
-		workQueue.offer(r);
+	
+	public void post(Command<?> c) {		
+		workQueue.offer(c);
 	}
-
+	
 }
