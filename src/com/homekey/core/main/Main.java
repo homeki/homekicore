@@ -12,10 +12,6 @@ import com.homekey.core.device.mock.MockDeviceSwitcher;
 import com.homekey.core.storage.Database;
 
 public class Main {
-	
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
 		
 		Database b = new Database();
@@ -31,15 +27,17 @@ public class Main {
 		System.out.println("Starting server '" + m.getServerName() + "'");
 		
 		DoSomeTesting(m, ct, b);
-		DoSomeMoreTesting(b);
 		
 		b.close();
 	}
 	
 	private static void DoSomeTesting(Monitor m, CommandsThread ct, Database b) {
 		// Create devices
-		Device dev1 = new MockDeviceSwitcher(1, "DA", "My MockDevice #1", true);
-		Device dev2 = new MockDeviceDimmer(2, "DDD", "My MockDevice #2", true);
+		Device dev1 = new MockDeviceSwitcher("DA", "My MockDevice #1", true);
+		Device dev2 = new MockDeviceDimmer("DDD", "My MockDevice #2", true);
+		// Register devices with db
+		b.ensureDevice(dev1);
+		b.ensureDevice(dev2);
 		// Add devices
 		m.forceAddDevice(dev1);
 		m.forceAddDevice(dev2);
@@ -58,15 +56,5 @@ public class Main {
 		sdcOff.getResult();
 		ddc.getResult();
 		sdcOn.getResult();
-	}
-	
-	private static void DoSomeMoreTesting(Database b) {
-		MockDeviceSwitcher sw = new MockDeviceSwitcher(2, "ID123", "test", false);
-		
-		if (!b.deviceExists(sw)) {
-			b.registerDevice(sw);
-		}
-		
-		System.out.println("NextID: " + b.getNextId());
 	}
 }

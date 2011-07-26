@@ -39,8 +39,7 @@ public class DatabaseTest {
 	
 	@Test
 	public void testCreateTableFor() {
-		Device d = new MockDeviceDimmer(1000,"ID123", "My Test Device", false);
-		database.registerDevice(d);
+		Device d = new MockDeviceDimmer("ID123", "My Test Device", false);
 	}
 	
 	@Test
@@ -51,5 +50,4 @@ public class DatabaseTest {
 	@Test
 	public void testGetNextId() {
 	}
-	
 }
