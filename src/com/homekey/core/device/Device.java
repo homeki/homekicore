@@ -1,5 +1,6 @@
 package com.homekey.core.device;
 
+import com.homekey.core.storage.DatabaseTable;
 
 public abstract class Device {
 	private int id;
@@ -17,4 +18,16 @@ public abstract class Device {
 	public int getId(){
 		return id;
 	}
+	
+	@Override
+	public int hashCode() {
+		return id;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		return super.equals(obj);
+	}
+
+	public abstract DatabaseTable getTableDesign();
 }

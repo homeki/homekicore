@@ -1,18 +1,17 @@
 package com.homekey.core.main;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.homekey.core.device.Device;
-import com.homekey.core.device.mock.MockDeviceDimmer;
-import com.homekey.core.storage.Database;
+import com.homekey.core.device.Queryable;
 
 public class Monitor {
 	private String name;
-	List<Device> devices;
+	Map<Integer,Device> devices;
 
 	public Monitor() {
-		devices = new ArrayList<Device>();
+		devices = new HashMap<Integer,Device>();
 		name = "<no name>";
 		
 	}
@@ -25,8 +24,19 @@ public class Monitor {
 		return name;
 	}
 
-	public void forceAddDevice(MockDeviceDimmer mockDeviceDimmer) {
-		
+	public void forceAddDevice(Device dev) {
+		devices.put(dev.getId(), dev);
 	}
 
+	public Device getDevice(int i) {
+		if(devices.containsKey(i)){
+			return devices.get(i);
+		}
+		return null;
+	}
+	
+	public String getStatus(Queryable q){
+		return new getStatusCommand(q).getResult();
+	}
+	
 }

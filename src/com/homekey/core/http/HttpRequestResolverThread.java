@@ -7,18 +7,24 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 import java.util.StringTokenizer;
 
+import com.homekey.core.device.Device;
+import com.homekey.core.device.Queryable;
+import com.homekey.core.main.Monitor;
+
 public class HttpRequestResolverThread extends Thread {
 	
 	static final String HTML_START = "<html>" + "<title>HTTP Server in java</title>" + "<body>";
 	
 	static final String HTML_END = "</body>" + "</html>";
 	
+	Monitor monitor = null;
 	Socket connectedClient = null;
 	BufferedReader inFromClient = null;
 	DataOutputStream outToClient = null;
 	
-	public HttpRequestResolverThread(Socket client, ) {
+	public HttpRequestResolverThread(Socket client, Monitor m) {
 		connectedClient = client;
+		monitor = m;
 	}
 	
 	public void run() {
@@ -46,10 +52,15 @@ public class HttpRequestResolverThread extends Thread {
 				if (httpQueryString.equals("/")) {
 					sendResponse(200, "Welcome to HomeKey, plx send command or nothing will happen");
 				} else {
+					System.out.println(httpQueryString);
 					String[] query = httpQueryString.split("/");
-					if (query[0].equals("get") && query[1].equals("status")){
-						int id = Integer.parseInt(query[2]);
-										
+					if (query[1].equals("get") && query[2].equals("status")) {
+						int id = Integer.parseInt(query[3]);
+						
+						Queryable d = (Queryable) monitor.getDevice(id);
+						
+						sendResponse(200, d.getStatus());
+						
 					} else {
 						throw new Exception();
 					}
@@ -59,6 +70,13 @@ public class HttpRequestResolverThread extends Thread {
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
+		} catch (ClassCastException e) {
+			e.printStackTrace();
+			try {
+				sendResponse(500, "Device is not Queryable!");
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			try {
@@ -66,8 +84,8 @@ public class HttpRequestResolverThread extends Thread {
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
-
-		} 
+			
+		}
 	}
 	
 	public void sendResponse(int statusCode, String responseString) throws IOException {
