@@ -1,5 +1,6 @@
 package com.homekey.core.device;
 
+import com.homekey.core.storage.DatabaseTable;
 
 public abstract class Device {
 	private int id;
@@ -27,4 +28,6 @@ public abstract class Device {
 	public boolean equals(Object obj) {
 		return super.equals(obj);
 	}
+
+	public abstract DatabaseTable getTableDesign();
 }

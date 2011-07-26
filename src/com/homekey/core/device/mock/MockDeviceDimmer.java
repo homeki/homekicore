@@ -2,6 +2,7 @@ package com.homekey.core.device.mock;
 
 import com.homekey.core.device.Device;
 import com.homekey.core.device.Dimmable;
+import com.homekey.core.storage.DatabaseTable;
 
 public class MockDeviceDimmer extends Device implements Dimmable {
 	
@@ -23,12 +24,17 @@ public class MockDeviceDimmer extends Device implements Dimmable {
 	@Override
 	public void off() {
 		if (talk)
-			System.out.println("MockInfo: Created MockDeviceDimmer called '" + getName() + "' is now OFF!");
+			System.out.println("MockInfo: MockDeviceDimmer called '" + getName() + "' is now OFF!");
 	}
 	
 	@Override
 	public void on() {
 		if (talk)
-			System.out.println("MockInfo: Created MockDeviceDimmer called '" + getName() + "' is now ON!");
+			System.out.println("MockInfo: MockDeviceDimmer called '" + getName() + "' now has dim level" + level + ".");
+	}
+	
+	@Override
+	public DatabaseTable getTableDesign() {
+		throw new UnsupportedOperationException();
 	}
 }
