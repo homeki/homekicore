@@ -29,7 +29,7 @@ public abstract class Command<T> implements Runnable {
 	}
 	
 
-	public T postForResult(CommandsThread ct) {
+	public T postAndWaitForResult(CommandsThread ct) {
 		ct.post(this);
 		return getResult();
 	}

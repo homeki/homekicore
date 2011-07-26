@@ -2,7 +2,7 @@ package com.homekey.core.command;
 
 import com.homekey.core.device.Dimmable;
 
-public class DimDeviceCommand extends Command<Void> {
+public class DimDeviceCommand extends Command<Boolean> {
 	
 	private int level;
 	private Dimmable dimmable;
