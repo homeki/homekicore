@@ -23,7 +23,9 @@ public class Main {
 		System.out.println("Starting server '" + m.getServerName() + "'");
 		
 		DoSomeTesting(m, ct);
+		DoSomeMoreTesting(b);
 		
+		b.close();
 	}
 
 	private static void DoSomeTesting(Monitor m, CommandsThread ct) {
@@ -45,5 +47,13 @@ public class Main {
 		sdcOff.getResult();
 		ddc.getResult();
 		sdcOn.getResult();
+	}
+	
+	private static void DoSomeMoreTesting(Database b) {
+		MockDeviceSwitcher sw = new MockDeviceSwitcher(2, "test", false);
+		
+		b.createTableFor(sw);
+		
+		
 	}
 }

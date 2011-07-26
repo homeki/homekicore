@@ -2,6 +2,7 @@ package com.homekey.core.device.mock;
 
 import com.homekey.core.device.Device;
 import com.homekey.core.device.Switchable;
+import com.homekey.core.storage.ColumnType;
 import com.homekey.core.storage.DatabaseTable;
 
 public class MockDeviceSwitcher extends Device implements Switchable {
@@ -29,6 +30,9 @@ public class MockDeviceSwitcher extends Device implements Switchable {
 
 	@Override
 	public DatabaseTable getTableDesign() {
-		return null;
+		DatabaseTable table = new DatabaseTable(2);
+		table.setColumn(0, "Registered", ColumnType.DateTime);
+		table.setColumn(1, "Value", ColumnType.Boolean);
+		return table;
 	}
 }
