@@ -2,6 +2,7 @@ package com.homekey.core.device.mock;
 
 import com.homekey.core.device.Device;
 import com.homekey.core.device.Switchable;
+import com.homekey.core.storage.DatabaseTable;
 
 public class MockDeviceSwitcher extends Device implements Switchable {
 	
@@ -24,5 +25,10 @@ public class MockDeviceSwitcher extends Device implements Switchable {
 	public void on() {
 		if (talk)
 			System.out.println("MockInfo: MockDeviceSwitcher called '" + getName() + "' is now ON!");
+	}
+
+	@Override
+	public DatabaseTable getTableDesign() {
+		return null;
 	}
 }
