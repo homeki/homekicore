@@ -1,5 +1,7 @@
 package com.homekey.core.device.onewire;
 
-public class OneWireTemperatureSensor {
+import com.homekey.core.device.IntervalLoggable;
+
+public class OneWireTemperatureSensor implements IntervalLoggable {
 
 }

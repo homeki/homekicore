@@ -1,5 +1,5 @@
 package com.homekey.core.device;
 
-public interface Dimmable {
+public interface Dimmable extends Switchable{
 
 }
