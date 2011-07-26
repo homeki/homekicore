@@ -19,5 +19,11 @@ public class Main {
 		m.forceAddDevice(new MockDeviceDimmer(1, "My MockDevice #1", true));
 		m.forceAddDevice(new MockDeviceDimmer(2, "My MockDevice #2", true));
 
+		CommandsThread ct = new CommandsThread();
+		ct.start();
+		ExampleCommand ec = new ExampleCommand();
+		ct.post(ec);
+		
+		System.out.println(ec.getResult());
 	}
 }
