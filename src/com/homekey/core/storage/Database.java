@@ -27,10 +27,14 @@ public class Database {
 	}
 	
 	public boolean deviceExists(Device device) {
-		return true;
+		return executeScalar("SELECT COUNT(internalid) FROM devices WHERE internalid = '" + device.getInternalId() + "';") > 0;
 	}
 	
 	public void registerDevice(Device device) {
+		if (deviceExists(device)) {
+			throw new IllegalArgumentException("A device with the specified internal id already exists.");
+		}
+		
 		addDevice(device);
 		createTableFor(device);
 	}
@@ -55,11 +59,12 @@ public class Database {
 		PreparedStatement stat;
 		
 		try {
-			stat = conn.prepareStatement("INSERT INTO devices(type, name, added, active) VALUES(?, ?, ?, ?);");
-			stat.setString(1, device.getClass().getSimpleName());
-			stat.setString(2, device.getName());
-			stat.setDate(3, new java.sql.Date(Calendar.getInstance().getTime().getTime()));
-			stat.setBoolean(4, true);
+			stat = conn.prepareStatement("INSERT INTO devices(internalid, type, name, added, active) VALUES(?, ?, ?, ?, ?);");
+			stat.setString(1, device.getInternalId());
+			stat.setString(2, device.getClass().getSimpleName());
+			stat.setString(3, device.getName());
+			stat.setDate(4, new java.sql.Date(Calendar.getInstance().getTime().getTime()));
+			stat.setBoolean(5, true);
 			stat.execute();
 		}
 		catch (SQLException ex) {
@@ -115,7 +120,7 @@ public class Database {
 	
 	private void ensureSystemTables() {
 		if (!tableExists("devices")) {
-			executeUpdate("CREATE TABLE devices(id INTEGER PRIMARY KEY AUTOINCREMENT, type TEXT, name TEXT, added DATETIME, active BOOLEAN)");
+			executeUpdate("CREATE TABLE devices(id INTEGER PRIMARY KEY AUTOINCREMENT, internalid TEXT, type TEXT, name TEXT, added DATETIME, active BOOLEAN)");
 		}
 	}
 	

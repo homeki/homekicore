@@ -63,6 +63,8 @@ public class Main {
 	private static void DoSomeMoreTesting(Database b) {
 		MockDeviceSwitcher sw = new MockDeviceSwitcher(2, "ID123", "test", false);
 		
-		b.registerDevice(sw);
+		if (!b.deviceExists(sw)) {
+			b.registerDevice(sw);
+		}
 	}
 }
