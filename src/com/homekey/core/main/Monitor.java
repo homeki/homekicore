@@ -43,27 +43,21 @@ public class Monitor {
 	}
 	
 	public String getStatus(Queryable q) {
-		GetStatusCommand gsc = new GetStatusCommand(q);
-		ct.post(gsc);
-		return gsc.getResult();
+		return new GetStatusCommand(q).postAndWaitForResult(ct);
 	}
 	
-	public String turnOn(Switchable s) {
-		SwitchDeviceCommand sdc = new SwitchDeviceCommand(s, true);
-		ct.post(sdc);
-		return String.valueOf(sdc.getResult());
+	public Boolean turnOn(Switchable s) {
+		return new SwitchDeviceCommand(s, true).postAndWaitForResult(ct);
 	}
 	
-	public String turnOff(Switchable s) {
-		SwitchDeviceCommand sdc = new SwitchDeviceCommand(s, false);
-		ct.post(sdc);
-		return String.valueOf(sdc.getResult());
+	public Boolean turnOff(Switchable s) {
+		return new SwitchDeviceCommand(s, false).postAndWaitForResult(ct);
 	}
 	
 	public synchronized String getDevices() {
 		StringBuffer sb = new StringBuffer();
 		Gson g = new Gson();
-		for (Device d: devices.values()){
+		for (Device d : devices.values()) {
 			sb.append(g.toJson(d) + "<br>");
 		}
 		return sb.toString();

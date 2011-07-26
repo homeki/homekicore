@@ -2,7 +2,7 @@ package com.homekey.core.command;
 
 import com.homekey.core.device.Switchable;
 
-public class SwitchDeviceCommand extends Command<Void> {
+public class SwitchDeviceCommand extends Command<Boolean> {
 	
 	private boolean on;
 	private Switchable switcher;
@@ -17,11 +17,12 @@ public class SwitchDeviceCommand extends Command<Void> {
 	}
 	
 	@Override
-	public void run() {
+	public void internalRun() {
 		if (on)
 			switcher.on();
 		else
 			switcher.off();
 		finish();
 	}
+	
 }

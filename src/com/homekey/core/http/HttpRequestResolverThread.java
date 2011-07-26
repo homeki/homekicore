@@ -59,9 +59,9 @@ public class HttpRequestResolverThread extends Thread {
 						int id = Integer.parseInt(query[3]);
 						Switchable s = (Switchable) monitor.getDevice(id);
 						if (query[2].equals("on")) {
-							sendResponse(200, monitor.turnOn(s));
+							sendResponse(200, String.valueOf(monitor.turnOn(s)));
 						} else if (query[2].equals("off")) {
-							sendResponse(200, monitor.turnOff(s));
+							sendResponse(200, String.valueOf(monitor.turnOff(s)));
 						} else {
 							throw new Exception();
 						}

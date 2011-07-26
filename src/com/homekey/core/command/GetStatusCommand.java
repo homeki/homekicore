@@ -9,10 +9,9 @@ public class GetStatusCommand extends Command<String> {
 	public GetStatusCommand(Queryable d) {
 		this.queryable = d;
 	}
-	
+
 	@Override
-	public void run() {
+	public void internalRun() {
 		result = queryable.getStatus();
-		finish();
 	}	
 }

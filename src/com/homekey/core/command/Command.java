@@ -15,8 +15,22 @@ public abstract class Command<T> implements Runnable {
 		return result;
 	}
 	
+	@Override
+	public void run() {
+		internalRun();
+		finish();
+	}
+	
+	public abstract void internalRun();
+	
 	protected synchronized void finish() {
 		done = Boolean.TRUE;
 		notifyAll();
+	}
+	
+
+	public T postAndWaitForResult(CommandsThread ct) {
+		ct.post(this);
+		return getResult();
 	}
 }
