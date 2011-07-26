@@ -20,17 +20,19 @@ public class MockDeviceSwitcher extends Device implements Switchable, Queryable 
 	}
 	
 	@Override
-	public void off() {
+	public boolean off() {
 		on = false;
 		if (talk)
 			System.out.println("MockInfo: MockDeviceSwitcher called '" + getName() + "' is now OFF!");
+		return true;
 	}
 	
 	@Override
-	public void on() {
+	public boolean on() {
 		on = true;
 		if (talk)
 			System.out.println("MockInfo: MockDeviceSwitcher called '" + getName() + "' is now ON!");
+		return true;
 	}
 
 	@Override

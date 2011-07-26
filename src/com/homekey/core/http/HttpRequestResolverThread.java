@@ -8,6 +8,7 @@ import java.net.Socket;
 import java.util.StringTokenizer;
 
 import com.homekey.core.device.Queryable;
+import com.homekey.core.device.Switchable;
 import com.homekey.core.main.Monitor;
 
 public class HttpRequestResolverThread extends Thread {
@@ -44,13 +45,24 @@ public class HttpRequestResolverThread extends Thread {
 				} else {
 					System.out.println(httpQueryString);
 					String[] query = httpQueryString.split("/");
-					if (query[1].equals("get") && query[2].equals("status")) {
+					if (query[1].equals("get")) {						
+						if (query[2].equals("status")) {							
+							int id = Integer.parseInt(query[3]);
+							Queryable q = (Queryable) monitor.getDevice(id);
+							sendResponse(200, monitor.getStatus(q));
+						} else {
+							throw new Exception();
+						}
+					} else if (query[1].equals("set")) {
 						int id = Integer.parseInt(query[3]);
-						
-						Queryable d = (Queryable) monitor.getDevice(id);
-						
-						sendResponse(200, d.getStatus());
-						
+						Switchable s = (Switchable) monitor.getDevice(id);
+						if (query[2].equals("on")) {
+							sendResponse(200, monitor.turnOn(s));
+						} else if (query[2].equals("off")) {
+							sendResponse(200, monitor.turnOff(s));
+						} else {
+							throw new Exception();
+						}
 					} else {
 						throw new Exception();
 					}
