@@ -19,5 +19,6 @@ public class SwitchDeviceCommand extends Command<Void> {
 			switcher.on();
 		else
 			switcher.off();
+		finish();
 	}
 }

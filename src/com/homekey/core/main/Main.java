@@ -30,7 +30,7 @@ public class Main {
 		
 		System.out.println("Starting server '" + m.getServerName() + "'");
 		
-		DoSomeTesting(m, ct,b);
+		//DoSomeTesting(m, ct,b);
 		DoSomeMoreTesting(b);
 		
 		b.close();
@@ -63,7 +63,7 @@ public class Main {
 	private static void DoSomeMoreTesting(Database b) {
 		MockDeviceSwitcher sw = new MockDeviceSwitcher(2, "test", false);
 		
-		b.createTableFor(sw);
+		b.registerDevice(sw);
 		
 		
 	}

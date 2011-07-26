@@ -2,6 +2,7 @@ package com.homekey.core.device.mock;
 
 import com.homekey.core.device.Device;
 import com.homekey.core.device.Dimmable;
+import com.homekey.core.storage.ColumnType;
 import com.homekey.core.storage.DatabaseTable;
 
 public class MockDeviceDimmer extends Device implements Dimmable {
@@ -37,6 +38,9 @@ public class MockDeviceDimmer extends Device implements Dimmable {
 	
 	@Override
 	public DatabaseTable getTableDesign() {
-		throw new UnsupportedOperationException();
+		DatabaseTable table = new DatabaseTable(2);
+		table.setColumn(0, "Registered", ColumnType.DateTime);
+		table.setColumn(1, "Value", ColumnType.Integer);
+		return table;
 	}
 }
