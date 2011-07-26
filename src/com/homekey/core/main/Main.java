@@ -6,8 +6,16 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 
+		CommandsThread ct = new CommandsThread();
+		ct.start();
+		ExampleCommand ec = new ExampleCommand();
+		ct.post(ec);
+		
+		System.out.println(ec.getResult());
+		
+		
+		
 	}
 
 }

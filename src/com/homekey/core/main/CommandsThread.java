@@ -4,11 +4,10 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class CommandsThread extends Thread {
-	BlockingQueue<Command<?>> workQueue;
+	BlockingQueue<Command<?>> workQueue = new LinkedBlockingQueue<Command<?>>();
 	
 	@Override
 	public void run() {
-		workQueue = new LinkedBlockingQueue<Command<?>>();
 		while (true) {
 			Runnable c = null;
 			try {
