@@ -22,15 +22,17 @@ public class MockDeviceDimmer extends Device implements Dimmable {
 	}
 	
 	@Override
-	public void off() {
+	public boolean off() {
 		if (talk)
 			System.out.println("MockInfo: MockDeviceDimmer called '" + getName() + "' is now OFF!");
+		return true;
 	}
 	
 	@Override
-	public void on() {
+	public boolean on() {
 		if (talk)
 			System.out.println("MockInfo: MockDeviceDimmer called '" + getName()+ "' is now ON!");
+		return true;
 	}
 	
 	@Override

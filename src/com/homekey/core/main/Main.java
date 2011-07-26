@@ -20,10 +20,10 @@ public class Main {
 		
 		Database b = new Database();
 		
-		Monitor m = new Monitor();
+		CommandsThread ct = new CommandsThread();
+		Monitor m = new Monitor(ct);
 
 		new HttpListenerThread(m).start();
-		CommandsThread ct = new CommandsThread();
 		ct.start();
 		
 		m.setServerName("Fresh Server");
