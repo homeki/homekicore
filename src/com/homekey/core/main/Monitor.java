@@ -3,6 +3,7 @@ package com.homekey.core.main;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.gson.Gson;
 import com.homekey.core.command.CommandsThread;
 import com.homekey.core.command.SwitchDeviceCommand;
 import com.homekey.core.command.GetStatusCommand;
@@ -60,7 +61,11 @@ public class Monitor {
 	}
 	
 	public synchronized String getDevices() {
-		
-		return "hej hej";
+		StringBuffer sb = new StringBuffer();
+		Gson g = new Gson();
+		for (Device d: devices.values()){
+			sb.append(g.toJson(d) + "<br>");
+		}
+		return sb.toString();
 	}
 }
