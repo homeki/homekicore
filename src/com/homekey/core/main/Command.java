@@ -2,7 +2,7 @@ package com.homekey.core.main;
 
 public abstract class Command<T> implements Runnable {
 	private Boolean done = Boolean.FALSE;
-	private T result;
+	protected T result;
 	
 	public T getResult() {
 		synchronized (done) {
