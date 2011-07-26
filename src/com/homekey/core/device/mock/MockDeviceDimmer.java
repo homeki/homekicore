@@ -18,6 +18,18 @@ public class MockDeviceDimmer extends Device implements Dimmable {
 	@Override
 	public void dim(int level) {
 		if (talk)
+			System.out.println("MockInfo: MockDeviceDimmer called '" + getName() + "' now has dim level " + level + ".");
+	}
+	
+	@Override
+	public void off() {
+		if (talk)
+			System.out.println("MockInfo: MockDeviceDimmer called '" + getName() + "' is now OFF!");
+	}
+	
+	@Override
+	public void on() {
+		if (talk)
 			System.out.println("MockInfo: MockDeviceDimmer called '" + getName() + "' now has dim level" + level + ".");
 	}
 	

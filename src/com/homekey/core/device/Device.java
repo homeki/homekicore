@@ -19,5 +19,15 @@ public abstract class Device {
 		return id;
 	}
 	
+	@Override
+	public int hashCode() {
+		return id;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		return super.equals(obj);
+	}
+
 	public abstract DatabaseTable getTableDesign();
 }
