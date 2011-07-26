@@ -1,9 +1,11 @@
 package com.homekey.core.storage;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import com.homekey.core.device.Device;
-import com.homekey.core.device.onewire.OneWireTemperatureSensor;
 
 public class Database {
 	private final String DATABASE_NAME = "homekey.db";

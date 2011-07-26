@@ -1,5 +1,8 @@
 package com.homekey.core.main;
 
+import com.homekey.core.command.CommandsThread;
+import com.homekey.core.command.DimDeviceCommand;
+import com.homekey.core.command.SwitchDeviceCommand;
 import com.homekey.core.device.Device;
 import com.homekey.core.device.Dimmable;
 import com.homekey.core.device.Switchable;

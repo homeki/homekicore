@@ -7,7 +7,6 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 import java.util.StringTokenizer;
 
-import com.homekey.core.device.Device;
 import com.homekey.core.device.Queryable;
 import com.homekey.core.main.Monitor;
 
@@ -38,15 +37,6 @@ public class HttpRequestResolverThread extends Thread {
 			StringTokenizer tokenizer = new StringTokenizer(headerLine);
 			String httpMethod = tokenizer.nextToken();
 			String httpQueryString = tokenizer.nextToken();
-			
-			StringBuffer responseBuffer = new StringBuffer();
-			
-			while (inFromClient.ready()) {
-				// Read the HTTP complete HTTP Query
-				// responseBuffer.append(requestString + "<BR>");
-				// System.out.println(requestString);
-				requestString = inFromClient.readLine();
-			}
 			
 			if (httpMethod.equals("GET")) {
 				if (httpQueryString.equals("/")) {
