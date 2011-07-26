@@ -14,11 +14,12 @@ public class SwitchDeviceCommand extends Command<Void> {
 	}
 	
 	@Override
-	public void run() {
+	public void internalRun() {
 		if (on)
 			switcher.on();
 		else
 			switcher.off();
 		finish();
 	}
+	
 }

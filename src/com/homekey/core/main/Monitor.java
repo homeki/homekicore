@@ -50,7 +50,10 @@ public class Monitor {
 	public String turnOn(Switchable s) {
 		SwitchDeviceCommand sdc = new SwitchDeviceCommand(s, true);
 		ct.post(sdc);
+		
 		return String.valueOf(sdc.getResult());
+		
+//		return new SwitchDeviceCommand(s, true).postForResult(ct);
 	}
 	
 	public String turnOff(Switchable s) {

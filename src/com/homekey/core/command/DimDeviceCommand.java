@@ -11,10 +11,9 @@ public class DimDeviceCommand extends Command<Void> {
 		this.dimmable = dimmable;
 		this.level = level;
 	}
-	
+
 	@Override
-	public void run() {
+	public void internalRun() {
 		this.dimmable.dim(this.level);
-		finish();
 	}
 }
