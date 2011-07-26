@@ -16,7 +16,7 @@ public class Database {
 		open();
 	}
 	
-	public void createTable(Device device) {
+	public void createTableFor(Device device) {
 		DatabaseTable table = device.getTableDesign();
 		String tableName = SENSOR_PREFIX + device.getClass().getSimpleName() + "_" + device.getId();
 		String sql = "CREATE TABLE " + tableName + " (Id INTEGER PRIMARY KEY AUTOINCREMENT, ";
@@ -52,6 +52,8 @@ public class Database {
 			return "REAL";
 		case String:
 			return "TEXT";
+		case Boolean:
+			return "BOOLEAN";
 		default:
 			throw new IllegalArgumentException();
 		}
