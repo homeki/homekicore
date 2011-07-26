@@ -1,6 +1,7 @@
 package com.homekey.core.main;
 
 import com.homekey.core.device.mock.MockDeviceDimmer;
+import com.homekey.core.http.HttpListenerThread;
 import com.homekey.core.storage.Database;
 
 public class Main {
@@ -9,6 +10,8 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		new HttpListenerThread().start();
+		
 		Database b = new Database();
 		Monitor m = new Monitor();
 
