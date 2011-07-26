@@ -9,6 +9,9 @@ public class SwitchDeviceCommand extends Command<Void> {
 	
 	public SwitchDeviceCommand(Switchable switcher, boolean on) {
 		super();
+		if (switcher == null){
+			throw new NullPointerException();
+		}
 		this.switcher = switcher;
 		this.on = on;
 	}

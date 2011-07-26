@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.homekey.core.command.CommandsThread;
 import com.homekey.core.command.SwitchDeviceCommand;
-import com.homekey.core.command.getStatusCommand;
+import com.homekey.core.command.GetStatusCommand;
 import com.homekey.core.device.Device;
 import com.homekey.core.device.Queryable;
 import com.homekey.core.device.Switchable;
@@ -38,11 +38,11 @@ public class Monitor {
 		if (devices.containsKey(i)) {
 			return devices.get(i);
 		}
-		return null;
+		throw new NullPointerException();
 	}
 	
 	public String getStatus(Queryable q) {
-		getStatusCommand gsc = new getStatusCommand(q);
+		GetStatusCommand gsc = new GetStatusCommand(q);
 		ct.post(gsc);
 		return gsc.getResult();
 	}
@@ -62,4 +62,8 @@ public class Monitor {
 		return String.valueOf(sdc.getResult());
 	}
 	
+	public synchronized String getDevices() {
+		
+		return "hej hej";
+	}
 }

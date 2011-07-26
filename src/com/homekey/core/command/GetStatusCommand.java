@@ -2,11 +2,11 @@ package com.homekey.core.command;
 
 import com.homekey.core.device.Queryable;
 
-public class getStatusCommand extends Command<String> {
+public class GetStatusCommand extends Command<String> {
 	
 	private Queryable queryable;
 
-	public getStatusCommand(Queryable d) {
+	public GetStatusCommand(Queryable d) {
 		this.queryable = d;
 	}
 
