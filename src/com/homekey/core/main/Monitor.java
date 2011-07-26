@@ -3,7 +3,9 @@ package com.homekey.core.main;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.homekey.core.command.getStatusCommand;
 import com.homekey.core.device.Device;
+import com.homekey.core.device.Queryable;
 
 public class Monitor {
 	private String name;
@@ -33,4 +35,9 @@ public class Monitor {
 		}
 		return null;
 	}
+	
+	public String getStatus(Queryable q){
+		return new getStatusCommand(q).getResult();
+	}
+	
 }

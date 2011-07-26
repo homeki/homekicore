@@ -1,4 +1,4 @@
-package com.homekey.core.main;
+package com.homekey.core.command;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;

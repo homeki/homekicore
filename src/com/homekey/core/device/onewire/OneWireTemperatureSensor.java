@@ -13,4 +13,9 @@ public class OneWireTemperatureSensor extends Device implements IntervalLoggable
 	public DatabaseTable getTableDesign() {
 		throw new UnsupportedOperationException();
 	}
+
+	@Override
+	public String getStatus() {
+		return null;
+	}
 }

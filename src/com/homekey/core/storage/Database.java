@@ -4,7 +4,6 @@ import java.sql.*;
 import java.util.Calendar;
 
 import com.homekey.core.device.Device;
-import com.homekey.core.device.onewire.OneWireTemperatureSensor;
 
 public class Database {
 	private final String DEFAULT_DATABASE_NAME = "homekey.db";

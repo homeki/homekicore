@@ -1,4 +1,4 @@
-package com.homekey.core.main;
+package com.homekey.core.command;
 
 public abstract class Command<T> implements Runnable {
 	private Boolean done = Boolean.FALSE;

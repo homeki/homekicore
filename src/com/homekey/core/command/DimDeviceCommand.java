@@ -1,6 +1,5 @@
-package com.homekey.core.main;
+package com.homekey.core.command;
 
-import com.homekey.core.device.Device;
 import com.homekey.core.device.Dimmable;
 
 public class DimDeviceCommand extends Command<Void> {

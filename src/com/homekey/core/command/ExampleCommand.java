@@ -1,4 +1,4 @@
-package com.homekey.core.main;
+package com.homekey.core.command;
 
 public class ExampleCommand extends Command<String> {
 	@Override
