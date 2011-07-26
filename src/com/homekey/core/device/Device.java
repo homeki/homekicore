@@ -21,7 +21,7 @@ public abstract class Device {
 		return id;
 	}
 	
-	public String getIntervalId(){
+	public String getInternalId(){
 		return internalId;
 	}
 	
