@@ -44,5 +44,10 @@ public class MockDatabase extends Database {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
+
+	@Override
+	public void putRow(Device device, Object[] values) {
+		// TODO Auto-generated method stub
+		
+	}
 }

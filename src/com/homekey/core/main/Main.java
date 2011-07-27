@@ -1,5 +1,7 @@
 package com.homekey.core.main;
 
+import java.util.Calendar;
+
 import com.homekey.core.command.DimDeviceCommand;
 import com.homekey.core.command.SwitchDeviceCommand;
 import com.homekey.core.device.Device;
@@ -28,6 +30,10 @@ public class Main {
 		// Register devices with db
 		b.ensureDevice(dev1);
 		b.ensureDevice(dev2);
+		
+		b.putRow(dev1, new Object[] { Calendar.getInstance().getTime(), true });
+		b.putRow(dev1, new Object[] { Calendar.getInstance().getTime(), false });
+		
 		// Add devices
 		m.forceAddDevice(dev1);
 		m.forceAddDevice(dev2);

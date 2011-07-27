@@ -6,6 +6,16 @@ public abstract class Database {
 	protected final String SENSOR_TABLE_PREFIX = "D_";
 	protected final String DEFAULT_DATABASE_NAME = "homekey.db";
 	
+	public abstract void close();
+	public abstract void putRow(Device device, Object[] values);
+
+	protected abstract void open();
+	protected abstract void addDevice(Device device);
+	protected abstract void loadDevice(Device device);
+	protected abstract boolean deviceExists(Device device);
+	protected abstract void createTable(String name, DatabaseTable table);
+	protected abstract boolean tableExists(String name);
+	
 	public Database() {
 		open();
 		ensureSystemTables();
@@ -21,10 +31,12 @@ public abstract class Database {
 		}
 	}
 	
+	protected String getTableName(Device device) {
+		return SENSOR_TABLE_PREFIX + device.getClass().getSimpleName() + "_" + device.getId();
+	}
+	
 	private void createTableFor(Device device) {
-		String name = SENSOR_TABLE_PREFIX + device.getClass().getSimpleName() + "_" + device.getId();
-		
-		createTable(name, device.getTableDesign());
+		createTable(getTableName(device), device.getTableDesign());
 	}
 	
 	private void ensureSystemTables() {
@@ -40,13 +52,4 @@ public abstract class Database {
 			createTable("devices", table);
 		}
 	}
-	
-	public abstract void close();
-
-	protected abstract void open();
-	protected abstract void addDevice(Device device);
-	protected abstract void loadDevice(Device device);
-	protected abstract boolean deviceExists(Device device);
-	protected abstract void createTable(String name, DatabaseTable table);
-	protected abstract boolean tableExists(String name);
 }
