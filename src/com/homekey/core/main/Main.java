@@ -8,12 +8,13 @@ import com.homekey.core.device.Switchable;
 import com.homekey.core.device.mock.MockDeviceDimmer;
 import com.homekey.core.device.mock.MockDeviceSwitcher;
 import com.homekey.core.storage.Database;
+import com.homekey.core.storage.sqlite.SqliteDatabase;
 
 public class Main {
 	public static void main(String[] args) {
 		ThreadMaster tm = new ThreadMaster();
 		
-		Database b = new Database();
+		Database b = new SqliteDatabase();
 		
 		DoSomeTesting(tm.getMonitor(),b);
 		tm.shutdown();
