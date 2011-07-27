@@ -20,7 +20,7 @@ public class Main {
 		
 		DoSomeTesting(tm.getMonitor(),b);
 //		tm.shutdown();
-		b.close();
+//		b.close();
 	}
 	
 	private static void DoSomeTesting(Monitor m,  Database b) {

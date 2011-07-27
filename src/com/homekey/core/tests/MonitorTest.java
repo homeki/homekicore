@@ -82,13 +82,13 @@ public class MonitorTest {
 		m.forceAddDevice(dev2);
 		for (int i = 0; i < 10; i++) {
 			assertTrue(new SwitchDeviceCommand(dev1, true).postAndWaitForResult(m));
-			assertTrue(dev1.getValue().contains("on"));
+			assertTrue(dev1.getValue());
 			assertTrue(new SwitchDeviceCommand(dev1, false).postAndWaitForResult(m));
-			assertTrue(dev1.getValue().contains("off"));
+			assertTrue(!dev1.getValue());
 			assertTrue(new SwitchDeviceCommand(dev2, true).postAndWaitForResult(m));
-			assertTrue("SwitchDevice should be 255 when on, but it is " + dev2.getValue(), dev2.getValue().equals("255"));
+			assertTrue("SwitchDevice should be 255 when on, but it is " + dev2.getValue(), dev2.getValue() == 255);
 			assertTrue(new SwitchDeviceCommand(dev2, false).postAndWaitForResult(m));
-			assertTrue("SwitchDevice should be 0 when off, but it is " + dev2.getValue(), dev2.getValue().equals("0"));
+			assertTrue("SwitchDevice should be 0 when off, but it is " + dev2.getValue(), dev2.getValue() == 0);
 		}
 	}
 	
@@ -104,9 +104,9 @@ public class MonitorTest {
 	}
 	
 	@Test
-	public void testTakeCommandOrder() {
+	public void testTakeCommandPreservesOrder() {
 		Monitor m = new Monitor();
-		for (int i = 0; i < 1000; i++) {
+		for (int i = 0; i < 10000; i++) {
 			// Kind of random level
 			int level = (i * 199 + i * i + 200) % 255;
 			DimDeviceCommand cmd1 = new DimDeviceCommand(dev2, level);

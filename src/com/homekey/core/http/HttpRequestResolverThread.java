@@ -141,8 +141,8 @@ public class HttpRequestResolverThread extends Thread {
 	}
 	
 	private void sendStatus(int id) throws IOException {
-		Queryable q = (Queryable) monitor.getDevice(id);
-		sendResponse(200, monitor.getStatus(q));
+		Queryable<?> q = (Queryable<?>) monitor.getDevice(id);
+		sendResponse(200, String.valueOf(monitor.getStatus(q)));
 	}
 	
 	public void sendResponse(int statusCode, String responseString) throws IOException {
