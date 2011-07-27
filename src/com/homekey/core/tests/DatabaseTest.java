@@ -1,6 +1,5 @@
 package com.homekey.core.tests;
 
-
 import java.io.File;
 
 import org.junit.After;
@@ -12,20 +11,22 @@ import com.homekey.core.device.mock.MockDeviceDimmer;
 import com.homekey.core.storage.Database;
 
 public class DatabaseTest {
-	Database database;
-
+	private Database database;
+	
 	@Before
 	public void setUp() throws Exception {
 		String tmppath = "/tmp/homekeysql555";
+		
 		removeDbIfExists(tmppath);
 		
-//		this.database = new Database(tmppath);
+		//this.database = new Database(tmppath);
 	}
-
+	
 	private void removeDbIfExists(String tmppath) {
 		File f = new File(tmppath);
-		if(f.exists())
+		if (f.exists()) {
 			f.delete();
+		}
 	}
 	
 	@After
@@ -44,6 +45,5 @@ public class DatabaseTest {
 	}
 	
 	@Test
-	public void testGetNextId() {
-	}
+	public void testGetNextId() {}
 }
