@@ -16,7 +16,6 @@ public class HttpListenerThread extends Thread {
 	}
 	
 	public void run() {
-		
 		ServerSocket Server;
 		try {
 			Server = new ServerSocket(5000, 10, null);

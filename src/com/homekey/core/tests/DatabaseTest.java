@@ -1,18 +1,14 @@
 package com.homekey.core.tests;
 
-import static org.junit.Assert.*;
 
 import java.io.File;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.homekey.core.device.Device;
 import com.homekey.core.device.mock.MockDeviceDimmer;
-import com.homekey.core.storage.DataRow;
 import com.homekey.core.storage.Database;
 
 public class DatabaseTest {

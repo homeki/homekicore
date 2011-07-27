@@ -1,16 +1,14 @@
 package com.homekey.core.main;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import com.google.gson.Gson;
 import com.homekey.core.command.Command;
-import com.homekey.core.command.CommandsThread;
-import com.homekey.core.command.SwitchDeviceCommand;
 import com.homekey.core.command.GetStatusCommand;
+import com.homekey.core.command.SwitchDeviceCommand;
 import com.homekey.core.device.Device;
 import com.homekey.core.device.Queryable;
 import com.homekey.core.device.Switchable;

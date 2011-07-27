@@ -1,15 +1,12 @@
 package com.homekey.core.main;
 
-import com.homekey.core.command.CommandsThread;
 import com.homekey.core.command.DimDeviceCommand;
 import com.homekey.core.command.SwitchDeviceCommand;
 import com.homekey.core.device.Device;
 import com.homekey.core.device.Dimmable;
 import com.homekey.core.device.Switchable;
 import com.homekey.core.device.mock.MockDeviceDimmer;
-import com.homekey.core.http.HttpListenerThread;
 import com.homekey.core.device.mock.MockDeviceSwitcher;
-import com.homekey.core.device.tellstick.TellStickSwitch;
 import com.homekey.core.storage.Database;
 
 public class Main {

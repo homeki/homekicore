@@ -12,13 +12,6 @@ public abstract class Device {
 	protected Date added;
 	protected boolean active;
 	
-	public Device(int id,String internalId, String name) {
-		this.id = id;
-		this.name = name;
-		this.internalId = internalId;
-		this.added = Calendar.getInstance().getTime();
-	}
-	
 	public Device(String internalId, String name) {
 		this.name = name;
 		this.internalId = internalId;

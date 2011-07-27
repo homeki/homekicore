@@ -13,8 +13,8 @@ public class TellStickSwitch extends Device implements Switchable, Queryable {
 	private boolean talk;
 	private boolean on;
 	
-	public TellStickSwitch(int id,String internalId, String name, boolean talk) {
-		super(id,internalId, name);
+	public TellStickSwitch(String internalId, String name, boolean talk) {
+		super(internalId, name);
 		this.on = false;
 		this.talk = talk;
 		if (talk)

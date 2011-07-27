@@ -1,7 +1,11 @@
 package com.homekey.core.storage;
 
-import java.sql.*;
-import java.util.Calendar;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import com.homekey.core.device.Device;
 
