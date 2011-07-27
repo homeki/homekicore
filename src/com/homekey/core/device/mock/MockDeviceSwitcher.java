@@ -43,8 +43,8 @@ public class MockDeviceSwitcher extends Device implements Switchable, Queryable 
 	@Override
 	public DatabaseTable getTableDesign() {
 		DatabaseTable table = new DatabaseTable(2);
-		table.setColumn(0, "Registered", ColumnType.DateTime);
-		table.setColumn(1, "Value", ColumnType.Boolean);
+		table.setColumn(0, "registered", ColumnType.DateTime);
+		table.setColumn(1, "value", ColumnType.Boolean);
 		return table;
 	}
 }
