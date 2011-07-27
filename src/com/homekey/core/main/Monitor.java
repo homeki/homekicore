@@ -46,14 +46,6 @@ public class Monitor {
 		return new GetStatusCommand(q).postAndWaitForResult(this);
 	}
 	
-	public synchronized Boolean turnOn(Switchable s) {
-		return new SwitchDeviceCommand(s, true).postAndWaitForResult(this);
-	}
-	
-	public synchronized Boolean turnOff(Switchable s) {
-		return new SwitchDeviceCommand(s, false).postAndWaitForResult(this);
-	}
-	
 	public synchronized String getDevices() {
 		Gson g = new Gson();
 		return g.toJson(devices.values());
@@ -67,5 +59,9 @@ public class Monitor {
 	// Should not be synchronized, since PQ is thread-safe.
 	public Command<?> takeCommand() throws InterruptedException {
 		return workQueue.take();
+	}
+
+	public Boolean flip(Switchable s, boolean b) {
+		return new SwitchDeviceCommand(s, b).postAndWaitForResult(this);
 	}
 }

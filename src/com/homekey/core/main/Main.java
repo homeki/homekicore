@@ -16,7 +16,7 @@ public class Main {
 		Database b = new Database();
 		
 		DoSomeTesting(tm.getMonitor(),b);
-		tm.shutdown();
+//		tm.shutdown();
 		b.close();
 	}
 	
