@@ -21,6 +21,7 @@ public abstract class Command<T> implements Runnable {
 	public void run() {
 		internalRun();
 		finish();
+		System.out.println("Finished command: " + this.toString());
 	}
 	
 	public abstract void internalRun();
@@ -30,12 +31,13 @@ public abstract class Command<T> implements Runnable {
 		notifyAll();
 	}
 	
-	public T postAndWaitForResult(CommandsThread ct) {
-		ct.post(this);
-		return getResult();
-	}
+	@Override
+	public String toString() {
+		return "Command: " + getClass().toString();
+	};
 	
 	public T postAndWaitForResult(Monitor m) {
+		System.out.println("Posted command: " + this.toString());
 		m.post(this);
 		return getResult();
 	}

@@ -6,9 +6,11 @@ import com.homekey.core.http.HttpListenerThread;
 public class ThreadMaster {
 	CommandsThread ct;
 	Monitor monitor;
+	HttpListenerThread httpThread;
 	public ThreadMaster(){
 		monitor = new Monitor();
-		new HttpListenerThread(monitor).start();
+		httpThread = new HttpListenerThread(monitor);
+		
 		
 		ct = new CommandsThread(monitor);
 		ct.start();
@@ -20,5 +22,11 @@ public class ThreadMaster {
 
 	public CommandsThread getCommandThread() {
 		return ct;
+	}
+
+	public void shutdown() {
+		System.out.println("Shutting down threads..");
+		ct.interrupt();
+		httpThread.interrupt();
 	}
 }

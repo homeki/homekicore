@@ -26,7 +26,19 @@ public class Database {
 		ensureSystemTables();
 	}
 	
-	public void loadDevice(Device device) {
+	public void ensureDevice(Device device) {
+		boolean exists = executeScalar("SELECT COUNT(internalid) FROM devices WHERE internalid = '" + device.getInternalId() + "';") > 0;
+		
+		if (exists) {
+			loadDevice(device);
+		}
+		else {
+			addDevice(device);
+			createTableFor(device);
+		}
+	}
+	
+	private void loadDevice(Device device) {
 		Statement stat;
 		
 		try {
@@ -51,33 +63,17 @@ public class Database {
 		}
 	}
 	
-	public boolean deviceExists(Device device) {
-		return executeScalar("SELECT COUNT(internalid) FROM devices WHERE internalid = '" + device.getInternalId() + "';") > 0;
-	}
-	
-	public void registerDevice(Device device) {
-		if (deviceExists(device)) {
-			throw new IllegalArgumentException("A device with the specified internal id already exists.");
-		}
-		
-		addDevice(device);
-		createTableFor(device);
-	}
-	
 	public void putRow(int id, DataRow row) {
 		
 	}
 	
 	public void close() {
 		try {
+			System.out.println("Shutting down database");
 			conn.close();
 		} catch (SQLException ex) {
 			System.err.println("close(): Couldn't close database connection.");
 		}
-	}
-	
-	public int getNextId() {
-		return executeScalar("SELECT MAX(id) FROM devices") + 1;
 	}
 	
 	private void addDevice(Device device) {
@@ -92,8 +88,10 @@ public class Database {
 			stat.setBoolean(5, device.isActive());
 			stat.execute();
 		} catch (SQLException ex) {
-			System.err.println("addDevice(): Couldn't execute SQL.");
+			System.err.println("addDevice(): Couldn't execute INSERT SQL.");
 		}
+		
+		device.setId(executeScalar("SELECT id FROM devices WHERE internalid = '" + device.getInternalId() + "';"));
 	}
 	
 	private void createTableFor(Device device) {

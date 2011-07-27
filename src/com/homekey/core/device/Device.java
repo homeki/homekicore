@@ -14,10 +14,10 @@ public abstract class Device {
 	
 	public Device(String internalId) {
 		this.internalId = internalId;
+		this.added = Calendar.getInstance().getTime();
 	}
-
-	public Device(int id,String internalId, String name) {
-		this.id = id;
+	
+	public Device(String internalId, String name) {
 		this.name = name;
 		this.internalId = internalId;
 		this.active = true;
@@ -36,15 +36,15 @@ public abstract class Device {
 		this.active = active;
 	}
 	
-	public String getName(){
+	public String getName() {
 		return name;
 	}
 	
-	public int getId(){
+	public int getId() {
 		return id;
 	}
 	
-	public String getInternalId(){
+	public String getInternalId() {
 		return internalId;
 	}
 	
@@ -65,6 +65,6 @@ public abstract class Device {
 	public boolean equals(Object obj) {
 		return super.equals(obj);
 	}
-
+	
 	public abstract DatabaseTable getTableDesign();
 }

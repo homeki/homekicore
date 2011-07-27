@@ -11,12 +11,12 @@ public class MockDeviceSwitcher extends Device implements Switchable, Queryable 
 	private boolean talk;
 	private boolean on;
 	
-	public MockDeviceSwitcher(int id,String internalId, String name, boolean talk) {
-		super(id,internalId, name);
+	public MockDeviceSwitcher(String internalId, String name, boolean talk) {
+		super(internalId, name);
 		this.on = false;
 		this.talk = talk;
 		if (talk)
-			System.out.println("MockInfo: Created MockDeviceSwitcher called '" + getName() + "' with id=" + id + ".");
+			System.out.println("MockInfo: Created MockDeviceSwitcher called '" + getName() + "'.");
 	}
 	
 	@Override
