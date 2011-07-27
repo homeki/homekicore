@@ -15,5 +15,6 @@ public class DimDeviceCommand extends Command<Boolean> {
 	@Override
 	public void internalRun() {
 		this.dimmable.dim(this.level);
+		setResult(true);
 	}
 }

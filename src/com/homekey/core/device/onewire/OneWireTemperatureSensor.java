@@ -15,7 +15,7 @@ public class OneWireTemperatureSensor extends Device implements IntervalLoggable
 	}
 
 	@Override
-	public String getStatus() {
+	public String getValue() {
 		return null;
 	}
 }

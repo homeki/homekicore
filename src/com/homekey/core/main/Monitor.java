@@ -39,7 +39,7 @@ public class Monitor {
 		if (devices.containsKey(i)) {
 			return devices.get(i);
 		}
-		throw new NullPointerException();
+		return null;
 	}
 	
 	public synchronized String getStatus(Queryable q) {

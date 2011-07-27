@@ -12,6 +12,6 @@ public class GetStatusCommand extends Command<String> {
 
 	@Override
 	public void internalRun() {
-		result = queryable.getStatus();
+		setResult(queryable.getValue());
 	}	
 }

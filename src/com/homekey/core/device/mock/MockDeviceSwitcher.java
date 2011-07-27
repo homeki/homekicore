@@ -36,8 +36,8 @@ public class MockDeviceSwitcher extends Device implements Switchable, Queryable 
 	}
 
 	@Override
-	public String getStatus() {
-		return String.format("The device is %s", on ? "on" : "off");
+	public String getValue() {
+		return  on ? "on" : "off";
 	}
 	
 	@Override

@@ -24,7 +24,6 @@ public class DeviceTest {
 	
 	@After
 	public void tearDown() throws Exception {
-		
 	}
 	
 	@Test
