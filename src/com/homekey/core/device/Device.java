@@ -1,5 +1,6 @@
 package com.homekey.core.device;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import com.homekey.core.storage.DatabaseTable;
@@ -20,6 +21,7 @@ public abstract class Device {
 		this.name = name;
 		this.internalId = internalId;
 		this.active = true;
+		this.added = Calendar.getInstance().getTime();
 	}
 	
 	public void setName(String name) {

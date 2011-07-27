@@ -3,18 +3,21 @@ package com.homekey.core.command;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import com.homekey.core.main.Monitor;
+
 public class CommandsThread extends Thread {
-	BlockingQueue<Command<?>> workQueue = new LinkedBlockingQueue<Command<?>>();
+	
+	private Monitor monitor;
+	
+	public CommandsThread(Monitor monitor) {
+		this.monitor = monitor;
+	}
 	
 	@Override
 	public void run() {
 		while (true) {
 			Runnable c = null;
-			try {
-				c = workQueue.take();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+			c = monitor.takeCommand();
 			
 			if (c != null) {
 				c.run();
@@ -22,8 +25,9 @@ public class CommandsThread extends Thread {
 		}
 	}
 	
-	public void post(Command<?> c) {		
-		workQueue.offer(c);
+	public void post(Command<?> c) {
+		monitor.post(c);
+		// workQueue.offer(c);
 	}
 	
 }

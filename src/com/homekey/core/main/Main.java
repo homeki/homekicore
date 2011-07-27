@@ -12,34 +12,23 @@ import com.homekey.core.device.mock.MockDeviceSwitcher;
 import com.homekey.core.storage.Database;
 
 public class Main {
-	
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		
+		ThreadMaster tm = new ThreadMaster();
 		Database b = new Database();
 		
-		CommandsThread ct = new CommandsThread();
-		Monitor m = new Monitor(ct);
-		
-		new HttpListenerThread(m).start();
-		ct.start();
-		
-		m.setServerName("Fresh Server");
-		
-		System.out.println("Starting server '" + m.getServerName() + "'");
-		
-		DoSomeTesting(m, ct, b);
+		DoSomeTesting( tm.getMonitor(), tm.getCommandThread(),b);
 		DoSomeMoreTesting(b);
-		
-		b.close();
 	}
 	
 	private static void DoSomeTesting(Monitor m, CommandsThread ct, Database b) {
 		// Create devices
-		Device dev1 = new MockDeviceSwitcher(1, "DA", "My MockDevice #1", true);
-		Device dev2 = new MockDeviceDimmer(2, "DDD", "My MockDevice #2", true);
+		Device dev1 = new MockDeviceSwitcher(b.getNextId(), "DA", "My MockDevice #1", true);
+		b.registerDevice(dev1);
+		Device dev2 = new MockDeviceDimmer(b.getNextId(), "DDD", "My MockDevice #2", true);
+		b.registerDevice(dev2);
 		// Add devices
 		m.forceAddDevice(dev1);
 		m.forceAddDevice(dev2);

@@ -1,5 +1,7 @@
 package com.homekey.core.command;
 
+import com.homekey.core.main.Monitor;
+
 public abstract class Command<T> implements Runnable {
 	private Boolean done = Boolean.FALSE;
 	protected T result;
@@ -28,9 +30,13 @@ public abstract class Command<T> implements Runnable {
 		notifyAll();
 	}
 	
-
 	public T postAndWaitForResult(CommandsThread ct) {
 		ct.post(this);
+		return getResult();
+	}
+	
+	public T postAndWaitForResult(Monitor m) {
+		m.post(this);
 		return getResult();
 	}
 }
