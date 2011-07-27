@@ -14,6 +14,7 @@ import com.homekey.core.storage.Database;
 public class Main {
 	public static void main(String[] args) {
 		ThreadMaster tm = new ThreadMaster();
+		
 		Database b = new Database();
 		
 		DoSomeTesting(tm.getMonitor(),b);
@@ -38,6 +39,7 @@ public class Main {
 		DimDeviceCommand ddc = new DimDeviceCommand(dimmable, 50);
 		SwitchDeviceCommand sdcOn = new SwitchDeviceCommand(switchable, true);
 		SwitchDeviceCommand sdcOff = new SwitchDeviceCommand(switchable, false);
+		
 		// Post commands
 		m.post(sdcOn);
 		m.post(ddc);

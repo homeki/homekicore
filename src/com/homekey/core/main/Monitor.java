@@ -72,6 +72,6 @@ public class Monitor {
 	
 	// Should not be synchronized, since PQ is thread-safe.
 	public Command<?> takeCommand() throws InterruptedException {
-			return workQueue.take();
+		return workQueue.take();
 	}
 }

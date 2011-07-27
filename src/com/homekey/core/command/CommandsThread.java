@@ -11,15 +11,14 @@ public class CommandsThread extends Thread {
 	}
 	
 	@Override
-	public void run() {
-		boolean running = true;
-		while (running) {
+	public synchronized void run() {
+		while (true) {
 			Runnable c = null;
 			try {
 				c = monitor.takeCommand();
 			} catch (InterruptedException e) {
 				System.out.println("Killing CommandsThread.");
-				running = false;
+				return;
 			}
 			
 			if (c != null) {
@@ -27,12 +26,5 @@ public class CommandsThread extends Thread {
 				c.run();
 			}
 		}
-	}
-	
-	// public void post(Command<?> c) {
-	// throw new RuntimeException("Method is deprecated.");
-	// // monitor.post(c);
-	// // workQueue.offer(c);
-	// }
-	
+	}	
 }

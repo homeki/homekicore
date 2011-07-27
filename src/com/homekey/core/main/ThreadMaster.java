@@ -20,10 +20,6 @@ public class ThreadMaster {
 		return monitor;
 	}
 
-	public CommandsThread getCommandThread() {
-		return ct;
-	}
-
 	public void shutdown() {
 		System.out.println("Shutting down threads..");
 		ct.interrupt();
