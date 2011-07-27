@@ -4,18 +4,9 @@ import com.homekey.core.device.Device;
 
 public abstract class Database {
 	protected final String SENSOR_TABLE_PREFIX = "D_";
-	private final String DEFAULT_DATABASE_NAME = "homekey.db";
-	
-	protected String databaseName;
+	protected final String DEFAULT_DATABASE_NAME = "homekey.db";
 	
 	public Database() {
-		databaseName = DEFAULT_DATABASE_NAME;
-		open();
-		ensureSystemTables();
-	}
-	
-	public Database(String name) {
-		databaseName = name;
 		open();
 		ensureSystemTables();
 	}

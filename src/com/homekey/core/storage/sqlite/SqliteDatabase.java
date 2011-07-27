@@ -14,7 +14,7 @@ import com.homekey.core.storage.Database;
 import com.homekey.core.storage.DatabaseTable;
 
 public class SqliteDatabase extends Database {
-	Connection conn;
+	private Connection conn;
 	
 	public void putRow(int id, DataRow row) {
 		throw new UnsupportedOperationException();
@@ -44,9 +44,9 @@ public class SqliteDatabase extends Database {
 		}
 		
 		try {
-			conn = DriverManager.getConnection("jdbc:sqlite:" + databaseName);
+			conn = DriverManager.getConnection("jdbc:sqlite:" + DEFAULT_DATABASE_NAME);
 		} catch (SQLException ex) {
-			System.err.println("open(): Couldn't open database named " + databaseName + ".");
+			System.err.println("open(): Couldn't open database named " + DEFAULT_DATABASE_NAME + ".");
 		}
 	}
 	
