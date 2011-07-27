@@ -24,4 +24,8 @@ public class SwitchDeviceCommand extends Command<Boolean> {
 			switcher.off();
 		setResult(true);
 	}
+	
+	public boolean turningOn(){
+		return on;
+	}
 }
