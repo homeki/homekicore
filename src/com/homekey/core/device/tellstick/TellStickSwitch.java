@@ -48,7 +48,7 @@ public class TellStickSwitch extends Device implements Switchable, Queryable {
 	}
 
 	@Override
-	public String getStatus() {
+	public String getValue() {
 		return String.format("The device is %s", on ? "on" : "off");
 	}
 	

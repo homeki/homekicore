@@ -4,7 +4,7 @@ import com.homekey.core.main.Monitor;
 
 public abstract class Command<T> implements Runnable {
 	private Boolean done = Boolean.FALSE;
-	protected T result;
+	private T result;
 	
 	public synchronized T getResult() {
 		while (!done) {
@@ -22,6 +22,10 @@ public abstract class Command<T> implements Runnable {
 		internalRun();
 		finish();
 		System.out.println("Finished command: " + this.toString());
+	}
+	
+	protected synchronized void setResult(T result){
+		this.result = result;
 	}
 	
 	public abstract void internalRun();

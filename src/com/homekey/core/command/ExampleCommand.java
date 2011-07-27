@@ -9,6 +9,6 @@ public class ExampleCommand extends Command<String> {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		result = "OMG IT WORKS!";
+		setResult("OMG IT WORKS!");
 	}	
 }
