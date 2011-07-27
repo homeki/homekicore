@@ -6,13 +6,15 @@ import java.util.Date;
 import com.homekey.core.storage.DatabaseTable;
 
 public abstract class Device {
-	private int id;
-	private String name;
-	private String internalId;
-	private Date added;
-	private boolean active;
+	protected int id;
+	protected String name;
+	protected String internalId;
+	protected Date added;
+	protected boolean active;
 	
-	public Device(String internalId) {
+	public Device(int id,String internalId, String name) {
+		this.id = id;
+		this.name = name;
 		this.internalId = internalId;
 		this.added = Calendar.getInstance().getTime();
 	}
