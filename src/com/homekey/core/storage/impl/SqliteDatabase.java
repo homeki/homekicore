@@ -9,16 +9,11 @@ import java.sql.Statement;
 
 import com.homekey.core.device.Device;
 import com.homekey.core.storage.ColumnType;
-import com.homekey.core.storage.DataRow;
 import com.homekey.core.storage.Database;
 import com.homekey.core.storage.DatabaseTable;
 
 public class SqliteDatabase extends Database {
 	private Connection conn;
-	
-	public void putRow(int id, DataRow row) {
-		throw new UnsupportedOperationException();
-	}
 	
 	@Override
 	public void close() {
@@ -27,6 +22,58 @@ public class SqliteDatabase extends Database {
 			conn.close();
 		} catch (SQLException ex) {
 			System.err.println("close(): Couldn't close database connection.");
+		}
+	}
+	
+	@Override
+	public void putRow(Device device, Object[] values) {
+		DatabaseTable table = device.getTableDesign();
+		String tableName = getTableName(device);
+		String sql = "INSERT INTO " + tableName + "(";
+		
+		// generate sql command from table design
+		for (int i = 0; i < table.getColumnCount(); i++) {
+			sql += table.getName(i) + ", ";
+		}
+		sql = sql.substring(0, sql.length() - 2) + ") VALUES(";
+		for (int i = 0; i < table.getColumnCount(); i++) {
+			sql += "?, ";
+		}
+		sql = sql.substring(0, sql.length() - 2) + ");";
+		
+		PreparedStatement stat;
+		
+		try {
+			stat = conn.prepareStatement(sql);
+			
+			// add parameters to sql command
+			for (int i = 0; i < table.getColumnCount(); i++) {
+				switch (table.getType(i)) {
+				case String:
+					stat.setString(i + 1, (String) values[i]);
+					break;
+				case Boolean:
+					stat.setBoolean(i + 1, (Boolean) values[i]);
+					break;
+				case Integer:
+					stat.setInt(i + 1, (Integer) values[i]);
+					break;
+				case Float:
+					stat.setFloat(i + 1, (Float) values[i]);
+					break;
+				case DateTime:
+					java.util.Date javaDate = (java.util.Date) values[i];
+					java.sql.Date sqlDate = new java.sql.Date(javaDate.getTime());
+					stat.setDate(i + 1, sqlDate);
+					break;
+				default:
+					throw new IllegalArgumentException();
+				}
+			}
+			
+			stat.execute();
+		} catch (SQLException ex) {
+			System.err.println("putRow(): Couldn't execute INSERT SQL.");
 		}
 	}
 	
