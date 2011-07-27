@@ -5,6 +5,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 import com.homekey.core.device.Queryable;
@@ -27,69 +29,120 @@ public class HttpRequestResolverThread extends Thread {
 		monitor = m;
 	}
 	
+	enum Type {
+		GET, SET, DEFAULT;
+	}
+	
+	enum Command {
+		OFF, ON, DIM, STATUS, DEVICES, DEFAULT;
+	}
+	
 	public void run() {
+		String httpQueryString = "";
 		try {
 			inFromClient = new BufferedReader(new InputStreamReader(connectedClient.getInputStream()));
+			
 			outToClient = new DataOutputStream(connectedClient.getOutputStream());
 			
 			String requestString = inFromClient.readLine();
 			String headerLine = requestString;
 			
-			StringTokenizer tokenizer = new StringTokenizer(headerLine);
-			String httpMethod = tokenizer.nextToken();
-			String httpQueryString = tokenizer.nextToken();
+			httpQueryString = gethttpQueryString(headerLine);
+			Map<String, String> map = getQueryMap(httpQueryString);
 			
-			if (httpMethod.equals("GET")) {
-				if (httpQueryString.equals("/")) {
-					sendResponse(200, "Welcome to HomeKey, plx send command or nothing will happen");
-				} else {
-					System.out.println(httpQueryString);
-					String[] query = httpQueryString.split("/");
-					if (query[1].equals("get")) {
-						if (query[2].equals("status")) {
-							int id = Integer.parseInt(query[3]);
-							Queryable q = (Queryable) monitor.getDevice(id);
-							sendResponse(200, monitor.getStatus(q));
-						} else if (query[2].equals("devices")) {
-							sendResponse(200, monitor.getDevices());
-						} else {
-							throw new Exception();
-						}
-					} else if (query[1].equals("set")) {
-						int id = Integer.parseInt(query[3]);
-						Switchable s = (Switchable) monitor.getDevice(id);
-						if (query[2].equals("on")) {
-							sendResponse(200, String.valueOf(monitor.turnOn(s)));
-						} else if (query[2].equals("off")) {
-							sendResponse(200, String.valueOf(monitor.turnOff(s)));
-						} else {
-							throw new Exception();
-						}
-					} else {
-						throw new Exception();
-					}
+			int id = -1;
+			try {	
+				id = Integer.valueOf(map.get("id"));
+			} catch (NumberFormatException e) {
+				e.printStackTrace();
+			}
+			
+			Type type = Type.valueOf(map.get("type").toUpperCase());
+			Command command = Command.valueOf(map.get("command").toUpperCase());
+			
+			switch (type) {
+			case GET:
+				switch (command) {
+				case STATUS:
+					sendStatus(id);
+					break;
+				case DEVICES:
+					sendDevices();
+					break;
+				default:
+					send404(httpQueryString);
+					break;
 				}
-			} else {
-				throw new Exception();
+				break;
+			case SET:
+				switch (command) {
+				case OFF:
+					setAndSendSwitch(id, false);
+					break;
+				case ON:
+					setAndSendSwitch(id, true);
+					break;
+				default:
+					send404(httpQueryString);
+					break;
+				}
+				break;
+			default:
+				send404(httpQueryString);
+				break;
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
-		} catch (ClassCastException e) {
+		} catch (NullPointerException e) {
 			e.printStackTrace();
-			try {
-				sendResponse(500, "Device is not Queryable!");
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			try {
-				sendResponse(404, "lulul");
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-			
+			send404(httpQueryString);
 		}
+	}
+	
+	private String gethttpQueryString(String headerLine) {
+		StringTokenizer tokenizer = new StringTokenizer(headerLine);
+		// String httpMethod =
+		tokenizer.nextToken();
+		String httpQueryString = tokenizer.nextToken();
+		return httpQueryString;
+	}
+	
+	private Map<String, String> getQueryMap(String httpQueryString) {
+		Map<String, String> map = new HashMap<String, String>();
+		try {
+			String query = httpQueryString.split("\\?")[1];
+			String[] kvp = query.split("&");
+			for (String s : kvp) {
+				String[] whatever = s.split("=");
+				map.put(whatever[0], whatever[1]);
+			}
+		} catch (ArrayIndexOutOfBoundsException e) {
+			// Fulhaxx
+			e.printStackTrace();
+		}
+		return map;
+	}
+	
+	private void sendDevices() throws IOException {
+		sendResponse(200, monitor.getDevices());
+	}
+	
+	private void setAndSendSwitch(int id, boolean on) throws IOException {
+		Switchable s = (Switchable) monitor.getDevice(id);
+		sendResponse(200, String.valueOf(monitor.flip(s, on)));
+	}
+	
+	private void send404(String httpQueryString) {
+		try {
+			sendResponse(404, httpQueryString + " does not exsist");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void sendStatus(int id) throws IOException {
+		Queryable q = (Queryable) monitor.getDevice(id);
+		sendResponse(200, monitor.getStatus(q));
 	}
 	
 	public void sendResponse(int statusCode, String responseString) throws IOException {
