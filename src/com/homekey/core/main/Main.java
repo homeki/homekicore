@@ -9,6 +9,7 @@ import com.homekey.core.device.Switchable;
 import com.homekey.core.device.mock.MockDeviceDimmer;
 import com.homekey.core.http.HttpListenerThread;
 import com.homekey.core.device.mock.MockDeviceSwitcher;
+import com.homekey.core.device.tellstick.TellStickSwitch;
 import com.homekey.core.storage.Database;
 
 public class Main {
@@ -29,6 +30,10 @@ public class Main {
 		m.setServerName("Fresh Server");
 		
 		System.out.println("Starting server '" + m.getServerName() + "'");
+		
+		TellStickSwitch dev1 = new TellStickSwitch(0, "1", "Lampa", true);
+		m.forceAddDevice(dev1);
+
 		
 		DoSomeTesting(m, ct, b);
 		DoSomeMoreTesting(b);

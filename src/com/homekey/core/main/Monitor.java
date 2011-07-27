@@ -55,11 +55,7 @@ public class Monitor {
 	}
 	
 	public synchronized String getDevices() {
-		StringBuffer sb = new StringBuffer();
 		Gson g = new Gson();
-		for (Device d : devices.values()) {
-			sb.append(g.toJson(d) + "<br>");
-		}
-		return sb.toString();
+		return g.toJson(devices.values());
 	}
 }
