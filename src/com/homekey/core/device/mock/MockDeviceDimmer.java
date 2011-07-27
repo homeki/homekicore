@@ -9,11 +9,11 @@ public class MockDeviceDimmer extends Device implements Dimmable {
 	
 	private boolean talk;
 	
-	public MockDeviceDimmer(int id,String internalId, String name, boolean talk) {
-		super(id,internalId, name);
+	public MockDeviceDimmer(String internalId, String name, boolean talk) {
+		super(internalId, name);
 		this.talk = talk;
 		if (talk)
-			System.out.println("MockInfo: Created MockDeviceDimmer called '" + getName() + "' with id=" + id);
+			System.out.println("MockInfo: Created MockDeviceDimmer called '" + getName() + "'.");
 	}
 	
 	@Override

@@ -1,28 +1,61 @@
 package com.homekey.core.device;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import com.homekey.core.storage.DatabaseTable;
 
 public abstract class Device {
 	protected int id;
 	protected String name;
 	protected String internalId;
-
+	protected Date added;
+	protected boolean active;
+	
 	public Device(int id,String internalId, String name) {
 		this.id = id;
 		this.name = name;
 		this.internalId = internalId;
+		this.added = Calendar.getInstance().getTime();
 	}
 	
-	public String getName(){
+	public Device(String internalId, String name) {
+		this.name = name;
+		this.internalId = internalId;
+		this.active = true;
+		this.added = Calendar.getInstance().getTime();
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+	
+	public String getName() {
 		return name;
 	}
 	
-	public int getId(){
+	public int getId() {
 		return id;
 	}
 	
-	public String getInternalId(){
+	public String getInternalId() {
 		return internalId;
+	}
+	
+	public Date getAdded() {
+		return added;
+	}
+	
+	public boolean isActive() {
+		return active;
 	}
 	
 	@Override
@@ -34,6 +67,6 @@ public abstract class Device {
 	public boolean equals(Object obj) {
 		return super.equals(obj);
 	}
-
+	
 	public abstract DatabaseTable getTableDesign();
 }

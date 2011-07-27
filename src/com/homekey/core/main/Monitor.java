@@ -1,9 +1,13 @@
 package com.homekey.core.main;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import com.google.gson.Gson;
+import com.homekey.core.command.Command;
 import com.homekey.core.command.CommandsThread;
 import com.homekey.core.command.SwitchDeviceCommand;
 import com.homekey.core.command.GetStatusCommand;
@@ -14,13 +18,11 @@ import com.homekey.core.device.Switchable;
 public class Monitor {
 	private String name;
 	Map<Integer, Device> devices;
-	private CommandsThread ct;
+	BlockingQueue<Command<?>> workQueue = new LinkedBlockingQueue<Command<?>>();
 	
-	public Monitor(CommandsThread ct) {
-		this.ct = ct;
+	public Monitor() {
 		devices = new HashMap<Integer, Device>();
 		name = "<no name>";
-		
 	}
 	
 	public synchronized void setServerName(String name) {
@@ -31,31 +33,41 @@ public class Monitor {
 		return name;
 	}
 	
-	public void forceAddDevice(Device dev) {
+	public synchronized void forceAddDevice(Device dev) {
 		devices.put(dev.getId(), dev);
 	}
 	
-	public Device getDevice(int i) {
+	public synchronized Device getDevice(int i) {
 		if (devices.containsKey(i)) {
 			return devices.get(i);
 		}
 		throw new NullPointerException();
 	}
 	
-	public String getStatus(Queryable q) {
-		return new GetStatusCommand(q).postAndWaitForResult(ct);
+	public synchronized String getStatus(Queryable q) {
+		return new GetStatusCommand(q).postAndWaitForResult(this);
 	}
 	
-	public Boolean turnOn(Switchable s) {
-		return new SwitchDeviceCommand(s, true).postAndWaitForResult(ct);
+	public synchronized Boolean turnOn(Switchable s) {
+		return new SwitchDeviceCommand(s, true).postAndWaitForResult(this);
 	}
 	
-	public Boolean turnOff(Switchable s) {
-		return new SwitchDeviceCommand(s, false).postAndWaitForResult(ct);
+	public synchronized Boolean turnOff(Switchable s) {
+		return new SwitchDeviceCommand(s, false).postAndWaitForResult(this);
 	}
 	
 	public synchronized String getDevices() {
 		Gson g = new Gson();
 		return g.toJson(devices.values());
+	}
+	
+	// Should not be synchronized, since PQ is thread-safe.
+	public void post(Command<?> c) {
+		workQueue.add(c);
+	}
+	
+	// Should not be synchronized, since PQ is thread-safe.
+	public Command<?> takeCommand() throws InterruptedException {
+			return workQueue.take();
 	}
 }

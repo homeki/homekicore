@@ -22,7 +22,5 @@ public class SwitchDeviceCommand extends Command<Boolean> {
 			switcher.on();
 		else
 			switcher.off();
-		finish();
 	}
-	
 }

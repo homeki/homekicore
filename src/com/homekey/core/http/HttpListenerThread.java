@@ -29,9 +29,8 @@ public class HttpListenerThread extends Thread {
 			e.printStackTrace();
 			throw new RuntimeException("You suck!");
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
-			throw new RuntimeException("You suck!");
-			
-		}
+		} 
 	}
 }

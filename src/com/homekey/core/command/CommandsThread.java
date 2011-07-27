@@ -1,29 +1,38 @@
 package com.homekey.core.command;
 
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
+import com.homekey.core.main.Monitor;
 
 public class CommandsThread extends Thread {
-	BlockingQueue<Command<?>> workQueue = new LinkedBlockingQueue<Command<?>>();
+	
+	private Monitor monitor;
+	
+	public CommandsThread(Monitor monitor) {
+		this.monitor = monitor;
+	}
 	
 	@Override
 	public void run() {
-		while (true) {
+		boolean running = true;
+		while (running) {
 			Runnable c = null;
 			try {
-				c = workQueue.take();
+				c = monitor.takeCommand();
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				System.out.println("Killing CommandsThread.");
+				running = false;
 			}
 			
 			if (c != null) {
+				System.out.println("Took command: " + c.toString());
 				c.run();
 			}
 		}
 	}
 	
-	public void post(Command<?> c) {		
-		workQueue.offer(c);
-	}
+	// public void post(Command<?> c) {
+	// throw new RuntimeException("Method is deprecated.");
+	// // monitor.post(c);
+	// // workQueue.offer(c);
+	// }
 	
 }

@@ -13,38 +13,22 @@ import com.homekey.core.device.tellstick.TellStickSwitch;
 import com.homekey.core.storage.Database;
 
 public class Main {
-	
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
-		
+		ThreadMaster tm = new ThreadMaster();
 		Database b = new Database();
 		
-		CommandsThread ct = new CommandsThread();
-		Monitor m = new Monitor(ct);
-		
-		new HttpListenerThread(m).start();
-		ct.start();
-		
-		m.setServerName("Fresh Server");
-		
-		System.out.println("Starting server '" + m.getServerName() + "'");
-		
-		TellStickSwitch dev1 = new TellStickSwitch(0, "1", "Lampa", true);
-		m.forceAddDevice(dev1);
-
-		
-		DoSomeTesting(m, ct, b);
-		DoSomeMoreTesting(b);
-		
+		DoSomeTesting(tm.getMonitor(),b);
+		tm.shutdown();
 		b.close();
 	}
 	
-	private static void DoSomeTesting(Monitor m, CommandsThread ct, Database b) {
+	private static void DoSomeTesting(Monitor m,  Database b) {
 		// Create devices
-		Device dev1 = new MockDeviceSwitcher(1, "DA", "My MockDevice #1", true);
-		Device dev2 = new MockDeviceDimmer(2, "DDD", "My MockDevice #2", true);
+		Device dev1 = new MockDeviceSwitcher("DA", "My MockDevice #1", true);
+		Device dev2 = new MockDeviceDimmer("DDD", "My MockDevice #2", true);
+		// Register devices with db
+		b.ensureDevice(dev1);
+		b.ensureDevice(dev2);
 		// Add devices
 		m.forceAddDevice(dev1);
 		m.forceAddDevice(dev2);
@@ -56,20 +40,12 @@ public class Main {
 		SwitchDeviceCommand sdcOn = new SwitchDeviceCommand(switchable, true);
 		SwitchDeviceCommand sdcOff = new SwitchDeviceCommand(switchable, false);
 		// Post commands
-		ct.post(sdcOn);
-		ct.post(ddc);
-		ct.post(sdcOff);
+		m.post(sdcOn);
+		m.post(ddc);
+		m.post(sdcOff);
 		
 		sdcOff.getResult();
 		ddc.getResult();
 		sdcOn.getResult();
-	}
-	
-	private static void DoSomeMoreTesting(Database b) {
-		MockDeviceSwitcher sw = new MockDeviceSwitcher(2, "ID123", "test", false);
-		
-		if (!b.deviceExists(sw)) {
-			b.registerDevice(sw);
-		}
 	}
 }
