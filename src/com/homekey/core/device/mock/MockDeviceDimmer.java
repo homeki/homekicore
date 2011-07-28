@@ -6,7 +6,7 @@ import com.homekey.core.device.Queryable;
 import com.homekey.core.storage.ColumnType;
 import com.homekey.core.storage.DatabaseTable;
 
-public class MockDeviceDimmer extends Device implements Dimmable, Queryable {
+public class MockDeviceDimmer extends Device implements Dimmable, Queryable<Integer> {
 	
 	private boolean talk;
 	private int level;
@@ -45,13 +45,13 @@ public class MockDeviceDimmer extends Device implements Dimmable, Queryable {
 	@Override
 	public DatabaseTable getTableDesign() {
 		DatabaseTable table = new DatabaseTable(2);
-		table.setColumn(0, "Registered", ColumnType.DateTime);
-		table.setColumn(1, "Value", ColumnType.Integer);
+		table.setColumn(0, "registered", ColumnType.DateTime);
+		table.setColumn(1, "value", ColumnType.Integer);
 		return table;
 	}
 	
 	@Override
-	public String getValue() {
-		return String.valueOf(level);
+	public Integer getValue() {
+		return level;
 	}
 }

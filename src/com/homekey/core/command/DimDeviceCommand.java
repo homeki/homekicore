@@ -17,4 +17,8 @@ public class DimDeviceCommand extends Command<Boolean> {
 		this.dimmable.dim(this.level);
 		setResult(true);
 	}
+	
+	public int getLevel(){
+		return level;
+	}
 }

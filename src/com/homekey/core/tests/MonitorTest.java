@@ -82,29 +82,50 @@ public class MonitorTest {
 		m.forceAddDevice(dev2);
 		for (int i = 0; i < 10; i++) {
 			assertTrue(new SwitchDeviceCommand(dev1, true).postAndWaitForResult(m));
-			assertTrue(dev1.getValue().contains("on"));
+			assertTrue(dev1.getValue());
 			assertTrue(new SwitchDeviceCommand(dev1, false).postAndWaitForResult(m));
-			assertTrue(dev1.getValue().contains("off"));
+			assertTrue(!dev1.getValue());
 			assertTrue(new SwitchDeviceCommand(dev2, true).postAndWaitForResult(m));
-			assertTrue("SwitchDevice should be 255 when on, but it is " + dev2.getValue(), dev2.getValue().equals("255"));
+			assertTrue("SwitchDevice should be 255 when on, but it is " + dev2.getValue(), dev2.getValue() == 255);
 			assertTrue(new SwitchDeviceCommand(dev2, false).postAndWaitForResult(m));
-			assertTrue("SwitchDevice should be 0 when off, but it is " + dev2.getValue(),dev2.getValue().equals("0"));
+			assertTrue("SwitchDevice should be 0 when off, but it is " + dev2.getValue(), dev2.getValue() == 0);
 		}
 	}
 	
 	@Test
-	public void testTurnOff() {
-		
-	}
-	
-	@Test
 	public void testGetDevices() {
+		Monitor m = new Monitor();
+		m.forceAddDevice(dev1);
+		m.forceAddDevice(dev2);
 		
+		String s = m.getDevices();
+		assertTrue(s.contains("My MockDevice #1"));
+		assertTrue(s.contains("My MockDevice #2"));
 	}
 	
 	@Test
-	public void testTakeCommand() {
+	public void testTakeCommandPreservesOrder() {
+		Monitor m = new Monitor();
+		for (int i = 0; i < 10000; i++) {
+			// Kind of random level
+			int level = (i * 199 + i * i + 200) % 255;
+			DimDeviceCommand cmd1 = new DimDeviceCommand(dev2, level);
+			m.post(cmd1);
+			boolean turnOn = (i & 1) == 1;
+			SwitchDeviceCommand cmd2 = new SwitchDeviceCommand(dev1, turnOn);
+			m.post(cmd2);
+		}
+		for (int i = 0; i < 1000; i++) {
+			// Kind of random level
+			int level = (i * 199 + i * i + 200) % 255;
+			try {
+				assertTrue(((DimDeviceCommand) m.takeCommand()).getLevel() == level);
+			} catch (InterruptedException e) {}
+			boolean turnOn = (i & 1) == 1;
+			try {
+				assertTrue(((SwitchDeviceCommand) m.takeCommand()).turningOn() == turnOn);
+			} catch (InterruptedException e) {}
+		}
 		
 	}
-	
 }

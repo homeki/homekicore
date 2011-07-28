@@ -6,7 +6,7 @@ import com.homekey.core.device.Switchable;
 import com.homekey.core.storage.ColumnType;
 import com.homekey.core.storage.DatabaseTable;
 
-public class MockDeviceSwitcher extends Device implements Switchable, Queryable {
+public class MockDeviceSwitcher extends Device implements Switchable, Queryable<Boolean> {
 	
 	private boolean talk;
 	private boolean on;
@@ -34,17 +34,17 @@ public class MockDeviceSwitcher extends Device implements Switchable, Queryable 
 			System.out.println("MockInfo: MockDeviceSwitcher called '" + getName() + "' is now ON!");
 		return true;
 	}
-
+	
 	@Override
-	public String getValue() {
-		return  on ? "on" : "off";
+	public Boolean getValue() {
+		return on;
 	}
 	
 	@Override
 	public DatabaseTable getTableDesign() {
 		DatabaseTable table = new DatabaseTable(2);
-		table.setColumn(0, "Registered", ColumnType.DateTime);
-		table.setColumn(1, "Value", ColumnType.Boolean);
+		table.setColumn(0, "registered", ColumnType.DateTime);
+		table.setColumn(1, "value", ColumnType.Boolean);
 		return table;
 	}
 }

@@ -1,5 +1,5 @@
 package com.homekey.core.device;
 
-public interface Queryable {
-	public String getValue();
+public interface Queryable<T> {
+	public T getValue();
 }

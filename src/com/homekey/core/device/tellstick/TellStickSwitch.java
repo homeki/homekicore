@@ -8,7 +8,7 @@ import com.homekey.core.device.Switchable;
 import com.homekey.core.storage.ColumnType;
 import com.homekey.core.storage.DatabaseTable;
 
-public class TellStickSwitch extends Device implements Switchable, Queryable {
+public class TellStickSwitch extends Device implements Switchable, Queryable<Boolean> {
 	public final String TYPE = "SWITCH";
 	private boolean talk;
 	private boolean on;
@@ -48,8 +48,8 @@ public class TellStickSwitch extends Device implements Switchable, Queryable {
 	}
 
 	@Override
-	public String getValue() {
-		return String.format("The device is %s", on ? "on" : "off");
+	public Boolean getValue() {
+		return on;
 	}
 	
 	@Override

@@ -48,8 +48,8 @@ public class Monitor {
 		return null;
 	}
 	
-	public synchronized String getStatus(Queryable q) {
-		return new GetStatusCommand(q).postAndWaitForResult(this);
+	public synchronized <T> T getStatus(Queryable<T> q) {
+		return new GetStatusCommand<T>(q).postAndWaitForResult(this);
 	}
 	
 	public synchronized String getDevices() {
