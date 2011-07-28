@@ -27,6 +27,7 @@ public class ThreadMaster {
 		threads.add(new DetectorThread(queue, db));
 		threads.add(new HttpListenerThread(api));
 		threads.add(new CommandThread(data, queue));
+		threads.add(new CollectorThread());
 		
 		for (Thread t : threads)
 			t.start();
