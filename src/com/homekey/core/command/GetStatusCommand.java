@@ -1,6 +1,7 @@
 package com.homekey.core.command;
 
 import com.homekey.core.device.Queryable;
+import com.homekey.core.main.InternalData;
 
 public class GetStatusCommand<T> extends Command<T> {
 	
@@ -13,7 +14,7 @@ public class GetStatusCommand<T> extends Command<T> {
 	}
 
 	@Override
-	public void internalRun() {
+	public void internalRun(InternalData data) {
 		System.out.println(queryable.toString());
 		setResult(queryable.getValue());
 	}	

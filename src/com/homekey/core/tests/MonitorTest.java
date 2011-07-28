@@ -1,22 +1,23 @@
 package com.homekey.core.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.homekey.core.command.CommandQueue;
 import com.homekey.core.command.CommandsThread;
 import com.homekey.core.command.DimDeviceCommand;
 import com.homekey.core.command.SwitchDeviceCommand;
-import com.homekey.core.device.Device;
 import com.homekey.core.device.Dimmable;
 import com.homekey.core.device.Switchable;
 import com.homekey.core.device.mock.MockDeviceDimmer;
 import com.homekey.core.device.mock.MockDeviceSwitcher;
-import com.homekey.core.main.Monitor;
-import com.homekey.core.main.ThreadMaster;
-import com.homekey.core.storage.Database;
+import com.homekey.core.http.HttpApi;
+import com.homekey.core.main.InternalData;
 
 public class MonitorTest {
 	private MockDeviceSwitcher dev1;
@@ -32,23 +33,6 @@ public class MonitorTest {
 		dev2.setId(20);
 		switchable = (Switchable) dev1;
 		dimmable = (Dimmable) dev2;
-		/*
-		 * // Create devices Device dev1 = new MockDeviceSwitcher("DA",
-		 * "My MockDevice #1", true); Device dev2 = new MockDeviceDimmer("DDD",
-		 * "My MockDevice #2", true); // Register devices with db
-		 * b.ensureDevice(dev1); b.ensureDevice(dev2); // Add devices
-		 * m.forceAddDevice(dev1); m.forceAddDevice(dev2); // Query devices by
-		 * ID Switchable switchable = (Switchable) m.getDevice(dev1.getId());
-		 * Dimmable dimmable = (Dimmable) m.getDevice(dev2.getId()); // Create
-		 * commands DimDeviceCommand ddc = new DimDeviceCommand(dimmable, 50);
-		 * SwitchDeviceCommand sdcOn = new SwitchDeviceCommand(switchable,
-		 * true); SwitchDeviceCommand sdcOff = new
-		 * SwitchDeviceCommand(switchable, false);
-		 * 
-		 * // Post commands m.post(sdcOn); m.post(ddc); m.post(sdcOff);
-		 * 
-		 * sdcOff.getResult(); ddc.getResult(); sdcOn.getResult();
-		 */
 	}
 	
 	@After
@@ -56,14 +40,14 @@ public class MonitorTest {
 	
 	@Test
 	public void testGetDevice() {
-		Monitor m = new Monitor();
+		InternalData m = new InternalData();
 		// getDevice should return null for all getDevice
 		assertEquals(m.getDevice(dev1.getId()), null);
 		assertEquals(m.getDevice(dev2.getId()), null);
 		assertEquals(m.getDevice(12345), null);
 		
-		m.forceAddDevice(dev1);
-		m.forceAddDevice(dev2);
+		m.addDevice(dev1);
+		m.addDevice(dev2);
 		
 		// Return correct device
 		assertEquals(m.getDevice(dev1.getId()), dev1);
@@ -75,55 +59,59 @@ public class MonitorTest {
 	
 	@Test
 	public void testTurnOnOff() {
-		Monitor m = new Monitor();
-		CommandsThread ct = new CommandsThread(m);
+		InternalData m = new InternalData();
+		CommandQueue q = new CommandQueue();
+		CommandsThread ct = new CommandsThread(m, q);
 		ct.start();
-		m.forceAddDevice(dev1);
-		m.forceAddDevice(dev2);
+		m.addDevice(dev1);
+		m.addDevice(dev2);
 		for (int i = 0; i < 10; i++) {
-			assertTrue(new SwitchDeviceCommand(dev1, true).postAndWaitForResult(m));
+			assertTrue(new SwitchDeviceCommand(dev1, true).postAndWaitForResult(q));
 			assertTrue(dev1.getValue());
-			assertTrue(new SwitchDeviceCommand(dev1, false).postAndWaitForResult(m));
+			assertTrue(new SwitchDeviceCommand(dev1, false).postAndWaitForResult(q));
 			assertTrue(!dev1.getValue());
-			assertTrue(new SwitchDeviceCommand(dev2, true).postAndWaitForResult(m));
+			assertTrue(new SwitchDeviceCommand(dev2, true).postAndWaitForResult(q));
 			assertTrue("SwitchDevice should be 255 when on, but it is " + dev2.getValue(), dev2.getValue() == 255);
-			assertTrue(new SwitchDeviceCommand(dev2, false).postAndWaitForResult(m));
+			assertTrue(new SwitchDeviceCommand(dev2, false).postAndWaitForResult(q));
 			assertTrue("SwitchDevice should be 0 when off, but it is " + dev2.getValue(), dev2.getValue() == 0);
 		}
 	}
 	
 	@Test
 	public void testGetDevices() {
-		Monitor m = new Monitor();
-		m.forceAddDevice(dev1);
-		m.forceAddDevice(dev2);
+		//CommandThread qt = new CommandThread();
+		CommandQueue q = new CommandQueue();
+		HttpApi api = new HttpApi(q);
+		InternalData m = new InternalData();
+		m.addDevice(dev1);
+		m.addDevice(dev2);
 		
-		String s = m.getDevices();
+		String s = api.getDevices();
 		assertTrue(s.contains("My MockDevice #1"));
 		assertTrue(s.contains("My MockDevice #2"));
 	}
 	
 	@Test
 	public void testTakeCommandPreservesOrder() {
-		Monitor m = new Monitor();
+		CommandQueue q = new CommandQueue();
 		for (int i = 0; i < 10000; i++) {
 			// Kind of random level
 			int level = (i * 199 + i * i + 200) % 255;
 			DimDeviceCommand cmd1 = new DimDeviceCommand(dev2, level);
-			m.post(cmd1);
+			q.post(cmd1);
 			boolean turnOn = (i & 1) == 1;
 			SwitchDeviceCommand cmd2 = new SwitchDeviceCommand(dev1, turnOn);
-			m.post(cmd2);
+			q.post(cmd2);
 		}
 		for (int i = 0; i < 1000; i++) {
 			// Kind of random level
 			int level = (i * 199 + i * i + 200) % 255;
 			try {
-				assertTrue(((DimDeviceCommand) m.takeCommand()).getLevel() == level);
+				assertTrue(((DimDeviceCommand) q.takeCommand()).getLevel() == level);
 			} catch (InterruptedException e) {}
 			boolean turnOn = (i & 1) == 1;
 			try {
-				assertTrue(((SwitchDeviceCommand) m.takeCommand()).turningOn() == turnOn);
+				assertTrue(((SwitchDeviceCommand) q.takeCommand()).turningOn() == turnOn);
 			} catch (InterruptedException e) {}
 		}
 		

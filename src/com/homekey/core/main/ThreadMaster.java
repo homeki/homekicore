@@ -2,28 +2,44 @@ package com.homekey.core.main;
 
 import java.util.LinkedList;
 
+import com.homekey.core.command.CommandQueue;
 import com.homekey.core.command.CommandsThread;
+import com.homekey.core.http.HttpApi;
 import com.homekey.core.http.HttpListenerThread;
 
 public class ThreadMaster {
-	private Monitor monitor;
+	private CommandQueue queue;
+	private InternalData data;
 	private LinkedList<Thread> threads;
+	private HttpApi api;
 	
 	public ThreadMaster() {
+		// Thread holder
 		threads = new LinkedList<Thread>();
 		
-		monitor = new Monitor();
+		// Create global monitor
+		data = new InternalData();
 		
-		threads.add(new DetectorThread(monitor));
-		threads.add(new HttpListenerThread(monitor));
-		threads.add(new CommandsThread(monitor));
+		queue = new CommandQueue();
+
+		// Create HttpApi Interface
+		api = new HttpApi(queue);
+		
+		// Create all threads.
+		threads.add(new DetectorThread(queue));
+		threads.add(new HttpListenerThread(api));
+		threads.add(new CommandsThread(data, queue));
 		
 		for (Thread t : threads)
 			t.start();
 	}
 	
-	public Monitor getMonitor() {
-		return monitor;
+	public InternalData getMonitor() {
+		return data;
+	}
+	
+	public HttpApi getApi(){
+		return api;
 	}
 	
 	public void shutdown() {

@@ -11,17 +11,17 @@ import java.util.StringTokenizer;
 
 import com.homekey.core.device.Queryable;
 import com.homekey.core.device.Switchable;
-import com.homekey.core.main.Monitor;
+import com.homekey.core.main.InternalData;
 
 public class HttpRequestResolverThread extends Thread {
-	Monitor monitor = null;
-	Socket connectedClient = null;
-	BufferedReader inFromClient = null;
-	DataOutputStream outToClient = null;
+	private HttpApi api = null;
+	private Socket connectedClient = null;
+	private BufferedReader inFromClient = null;
+	private DataOutputStream outToClient = null;
 	
-	public HttpRequestResolverThread(Socket client, Monitor m) {
+	public HttpRequestResolverThread(Socket client, HttpApi a) {
 		connectedClient = client;
-		monitor = m;
+		api = a;
 	}
 	
 	enum Type {
@@ -119,13 +119,12 @@ public class HttpRequestResolverThread extends Thread {
 	}
 	
 	private void sendDevices() throws IOException {
-		sendResponse(200, monitor.getDevices());
+		sendResponse(200, api.getDevices());
 	}
 	
 	private void setAndSendSwitch(int id, boolean on) throws IOException {
-		Switchable s = (Switchable) monitor.getDevice(id);
-		new SwitchCommand(id, on)
-		sendResponse(200, String.valueOf(monitor.flip(s, on)));
+		boolean result = on ? api.switchOn(id) : api.switchOff(id);
+		sendResponse(200, String.valueOf(result));
 	}
 	
 	private void send404(String httpQueryString) {
@@ -137,8 +136,7 @@ public class HttpRequestResolverThread extends Thread {
 	}
 	
 	private void sendStatus(int id) throws IOException {
-		Queryable<?> q = (Queryable<?>) monitor.getDevice(id);
-		sendResponse(200, String.valueOf(monitor.getStatus(q)));
+		sendResponse(200, api.getStatus(id));
 	}
 	
 	public void sendResponse(int statusCode, String responseString) throws IOException {

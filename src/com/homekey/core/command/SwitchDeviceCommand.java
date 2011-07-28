@@ -1,6 +1,7 @@
 package com.homekey.core.command;
 
 import com.homekey.core.device.Switchable;
+import com.homekey.core.main.InternalData;
 
 public class SwitchDeviceCommand extends Command<Boolean> {
 	
@@ -17,7 +18,7 @@ public class SwitchDeviceCommand extends Command<Boolean> {
 	}
 	
 	@Override
-	public void internalRun() {
+	public void internalRun(InternalData data) {
 		if (on)
 			switcher.on();
 		else

@@ -1,21 +1,22 @@
 package com.homekey.core.command;
 
-import com.homekey.core.main.Monitor;
+import com.homekey.core.main.InternalData;
 
 public class CommandsThread extends Thread {
+	private CommandQueue queue;
+	private InternalData data;
 	
-	private Monitor monitor;
-	
-	public CommandsThread(Monitor monitor) {
-		this.monitor = monitor;
+	public CommandsThread(InternalData data, CommandQueue queue) {
+		this.data = data;
+		this.queue = queue;
 	}
 	
 	@Override
 	public synchronized void run() {
 		while (true) {
-			Runnable c = null;
+			Command<?> c = null;
 			try {
-				c = monitor.takeCommand();
+				c = queue.takeCommand();
 			} catch (InterruptedException e) {
 				System.out.println("Killing CommandsThread.");
 				return;
@@ -23,7 +24,7 @@ public class CommandsThread extends Thread {
 			
 			if (c != null) {
 				System.out.println("Took command: " + c.toString());
-				c.run();
+				c.run(data);
 			}
 		}
 	}	

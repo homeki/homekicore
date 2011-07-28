@@ -1,6 +1,7 @@
 package com.homekey.core.command;
 
 import com.homekey.core.device.Dimmable;
+import com.homekey.core.main.InternalData;
 
 public class DimDeviceCommand extends Command<Boolean> {
 	
@@ -13,7 +14,7 @@ public class DimDeviceCommand extends Command<Boolean> {
 	}
 
 	@Override
-	public void internalRun() {
+	public void internalRun(InternalData data) {
 		this.dimmable.dim(this.level);
 		setResult(true);
 	}

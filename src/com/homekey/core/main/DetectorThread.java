@@ -1,17 +1,18 @@
 package com.homekey.core.main;
 
+import com.homekey.core.command.CommandQueue;
 import com.homekey.core.device.Detector;
 import com.homekey.core.device.Device;
 
 public class DetectorThread extends Thread {
-	private Monitor monitor;
+	private CommandQueue queue;
 	private Detector[] detectors;
 	
-	public DetectorThread(Monitor monitor) {
-		this.monitor = monitor;
+	public DetectorThread(CommandQueue queue) {
+		this.queue = queue;
 		this.detectors = new Detector[] { 
-				new OneWireDetector(), 
-				new TellStickDetector() 
+				//new OneWireDetector(), 
+				//new TellStickDetector() 
 			};
 	}
 	

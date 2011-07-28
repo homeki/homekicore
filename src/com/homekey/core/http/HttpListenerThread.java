@@ -5,14 +5,14 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import com.homekey.core.main.Monitor;
+import com.homekey.core.command.CommandQueue;
+import com.homekey.core.main.InternalData;
 
 public class HttpListenerThread extends Thread {
-	
-	private Monitor monitor;
+	private HttpApi api;
 
-	public HttpListenerThread(Monitor m) {
-		monitor = m;
+	public HttpListenerThread(HttpApi a) {
+		api = a;
 	}
 	
 	public void run() {
@@ -22,7 +22,7 @@ public class HttpListenerThread extends Thread {
 			while (true) {
 				Socket connected;
 				connected = Server.accept();
-				new HttpRequestResolverThread(connected, monitor).start();
+				new HttpRequestResolverThread(connected, api).start();
 			}
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
