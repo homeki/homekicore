@@ -1,11 +1,17 @@
 package com.homekey.core.main;
 
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 import com.homekey.core.command.Command;
 import com.homekey.core.command.GetStatusCommand;
 import com.homekey.core.command.SwitchDeviceCommand;
@@ -47,8 +53,11 @@ public class Monitor {
 	}
 	
 	public synchronized String getDevices() {
-		Gson g = new Gson();
-		return g.toJson(devices.values());
+		JsonObject jo = new JsonObject();
+		Gson g = new GsonBuilder().setPrettyPrinting().create();
+		for (Device d : devices.values())
+			jo.add(d.getClass().getSimpleName(), g.toJsonTree(d));
+		return g.toJson(jo);
 	}
 	
 	// Should not be synchronized, since PQ is thread-safe.
