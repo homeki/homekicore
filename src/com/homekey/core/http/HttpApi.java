@@ -3,6 +3,7 @@ package com.homekey.core.http;
 import java.util.Date;
 
 import com.homekey.core.command.CommandQueue;
+import com.homekey.core.command.GetStatusCommand;
 
 public class HttpApi {
 	private CommandQueue queue;
@@ -12,12 +13,7 @@ public class HttpApi {
 	}
 	
 	public String getDevices() {
-//		JsonObject jo = new JsonObject();
-//		Gson g = new GsonBuilder().setPrettyPrinting().create();
-//		for (Device d : devices.values())
-//			jo.add(d.getClass().getSimpleName(), g.toJsonTree(d));
-//		return g.toJson(jo);
-		return "";
+		return (new GetJsonDevicesCommand().postAndWaitForResult(queue));
 	}
 	
 	public boolean switchOn(int id) {

@@ -8,9 +8,9 @@ import com.homekey.core.storage.impl.SqliteDatabase;
 
 public class Main {
 	public static void main(String[] args) {
-		//ThreadMaster tm = new ThreadMaster();
+		ThreadMaster tm = new ThreadMaster();
 		
-		//Database b = new SqliteDatabase();
+		Database b = new SqliteDatabase();
 		
 		String s = "81.D44F29000000";
 		//Pattern p = Pattern.compile("[A-F/d]{2}\\.[A-F/d]{12}");
@@ -21,8 +21,8 @@ public class Main {
 		}
 		
 		//DoSomeTesting(tm.getMonitor(),b);
-//		tm.shutdown();
-//		b.close();
+		tm.shutdown();
+		b.close();
 	}
 	
 //	private static void DoSomeTesting(Monitor m,  Database b) {
