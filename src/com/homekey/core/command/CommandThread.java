@@ -1,7 +1,6 @@
 package com.homekey.core.command;
 
 import com.homekey.core.main.InternalData;
-import com.homekey.core.storage.Database;
 
 public class CommandThread extends Thread {
 	private CommandQueue queue;

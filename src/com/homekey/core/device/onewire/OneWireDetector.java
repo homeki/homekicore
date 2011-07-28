@@ -7,7 +7,7 @@ import java.io.*;
 import com.homekey.core.device.Detector;
 import com.homekey.core.device.Device;
 
-public class OneWireDetector extends Detector {
+public abstract class OneWireDetector extends Detector {
 	private final String OWFS_MOUNT_POINT = "/mnt/1wire/";
 	private final String SENSOR_ROOT = "uncached/";
 	
@@ -15,7 +15,7 @@ public class OneWireDetector extends Detector {
 		
 	}
 	
-	private String[] findSensor() {
+	private String[] findSensors() {
 		List<String> dirList = new ArrayList<String>();
 		File root = new File(OWFS_MOUNT_POINT + SENSOR_ROOT);
 		
@@ -35,30 +35,22 @@ public class OneWireDetector extends Detector {
 	public List<Device> findDevices() {
 		// TODO: add check if owfs is running, and if not, run it
 		
-		String[] sensors = findSensor();
+		String[] sensors = findSensors();
 		List<Device> devices = new ArrayList<Device>();
 		
 		for (String s : sensors) {
-			String typeFilePath = OWFS_MOUNT_POINT + SENSOR_ROOT + s + "/type";
-			File typeFile = new File(typeFilePath);
-			Scanner typeScanner;
-			
-			try {
-				typeScanner = new Scanner(typeFile);
-			} catch (FileNotFoundException ex) {
-				System.err.println("OneWireDetector should have found type file, didn't.");
-				continue;
-			}
-			
-			String type = typeScanner.next();
+			String deviceDirPath = OWFS_MOUNT_POINT + SENSOR_ROOT + s;
 			Device device;
 			
-			if (type.equals("DS18S20")) {
-				device = new OneWireTemperatureSensor(s, OWFS_MOUNT_POINT + SENSOR_ROOT + s);
+			String type = OneWireDevice.getStringVar(deviceDirPath, "type");
+			
+			if (type == "DS18S20") {
+				device = new OneWireTemperatureSensor(s, deviceDirPath);
 				devices.add(device);
 			}
 			else {
-				System.err.println("OneWireDetector didn't understand device type " + type);
+				System.err.println("OneWireDetector didn't understand type " + type + ".");
+				continue;
 			}
 		}
 		
