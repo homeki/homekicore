@@ -40,14 +40,14 @@ public class HttpRequestResolverThread extends Thread {
 				HttpMacro.send404(requestString, out);
 			} else {
 				requestString = requestString.replace(" HTTP/1.1", "");
-				StringTokenizer st = new StringTokenizer(requestString, "/ ");
+				StringTokenizer st = new StringTokenizer(requestString, "/ ?&");
 				boolean result = false;
 				if (st.hasMoreTokens()) {
 					String token = st.nextToken();
 					if(token.equals("GET")){
-						HttpGetResolver.resolve(st,api, out);
+						result = HttpGetResolver.resolve(st,api, out);
 					}else if(token.equals("SET")){
-						HttpGetResolver.resolve(st,api, out);
+						result = HttpGetResolver.resolve(st,api, out);
 					}
 				}
 			}

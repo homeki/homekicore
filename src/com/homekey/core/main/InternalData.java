@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.homekey.core.device.Device;
+import com.homekey.core.http.json.JsonDevice;
 
 public class InternalData {
 	private String name;

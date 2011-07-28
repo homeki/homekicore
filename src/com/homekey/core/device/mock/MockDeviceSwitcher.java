@@ -54,4 +54,5 @@ public class MockDeviceSwitcher extends Device implements Switchable, Queryable<
 	public Object[] getDataRow() {
 		return new Object[] { new Date(), on };
 	}
+
 }

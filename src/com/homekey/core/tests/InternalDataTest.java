@@ -28,7 +28,7 @@ public class InternalDataTest {
 		dev1.setId(10);
 		dev1.setName("My MockDevice #1");
 		dev2.setId(20);
-		dev1.setName("My MockDevice #2");
+		dev2.setName("My MockDevice #2");
 	}
 	
 	@After
@@ -66,13 +66,13 @@ public class InternalDataTest {
 		m.addDevice(dev2);
 		
 		for (int i = 0; i < 10; i++) {
-			assertTrue(new SwitchDeviceCommand(dev1, true).postAndWaitForResult(q));
+			assertTrue(new SwitchDeviceCommand(dev1.getId(), true).postAndWaitForResult(q));
 			assertTrue(dev1.getValue());
-			assertTrue(new SwitchDeviceCommand(dev1, false).postAndWaitForResult(q));
+			assertTrue(new SwitchDeviceCommand(dev1.getId(), false).postAndWaitForResult(q));
 			assertTrue(!dev1.getValue());
-			assertTrue(new SwitchDeviceCommand(dev2, true).postAndWaitForResult(q));
+			assertTrue(new SwitchDeviceCommand(dev2.getId(), true).postAndWaitForResult(q));
 			assertTrue("SwitchDevice should be 255 when on, but it is " + dev2.getValue(), dev2.getValue() == 255);
-			assertTrue(new SwitchDeviceCommand(dev2, false).postAndWaitForResult(q));
+			assertTrue(new SwitchDeviceCommand(dev2.getId(), false).postAndWaitForResult(q));
 			assertTrue("SwitchDevice should be 0 when off, but it is " + dev2.getValue(), dev2.getValue() == 0);
 		}
 		
@@ -92,8 +92,11 @@ public class InternalDataTest {
 		m.addDevice(dev2);
 		
 		String s = api.getDevices();
-		assertTrue(s.contains("My MockDevice #1") && s.contains("MockDeviceSwitcher"));
-		assertTrue(s.contains("My MockDevice #2") && s.contains("MockDeviceDimmer"));
+		
+		System.out.println("HTTAPI: " + api.getDevices());
+		
+		assertTrue("s is " + s,s.contains("My MockDevice #1") && s.contains("MockDeviceSwitcher"));
+		assertTrue("s is " + s,s.contains("My MockDevice #2") && s.contains("MockDeviceDimmer"));
 		
 		qt.interrupt();
 	}
@@ -105,10 +108,10 @@ public class InternalDataTest {
 		for (int i = 0; i < 10000; i++) {
 			// kind of random level
 			int level = (i * 199 + i * i + 200) % 255;
-			DimDeviceCommand cmd1 = new DimDeviceCommand(dev2, level);
+			DimDeviceCommand cmd1 = new DimDeviceCommand(dev2.getId(), level);
 			q.post(cmd1);
 			boolean turnOn = (i & 1) == 1;
-			SwitchDeviceCommand cmd2 = new SwitchDeviceCommand(dev1, turnOn);
+			SwitchDeviceCommand cmd2 = new SwitchDeviceCommand(dev1.getId(), turnOn);
 			q.post(cmd2);
 		}
 		
