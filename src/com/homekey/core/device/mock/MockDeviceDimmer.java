@@ -9,28 +9,27 @@ import com.homekey.core.storage.ColumnType;
 import com.homekey.core.storage.DatabaseTable;
 
 public class MockDeviceDimmer extends Device implements Dimmable, Queryable<Integer> {
-	
 	private boolean talk;
 	private int level;
 	
 	public MockDeviceDimmer(String internalId, boolean talk) {
 		super(internalId);
 		this.talk = talk;
-		this.level = 0;
+		setValue(0);
 		if (talk)
 			System.out.println("MockInfo: Created MockDeviceDimmer called '" + getName() + "'.");
 	}
 	
 	@Override
 	public void dim(int level) {
-		this.level = level;
+		setValue(level);
 		if (talk)
 			System.out.println("MockInfo: MockDeviceDimmer called '" + getName() + "' now has dim level " + level + ".");
 	}
 	
 	@Override
 	public boolean off() {
-		this.level = 0;
+		setValue(0);
 		if (talk)
 			System.out.println("MockInfo: MockDeviceDimmer called '" + getName() + "' is now OFF!");
 		return true;
@@ -38,7 +37,7 @@ public class MockDeviceDimmer extends Device implements Dimmable, Queryable<Inte
 	
 	@Override
 	public boolean on() {
-		this.level = 255;
+		setValue(255);
 		if (talk)
 			System.out.println("MockInfo: MockDeviceDimmer called '" + getName() + "' is now ON!");
 		return true;
@@ -54,11 +53,16 @@ public class MockDeviceDimmer extends Device implements Dimmable, Queryable<Inte
 	
 	@Override
 	public Object[] getDataRow() {
-		return new Object[] { new Date(), level };
+		return new Object[] { new Date(), getValue() };
 	}
 	
 	@Override
 	public Integer getValue() {
 		return level;
+	}
+
+	@Override
+	public void setValue(Integer value) {
+		level = value;
 	}
 }

@@ -9,13 +9,12 @@ import com.homekey.core.storage.ColumnType;
 import com.homekey.core.storage.DatabaseTable;
 
 public class MockDeviceSwitcher extends Device implements Switchable, Queryable<Boolean> {
-	
 	private boolean talk;
 	private boolean on;
 	
 	public MockDeviceSwitcher(String internalId, boolean talk) {
 		super(internalId);
-		this.on = false;
+		setValue(false);
 		this.talk = talk;
 		if (talk)
 			System.out.println("MockInfo: Created MockDeviceSwitcher called '" + getName() + "'.");
@@ -23,7 +22,7 @@ public class MockDeviceSwitcher extends Device implements Switchable, Queryable<
 	
 	@Override
 	public boolean off() {
-		on = false;
+		setValue(false);
 		if (talk)
 			System.out.println("MockInfo: MockDeviceSwitcher called '" + getName() + "' is now OFF!");
 		return true;
@@ -31,7 +30,7 @@ public class MockDeviceSwitcher extends Device implements Switchable, Queryable<
 	
 	@Override
 	public boolean on() {
-		on = true;
+		setValue(true);
 		if (talk)
 			System.out.println("MockInfo: MockDeviceSwitcher called '" + getName() + "' is now ON!");
 		return true;
@@ -52,6 +51,11 @@ public class MockDeviceSwitcher extends Device implements Switchable, Queryable<
 
 	@Override
 	public Object[] getDataRow() {
-		return new Object[] { new Date(), on };
+		return new Object[] { new Date(), getValue() };
+	}
+
+	@Override
+	public void setValue(Boolean value) {
+		on = value;
 	}
 }

@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 import com.homekey.core.device.Device;
-import com.homekey.core.storage.DatabaseTable;
 
 public abstract class OneWireDevice extends Device {
 	private String deviceDirPath;
@@ -15,19 +14,23 @@ public abstract class OneWireDevice extends Device {
 		this.deviceDirPath = deviceDirPath;
 	}
 	
-	public static String getStringVar(String deviceDirPath, String var) {
+	public synchronized static String getStringVar(String deviceDirPath, String var) {
 		String varFilePath = deviceDirPath + "/" + var;
 		File varFile = new File(varFilePath);
-		Scanner varScanner;
+		Scanner varScanner = null;
 		
 		try {
 			varScanner = new Scanner(varFile);
+			return varScanner.next();
 		} catch (FileNotFoundException ex) {
 			System.err.println("OneWireDevice should have found var file, didn't.");
 			return null;
 		}
-		
-		return varScanner.next();
+		finally {
+			if (var != null) {
+				varScanner.close();
+			}
+		}
 	}
 	
 	protected String getStringVar(String var) {

@@ -1,7 +1,8 @@
 package com.homekey.core.main;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.homekey.core.device.Device;
@@ -9,9 +10,11 @@ import com.homekey.core.device.Device;
 public class InternalData {
 	private String name;
 	private Map<Integer, Device> devices;
+	private List<Device> loggableDevices;
 	
 	public InternalData() {
 		devices = new HashMap<Integer, Device>();
+		loggableDevices = new ArrayList<Device>();
 		name = "<no name>";
 	}
 	
@@ -25,6 +28,14 @@ public class InternalData {
 	
 	public void addDevice(Device dev) {
 		devices.put(dev.getId(), dev);
+	}
+	
+	public void addLoggableDevice(Device dev) {
+		loggableDevices.add(dev);
+	}
+	
+	public List<Device> getLoggableDevices() {
+		return loggableDevices;
 	}
 	
 	public Device getDevice(int i) {

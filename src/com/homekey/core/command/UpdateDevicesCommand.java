@@ -3,6 +3,7 @@ package com.homekey.core.command;
 import java.util.List;
 
 import com.homekey.core.device.Device;
+import com.homekey.core.device.Renewable;
 import com.homekey.core.main.InternalData;
 import com.homekey.core.storage.Database;
 
@@ -21,6 +22,11 @@ public class UpdateDevicesCommand extends Command<Void> {
 			if (!data.containsDevice(d)) {
 				db.ensureDevice(d);
 				data.addDevice(d);
+				
+				// all renewable objects need to updated from a thread
+				if (d instanceof Renewable) {
+					data.addLoggableDevice(d);
+				}
 			}
 		}
 	}

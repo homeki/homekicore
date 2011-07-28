@@ -15,7 +15,7 @@ public class TellStickSwitch extends Device implements Switchable, Queryable<Boo
 	
 	public TellStickSwitch(String internalId) {
 		super(internalId);
-		this.on = false;
+		setValue(false);
 	}
 	
 	@Override
@@ -25,7 +25,7 @@ public class TellStickSwitch extends Device implements Switchable, Queryable<Boo
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		on = false;
+		setValue(false);
 		return true;
 	}
 	
@@ -36,7 +36,7 @@ public class TellStickSwitch extends Device implements Switchable, Queryable<Boo
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		on = true;
+		setValue(true);
 		return true;
 	}
 	
@@ -56,5 +56,10 @@ public class TellStickSwitch extends Device implements Switchable, Queryable<Boo
 	@Override
 	public Object[] getDataRow() {
 		return new Object[] { new Date(), on };
+	}
+
+	@Override
+	public void setValue(Boolean value) {
+		on = value;
 	}
 }
