@@ -15,15 +15,18 @@ public class OneWireDetector extends Detector {
 		
 	}
 	
-	private String[] findDirs() {
+	private String[] findSensorDirs() {
 		List<String> dirList = new ArrayList<String>();
 		File root = new File(OWFS_MOUNT_POINT + SENSOR_ROOT);
 		
 		String[] items = root.list();
 		
 		for (String s : items) {
-			Pattern p = Pattern.compile("[A-E/d]{2}\\.[A-E/d]{12}");
+			Pattern p = Pattern.compile("[0-9A-F]{2}\\.[0-9A-F]{12}");
 			Matcher m = p.matcher(s);
+			if (m.find()) {
+				dirList.add(m.group());
+			}
 		}
 		
 		return dirList.toArray(null);
@@ -33,6 +36,7 @@ public class OneWireDetector extends Detector {
 	public Device[] findDevices() {
 		// TODO: add check if owfs is running, and if not, run it
 		
+		String[] sensorDirs = findSensorDirs();
 		
 		
 		return null;
