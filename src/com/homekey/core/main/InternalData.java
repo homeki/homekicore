@@ -32,8 +32,8 @@ public class InternalData {
 		}
 		return null;
 	}
-
-	public Device[] getDevices() {
-		return devices.values().toArray(null);
+	
+	public boolean containsDevice(Device dev) {
+		return devices.containsKey(dev.getId());
 	}
 }

@@ -10,7 +10,7 @@ public class SwitchDeviceCommand extends Command<Boolean> {
 	
 	public SwitchDeviceCommand(Switchable switcher, boolean on) {
 		super();
-		if (switcher == null){
+		if (switcher == null) {
 			throw new NullPointerException();
 		}
 		this.switcher = switcher;
@@ -26,7 +26,7 @@ public class SwitchDeviceCommand extends Command<Boolean> {
 		setResult(true);
 	}
 	
-	public boolean turningOn(){
+	public boolean turningOn() {
 		return on;
 	}
 }

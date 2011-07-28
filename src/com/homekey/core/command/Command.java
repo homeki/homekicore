@@ -1,6 +1,7 @@
 package com.homekey.core.command;
 
 import com.homekey.core.main.InternalData;
+import com.homekey.core.storage.Database;
 
 public abstract class Command<T> {
 	private Boolean done = Boolean.FALSE;
@@ -17,13 +18,13 @@ public abstract class Command<T> {
 		return result;
 	}
 	
-	public void run(InternalData data) {
+	void run(InternalData data) {
 		internalRun(data);
 		finish();
 		System.out.println("Finished command: " + this.toString());
 	}
 	
-	protected synchronized void setResult(T result){
+	protected synchronized void setResult(T result) {
 		this.result = result;
 	}
 	

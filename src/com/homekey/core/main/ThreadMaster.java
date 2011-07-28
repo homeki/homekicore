@@ -6,40 +6,28 @@ import com.homekey.core.command.CommandQueue;
 import com.homekey.core.command.CommandThread;
 import com.homekey.core.http.HttpApi;
 import com.homekey.core.http.HttpListenerThread;
+import com.homekey.core.storage.Database;
 
 public class ThreadMaster {
 	private CommandQueue queue;
 	private InternalData data;
+	private Database db;
 	private LinkedList<Thread> threads;
 	private HttpApi api;
 	
 	public ThreadMaster() {
-		// Thread holder
 		threads = new LinkedList<Thread>();
-		
-		// Create global monitor
 		data = new InternalData();
-		
 		queue = new CommandQueue();
-
-		// Create HttpApi Interface
 		api = new HttpApi(queue);
 		
-		// Create all threads.
-		threads.add(new DetectorThread(queue));
+		// create all threads
+		threads.add(new DetectorThread(queue, db));
 		threads.add(new HttpListenerThread(api));
 		threads.add(new CommandThread(data, queue));
 		
 		for (Thread t : threads)
 			t.start();
-	}
-	
-	public InternalData getMonitor() {
-		return data;
-	}
-	
-	public HttpApi getApi(){
-		return api;
 	}
 	
 	public void shutdown() {

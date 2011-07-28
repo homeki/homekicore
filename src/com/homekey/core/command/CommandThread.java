@@ -1,6 +1,7 @@
 package com.homekey.core.command;
 
 import com.homekey.core.main.InternalData;
+import com.homekey.core.storage.Database;
 
 public class CommandThread extends Thread {
 	private CommandQueue queue;
@@ -12,7 +13,7 @@ public class CommandThread extends Thread {
 	}
 	
 	@Override
-	public synchronized void run() {
+	public void run() {
 		while (true) {
 			Command<?> c = null;
 			try {
