@@ -58,4 +58,5 @@ public class MockDeviceSwitcher extends Device implements Switchable, Queryable<
 	public void setValue(Boolean value) {
 		on = value;
 	}
+
 }

@@ -1,7 +1,6 @@
 package com.homekey.core.command;
 
 import com.homekey.core.main.InternalData;
-import com.homekey.core.storage.Database;
 
 public abstract class Command<T> {
 	private Boolean done = Boolean.FALSE;

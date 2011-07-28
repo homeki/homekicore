@@ -4,18 +4,22 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.StringTokenizer;
+
+import com.homekey.core.http.json.JsonStatus;
 
 public class HttpGetResolver {
 	
 	public enum Actions {
-		ECHO, TIME, DEVICES,BAD_ACTION
+		ECHO, TIME, ON, OFF, DIM, DEVICES, STATUS, BAD_ACTION
 	}
 	
 	public static boolean resolve(StringTokenizer st, HttpApi api, DataOutputStream out) throws IOException {
 		if (!st.hasMoreTokens())
 			return false;
-		if (eat(st, "get")) {
+		String token = st.nextToken();
+		if (token.equals("get") || token.equals("set")) {
 			return resolveGet(st, api, out);
 		}
 		return false;
@@ -44,12 +48,48 @@ public class HttpGetResolver {
 			return resolveGetEcho(st, api, out);
 		case TIME:
 			return resolveGetTime(st, api, out);
+		case STATUS:
+			return resolveGetStatus(st, api, out);
 		case DEVICES:
 			return resolveGetDevices(st, api, out);
+		case ON:
+			return resolveGetOn(st, api, out, true);
+		case OFF:
+			return resolveGetOn(st, api, out, false);
 		case BAD_ACTION:
-			HttpMacro.send404("Get does not allow command '" + token +"'.", out);
+			HttpMacro.send404("Get does not allow command '" + token + "'.", out);
 			return true;
 		default:
+			return false;
+		}
+	}
+	
+	private static boolean resolveGetStatus(StringTokenizer st, HttpApi api, DataOutputStream out) throws IOException {
+		HashMap<String, String> args = getArguments(st);
+		Integer id = HttpArguments.demandInteger("id", args, out);
+		HttpMacro.sendResponse(200, api.getStatus(id),out);
+		return true;
+	}
+	
+	private static HashMap<String, String> getArguments(StringTokenizer st) {
+		HashMap<String, String> args = new HashMap<String, String>();
+		while (st.hasMoreTokens()) {
+			String[] arg = st.nextToken().split("=");
+			System.out.println(arg[0] + "=" + arg[1]);
+			args.put(arg[0], arg[1]);
+		}
+		return args;
+	}
+	
+	private static boolean resolveGetOn(StringTokenizer st, HttpApi api, DataOutputStream out, boolean on) throws IOException {
+		HashMap<String, String> args = getArguments(st);
+		Integer id = HttpArguments.demandInteger("id", args, out);
+		if (id == null)
+			return true;
+		if (on ? api.switchOn(id) : api.switchOff(id)) {
+			HttpMacro.sendResponse(200, "Device " + id + " is now " + (on ? "on" : "off") + ".", out);
+			return true;
+		} else {
 			return false;
 		}
 	}
