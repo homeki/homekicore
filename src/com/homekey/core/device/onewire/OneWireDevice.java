@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 import com.homekey.core.device.Device;
-import com.homekey.core.storage.DatabaseTable;
 
 public abstract class OneWireDevice extends Device {
 	private String deviceDirPath;

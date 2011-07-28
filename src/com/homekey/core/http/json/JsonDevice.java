@@ -2,8 +2,6 @@ package com.homekey.core.http.json;
 
 import java.util.Date;
 
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
 import com.homekey.core.device.Device;
 
 public class JsonDevice {

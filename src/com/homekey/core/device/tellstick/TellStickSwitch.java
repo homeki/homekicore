@@ -13,6 +13,7 @@ public class TellStickSwitch extends Device implements Switchable, Queryable<Boo
 	public final String TYPE = "SWITCH";
 	private boolean on;
 	
+	
 	public TellStickSwitch(String internalId) {
 		super(internalId);
 		this.on = false;

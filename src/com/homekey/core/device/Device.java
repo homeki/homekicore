@@ -3,7 +3,6 @@ package com.homekey.core.device;
 import java.util.Calendar;
 import java.util.Date;
 
-import com.homekey.core.http.json.JsonStatus;
 import com.homekey.core.storage.DatabaseTable;
 
 public abstract class Device {
