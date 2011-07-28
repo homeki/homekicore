@@ -7,7 +7,7 @@ import java.util.Scanner;
 import com.homekey.core.device.Device;
 import com.homekey.core.storage.DatabaseTable;
 
-public class OneWireDevice extends Device {
+public abstract class OneWireDevice extends Device {
 	private String deviceDirPath;
 	
 	public OneWireDevice(String internalId, String deviceDirPath) {
@@ -36,10 +36,5 @@ public class OneWireDevice extends Device {
 	
 	protected float getFloatVar(String var) {
 		return Float.parseFloat(getStringVar(var));
-	}
-
-	@Override
-	public DatabaseTable getTableDesign() {
-		return null;
 	}
 }

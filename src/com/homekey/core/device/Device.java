@@ -61,4 +61,5 @@ public abstract class Device {
 	}
 	
 	public abstract DatabaseTable getTableDesign();
+	public abstract Object[] getDataRow();
 }

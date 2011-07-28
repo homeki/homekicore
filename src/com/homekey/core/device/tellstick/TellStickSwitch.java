@@ -1,6 +1,7 @@
 package com.homekey.core.device.tellstick;
 
 import java.io.IOException;
+import java.util.Date;
 
 import com.homekey.core.device.Device;
 import com.homekey.core.device.Queryable;
@@ -50,5 +51,10 @@ public class TellStickSwitch extends Device implements Switchable, Queryable<Boo
 		table.setColumn(0, "Registered", ColumnType.DateTime);
 		table.setColumn(1, "Value", ColumnType.Boolean);
 		return table;
+	}
+	
+	@Override
+	public Object[] getDataRow() {
+		return new Object[] { new Date(), on };
 	}
 }
