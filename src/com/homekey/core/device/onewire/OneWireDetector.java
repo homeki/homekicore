@@ -32,9 +32,8 @@ public class OneWireDetector extends Detector {
 		return dirList.toArray(null);
 	}
 	
-	@Override
-	public Device[] findDevices() {
-		// TODO: add check if owfs is running, and if not, start it
+	public List<Device> findDevices() {
+		// TODO: add check if owfs is running, and if not, run it
 		
 		String[] sensors = findSensor();
 		List<Device> devices = new ArrayList<Device>();
@@ -60,6 +59,6 @@ public class OneWireDetector extends Detector {
 			}
 		}
 		
-		return devices.toArray(null);
+		return devices;
 	}
 }
