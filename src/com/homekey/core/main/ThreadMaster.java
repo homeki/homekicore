@@ -6,14 +6,15 @@ import com.homekey.core.command.CommandsThread;
 import com.homekey.core.http.HttpListenerThread;
 
 public class ThreadMaster {
-	Monitor monitor;
-	LinkedList<Thread> threads;
+	private Monitor monitor;
+	private LinkedList<Thread> threads;
 	
 	public ThreadMaster() {
 		threads = new LinkedList<Thread>();
 		
 		monitor = new Monitor();
 		
+		threads.add(new DetectorThread(monitor));
 		threads.add(new HttpListenerThread(monitor));
 		threads.add(new CommandsThread(monitor));
 		

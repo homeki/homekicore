@@ -124,6 +124,7 @@ public class HttpRequestResolverThread extends Thread {
 	
 	private void setAndSendSwitch(int id, boolean on) throws IOException {
 		Switchable s = (Switchable) monitor.getDevice(id);
+		new SwitchCommand(id, on)
 		sendResponse(200, String.valueOf(monitor.flip(s, on)));
 	}
 	

@@ -21,8 +21,8 @@ import com.homekey.core.device.Switchable;
 
 public class Monitor {
 	private String name;
-	Map<Integer, Device> devices;
-	BlockingQueue<Command<?>> workQueue = new LinkedBlockingQueue<Command<?>>();
+	private Map<Integer, Device> devices;
+	private BlockingQueue<Command<?>> workQueue = new LinkedBlockingQueue<Command<?>>();
 	
 	public Monitor() {
 		devices = new HashMap<Integer, Device>();
@@ -58,6 +58,10 @@ public class Monitor {
 		for (Device d : devices.values())
 			jo.add(d.getClass().getSimpleName(), g.toJsonTree(d));
 		return g.toJson(jo);
+	}
+	
+	public void updateDevices(Device[] newDevices) {
+		new UpdateDevicesCommand(devices, )
 	}
 	
 	// Should not be synchronized, since PQ is thread-safe.
