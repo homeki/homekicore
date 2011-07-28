@@ -5,9 +5,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import com.homekey.core.command.CommandQueue;
-import com.homekey.core.main.InternalData;
-
 public class HttpListenerThread extends Thread {
 	private HttpApi api;
 

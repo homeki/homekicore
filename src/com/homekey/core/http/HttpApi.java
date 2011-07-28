@@ -2,17 +2,7 @@ package com.homekey.core.http;
 
 import java.util.Date;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 import com.homekey.core.command.CommandQueue;
-import com.homekey.core.command.GetStatusCommand;
-import com.homekey.core.command.SwitchDeviceCommand;
-import com.homekey.core.device.Device;
-import com.homekey.core.http.json.JsonData;
-import com.homekey.core.http.json.JsonDevice;
-import com.homekey.core.http.json.JsonStatus;
-import com.homekey.core.main.InternalData;
 
 public class HttpApi {
 	private CommandQueue queue;

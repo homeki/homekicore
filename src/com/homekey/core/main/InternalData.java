@@ -1,24 +1,9 @@
 package com.homekey.core.main;
 
-import java.lang.reflect.Type;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
-import com.homekey.core.command.Command;
-import com.homekey.core.command.GetStatusCommand;
-import com.homekey.core.command.SwitchDeviceCommand;
 import com.homekey.core.device.Device;
-import com.homekey.core.device.Queryable;
-import com.homekey.core.device.Switchable;
 
 public class InternalData {
 	private String name;

@@ -1,14 +1,5 @@
 package com.homekey.core.main;
 
-import java.util.Calendar;
-
-import com.homekey.core.command.DimDeviceCommand;
-import com.homekey.core.command.SwitchDeviceCommand;
-import com.homekey.core.device.Device;
-import com.homekey.core.device.Dimmable;
-import com.homekey.core.device.Switchable;
-import com.homekey.core.device.mock.MockDeviceDimmer;
-import com.homekey.core.device.mock.MockDeviceSwitcher;
 import com.homekey.core.storage.Database;
 import com.homekey.core.storage.impl.SqliteDatabase;
 

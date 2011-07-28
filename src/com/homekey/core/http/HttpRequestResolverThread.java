@@ -9,10 +9,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import com.homekey.core.device.Queryable;
-import com.homekey.core.device.Switchable;
-import com.homekey.core.main.InternalData;
-
 public class HttpRequestResolverThread extends Thread {
 	private HttpApi api = null;
 	private Socket connectedClient = null;
