@@ -24,6 +24,7 @@ public class TellStickSwitch extends Device implements Switchable, Queryable<Boo
 			Runtime.getRuntime().exec(String.format("tdtool -f %s", internalId));
 		} catch (IOException e) {
 			e.printStackTrace();
+			return false;
 		}
 		on = false;
 		return true;
@@ -35,6 +36,7 @@ public class TellStickSwitch extends Device implements Switchable, Queryable<Boo
 			Runtime.getRuntime().exec(String.format("tdtool -n %s", internalId));
 		} catch (IOException e) {
 			e.printStackTrace();
+			return false;
 		}
 		on = true;
 		return true;

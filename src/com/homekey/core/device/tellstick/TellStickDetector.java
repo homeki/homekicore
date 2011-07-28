@@ -1,5 +1,4 @@
 package com.homekey.core.device.tellstick;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -16,9 +15,16 @@ import com.homekey.core.device.Detector;
 import com.homekey.core.device.Device;
 
 public class TellStickDetector extends Detector {
-	private final static String PATH = "/etc/tellstick.conf";
+	private static final String valueFinder = "%s\\s*?=\\s*?(\\w+|\".*?\")";
+	private static final String deviceFinder = "device?\\s*\\{(.*?)parameters";
+
+	private final String path;
 	
-	public CharSequence fromFile(String filename) throws IOException {
+	public TellStickDetector(String path) {
+		this.path = path;
+	}
+	
+	private CharSequence fromFile(String filename) throws IOException {
 		FileInputStream fis = new FileInputStream(filename);
 		FileChannel fc = fis.getChannel();
 		
@@ -28,9 +34,6 @@ public class TellStickDetector extends Detector {
 		return cbuf;
 	}
 	
-	private static final String valueFinder = "%s\\s*?=\\s*?(\\w+|\".*?\")";
-	private static final String deviceFinder = "device?\\s*\\{(.*?)parameters";
-	
 	@Override
 	public List<Device> findDevices() {
 		List<Device> devices = new ArrayList<Device>();
@@ -39,15 +42,15 @@ public class TellStickDetector extends Detector {
 			Pattern modelFinder = Pattern.compile(String.format(valueFinder, "model"));
 			
 			Pattern p = Pattern.compile(deviceFinder, Pattern.DOTALL);
-			Matcher m = p.matcher(fromFile(PATH));
+			Matcher m = p.matcher(fromFile(path));
 			while (m.find()) {
 				String match = m.group(1);
 				String id = getMatch(match, idFinder);
 				String model = getMatch(match, modelFinder);
-			
-				if (model.equals("selflearning-switch")) {
+				System.out.println(id + " " + model);
+				if (model.equals("\"selflearning-switch\"")) {
 					devices.add(new TellStickSwitch(id));
-				} else if (model.equals("selflearning-dimmer")){
+				} else if (model.equals("\"selflearning-dimmer\"")){
 					devices.add(new TellStickDimmer(id));
 				} else {
 					System.err.println("Unknown device!");
