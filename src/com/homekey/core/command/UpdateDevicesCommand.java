@@ -1,14 +1,16 @@
 package com.homekey.core.command;
 
+import java.util.List;
+
 import com.homekey.core.device.Device;
 import com.homekey.core.main.InternalData;
 import com.homekey.core.storage.Database;
 
 public class UpdateDevicesCommand extends Command<Void> {
-	private Device[] devices;
+	private List<Device> devices;
 	private Database db;
 	
-	public UpdateDevicesCommand(Device[] devices, Database db) {
+	public UpdateDevicesCommand(List<Device> devices, Database db) {
 		this.devices = devices;
 		this.db = db;
 	}

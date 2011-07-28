@@ -1,4 +1,4 @@
-package com.homekey.core.main;
+package com.homekey.core.device.tellstick;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -14,8 +14,6 @@ import java.util.regex.Pattern;
 
 import com.homekey.core.device.Detector;
 import com.homekey.core.device.Device;
-import com.homekey.core.device.tellstick.TellStickDimmer;
-import com.homekey.core.device.tellstick.TellStickSwitch;
 
 public class TellStickDetector extends Detector {
 	private final static String PATH = "/etc/tellstick.conf";
@@ -34,7 +32,7 @@ public class TellStickDetector extends Detector {
 	private static final String deviceFinder = "device?\\s*\\{(.*?)parameters";
 	
 	@Override
-	public Device[] findDevices() {
+	public List<Device> findDevices() {
 		List<Device> devices = new ArrayList<Device>();
 		try {
 			Pattern idFinder = Pattern.compile(String.format(valueFinder, "id"));
@@ -60,11 +58,10 @@ public class TellStickDetector extends Detector {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return devices;
 		
-		return null;
 	}
 	
 	private String getMatch(String string, Pattern p) {

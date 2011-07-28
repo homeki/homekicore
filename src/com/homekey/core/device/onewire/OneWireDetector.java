@@ -33,7 +33,7 @@ public class OneWireDetector extends Detector {
 	}
 	
 	@Override
-	public Device[] findDevices() {
+	public List<Device> findDevices() {
 		// TODO: add check if owfs is running, and if not, run it
 		
 		String[] sensorDirs = findSensorDirs();

@@ -1,5 +1,7 @@
 package com.homekey.core.device;
 
+import java.util.List;
+
 public abstract class Detector {
-	public abstract Device[] findDevices();
+	public abstract List<Device> findDevices();
 }

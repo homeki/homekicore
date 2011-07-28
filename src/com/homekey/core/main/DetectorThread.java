@@ -1,10 +1,13 @@
 package com.homekey.core.main;
 
+import java.util.List;
+
 import com.homekey.core.command.CommandQueue;
 import com.homekey.core.command.UpdateDevicesCommand;
 import com.homekey.core.device.Detector;
 import com.homekey.core.device.Device;
 import com.homekey.core.device.mock.MockDetector;
+import com.homekey.core.device.tellstick.TellStickDetector;
 import com.homekey.core.storage.Database;
 
 public class DetectorThread extends Thread {
@@ -26,7 +29,7 @@ public class DetectorThread extends Thread {
 	public void run() {
 		while (true) {
 			for (Detector d : detectors) {
-				Device[] devs = d.findDevices();
+				List<Device> devs = d.findDevices();
 				queue.post(new UpdateDevicesCommand(devs, db));
 			}
 			
