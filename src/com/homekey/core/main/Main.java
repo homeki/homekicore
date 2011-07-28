@@ -14,7 +14,7 @@ public class Main {
 		
 		String s = "81.D44F29000000";
 		//Pattern p = Pattern.compile("[A-F/d]{2}\\.[A-F/d]{12}");
-		Pattern p = Pattern.compile("[0-9A-F]{2}\\.[0-9A-F]");
+		Pattern p = Pattern.compile("[0-9A-F]{2}\\.[0-9A-F]{12}");
 		Matcher m = p.matcher(s);
 		while (m.find()) {
 			System.out.println(m.group());
