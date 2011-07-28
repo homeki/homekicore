@@ -6,6 +6,20 @@ public abstract class Database {
 	protected final String SENSOR_TABLE_PREFIX = "D_";
 	protected final String DEFAULT_DATABASE_NAME = "homekey.db";
 	
+	protected String databaseName;
+	
+	public Database(String databaseName) {
+		this.databaseName = databaseName;
+		open();
+		ensureSystemTables();
+	}
+	
+	public Database() {
+		this.databaseName = DEFAULT_DATABASE_NAME;
+		open();
+		ensureSystemTables();
+	}
+	
 	public abstract void close();
 	public abstract void putRow(Device device, Object[] values);
 
@@ -15,11 +29,6 @@ public abstract class Database {
 	protected abstract boolean deviceExists(Device device);
 	protected abstract void createTable(String name, DatabaseTable table);
 	protected abstract boolean tableExists(String name);
-	
-	public Database() {
-		open();
-		ensureSystemTables();
-	}
 	
 	public void ensureDevice(Device device) {
 		if (deviceExists(device)) {

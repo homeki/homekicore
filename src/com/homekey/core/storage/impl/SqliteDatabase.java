@@ -15,6 +15,14 @@ import com.homekey.core.storage.DatabaseTable;
 public class SqliteDatabase extends Database {
 	private Connection conn;
 	
+	public SqliteDatabase(String databaseName) {
+		super(databaseName);
+	}
+	
+	public SqliteDatabase() {
+		super();
+	}
+	
 	@Override
 	public void close() {
 		try {
@@ -91,9 +99,9 @@ public class SqliteDatabase extends Database {
 		}
 		
 		try {
-			conn = DriverManager.getConnection("jdbc:sqlite:" + DEFAULT_DATABASE_NAME);
+			conn = DriverManager.getConnection("jdbc:sqlite:" + databaseName);
 		} catch (SQLException ex) {
-			System.err.println("open(): Couldn't open database named " + DEFAULT_DATABASE_NAME + ".");
+			System.err.println("open(): Couldn't open database named " + databaseName + ".");
 		}
 	}
 	

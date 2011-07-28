@@ -3,7 +3,7 @@ package com.homekey.core.main;
 import java.util.LinkedList;
 
 import com.homekey.core.command.CommandQueue;
-import com.homekey.core.command.CommandsThread;
+import com.homekey.core.command.CommandThread;
 import com.homekey.core.http.HttpApi;
 import com.homekey.core.http.HttpListenerThread;
 
@@ -28,7 +28,7 @@ public class ThreadMaster {
 		// Create all threads.
 		threads.add(new DetectorThread(queue));
 		threads.add(new HttpListenerThread(api));
-		threads.add(new CommandsThread(data, queue));
+		threads.add(new CommandThread(data, queue));
 		
 		for (Thread t : threads)
 			t.start();

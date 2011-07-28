@@ -2,11 +2,11 @@ package com.homekey.core.command;
 
 import com.homekey.core.main.InternalData;
 
-public class CommandsThread extends Thread {
+public class CommandThread extends Thread {
 	private CommandQueue queue;
 	private InternalData data;
 	
-	public CommandsThread(InternalData data, CommandQueue queue) {
+	public CommandThread(InternalData data, CommandQueue queue) {
 		this.data = data;
 		this.queue = queue;
 	}

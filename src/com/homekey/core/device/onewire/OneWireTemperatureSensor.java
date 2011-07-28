@@ -5,8 +5,8 @@ import com.homekey.core.device.IntervalLoggable;
 import com.homekey.core.storage.DatabaseTable;
 
 public class OneWireTemperatureSensor extends Device implements IntervalLoggable<Float> {
-	public OneWireTemperatureSensor(String internalId, String name) {
-		super(internalId, name);
+	public OneWireTemperatureSensor(String internalId) {
+		super(internalId);
 	}
 	
 	@Override

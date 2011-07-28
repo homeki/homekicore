@@ -10,7 +10,6 @@ import com.homekey.core.device.Device;
 import com.homekey.core.device.mock.MockDeviceDimmer;
 
 public class DeviceTest {
-	
 	private MockDeviceDimmer device;
 	private int assignedId;
 	private String assignedName;
@@ -18,7 +17,8 @@ public class DeviceTest {
 	public void setUp() throws Exception {
 		this.assignedId = 1857293476;
 		this.assignedName = "My Device #5";
-		this.device = new MockDeviceDimmer("ID123", this.assignedName+"", false);
+		this.device = new MockDeviceDimmer("ID123", false);
+		this.device.setName(this.assignedName);
 		this.device.setId(this.assignedId);
 	}
 	
@@ -45,8 +45,9 @@ public class DeviceTest {
 	public void testEqualsObject() {
 		assertTrue(this.device.equals(this.device));
 		assertTrue(((Device)this.device).equals(this.device));
-		Device notTheSame = new MockDeviceDimmer("323", "Another Device", false);
+		Device notTheSame = new MockDeviceDimmer("323", false);
 		notTheSame.setId(1213131);
+		notTheSame.setName("Another Device");
 		assertFalse(this.device.equals(notTheSame));
 	}
 }

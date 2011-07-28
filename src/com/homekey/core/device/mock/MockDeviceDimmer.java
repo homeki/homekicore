@@ -11,8 +11,8 @@ public class MockDeviceDimmer extends Device implements Dimmable, Queryable<Inte
 	private boolean talk;
 	private int level;
 	
-	public MockDeviceDimmer(String internalId, String name, boolean talk) {
-		super(internalId, name);
+	public MockDeviceDimmer(String internalId, boolean talk) {
+		super(internalId);
 		this.talk = talk;
 		this.level = 0;
 		if (talk)
