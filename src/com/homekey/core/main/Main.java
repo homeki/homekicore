@@ -1,13 +1,24 @@
 package com.homekey.core.main;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import com.homekey.core.storage.Database;
 import com.homekey.core.storage.impl.SqliteDatabase;
 
 public class Main {
 	public static void main(String[] args) {
-		ThreadMaster tm = new ThreadMaster();
+		//ThreadMaster tm = new ThreadMaster();
 		
-		Database b = new SqliteDatabase();
+		//Database b = new SqliteDatabase();
+		
+		String s = "81.D44F29000000";
+		//Pattern p = Pattern.compile("[A-F/d]{2}\\.[A-F/d]{12}");
+		Pattern p = Pattern.compile("[0-9A-F]{2}\\.[0-9A-F]");
+		Matcher m = p.matcher(s);
+		while (m.find()) {
+			System.out.println(m.group());
+		}
 		
 		//DoSomeTesting(tm.getMonitor(),b);
 //		tm.shutdown();
