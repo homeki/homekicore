@@ -54,8 +54,11 @@ public class OneWireDetector extends Detector {
 			Device device;
 			
 			if (type.equals("DS18S20")) {
-				device = new OneWireTemperatureSensor(s);
+				device = new OneWireTemperatureSensor(s, OWFS_MOUNT_POINT + SENSOR_ROOT + s);
 				devices.add(device);
+			}
+			else {
+				System.err.println("OneWireDetector didn't understand device type " + type);
 			}
 		}
 		
