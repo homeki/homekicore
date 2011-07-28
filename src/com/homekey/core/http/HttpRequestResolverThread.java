@@ -14,11 +14,6 @@ import com.homekey.core.device.Switchable;
 import com.homekey.core.main.Monitor;
 
 public class HttpRequestResolverThread extends Thread {
-	
-	static final String HTML_START = "<html>" + "<title>HTTP Server in java</title>" + "<body>";
-	
-	static final String HTML_END = "</body>" + "</html>";
-	
 	Monitor monitor = null;
 	Socket connectedClient = null;
 	BufferedReader inFromClient = null;
@@ -30,11 +25,11 @@ public class HttpRequestResolverThread extends Thread {
 	}
 	
 	enum Type {
-		GET, SET, DEFAULT;
+		GET, SET;
 	}
 	
 	enum Command {
-		OFF, ON, DIM, STATUS, DEVICES, DEFAULT;
+		OFF, ON, DIM, STATUS, DEVICES;
 	}
 	
 	public void run() {
@@ -157,7 +152,6 @@ public class HttpRequestResolverThread extends Thread {
 		else
 			statusLine = "HTTP/1.1 404 Not Found" + "\r\n";
 		
-		responseString = HTML_START + responseString + HTML_END;
 		contentLengthLine = "Content-Length: " + responseString.length() + "\r\n";
 		
 		outToClient.writeBytes(statusLine);
