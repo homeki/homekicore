@@ -2,9 +2,7 @@ package com.homekey.core.http.command;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 import com.homekey.core.command.Command;
-import com.homekey.core.device.Device;
 import com.homekey.core.http.json.JsonDevice;
 import com.homekey.core.main.InternalData;
 

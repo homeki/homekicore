@@ -1,11 +1,10 @@
 package com.homekey.core.http.json;
 
-import com.google.gson.GsonBuilder;
 
-public class JsonStatus {
-	private Object status;
+public class JsonStatus <T>{
+	private T status;
 	
-	public JsonStatus(Object status) {
+	public JsonStatus(T status) {
 		this.status = status;
 	}
 }

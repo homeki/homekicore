@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.homekey.core.device.Device;
-import com.homekey.core.http.json.JsonDevice;
+import com.homekey.core.device.Queryable;
 
 public class InternalData {
 	private String name;
@@ -44,6 +44,15 @@ public class InternalData {
 			return devices.get(i);
 		}
 		return null;
+	}
+	
+	public Queryable<?> getQueryable(int i){
+		if (devices.containsKey(i)) {
+			return (Queryable<?>)devices.get(i);
+		}
+		return null;
+		
+		
 	}
 	
 	public boolean containsDevice(Device dev) {

@@ -9,7 +9,6 @@ import com.homekey.core.command.DimDeviceCommand;
 import com.homekey.core.command.GetStatusCommand;
 import com.homekey.core.command.SwitchDeviceCommand;
 import com.homekey.core.http.command.GetJsonDevicesCommand;
-import com.homekey.core.http.json.JsonStatus;
 
 public class HttpApi {
 	private CommandQueue queue;

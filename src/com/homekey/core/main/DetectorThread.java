@@ -8,7 +8,6 @@ import com.homekey.core.device.Detector;
 import com.homekey.core.device.Device;
 import com.homekey.core.device.mock.MockDetector;
 import com.homekey.core.device.onewire.OneWireDetector;
-import com.homekey.core.device.tellstick.TellStickDetector;
 import com.homekey.core.storage.Database;
 
 public class DetectorThread extends Thread {

@@ -1,7 +1,5 @@
 package com.homekey.core.main;
 
-import com.homekey.core.storage.Database;
-import com.homekey.core.storage.impl.SqliteDatabase;
 
 public class Main {
 	public static void main(String[] args) {

@@ -1,13 +1,10 @@
 package com.homekey.core.http;
 
-import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.StringTokenizer;
-
-import com.homekey.core.http.json.JsonStatus;
 
 public class HttpGetResolver {
 	

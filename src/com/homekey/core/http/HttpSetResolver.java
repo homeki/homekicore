@@ -4,8 +4,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.StringTokenizer;
 
-import com.homekey.core.http.HttpGetResolver.Actions;
-
 public class HttpSetResolver {
 	public enum Actions {
 		BAD_ACTION
@@ -24,13 +22,13 @@ public class HttpSetResolver {
 	private static boolean resolveSet(StringTokenizer st, HttpApi api, DataOutputStream out) throws IOException {
 		if (!st.hasMoreTokens())
 			return false;
-		String token = st.nextToken();
-		Actions action;
-		try {
-			action = Actions.valueOf(token.toUpperCase());
-		} catch (IllegalArgumentException e) {
-			action = Actions.BAD_ACTION;
-		}
+//		String token = st.nextToken();
+//		Actions action;
+//		try {
+//			action = Actions.valueOf(token.toUpperCase());
+//		} catch (IllegalArgumentException e) {
+//			action = Actions.BAD_ACTION;
+//		}
 		
 		return false;
 	}
