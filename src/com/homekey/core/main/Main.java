@@ -7,7 +7,7 @@ public class Main {
 	public static void main(String[] args) {
 		ThreadMaster tm = new ThreadMaster();
 		
-		Database b = new SqliteDatabase();
+		
 		
 		//DoSomeTesting(tm.getMonitor(),b);
 //		tm.shutdown();

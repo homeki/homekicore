@@ -16,7 +16,9 @@ public class CommandThread extends Thread {
 		while (true) {
 			Command<?> c = null;
 			try {
+				System.out.println("Waiting for command to be taken..");
 				c = queue.takeCommand();
+				System.out.println("Took command!");
 			} catch (InterruptedException e) {
 				System.out.println("Killing CommandsThread.");
 				return;

@@ -16,6 +16,7 @@ public abstract class Device {
 		this.internalId = internalId;
 		this.active = true;
 		this.added = Calendar.getInstance().getTime();
+		this.name = "no name";
 	}
 	
 	public void setName(String name) {

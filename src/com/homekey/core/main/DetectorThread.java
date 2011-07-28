@@ -6,6 +6,7 @@ import com.homekey.core.command.CommandQueue;
 import com.homekey.core.command.UpdateDevicesCommand;
 import com.homekey.core.device.Detector;
 import com.homekey.core.device.Device;
+import com.homekey.core.device.mock.MockDetector;
 import com.homekey.core.device.tellstick.TellStickDetector;
 import com.homekey.core.storage.Database;
 
@@ -18,9 +19,10 @@ public class DetectorThread extends Thread {
 		this.queue = queue;
 		this.db = db;
 		this.detectors = new Detector[] { 
-				//new OneWireDetector(), 
-				new TellStickDetector() 
-			};
+				new MockDetector(),
+				// new OneWireDetector(),
+				// new TellStickDetector()
+				/*new TellStickDetector()*/ };
 	}
 	
 	@Override

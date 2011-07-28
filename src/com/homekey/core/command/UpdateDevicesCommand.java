@@ -12,6 +12,7 @@ public class UpdateDevicesCommand extends Command<Void> {
 	
 	public UpdateDevicesCommand(List<Device> devices, Database db) {
 		this.devices = devices;
+		this.db = db;
 	}
 	
 	@Override
