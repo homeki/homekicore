@@ -9,14 +9,11 @@ import org.junit.Test;
 import com.homekey.core.command.CommandsThread;
 import com.homekey.core.command.DimDeviceCommand;
 import com.homekey.core.command.SwitchDeviceCommand;
-import com.homekey.core.device.Device;
 import com.homekey.core.device.Dimmable;
 import com.homekey.core.device.Switchable;
 import com.homekey.core.device.mock.MockDeviceDimmer;
 import com.homekey.core.device.mock.MockDeviceSwitcher;
 import com.homekey.core.main.Monitor;
-import com.homekey.core.main.ThreadMaster;
-import com.homekey.core.storage.Database;
 
 public class MonitorTest {
 	private MockDeviceSwitcher dev1;
@@ -32,23 +29,6 @@ public class MonitorTest {
 		dev2.setId(20);
 		switchable = (Switchable) dev1;
 		dimmable = (Dimmable) dev2;
-		/*
-		 * // Create devices Device dev1 = new MockDeviceSwitcher("DA",
-		 * "My MockDevice #1", true); Device dev2 = new MockDeviceDimmer("DDD",
-		 * "My MockDevice #2", true); // Register devices with db
-		 * b.ensureDevice(dev1); b.ensureDevice(dev2); // Add devices
-		 * m.forceAddDevice(dev1); m.forceAddDevice(dev2); // Query devices by
-		 * ID Switchable switchable = (Switchable) m.getDevice(dev1.getId());
-		 * Dimmable dimmable = (Dimmable) m.getDevice(dev2.getId()); // Create
-		 * commands DimDeviceCommand ddc = new DimDeviceCommand(dimmable, 50);
-		 * SwitchDeviceCommand sdcOn = new SwitchDeviceCommand(switchable,
-		 * true); SwitchDeviceCommand sdcOff = new
-		 * SwitchDeviceCommand(switchable, false);
-		 * 
-		 * // Post commands m.post(sdcOn); m.post(ddc); m.post(sdcOff);
-		 * 
-		 * sdcOff.getResult(); ddc.getResult(); sdcOn.getResult();
-		 */
 	}
 	
 	@After
