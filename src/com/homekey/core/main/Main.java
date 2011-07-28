@@ -8,7 +8,6 @@ public class Main {
 		ThreadMaster tm = new ThreadMaster();
 		
 		
-		
 		//DoSomeTesting(tm.getMonitor(),b);
 //		tm.shutdown();
 //		b.close();
