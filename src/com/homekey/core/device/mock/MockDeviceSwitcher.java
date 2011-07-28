@@ -14,26 +14,23 @@ public class MockDeviceSwitcher extends Device implements Switchable, Queryable<
 	
 	public MockDeviceSwitcher(String internalId, boolean talk) {
 		super(internalId);
-		setValue(false);
 		this.talk = talk;
 		if (talk)
 			System.out.println("MockInfo: Created MockDeviceSwitcher called '" + getName() + "'.");
 	}
 	
 	@Override
-	public boolean off() {
-		setValue(false);
+	public void off() {
+		on = false;
 		if (talk)
 			System.out.println("MockInfo: MockDeviceSwitcher called '" + getName() + "' is now OFF!");
-		return true;
 	}
 	
 	@Override
-	public boolean on() {
-		setValue(true);
+	public void on() {
+		on = true;
 		if (talk)
 			System.out.println("MockInfo: MockDeviceSwitcher called '" + getName() + "' is now ON!");
-		return true;
 	}
 	
 	@Override
@@ -53,10 +50,4 @@ public class MockDeviceSwitcher extends Device implements Switchable, Queryable<
 	public Object[] getDataRow() {
 		return new Object[] { new Date(), getValue() };
 	}
-
-	@Override
-	public void setValue(Boolean value) {
-		on = value;
-	}
-
 }

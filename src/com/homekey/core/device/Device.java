@@ -1,26 +1,19 @@
 package com.homekey.core.device;
 
-import java.util.Calendar;
 import java.util.Date;
 
 import com.homekey.core.storage.DatabaseTable;
 
 public abstract class Device {
 	protected int id;
-	protected String name;
-	protected String internalId;
-	protected Date added;
-	protected boolean active;
 	
 	public Device(String internalId) {
-		this.internalId = internalId;
-		this.active = true;
-		this.added = Calendar.getInstance().getTime();
-		this.name = "no name";
+		//TODO: look in db
 	}
 	
 	public void setName(String name) {
-		this.name = name;
+		//TODO: look in db
+
 	}
 	
 	public void setId(int id) {
@@ -28,11 +21,12 @@ public abstract class Device {
 	}
 	
 	public void setActive(boolean active) {
-		this.active = active;
 	}
 	
 	public String getName() {
-		return name;
+		//TODO: look in db
+
+		return null;
 	}
 	
 	public int getId() {
@@ -40,15 +34,15 @@ public abstract class Device {
 	}
 	
 	public String getInternalId() {
-		return internalId;
+		return null;
 	}
 	
 	public Date getAdded() {
-		return added;
+		return null;
 	}
 	
 	public boolean isActive() {
-		return active;
+		return false;
 	}
 	
 	@Override
@@ -58,7 +52,7 @@ public abstract class Device {
 	
 	@Override
 	public boolean equals(Object obj) {
-		return super.equals(obj);
+		return id == ((Device)obj).id;
 	}
 	
 	public abstract DatabaseTable getTableDesign();

@@ -2,26 +2,22 @@ package com.homekey.core.main;
 
 import java.util.List;
 
-import com.homekey.core.command.CommandQueue;
-import com.homekey.core.command.UpdateDevicesCommand;
 import com.homekey.core.device.Detector;
 import com.homekey.core.device.Device;
 import com.homekey.core.device.mock.MockDetector;
 import com.homekey.core.device.onewire.OneWireDetector;
-import com.homekey.core.storage.Database;
+import com.homekey.core.device.tellstick.TellStickDetector;
 
 public class DetectorThread extends Thread {
-	private CommandQueue queue;
 	private Detector[] detectors;
-	private Database db;
+	private Monitor monitor;
 	
-	public DetectorThread(CommandQueue queue, Database db) {
-		this.queue = queue;
-		this.db = db;
+	public DetectorThread(Monitor monitor) {
+		this.monitor = monitor;
 		this.detectors = new Detector[] { 
 				new MockDetector(),
 				new OneWireDetector(),
-				// new TellStickDetector()
+				new TellStickDetector("/etc/tellstick.conf") //TODO: put in better place
 			};
 	}
 	
@@ -30,7 +26,7 @@ public class DetectorThread extends Thread {
 		while (true) {
 			for (Detector d : detectors) {
 				List<Device> devs = d.findDevices();
-				queue.post(new UpdateDevicesCommand(devs, db));
+				//TODO: "gör det som commandet gjorde innan fast här direkt" "lägga in devices och såhär"
 			}
 			
 			try {

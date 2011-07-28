@@ -4,36 +4,43 @@ import java.util.Date;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.homekey.core.command.CommandQueue;
-import com.homekey.core.command.DimDeviceCommand;
-import com.homekey.core.command.GetStatusCommand;
-import com.homekey.core.command.SwitchDeviceCommand;
-import com.homekey.core.http.command.GetJsonDevicesCommand;
+import com.homekey.core.device.Device;
+import com.homekey.core.device.Dimmable;
+import com.homekey.core.device.Queryable;
+import com.homekey.core.device.Switchable;
+import com.homekey.core.http.json.JsonDevice;
+import com.homekey.core.http.json.JsonStatus;
+import com.homekey.core.main.Monitor;
 
 public class HttpApi {
-	private CommandQueue queue;
 	
-	public HttpApi(CommandQueue queue) {
-		this.queue = queue;
+	private Monitor monitor;
+	
+	public HttpApi(Monitor queue) {
+		this.monitor = queue;
 	}
 	
 	public String getDevices() {
-		return (new GetJsonDevicesCommand().postAndWaitForResult(queue));
+		// TODO: Nothing to do here, move along
+		return new Gson().toJson(JsonDevice.makeArray(monitor.getDevices()));
 	}
 	
-	public boolean switchOn(int id) {
-		new SwitchDeviceCommand(id, true).postAndWaitForResult(queue);
-		return true;
+	public void switchOn(int id) {
+		Device d = monitor.getDevice(id);
+		Switchable s = (Switchable) d;
+		s.on();
 	}
 	
-	public boolean switchOff(int id) {
-		new SwitchDeviceCommand(id, false).postAndWaitForResult(queue);
-		return true;
+	public void switchOff(int id) {
+		Device d = monitor.getDevice(id);
+		Switchable s = (Switchable) d;
+		s.off();
 	}
 	
-	public boolean dim(int id, int level) {
-		new DimDeviceCommand(id, level).postAndWaitForResult(queue);
-		return true;
+	public void dim(int id, int level) {
+		Device dev = monitor.getDevice(id);
+		Dimmable d = (Dimmable) dev;
+		d.dim(level);
 	}
 	
 	public String getData(int id, Date start, Date end) {
@@ -41,8 +48,9 @@ public class HttpApi {
 	}
 	
 	public String getStatus(int id) {
-		Gson builder = new GsonBuilder().setPrettyPrinting().create();
-		return builder.toJson(new GetStatusCommand(id).postAndWaitForResult(queue));
+		Device d = monitor.getDevice(id);
+		Queryable<?> q = (Queryable<?>) d;
+		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		return gson.toJson(new JsonStatus(q.getValue()));
 	}
-	
 }

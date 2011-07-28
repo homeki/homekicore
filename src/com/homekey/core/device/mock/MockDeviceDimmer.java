@@ -15,32 +15,29 @@ public class MockDeviceDimmer extends Device implements Dimmable, Queryable<Inte
 	public MockDeviceDimmer(String internalId, boolean talk) {
 		super(internalId);
 		this.talk = talk;
-		setValue(0);
 		if (talk)
 			System.out.println("MockInfo: Created MockDeviceDimmer called '" + getName() + "'.");
 	}
 	
 	@Override
 	public void dim(int level) {
-		setValue(level);
+		dim(level);
 		if (talk)
 			System.out.println("MockInfo: MockDeviceDimmer called '" + getName() + "' now has dim level " + level + ".");
 	}
 	
 	@Override
-	public boolean off() {
-		setValue(0);
+	public void off() {
+		dim(0);
 		if (talk)
 			System.out.println("MockInfo: MockDeviceDimmer called '" + getName() + "' is now OFF!");
-		return true;
 	}
 	
 	@Override
-	public boolean on() {
-		setValue(255);
+	public void on() {
+		dim(255);
 		if (talk)
 			System.out.println("MockInfo: MockDeviceDimmer called '" + getName() + "' is now ON!");
-		return true;
 	}
 	
 	@Override
@@ -59,10 +56,5 @@ public class MockDeviceDimmer extends Device implements Dimmable, Queryable<Inte
 	@Override
 	public Integer getValue() {
 		return level;
-	}
-
-	@Override
-	public void setValue(Integer value) {
-		level = value;
 	}
 }

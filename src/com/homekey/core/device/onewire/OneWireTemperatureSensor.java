@@ -2,21 +2,19 @@ package com.homekey.core.device.onewire;
 
 import java.util.Date;
 
-import com.homekey.core.device.Queryable;
-import com.homekey.core.device.Renewable;
+import com.homekey.core.device.IntervalLoggable;
 import com.homekey.core.storage.ColumnType;
 import com.homekey.core.storage.DatabaseTable;
 
-public class OneWireTemperatureSensor extends OneWireDevice implements Renewable<Float>, Queryable<Float> {
-	private Float temperature;
-	
+public class OneWireTemperatureSensor extends OneWireDevice implements IntervalLoggable<Float> {	
 	OneWireTemperatureSensor(String internalId, String deviceDirPath) {
 		super(internalId, deviceDirPath);
 	}
 
 	@Override
 	public Float getValue() {
-		return temperature;
+		//Tydligt och bra:
+		return getFloatVar("temperature");
 	}
 	
 	@Override
@@ -33,12 +31,8 @@ public class OneWireTemperatureSensor extends OneWireDevice implements Renewable
 	}
 
 	@Override
-	public void setValue(Float value) {
-		temperature = value;
-	}
-
-	@Override
-	public Float getNewValue() {
-		return getFloatVar("temperature");
+	public void updateValue() {
+		getFloatVar("temparutaure");
+		//TODO: write to db
 	}
 }

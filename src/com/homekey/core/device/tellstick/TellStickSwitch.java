@@ -10,42 +10,35 @@ import com.homekey.core.storage.ColumnType;
 import com.homekey.core.storage.DatabaseTable;
 
 public class TellStickSwitch extends Device implements Switchable, Queryable<Boolean> {
-	public final String TYPE = "SWITCH";
-	private boolean on;
-	
-	
 	public TellStickSwitch(String internalId) {
 		super(internalId);
-		setValue(false);
 	}
 	
 	@Override
-	public boolean off() {
+	public void off() {
 		try {
-			Runtime.getRuntime().exec(String.format("tdtool -f %s", internalId));
+			Runtime.getRuntime().exec(String.format("tdtool -f %s", getInternalId()));
 		} catch (IOException e) {
 			e.printStackTrace();
-			return false;
+			return;
 		}
-		setValue(false);
-		return true;
+		//TODO: update db
 	}
 	
 	@Override
-	public boolean on() {
+	public void on() {
 		try {
-			Runtime.getRuntime().exec(String.format("tdtool -n %s", internalId));
+			Runtime.getRuntime().exec(String.format("tdtool -n %s", getInternalId()));
 		} catch (IOException e) {
 			e.printStackTrace();
-			return false;
+			return;
 		}
-		setValue(true);
-		return true;
+		//TODO: update db
 	}
 	
 	@Override
 	public Boolean getValue() {
-		return on;
+		return null;
 	}
 	
 	@Override
@@ -58,11 +51,6 @@ public class TellStickSwitch extends Device implements Switchable, Queryable<Boo
 	
 	@Override
 	public Object[] getDataRow() {
-		return new Object[] { new Date(), on };
-	}
-
-	@Override
-	public void setValue(Boolean value) {
-		on = value;
+		return new Object[] { new Date(), getValue() };
 	}
 }

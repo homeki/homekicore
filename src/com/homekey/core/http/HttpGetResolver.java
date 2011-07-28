@@ -27,7 +27,7 @@ public class HttpGetResolver {
 			return true;
 		return false;
 	}
-	
+	//TODO: fix static boolean issue (jonas) very impo(r)tant
 	private static boolean resolveGet(StringTokenizer st, HttpApi api, DataOutputStream out) throws IOException {
 		if (!st.hasMoreTokens())
 			return false;
@@ -64,7 +64,7 @@ public class HttpGetResolver {
 	private static boolean resolveGetStatus(StringTokenizer st, HttpApi api, DataOutputStream out) throws IOException {
 		HashMap<String, String> args = getArguments(st);
 		Integer id = HttpArguments.demandInteger("id", args, out);
-		HttpMacro.sendResponse(200, api.getStatus(id),out);
+		HttpMacro.sendResponse(200, api.getStatus(id), out);
 		return true;
 	}
 	
@@ -83,12 +83,17 @@ public class HttpGetResolver {
 		Integer id = HttpArguments.demandInteger("id", args, out);
 		if (id == null)
 			return true;
-		if (on ? api.switchOn(id) : api.switchOff(id)) {
-			HttpMacro.sendResponse(200, "Device " + id + " is now " + (on ? "on" : "off") + ".", out);
-			return true;
-		} else {
-			return false;
+		try {			
+			if (on) {
+				api.switchOn(id);
+			} else {
+				api.switchOff(id);
+			}
+		} catch (ClassCastException e) {
+			// TODO: implementing somthing nice that return 404 or whatever
 		}
+		HttpMacro.sendResponse(200, "Device " + id + " is now " + (on ? "on" : "off") + ".", out);
+		return true;
 	}
 	
 	private static boolean resolveGetDevices(StringTokenizer st, HttpApi api, DataOutputStream out) throws IOException {
