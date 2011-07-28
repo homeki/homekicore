@@ -16,7 +16,7 @@ public class DetectorThread extends Thread {
 		this.db = db;
 		this.detectors = new Detector[] { 
 				//new OneWireDetector(), 
-				//new TellStickDetector() 
+				new TellStickDetector() 
 			};
 	}
 	

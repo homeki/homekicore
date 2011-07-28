@@ -10,15 +10,11 @@ import com.homekey.core.storage.DatabaseTable;
 
 public class TellStickSwitch extends Device implements Switchable, Queryable<Boolean> {
 	public final String TYPE = "SWITCH";
-	private boolean talk;
 	private boolean on;
 	
-	public TellStickSwitch(String internalId, boolean talk) {
+	public TellStickSwitch(String internalId) {
 		super(internalId);
 		this.on = false;
-		this.talk = talk;
-		if (talk)
-			System.out.println("MockInfo: Created MockDeviceSwitcher called '" + getName() + "' with id=" + id + ".");
 	}
 	
 	@Override
@@ -29,8 +25,6 @@ public class TellStickSwitch extends Device implements Switchable, Queryable<Boo
 			e.printStackTrace();
 		}
 		on = false;
-		if (talk)
-			System.out.println("MockInfo: MockDeviceSwitcher called '" + getName() + "' is now OFF!");
 		return true;
 	}
 	
@@ -42,11 +36,9 @@ public class TellStickSwitch extends Device implements Switchable, Queryable<Boo
 			e.printStackTrace();
 		}
 		on = true;
-		if (talk)
-			System.out.println("MockInfo: MockDeviceSwitcher called '" + getName() + "' is now ON!");
 		return true;
 	}
-
+	
 	@Override
 	public Boolean getValue() {
 		return on;
