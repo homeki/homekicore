@@ -1,5 +1,6 @@
 package com.homekey.core.main;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,6 +39,6 @@ public class InternalData {
 	}
 	
 	public Device[] getDevices() {
-		return devices.values().toArray(null);
+		return devices.values().toArray(new Device[devices.size()]);
 	}
 }

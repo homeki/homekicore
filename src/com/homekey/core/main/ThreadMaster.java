@@ -7,6 +7,7 @@ import com.homekey.core.command.CommandThread;
 import com.homekey.core.http.HttpApi;
 import com.homekey.core.http.HttpListenerThread;
 import com.homekey.core.storage.Database;
+import com.homekey.core.storage.impl.SqliteDatabase;
 
 public class ThreadMaster {
 	private CommandQueue queue;
@@ -20,6 +21,7 @@ public class ThreadMaster {
 		data = new InternalData();
 		queue = new CommandQueue();
 		api = new HttpApi(queue);
+		db = new SqliteDatabase();
 		
 		// create all threads
 		threads.add(new DetectorThread(queue, db));

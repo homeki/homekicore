@@ -16,10 +16,10 @@ public class DetectorThread extends Thread {
 		this.queue = queue;
 		this.db = db;
 		this.detectors = new Detector[] { 
-			new MockDetector()
-		// new OneWireDetector(),
-		// new TellStickDetector()
-		};
+				new MockDetector(),
+				// new OneWireDetector(),
+				// new TellStickDetector()
+				/*new TellStickDetector()*/ };
 	}
 	
 	@Override

@@ -1,4 +1,5 @@
-package com.homekey.core.http;
+package com.homekey.core;
+
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -8,7 +9,7 @@ import com.homekey.core.device.Device;
 import com.homekey.core.main.InternalData;
 
 public class GetJsonDevicesCommand extends Command<String> {
-	
+
 	@Override
 	public void internalRun(InternalData data) {
 		JsonObject jo = new JsonObject();

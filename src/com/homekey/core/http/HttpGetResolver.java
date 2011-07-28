@@ -32,14 +32,14 @@ public class HttpGetResolver {
 			return resolveGetEcho(st,api, out);
 		} else if (token.equals("time")) {
 			return resolveGetTime(st,api, out);
-		} else if (token.equals("devices")) {
-			return resolveGetDevices(st,api, out);
+		} else if(token.equals("devices")){
+			return resolveGetDevices(st,api,out);
 		}
 		return false;
 	}
 	
-	private static boolean resolveGetDevices(StringTokenizer st, HttpApi api, DataOutputStream out) {
-		
+	private static boolean resolveGetDevices(StringTokenizer st, HttpApi api, DataOutputStream out) throws IOException {
+		HttpMacro.sendResponse(200, api.getDevices(), out);
 		return true;
 	}
 
