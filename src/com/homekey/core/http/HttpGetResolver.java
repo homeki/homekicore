@@ -8,11 +8,15 @@ import java.util.StringTokenizer;
 
 public class HttpGetResolver {
 	
+	public enum Actions {
+		ECHO, TIME, DEVICES,BAD_ACTION
+	}
+	
 	public static boolean resolve(StringTokenizer st, HttpApi api, DataOutputStream out) throws IOException {
 		if (!st.hasMoreTokens())
 			return false;
 		if (eat(st, "get")) {
-			return resolveGet(st,api, out);
+			return resolveGet(st, api, out);
 		}
 		return false;
 	}
@@ -28,21 +32,33 @@ public class HttpGetResolver {
 			return false;
 		
 		String token = st.nextToken();
-		if (token.equals("echo")) {
-			return resolveGetEcho(st,api, out);
-		} else if (token.equals("time")) {
-			return resolveGetTime(st,api, out);
-		} else if(token.equals("devices")){
-			return resolveGetDevices(st,api,out);
+		Actions action;
+		try {
+			action = Actions.valueOf(token.toUpperCase());
+		} catch (IllegalArgumentException e) {
+			action = Actions.BAD_ACTION;
 		}
-		return false;
+		
+		switch (action) {
+		case ECHO:
+			return resolveGetEcho(st, api, out);
+		case TIME:
+			return resolveGetTime(st, api, out);
+		case DEVICES:
+			return resolveGetDevices(st, api, out);
+		case BAD_ACTION:
+			HttpMacro.send404("Get does not allow command '" + token +"'.", out);
+			return true;
+		default:
+			return false;
+		}
 	}
 	
 	private static boolean resolveGetDevices(StringTokenizer st, HttpApi api, DataOutputStream out) throws IOException {
 		HttpMacro.sendResponse(200, api.getDevices(), out);
 		return true;
 	}
-
+	
 	private static boolean resolveGetTime(StringTokenizer st, HttpApi api, DataOutputStream out) throws IOException {
 		HttpMacro.sendResponse(200, "Time is: " + (new Date()).toString(), out);
 		return true;
