@@ -15,7 +15,7 @@ public class OneWireDetector extends Detector {
 		
 	}
 	
-	private String[] findSensorDirs() {
+	private String[] findSensor() {
 		List<String> dirList = new ArrayList<String>();
 		File root = new File(OWFS_MOUNT_POINT + SENSOR_ROOT);
 		
@@ -34,11 +34,32 @@ public class OneWireDetector extends Detector {
 	
 	@Override
 	public Device[] findDevices() {
-		// TODO: add check if owfs is running, and if not, run it
+		// TODO: add check if owfs is running, and if not, start it
 		
-		String[] sensorDirs = findSensorDirs();
+		String[] sensors = findSensor();
+		List<Device> devices = new ArrayList<Device>();
 		
+		for (String s : sensors) {
+			String typeFilePath = OWFS_MOUNT_POINT + SENSOR_ROOT + s + "/type";
+			File typeFile = new File(typeFilePath);
+			Scanner typeScanner;
+			
+			try {
+				typeScanner = new Scanner(typeFile);
+			} catch (FileNotFoundException ex) {
+				System.err.println("OneWireDetector should have found type file, didn't.");
+				continue;
+			}
+			
+			String type = typeScanner.next();
+			Device device;
+			
+			if (type.equals("DS18S20")) {
+				device = new OneWireTemperatureSensor(s);
+				devices.add(device);
+			}
+		}
 		
-		return null;
+		return devices.toArray(null);
 	}
 }
