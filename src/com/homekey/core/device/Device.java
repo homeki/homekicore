@@ -36,7 +36,7 @@ public abstract class Device {
 	}
 	
 	public String getName() {
-		return db.getField("devices", new String[] { "name", "id" }, id);
+		return db.getFieldAsString("devices", new String[] { "name", "id" }, id);
 	}
 	
 	public int getId() {
@@ -44,12 +44,11 @@ public abstract class Device {
 	}
 	
 	public Date getAdded() {
-		Long date = db.getField("devices", new String[] { "added", "id" }, id);
-		return new Date(date);
+		return db.getFieldAsDate("devices", new String[] { "added", "id" }, id);
 	}
 	
 	public boolean isActive() {
-		return db.getField("devices", new String[] { "active", "id" }, id);
+		return db.getFieldAsBoolean("devices", new String[] { "active", "id" }, id);
 	}
 	
 	@Override
@@ -63,7 +62,7 @@ public abstract class Device {
 	}
 	
 	protected String getInternalId() {
-		return db.getField("devices", new String[] { "internalid", "id" }, id);
+		return db.getFieldAsString("devices", new String[] { "internalid", "id" }, id);
 	}
 	
 	protected abstract void createDatabaseTable();
