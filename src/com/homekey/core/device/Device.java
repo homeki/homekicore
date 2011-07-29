@@ -3,7 +3,6 @@ package com.homekey.core.device;
 import java.util.Date;
 
 import com.homekey.core.storage.Database;
-import com.homekey.core.storage.DatabaseTable;
 import com.homekey.core.storage.impl.SqliteDatabase;
 
 public abstract class Device {
