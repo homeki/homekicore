@@ -46,4 +46,10 @@ public class MockDatabase extends Database {
 		return false;
 	}
 
+	@Override
+	public <T> T getField(String table, String[] columns, Object value) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

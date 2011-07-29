@@ -244,4 +244,12 @@ public class SqliteDatabase extends Database {
 		
 		return count;
 	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T> T getField(String table, String[] columns, Object value) {
+		Object[] fields = getFields(table, columns, value);
+		
+		return (T)fields[0];
+	}
 }

@@ -25,6 +25,7 @@ public abstract class Database {
 	public abstract void addRow(String table, String[] columns, Object[] values);
 	public abstract void updateRow(String table, String[] columns, Object[] values);
 	public abstract Object[] getFields(String table, String[] columns, Object value);
+	public abstract <T> T getField(String table, String[] columns, Object value);
 	
 	protected abstract void createTable(String name, DatabaseTable table);
 	protected abstract boolean tableExists(String name);

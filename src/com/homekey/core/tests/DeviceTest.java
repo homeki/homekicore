@@ -19,7 +19,7 @@ public class DeviceTest {
 		this.assignedName = "My Device #5";
 		this.device = new MockDeviceDimmer("ID123", false);
 		this.device.setName(this.assignedName);
-		this.device.setId(this.assignedId);
+		//this.device.setId(this.assignedId);
 	}
 	
 	@After
@@ -46,7 +46,7 @@ public class DeviceTest {
 		assertTrue(this.device.equals(this.device));
 		assertTrue(((Device)this.device).equals(this.device));
 		Device notTheSame = new MockDeviceDimmer("323", false);
-		notTheSame.setId(1213131);
+		//notTheSame.setId(1213131);
 		notTheSame.setName("Another Device");
 		assertFalse(this.device.equals(notTheSame));
 	}

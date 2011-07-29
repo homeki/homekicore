@@ -2,47 +2,48 @@ package com.homekey.core.device;
 
 import java.util.Date;
 
+import com.homekey.core.storage.Database;
 import com.homekey.core.storage.DatabaseTable;
+import com.homekey.core.storage.impl.SqliteDatabase;
 
 public abstract class Device {
+	private static Database db = SqliteDatabase.getInstance();
+	
 	protected int id;
 	
 	public Device(String internalId) {
-		//TODO: look in db
+		Object[] fields = db.getFields("devices", new String[] { "id", "internalid" }, internalId);
+		
+		if (fields == null) {
+			db.addRow("devices", new String[] { "internalid", "type" }, new Object[] { internalId, this.getClass().getSimpleName() });
+			fields = db.getFields("devices", new String[] { "id", "internalid" }, internalId);
+		}
+		
+		id = (Integer)fields[0];
 	}
 	
 	public void setName(String name) {
-		//TODO: look in db
-
-	}
-	
-	public void setId(int id) {
-		this.id = id;
+		db.updateRow("devices", new String[] { "name", "id" }, new Object[] { name, id });
 	}
 	
 	public void setActive(boolean active) {
+		db.updateRow("devices", new String[] { "active", "id" }, new Object[] { active, id });
 	}
 	
 	public String getName() {
-		//TODO: look in db
-
-		return null;
+		return db.getField("devices", new String[] { "name", "id" }, id);
 	}
 	
 	public int getId() {
 		return id;
 	}
 	
-	public String getInternalId() {
-		return null;
-	}
-	
 	public Date getAdded() {
-		return null;
+		return db.getField("devices", new String[] { "added", "id" }, id);
 	}
 	
 	public boolean isActive() {
-		return false;
+		return db.getField("devices", new String[] { "active", "id" }, id);
 	}
 	
 	@Override
@@ -53,6 +54,10 @@ public abstract class Device {
 	@Override
 	public boolean equals(Object obj) {
 		return id == ((Device)obj).id;
+	}
+	
+	protected String getInternalId() {
+		return db.getField("devices", new String[] { "internalid", "id" }, id);
 	}
 	
 	public abstract DatabaseTable getTableDesign();
