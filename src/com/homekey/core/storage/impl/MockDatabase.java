@@ -31,7 +31,7 @@ public class MockDatabase extends Database {
 	}
 
 	@Override
-	public Object[] getFields(String table, String[] columns, Object value) {
+	public Object[] getRow(String table, String[] columns, Object value) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -68,6 +68,12 @@ public class MockDatabase extends Database {
 
 	@Override
 	public Date getFieldAsDate(String table, String[] columns, Object value) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Object getField(String table, String column, String orderByColumn) {
 		// TODO Auto-generated method stub
 		return null;
 	}

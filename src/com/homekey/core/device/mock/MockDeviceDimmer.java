@@ -18,7 +18,7 @@ public class MockDeviceDimmer extends Device implements Dimmable, Queryable<Inte
 	
 	@Override
 	public void dim(int level) {
-		dim(level);
+		this.level = level;
 		L.getLogger(Logs.MOCK).log("MockInfo: MockDeviceDimmer called '" + getName() + "' now has dim level " + level + ".");
 	}
 	

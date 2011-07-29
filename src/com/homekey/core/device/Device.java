@@ -12,11 +12,11 @@ public abstract class Device {
 	protected String databaseTableName;
 	
 	public Device(String internalId) {
-		Object[] fields = db.getFields("devices", new String[] { "id", "internalid" }, internalId);
+		Object[] fields = db.getRow("devices", new String[] { "id", "internalid" }, internalId);
 		
 		if (fields == null) {
 			db.addRow("devices", new String[] { "internalid", "type", "name", "added", "active" }, new Object[] { internalId, this.getClass().getSimpleName(), "", new Date(), true });
-			fields = db.getFields("devices", new String[] { "id", "internalid" }, internalId);
+			fields = db.getRow("devices", new String[] { "id", "internalid" }, internalId);
 		}
 		
 		id = (Integer)fields[0];

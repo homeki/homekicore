@@ -130,7 +130,7 @@ public class SqliteDatabase extends Database {
 	}
 	
 	@Override
-	public Object[] getFields(String table, String[] columns, Object value) {
+	public Object[] getRow(String table, String[] columns, Object value) {
 		Object[] values = new Object[columns.length-1];
 		String sql = "SELECT ";
 		
@@ -174,6 +174,53 @@ public class SqliteDatabase extends Database {
 	@Override
 	public boolean tableExists(String name) {
 		return executeScalar("SELECT COUNT(name) FROM sqlite_master WHERE type='table' AND name='" + name + "';") > 0;
+	}
+	
+
+	@Override
+	public String getFieldAsString(String table, String[] columns, Object value) {
+		Object[] fields = getRow(table, columns, value);
+		return (String)fields[0];
+	}
+
+	@Override
+	public boolean getFieldAsBoolean(String table, String[] columns, Object value) {
+		Object[] fields = getRow(table, columns, value);
+		return (Integer)fields[0] != 0;
+	}
+
+	@Override
+	public int getFieldAsInteger(String table, String[] columns, Object value) {
+		Object[] fields = getRow(table, columns, value);
+		return (Integer)fields[0];
+	}
+
+	@Override
+	public Date getFieldAsDate(String table, String[] columns, Object value) {
+		Object[] fields = getRow(table, columns, value);
+		return new Date((Long)fields[0]);
+	}
+
+	@Override
+	public Object getField(String table, String column, String orderByColumn) {
+		Object value = null;
+		String sql = "SELECT LIMIT 1 " + column + " FROM " + table + " ORDER BY " + orderByColumn + " DESC";
+		
+		try {
+			Statement stat = conn.createStatement();
+			ResultSet rs = stat.executeQuery(sql);
+			
+			rs.next();
+			try {
+				value = rs.getObject(1);
+			} finally {
+				rs.close();
+			}
+		} catch (SQLException ex) {
+			System.err.println("loadDevice(): Couldn't execute SQL query.");
+		}
+		
+		return value;
 	}
 	
 	@Override
@@ -247,29 +294,5 @@ public class SqliteDatabase extends Database {
 		}
 		
 		return count;
-	}
-
-	@Override
-	public String getFieldAsString(String table, String[] columns, Object value) {
-		Object[] fields = getFields(table, columns, value);
-		return (String)fields[0];
-	}
-
-	@Override
-	public boolean getFieldAsBoolean(String table, String[] columns, Object value) {
-		Object[] fields = getFields(table, columns, value);
-		return (Integer)fields[0] != 0;
-	}
-
-	@Override
-	public int getFieldAsInteger(String table, String[] columns, Object value) {
-		Object[] fields = getFields(table, columns, value);
-		return (Integer)fields[0];
-	}
-
-	@Override
-	public Date getFieldAsDate(String table, String[] columns, Object value) {
-		Object[] fields = getFields(table, columns, value);
-		return new Date((Long)fields[0]);
 	}
 }
