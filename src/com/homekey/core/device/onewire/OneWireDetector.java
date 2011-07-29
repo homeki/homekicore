@@ -6,6 +6,7 @@ import java.io.*;
 
 import com.homekey.core.device.Detector;
 import com.homekey.core.device.Device;
+import com.homekey.core.log.SuperLogger;
 
 public class OneWireDetector extends Detector {
 	private final String OWFS_MOUNT_POINT = "/mnt/1wire/";
@@ -20,6 +21,12 @@ public class OneWireDetector extends Detector {
 		File root = new File(OWFS_MOUNT_POINT + SENSOR_ROOT);
 		
 		String[] items = root.list();
+
+		if (items == null) {
+			System.err.println("1-wire network not found. Detection of devices failed.");
+			return null;
+		}
+
 		if (items != null){
 			for (String s : items) {
 				Pattern p = Pattern.compile("[0-9A-F]{2}\\.[0-9A-F]{12}");
@@ -38,6 +45,10 @@ public class OneWireDetector extends Detector {
 		
 		List<String> sensors = findInternalIds();
 		List<Device> devices = new ArrayList<Device>();
+		
+		if (sensors == null) {
+			return null;
+		}
 		
 		for (String s : sensors) {
 			String deviceDirPath = OWFS_MOUNT_POINT + SENSOR_ROOT + s;
