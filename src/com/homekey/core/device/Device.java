@@ -24,8 +24,6 @@ public abstract class Device {
 	}
 	
 	public String getName() {
-		//TODO: look in db
-
 		return null;
 	}
 	
