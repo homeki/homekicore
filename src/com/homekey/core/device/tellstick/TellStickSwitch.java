@@ -7,11 +7,12 @@ import com.homekey.core.device.Device;
 import com.homekey.core.device.Queryable;
 import com.homekey.core.device.Switchable;
 import com.homekey.core.storage.ColumnType;
+import com.homekey.core.storage.Database;
 import com.homekey.core.storage.DatabaseTable;
 
 public class TellStickSwitch extends Device implements Switchable, Queryable<Boolean> {
-	public TellStickSwitch(String internalId) {
-		super(internalId);
+	public TellStickSwitch(String internalId, Database db) {
+		super(internalId, db);
 	}
 	
 	@Override

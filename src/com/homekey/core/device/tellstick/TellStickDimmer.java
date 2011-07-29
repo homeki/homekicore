@@ -1,10 +1,11 @@
 package com.homekey.core.device.tellstick;
 
 import com.homekey.core.device.Dimmable;
+import com.homekey.core.storage.Database;
 
 public class TellStickDimmer extends TellStickSwitch implements Dimmable {
-	public TellStickDimmer(String internalId) {
-		super(internalId);
+	public TellStickDimmer(String internalId, Database db) {
+		super(internalId, db);
 	}
 
 	@Override

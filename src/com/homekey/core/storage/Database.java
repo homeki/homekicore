@@ -1,7 +1,5 @@
 package com.homekey.core.storage;
 
-import java.util.Date;
-
 public abstract class Database {
 	public final String DEVICE_TABLE_NAME_PREFIX = "d_";
 	

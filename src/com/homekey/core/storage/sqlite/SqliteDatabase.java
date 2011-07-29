@@ -15,21 +15,7 @@ import com.homekey.core.storage.Database;
 import com.homekey.core.storage.DatabaseTable;
 
 public class SqliteDatabase extends Database {
-	private static Database database;
-	
 	private Connection conn;
-	
-	public static Database getInstance() {
-		return getInstance(DEFAULT_DATABASE_NAME);
-	}
-	
-	public static Database getInstance(String databaseName) {
-		if (database == null) {
-			database = new SqliteDatabase();
-		}
-		
-		return database;
-	}
 	
 	private SqliteDatabase(String databaseName) {
 		super(databaseName);

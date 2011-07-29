@@ -6,13 +6,14 @@ import com.homekey.core.device.Dimmable;
 import com.homekey.core.device.Queryable;
 import com.homekey.core.log.L;
 import com.homekey.core.storage.ColumnType;
+import com.homekey.core.storage.Database;
 import com.homekey.core.storage.DatabaseTable;
 
 public class MockDeviceDimmer extends Device implements Dimmable, Queryable<Integer> {
 	private int level;
 	
-	public MockDeviceDimmer(String internalId) {
-		super(internalId);
+	public MockDeviceDimmer(String internalId, Database db) {
+		super(internalId, db);
 		L.getLogger(Logs.MOCK).log("MockInfo: Created MockDeviceDimmer called '" + getName() + "'.");
 	}
 	

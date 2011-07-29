@@ -7,12 +7,13 @@ import com.homekey.core.storage.Database;
 import com.homekey.core.storage.sqlite.SqliteDatabase;
 
 public abstract class Device {
-	protected static Database db = SqliteDatabase.getInstance();
-	
+	protected Database db;
 	protected int id;
 	protected String databaseTableName;
 	
-	public Device(String internalId) {
+	public Device(String internalId, Database db) {
+		this.db = db;
+		
 		Object field = db.getField("devices", "id", "internalid", internalId);
 		
 		if (field == null) {
