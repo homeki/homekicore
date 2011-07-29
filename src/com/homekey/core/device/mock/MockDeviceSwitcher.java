@@ -1,7 +1,5 @@
 package com.homekey.core.device.mock;
 
-import java.util.Date;
-
 import com.homekey.core.device.Device;
 import com.homekey.core.device.Queryable;
 import com.homekey.core.device.Switchable;
@@ -39,15 +37,10 @@ public class MockDeviceSwitcher extends Device implements Switchable, Queryable<
 	}
 	
 	@Override
-	public DatabaseTable getTableDesign() {
+	public void createDatabaseTable() {
 		DatabaseTable table = new DatabaseTable(2);
 		table.setColumn(0, "registered", ColumnType.DateTime);
 		table.setColumn(1, "value", ColumnType.Boolean);
-		return table;
-	}
-
-	@Override
-	public Object[] getDataRow() {
-		return new Object[] { new Date(), getValue() };
+		db.createTable(databaseTableName, table);
 	}
 }

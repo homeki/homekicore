@@ -1,7 +1,8 @@
 package com.homekey.core.storage;
 
 public abstract class Database {
-	protected final String SENSOR_TABLE_PREFIX = "D_";
+	public final String DEVICE_TABLE_NAME_PREFIX = "D_";
+	
 	protected static final String DEFAULT_DATABASE_NAME = "homekey.db";
 	
 	protected String databaseName;
@@ -27,7 +28,7 @@ public abstract class Database {
 	public abstract Object[] getFields(String table, String[] columns, Object value);
 	public abstract <T> T getField(String table, String[] columns, Object value);
 	
-	protected abstract void createTable(String name, DatabaseTable table);
+	public abstract void createTable(String name, DatabaseTable table);
 	protected abstract boolean tableExists(String name);
 	
 	private void ensureSystemTables() {

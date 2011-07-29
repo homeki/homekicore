@@ -1,7 +1,5 @@
 package com.homekey.core.device.mock;
 
-import java.util.Date;
-
 import com.homekey.core.device.Device;
 import com.homekey.core.device.Dimmable;
 import com.homekey.core.device.Queryable;
@@ -41,16 +39,11 @@ public class MockDeviceDimmer extends Device implements Dimmable, Queryable<Inte
 	}
 	
 	@Override
-	public DatabaseTable getTableDesign() {
+	public void createDatabaseTable() {
 		DatabaseTable table = new DatabaseTable(2);
 		table.setColumn(0, "registered", ColumnType.DateTime);
 		table.setColumn(1, "value", ColumnType.Integer);
-		return table;
-	}
-	
-	@Override
-	public Object[] getDataRow() {
-		return new Object[] { new Date(), getValue() };
+		db.createTable(databaseTableName, table);
 	}
 	
 	@Override

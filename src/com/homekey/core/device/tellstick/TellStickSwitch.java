@@ -22,7 +22,7 @@ public class TellStickSwitch extends Device implements Switchable, Queryable<Boo
 			e.printStackTrace();
 			return;
 		}
-		//TODO: update db
+		//TODO: log switch in db
 	}
 	
 	@Override
@@ -33,7 +33,7 @@ public class TellStickSwitch extends Device implements Switchable, Queryable<Boo
 			e.printStackTrace();
 			return;
 		}
-		//TODO: update db
+		//TODO: log switch in db
 	}
 	
 	@Override
@@ -42,15 +42,10 @@ public class TellStickSwitch extends Device implements Switchable, Queryable<Boo
 	}
 	
 	@Override
-	public DatabaseTable getTableDesign() {
+	public void createDatabaseTable() {
 		DatabaseTable table = new DatabaseTable(2);
-		table.setColumn(0, "Registered", ColumnType.DateTime);
-		table.setColumn(1, "Value", ColumnType.Boolean);
-		return table;
-	}
-	
-	@Override
-	public Object[] getDataRow() {
-		return new Object[] { new Date(), getValue() };
+		table.setColumn(0, "registered", ColumnType.DateTime);
+		table.setColumn(1, "value", ColumnType.Boolean);
+		db.createTable(databaseTableName, table);
 	}
 }

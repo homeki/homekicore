@@ -7,9 +7,10 @@ import com.homekey.core.storage.DatabaseTable;
 import com.homekey.core.storage.impl.SqliteDatabase;
 
 public abstract class Device {
-	private static Database db = SqliteDatabase.getInstance();
+	protected static Database db = SqliteDatabase.getInstance();
 	
 	protected int id;
+	protected String databaseTableName;
 	
 	public Device(String internalId) {
 		Object[] fields = db.getFields("devices", new String[] { "id", "internalid" }, internalId);
@@ -20,7 +21,8 @@ public abstract class Device {
 		}
 		
 		id = (Integer)fields[0];
-	}
+		databaseTableName = db.DEVICE_TABLE_NAME_PREFIX + this.getClass().getSimpleName() + "_" + id;
+	} 
 	
 	public void setName(String name) {
 		db.updateRow("devices", new String[] { "name", "id" }, new Object[] { name, id });
@@ -60,8 +62,6 @@ public abstract class Device {
 		return db.getField("devices", new String[] { "internalid", "id" }, id);
 	}
 	
-	public abstract DatabaseTable getTableDesign();
-	
-	public abstract Object[] getDataRow();
+	public abstract void createDatabaseTable();
 }
  

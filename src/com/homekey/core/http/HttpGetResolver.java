@@ -27,7 +27,7 @@ public class HttpGetResolver {
 			return true;
 		return false;
 	}
-	//TODO: fix static boolean issue (jonas) very impo(r)tant
+	//TODO: fix static boolean issue
 	private static boolean resolveGet(StringTokenizer st, HttpApi api, DataOutputStream out) throws IOException {
 		if (!st.hasMoreTokens())
 			return false;

@@ -21,7 +21,6 @@ public class HttpApi {
 	}
 	
 	public String getDevices() {
-		// TODO: Nothing to do here, move along
 		return new Gson().toJson(JsonDevice.makeArray(monitor.getDevices()));
 	}
 	

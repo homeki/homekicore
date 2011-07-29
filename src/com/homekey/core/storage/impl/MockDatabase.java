@@ -35,7 +35,7 @@ public class MockDatabase extends Database {
 	}
 
 	@Override
-	protected void createTable(String name, DatabaseTable table) {
+	public void createTable(String name, DatabaseTable table) {
 		// TODO Auto-generated method stub
 		
 	}

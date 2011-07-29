@@ -188,7 +188,7 @@ public class SqliteDatabase extends Database {
 	}
 	
 	@Override
-	protected void createTable(String name, DatabaseTable table) {
+	public void createTable(String name, DatabaseTable table) {
 		String sql = "CREATE TABLE " + name + " (Id INTEGER PRIMARY KEY AUTOINCREMENT, ";
 		
 		for (int i = 0; i < table.getColumnCount(); i++) {
