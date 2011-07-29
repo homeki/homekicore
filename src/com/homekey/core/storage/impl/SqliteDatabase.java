@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
 
+import com.homekey.core.Logs;
+import com.homekey.core.log.L;
 import com.homekey.core.storage.ColumnType;
 import com.homekey.core.storage.Database;
 import com.homekey.core.storage.DatabaseTable;
@@ -40,7 +42,7 @@ public class SqliteDatabase extends Database {
 	@Override
 	public void close() {
 		try {
-			System.out.println("Shutting down database");
+			L.getLogger(Logs.HOMEKEY).log("Shutting down database");
 			conn.close();
 		} catch (SQLException ex) {
 			System.err.println("close(): Couldn't close database connection.");

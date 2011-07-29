@@ -19,8 +19,8 @@ public class InternalDataTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		dev1 = new MockDeviceSwitcher("DA", true);
-		dev2 = new MockDeviceDimmer("DDD", true);
+		dev1 = new MockDeviceSwitcher("DA");
+		dev2 = new MockDeviceDimmer("DDD");
 		//dev1.setId(10);
 		dev1.setName("My MockDevice #1");
 		//dev2.setId(20);
@@ -84,8 +84,6 @@ public class InternalDataTest {
 		m.addDevice(dev2);
 		
 		String s = api.getDevices();
-		
-		System.out.println("HTTAPI: " + api.getDevices());
 		
 		assertTrue("s is " + s,s.contains("My MockDevice #1") && s.contains("MockDeviceSwitcher"));
 		assertTrue("s is " + s,s.contains("My MockDevice #2") && s.contains("MockDeviceDimmer"));

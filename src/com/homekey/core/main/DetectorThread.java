@@ -7,8 +7,9 @@ import com.homekey.core.device.Device;
 import com.homekey.core.device.mock.MockDetector;
 import com.homekey.core.device.onewire.OneWireDetector;
 import com.homekey.core.device.tellstick.TellStickDetector;
+import com.homekey.core.log.L;
 
-public class DetectorThread extends Thread {
+public class DetectorThread extends ControlledThread {
 	private Detector[] detectors;
 	private Monitor monitor;
 	
@@ -23,24 +24,27 @@ public class DetectorThread extends Thread {
 	
 	@Override
 	public void run() {
-		while (true) {
-			for (Detector det : detectors) {
-				List<Device> devs = det.findDevices();
-				
-				if (devs != null) {
-					for (Device d : devs) {
-						if (!monitor.containsDevice(d)) {
-							monitor.addDevice(d);
-						}
-					}
-				}
-			}
-			
+		while (keepRunning()) {
 			try {
 				Thread.sleep(20000);
 			} catch (InterruptedException e) {
-				System.out.println("DetectorThread interrupted.");
+				L.w("DetectorThread stopped.");
 				return;
+			}
+		}
+	}
+
+	@Override
+	public void internalLoop() throws InterruptedException {
+		for (Detector det : detectors) {
+			List<Device> devs = det.findDevices();
+			
+			if (devs != null) {
+				for (Device d : devs) {
+					if (!monitor.containsDevice(d)) {
+						monitor.addDevice(d);
+					}
+				}
 			}
 		}
 	}

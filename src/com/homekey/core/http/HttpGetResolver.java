@@ -6,10 +6,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
+import com.homekey.core.log.L;
+
 public class HttpGetResolver {
 	
 	public enum Actions {
-		ECHO, TIME, ON, OFF, DIM, DEVICES, STATUS, BAD_ACTION,NO_ACTION
+		ECHO, TIME, ON, OFF, DIM, DEVICES, STATUS, BAD_ACTION, NO_ACTION
 	}
 	
 	public static void resolve(StringTokenizer st, HttpApi api, DataOutputStream out) throws IOException {
@@ -31,12 +33,12 @@ public class HttpGetResolver {
 		return false;
 	}
 	
-	// TODO: fix static boolean issue
 	private static void resolveGet(StringTokenizer st, HttpApi api, DataOutputStream out) throws IOException {
 		Actions action = Actions.NO_ACTION;
 		String token = "";
 		if (st.hasMoreTokens()) {
 			token = st.nextToken();
+			L.d(HttpGetResolver.class, "Got token: " + token);
 			try {
 				action = Actions.valueOf(token.toUpperCase());
 			} catch (IllegalArgumentException e) {
@@ -82,7 +84,6 @@ public class HttpGetResolver {
 		HashMap<String, String> args = new HashMap<String, String>();
 		while (st.hasMoreTokens()) {
 			String[] arg = st.nextToken().split("=");
-			System.out.println(arg[0] + "=" + arg[1]);
 			args.put(arg[0], arg[1]);
 		}
 		return args;

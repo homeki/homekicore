@@ -6,40 +6,50 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
-
-public class SuperLogger {
+public class L {
 	public static final int LEVEL_DEBUG = 10;
 	public static final int LEVEL_INFO = 20;
 	public static final int LEVEL_WARN = 30;
 	public static final int LEVEL_ERROR = 40;
+	
+	private static String std;
 	
 	private int minLevel;
 	
 	List<StreamHolder> outs;
 	private String label;
 	
-	static HashMap<String, SuperLogger> all = new HashMap<String, SuperLogger>();
+	static HashMap<String, L> all = new HashMap<String, L>();
 	
-	private String levelToString(int level){
-		if(level >= LEVEL_ERROR )
+	private String levelToString(int level) {
+		if (level >= LEVEL_ERROR)
 			return "ERROR";
-		if(level >= LEVEL_WARN )
+		if (level >= LEVEL_WARN)
 			return "WARN";
-		if(level >= LEVEL_INFO )
+		if (level >= LEVEL_INFO)
 			return "INFO";
-		if(level >= LEVEL_ERROR )
+		if (level >= LEVEL_DEBUG)
 			return "DEBUG";
-		return "NO PRIOROTY";
+		return "NO PRIORITY";
 		
 	}
 	
-	public static SuperLogger getLogger(String label) {
+	public static L getLogger(String label) {
 		if (!all.containsKey(label))
-			all.put(label, new SuperLogger(label));
+			all.put(label, new L(label));
 		return all.get(label);
 	}
 	
-	public SuperLogger(String label) {
+	public static void setStandard(String standard) {
+		std = standard;
+		getLogger(standard).addOutput(System.out);
+	}
+	
+	private static L getStd() {
+		return getLogger(std);
+	}
+	
+	public L(String label) {
 		this.minLevel = LEVEL_DEBUG;
 		this.outs = new ArrayList<StreamHolder>();
 		this.label = label;
@@ -58,7 +68,8 @@ public class SuperLogger {
 	}
 	
 	private void log(String message, int level, boolean removeDescriptor) {
-		if(minLevel > level) return;
+		if (minLevel > level)
+			return;
 		for (StreamHolder sh : outs) {
 			if (sh.level <= level)
 				addLog(message, sh, level, removeDescriptor);
@@ -77,16 +88,16 @@ public class SuperLogger {
 			if (sh.showTime) {
 				full += c.get(Calendar.HOUR_OF_DAY) + ":" + c.get(Calendar.MINUTE) + ":" + c.get(Calendar.SECOND);
 			}
-			full = full + "] ";
 		} else {
-			full += "] ";
 		}
-		
+		full += " | " + Thread.currentThread().getName();
+		full += "] ";
+		full += levelToString(level) + ": ";
 		if (removeDescriptor) {
 			full = "                                                                                      ".substring(0, full.length());
 		}
 		
-		full += levelToString(level) + ": ";
+
 		
 		full += message;
 		sh.out.println(full);
@@ -110,7 +121,28 @@ public class SuperLogger {
 		this.minLevel = minLevel;
 	}
 	
-	private void log(String message) {
+	public void log(String message) {
 		log(message, LEVEL_DEBUG);
 	}
+	
+	public static void d(String msg) {
+		getStd().log(msg, LEVEL_DEBUG);
+	}
+	
+	public static void w(String msg) {
+		getStd().log(msg, LEVEL_WARN);
+	}
+	
+	public static void i(String msg) {
+		getStd().log(msg, LEVEL_INFO);
+	}
+	
+	public static void e(String msg) {
+		getStd().log(msg, LEVEL_ERROR);
+	}
+
+	public static void d(Object obj, String msg) {
+		getStd().log(msg, LEVEL_DEBUG,true);
+	}
+	
 }

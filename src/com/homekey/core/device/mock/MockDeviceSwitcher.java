@@ -1,8 +1,10 @@
 package com.homekey.core.device.mock;
 
+import com.homekey.core.Logs;
 import com.homekey.core.device.Device;
 import com.homekey.core.device.Queryable;
 import com.homekey.core.device.Switchable;
+import com.homekey.core.log.L;
 import com.homekey.core.storage.ColumnType;
 import com.homekey.core.storage.DatabaseTable;
 
@@ -10,25 +12,21 @@ public class MockDeviceSwitcher extends Device implements Switchable, Queryable<
 	private boolean talk;
 	private boolean on;
 	
-	public MockDeviceSwitcher(String internalId, boolean talk) {
+	public MockDeviceSwitcher(String internalId) {
 		super(internalId);
-		this.talk = talk;
-		if (talk)
-			System.out.println("MockInfo: Created MockDeviceSwitcher called '" + getName() + "'.");
+		L.getLogger(Logs.MOCK).log("MockInfo: Created MockDeviceSwitcher called '" + getName() + "'.");
 	}
 	
 	@Override
 	public void off() {
 		on = false;
-		if (talk)
-			System.out.println("MockInfo: MockDeviceSwitcher called '" + getName() + "' is now OFF!");
+		L.getLogger(Logs.MOCK).log("MockInfo: MockDeviceSwitcher called '" + getName() + "' is now OFF!");
 	}
 	
 	@Override
 	public void on() {
 		on = true;
-		if (talk)
-			System.out.println("MockInfo: MockDeviceSwitcher called '" + getName() + "' is now ON!");
+		L.getLogger(Logs.MOCK).log("MockInfo: MockDeviceSwitcher called '" + getName() + "' is now ON!");
 	}
 	
 	@Override
