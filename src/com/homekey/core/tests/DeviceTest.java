@@ -33,7 +33,7 @@ public class DeviceTest {
 	
 	@Test
 	public void testGetName() {
-		assertEquals("Id is not the assigned id.", this.device.getName(), this.assignedName);
+		assertEquals("Name is not the assigned name.", this.device.getName(), this.assignedName);
 	}
 	
 	@Test
