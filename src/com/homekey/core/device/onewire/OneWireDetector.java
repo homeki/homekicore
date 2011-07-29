@@ -1,12 +1,13 @@
 package com.homekey.core.device.onewire;
 
-import java.util.*;
-import java.util.regex.*;
-import java.io.*;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.homekey.core.device.Detector;
 import com.homekey.core.device.Device;
-import com.homekey.core.log.SuperLogger;
 
 public class OneWireDetector extends Detector {
 	private final String OWFS_MOUNT_POINT = "/mnt/1wire/";
