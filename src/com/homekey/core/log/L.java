@@ -1,5 +1,6 @@
 package com.homekey.core.log;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -92,7 +93,8 @@ public class L {
 				full += c.get(Calendar.YEAR) + "/" + c.get(Calendar.MONTH) + "/" + c.get(Calendar.DAY_OF_MONTH);
 			}
 			if (sh.showTime) {
-				full += c.get(Calendar.HOUR_OF_DAY) + ":" + c.get(Calendar.MINUTE) + ":" + c.get(Calendar.SECOND);
+				SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+				full += sdf.format(c.getTime());;
 			}
 		} else {}
 		full += " | " + Thread.currentThread().getName();
