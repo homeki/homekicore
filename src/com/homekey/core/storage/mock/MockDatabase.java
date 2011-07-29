@@ -6,6 +6,7 @@ import com.homekey.core.storage.Database;
 import com.homekey.core.storage.DatabaseTable;
 
 public class MockDatabase extends Database {
+
 	@Override
 	public void close() {
 		// TODO Auto-generated method stub
@@ -25,13 +26,25 @@ public class MockDatabase extends Database {
 	}
 
 	@Override
-	public void updateRow(String table, String[] columns, Object[] values) {
+	public void updateRow(String table, String[] updateColumns, Object[] updateValues, String whereColumn, Object whereValue) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public Object[] getRow(String table, String[] columns, Object value) {
+	public Object[] getRow(String table, String[] selectColumns, String whereColumn, Object whereValue) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Object getField(String table, String selectColumn, String whereColumn, Object whereValue) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Object getField(String table, String column, String orderByColumn) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -48,34 +61,5 @@ public class MockDatabase extends Database {
 		return false;
 	}
 	
-	@Override
-	public String getFieldAsString(String table, String[] columns, Object value) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean getFieldAsBoolean(String table, String[] columns, Object value) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public int getFieldAsInteger(String table, String[] columns, Object value) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public Date getFieldAsDate(String table, String[] columns, Object value) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Object getField(String table, String column, String orderByColumn) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 }

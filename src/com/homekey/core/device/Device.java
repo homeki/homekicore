@@ -2,6 +2,7 @@ package com.homekey.core.device;
 
 import java.util.Date;
 
+import com.homekey.core.log.L;
 import com.homekey.core.storage.Database;
 import com.homekey.core.storage.sqlite.SqliteDatabase;
 
@@ -12,31 +13,39 @@ public abstract class Device {
 	protected String databaseTableName;
 	
 	public Device(String internalId) {
-		Object[] fields = db.getRow("devices", new String[] { "id", "internalid" }, internalId);
+		Object field = db.getField("devices", "id", "internalid", internalId);
 		
-		if (fields == null) {
+		if (field == null) {
 			db.addRow("devices", new String[] { "internalid", "type", "name", "added", "active" }, new Object[] { internalId, this.getClass().getSimpleName(), "", new Date(), true });
-			fields = db.getRow("devices", new String[] { "id", "internalid" }, internalId);
+			field = db.getField("devices", "id", "internalid", internalId);
 		}
 		
-		id = (Integer)fields[0];
+		id = (Integer) field;
 		databaseTableName = (db.DEVICE_TABLE_NAME_PREFIX + this.getClass().getSimpleName() + "_" + id).toLowerCase();
 		
 		if (!db.tableExists(databaseTableName)) {
 			createDatabaseTable();
 		}
-	} 
+	}
 	
 	public void setName(String name) {
-		db.updateRow("devices", new String[] { "name", "id" }, new Object[] { name, id });
+		setVar("name", name);
+	}
+	
+	private void setVar(String column, Object val) {
+		db.updateRow("devices", new String[] { column }, new Object[] { val }, "id", id);
 	}
 	
 	public void setActive(boolean active) {
-		db.updateRow("devices", new String[] { "active", "id" }, new Object[] { active, id });
+		setVar("active", active);
 	}
 	
 	public String getName() {
-		return db.getFieldAsString("devices", new String[] { "name", "id" }, id);
+		return (String) getVar("name");
+	}
+	
+	public Object getVar(String column) {
+		return db.getField("devices", column, "id", id);
 	}
 	
 	public int getId() {
@@ -44,11 +53,14 @@ public abstract class Device {
 	}
 	
 	public Date getAdded() {
-		return db.getFieldAsDate("devices", new String[] { "added", "id" }, id);
+		Long time = (Long) getVar("added");
+		return new Date( time);
 	}
 	
 	public boolean isActive() {
-		return db.getFieldAsBoolean("devices", new String[] { "active", "id" }, id);
+		L.setStandard("asdf");
+		L.d("getvar=" + getVar("active"));
+		return  getVar("active").equals("true");
 	}
 	
 	@Override
@@ -58,13 +70,12 @@ public abstract class Device {
 	
 	@Override
 	public boolean equals(Object obj) {
-		return id == ((Device)obj).id;
+		return id == ((Device) obj).id;
 	}
 	
 	protected String getInternalId() {
-		return db.getFieldAsString("devices", new String[] { "internalid", "id" }, id);
+		return (String) getVar("internalid");
 	}
 	
 	protected abstract void createDatabaseTable();
 }
- 

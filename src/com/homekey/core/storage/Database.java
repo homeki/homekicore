@@ -26,12 +26,9 @@ public abstract class Database {
 	protected abstract void open();
 
 	public abstract void addRow(String table, String[] columns, Object[] values);
-	public abstract void updateRow(String table, String[] columns, Object[] values);
-	public abstract Object[] getRow(String table, String[] columns, Object value);
-	public abstract String getFieldAsString(String table, String[] columns, Object value);
-	public abstract boolean getFieldAsBoolean(String table, String[] columns, Object value);
-	public abstract int getFieldAsInteger(String table, String[] columns, Object value);
-	public abstract Date getFieldAsDate(String table, String[] columns, Object value);
+	public abstract void updateRow(String table, String[] updateColumns, Object[] updateValues, String whereColumn, Object whereValue);
+	public abstract Object[] getRow(String table, String[] selectColumns, String whereColumn, Object whereValue) ;
+	public abstract Object getField(String table, String selectColumn, String whereColumn, Object whereValue);
 	public abstract Object getField(String table, String column, String orderByColumn);
 	
 	public abstract void createTable(String name, DatabaseTable table);

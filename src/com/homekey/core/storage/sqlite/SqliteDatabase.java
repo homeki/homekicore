@@ -58,71 +58,59 @@ public class SqliteDatabase extends Database {
 		sql += SqliteUtil.merge(columns.length, "?, ");
 		sql = sql.substring(0, sql.length() - 2) + ");";
 		
-		executeParametrized(columns, values, sql);
-	}
-	
-	@Override
-	public void updateRow(String table, String[] columns, Object[] values) {
-		String sql = "UPDATE " + table + " SET ";
-		
-		sql = sql + SqliteUtil.merge(columns, 1, " = ?, ");
-		
-		sql = sql.substring(0, sql.length() - 2) + " WHERE " + columns[columns.length - 1] + " = ?;";
-		
-		executeParametrized(columns, values, sql);
-	}
-	
-	
-	private void executeParametrized(String[] columns, Object[] values, String sql) {
 		PreparedStatement stat;
 		
 		try {
 			stat = conn.prepareStatement(sql);
 			
 			for (int i = 0; i < columns.length; i++) {
-				setParameter(values[i], stat,i+1);
+				stat.setObject(i + 1, values[i]);
 			}
-			
 			stat.execute();
-		} catch (SQLException ex) {
-			System.err.println("updateRow(): Couldn't execute UPDATE SQL.");
-		}
-	}
-	
-	private void setParameter(Object value, PreparedStatement stat, int i) throws SQLException {
-		if (value instanceof String) {
-			stat.setString(i, (String) value);
-		} else if (value instanceof Boolean) {
-			stat.setBoolean(i , (Boolean) value);
-		} else if (value instanceof Integer) {
-			stat.setInt(i, (Integer) value);
-		} else if (value instanceof Float) {
-			stat.setFloat(i , (Float) value);
-		} else if (value instanceof java.util.Date) {
-			java.util.Date javaDate = (java.util.Date) value;
-			java.sql.Date sqlDate = new java.sql.Date(javaDate.getTime());
-			stat.setDate(i , sqlDate);
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 	}
 	
 	@Override
-	public Object[] getRow(String table, String[] columns, Object value) {
+	public void updateRow(String table, String[] updateColumns, Object[] updateValues, String whereColumn, Object whereValue) {
+		String sql = "UPDATE " + table + " SET ";
+		
+		sql = sql + SqliteUtil.merge(updateColumns, 0, " = ?, ");
+		
+		sql = sql.substring(0, sql.length() - 2) + " WHERE " + whereColumn + " = ?;";
+		
+		try {
+			PreparedStatement stat = conn.prepareStatement(sql);
+			
+			for (int i = 0; i < updateColumns.length; i++) {
+				stat.setObject(i + 1, updateValues[i]);
+			}
+			stat.setObject(updateColumns.length, whereValue);
+			stat.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public Object[] getRow(String table, String[] selectColumns, String whereColumn, Object whereValue) {
 		Object[] values = null;
 		String sql = "SELECT ";
-		sql += SqliteUtil.merge(columns, 1, ", ");
-		sql = sql.substring(0, sql.length() - 2) + " FROM " + table + " WHERE " + columns[columns.length - 1] + " = ?;";
+		sql += SqliteUtil.merge(selectColumns, 0, ", ");
+		sql = sql.substring(0, sql.length() - 2) + " FROM " + table + " WHERE " + whereColumn + " = ?;";
 		
 		PreparedStatement stat;
 		
 		try {
 			stat = conn.prepareStatement(sql);
-			setParameter(value, stat, 1);
+			stat.setObject(1, whereValue);
 			ResultSet rs = stat.executeQuery();
 			
 			if (rs.next()) {
-				values = new Object[columns.length - 1];
+				values = new Object[selectColumns.length];
 				try {
-					for (int i = 0; i < columns.length - 1; i++) {
+					for (int i = 0; i < selectColumns.length; i++) {
 						values[i] = rs.getObject(i + 1);
 					}
 				} finally {
@@ -142,27 +130,9 @@ public class SqliteDatabase extends Database {
 	}
 	
 	@Override
-	public String getFieldAsString(String table, String[] columns, Object value) {
-		Object[] fields = getRow(table, columns, value);
-		return (String) fields[0];
-	}
-	
-	@Override
-	public boolean getFieldAsBoolean(String table, String[] columns, Object value) {
-		Object[] fields = getRow(table, columns, value);
-		return (Integer) fields[0] != 0;
-	}
-	
-	@Override
-	public int getFieldAsInteger(String table, String[] columns, Object value) {
-		Object[] fields = getRow(table, columns, value);
-		return (Integer) fields[0];
-	}
-	
-	@Override
-	public Date getFieldAsDate(String table, String[] columns, Object value) {
-		Object[] fields = getRow(table, columns, value);
-		return new Date((Long) fields[0]);
+	public Object getField(String table, String selectColumn, String whereColumn, Object whereValue) {
+		Object[] fields = getRow(table, new String[] { selectColumn }, whereColumn, whereValue);
+		return fields == null ? null : fields[0];
 	}
 	
 	@Override
