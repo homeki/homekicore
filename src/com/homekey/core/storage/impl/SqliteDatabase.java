@@ -128,18 +128,19 @@ public class SqliteDatabase extends Database {
 	
 	@Override
 	public Object[] getFields(String table, String[] columns, Object value) {
-		Object[] values = new Object[columns.length];
+		Object[] values = new Object[columns.length-1];
 		String sql = "SELECT ";
 		
 		for (int i = 0; i < columns.length - 1; i++) {
 			sql += columns[i] + ", ";
 		}
-		sql += sql.substring(0, sql.length() - 2) + " FROM " + table + " WHERE " + columns[columns.length] + " = ?;";
+		sql = sql.substring(0, sql.length() - 2) + " FROM " + table + " WHERE " + columns[columns.length-1] + " = ?;";
 		
 		PreparedStatement stat;
 		
 		try {
 			stat = conn.prepareStatement(sql);
+			
 			
 			if (value instanceof String) {
 				stat.setString(1, (String) value);
@@ -155,7 +156,7 @@ public class SqliteDatabase extends Database {
 			
 			try {
 				for (int i = 0; i < columns.length - 1; i++) {
-					values[i] = rs.getObject(i);
+					values[i] = rs.getObject(i+1);
 				}
 			} finally {
 				rs.close();
@@ -168,7 +169,7 @@ public class SqliteDatabase extends Database {
 	}
 	
 	@Override
-	protected boolean tableExists(String name) {
+	public boolean tableExists(String name) {
 		return executeScalar("SELECT COUNT(name) FROM sqlite_master WHERE type='table' AND name='" + name + "';") > 0;
 	}
 	

@@ -29,7 +29,7 @@ public abstract class Database {
 	public abstract <T> T getField(String table, String[] columns, Object value);
 	
 	public abstract void createTable(String name, DatabaseTable table);
-	protected abstract boolean tableExists(String name);
+	public abstract boolean tableExists(String name);
 	
 	private void ensureSystemTables() {
 		if (!tableExists("devices")) {

@@ -41,7 +41,7 @@ public class MockDatabase extends Database {
 	}
 
 	@Override
-	protected boolean tableExists(String name) {
+	public boolean tableExists(String name) {
 		// TODO Auto-generated method stub
 		return false;
 	}

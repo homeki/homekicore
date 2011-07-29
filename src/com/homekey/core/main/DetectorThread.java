@@ -27,9 +27,11 @@ public class DetectorThread extends Thread {
 			for (Detector det : detectors) {
 				List<Device> devs = det.findDevices();
 				
-				for (Device d : devs) {
-					if (!monitor.containsDevice(d)) {
-						monitor.addDevice(d);
+				if (devs != null) {
+					for (Device d : devs) {
+						if (!monitor.containsDevice(d)) {
+							monitor.addDevice(d);
+						}
 					}
 				}
 			}

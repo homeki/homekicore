@@ -15,12 +15,16 @@ public abstract class Device {
 		Object[] fields = db.getFields("devices", new String[] { "id", "internalid" }, internalId);
 		
 		if (fields == null) {
-			db.addRow("devices", new String[] { "internalid", "type" }, new Object[] { internalId, this.getClass().getSimpleName() });
+			db.addRow("devices", new String[] { "internalid", "type", "name", "added", "active" }, new Object[] { internalId, this.getClass().getSimpleName(), "", new Date(), true });
 			fields = db.getFields("devices", new String[] { "id", "internalid" }, internalId);
 		}
 		
 		id = (Integer)fields[0];
 		databaseTableName = db.DEVICE_TABLE_NAME_PREFIX + this.getClass().getSimpleName() + "_" + id;
+		
+		if (!db.tableExists(databaseTableName)) {
+			createDatabaseTable();
+		}
 	} 
 	
 	public void setName(String name) {
@@ -61,6 +65,6 @@ public abstract class Device {
 		return db.getField("devices", new String[] { "internalid", "id" }, id);
 	}
 	
-	public abstract void createDatabaseTable();
+	protected abstract void createDatabaseTable();
 }
  
