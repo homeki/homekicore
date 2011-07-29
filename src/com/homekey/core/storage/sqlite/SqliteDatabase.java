@@ -65,7 +65,7 @@ public class SqliteDatabase extends Database {
 	public void updateRow(String table, String[] columns, Object[] values) {
 		String sql = "UPDATE " + table + " SET ";
 		
-		sql = sql + SqliteUtil.merge(columns, -1, " = ?, ");
+		sql = sql + SqliteUtil.merge(columns, 1, " = ?, ");
 		
 		sql = sql.substring(0, sql.length() - 2) + " WHERE " + columns[columns.length - 1] + " = ?;";
 		
@@ -109,7 +109,7 @@ public class SqliteDatabase extends Database {
 	public Object[] getRow(String table, String[] columns, Object value) {
 		Object[] values = null;
 		String sql = "SELECT ";
-		sql += SqliteUtil.merge(columns, -1, ", ");
+		sql += SqliteUtil.merge(columns, 1, ", ");
 		sql = sql.substring(0, sql.length() - 2) + " FROM " + table + " WHERE " + columns[columns.length - 1] + " = ?;";
 		
 		PreparedStatement stat;

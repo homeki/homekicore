@@ -20,7 +20,7 @@ public abstract class Device {
 		}
 		
 		id = (Integer)fields[0];
-		databaseTableName = (db.DEVICE_TABLE_NAME_PREFIX + this.getClass().getSimpleName() + "_" + id).toString();
+		databaseTableName = (db.DEVICE_TABLE_NAME_PREFIX + this.getClass().getSimpleName() + "_" + id).toLowerCase();
 		
 		if (!db.tableExists(databaseTableName)) {
 			createDatabaseTable();
