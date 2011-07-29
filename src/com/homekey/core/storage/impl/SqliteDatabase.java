@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Date;
 
 import com.homekey.core.Logs;
 import com.homekey.core.log.L;
@@ -248,11 +249,27 @@ public class SqliteDatabase extends Database {
 		return count;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public <T> T getField(String table, String[] columns, Object value) {
+	public String getFieldAsString(String table, String[] columns, Object value) {
 		Object[] fields = getFields(table, columns, value);
-		
-		return (T)fields[0];
+		return (String)fields[0];
+	}
+
+	@Override
+	public boolean getFieldAsBoolean(String table, String[] columns, Object value) {
+		Object[] fields = getFields(table, columns, value);
+		return (Integer)fields[0] != 0;
+	}
+
+	@Override
+	public int getFieldAsInteger(String table, String[] columns, Object value) {
+		Object[] fields = getFields(table, columns, value);
+		return (Integer)fields[0];
+	}
+
+	@Override
+	public Date getFieldAsDate(String table, String[] columns, Object value) {
+		Object[] fields = getFields(table, columns, value);
+		return new Date((Long)fields[0]);
 	}
 }

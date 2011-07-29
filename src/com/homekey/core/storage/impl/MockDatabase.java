@@ -1,5 +1,7 @@
 package com.homekey.core.storage.impl;
 
+import java.util.Date;
+
 import com.homekey.core.storage.Database;
 import com.homekey.core.storage.DatabaseTable;
 
@@ -45,9 +47,27 @@ public class MockDatabase extends Database {
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+	@Override
+	public String getFieldAsString(String table, String[] columns, Object value) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	@Override
-	public <T> T getField(String table, String[] columns, Object value) {
+	public boolean getFieldAsBoolean(String table, String[] columns, Object value) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public int getFieldAsInteger(String table, String[] columns, Object value) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public Date getFieldAsDate(String table, String[] columns, Object value) {
 		// TODO Auto-generated method stub
 		return null;
 	}

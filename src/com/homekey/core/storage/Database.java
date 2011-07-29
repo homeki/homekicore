@@ -1,5 +1,7 @@
 package com.homekey.core.storage;
 
+import java.util.Date;
+
 public abstract class Database {
 	public final String DEVICE_TABLE_NAME_PREFIX = "d_";
 	
@@ -26,7 +28,10 @@ public abstract class Database {
 	public abstract void addRow(String table, String[] columns, Object[] values);
 	public abstract void updateRow(String table, String[] columns, Object[] values);
 	public abstract Object[] getFields(String table, String[] columns, Object value);
-	public abstract <T> T getField(String table, String[] columns, Object value);
+	public abstract String getFieldAsString(String table, String[] columns, Object value);
+	public abstract boolean getFieldAsBoolean(String table, String[] columns, Object value);
+	public abstract int getFieldAsInteger(String table, String[] columns, Object value);
+	public abstract Date getFieldAsDate(String table, String[] columns, Object value);
 	
 	public abstract void createTable(String name, DatabaseTable table);
 	public abstract boolean tableExists(String name);
