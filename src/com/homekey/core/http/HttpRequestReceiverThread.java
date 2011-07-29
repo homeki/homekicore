@@ -41,17 +41,15 @@ public class HttpRequestReceiverThread extends Thread {
 					
 					StringTokenizer st = new StringTokenizer(headerLine, "/ ");
 					
-					boolean result = false;
 					if (st.hasMoreTokens()) {
 						String token = st.nextToken();
 						if (token.equals("GET")) {
-							result = HttpGetResolver.resolve(st,api, out);
+							HttpGetResolver.resolve(st,api, out);
 						} else if (token.equals("SET")) {
-							result = HttpSetResolver.resolve(st,api, out);
+							HttpSetResolver.resolve(st,api, out);
+						}else{
+							HttpMacro.send404(headerLine, out);
 						}
-					}
-					if (!result) {
-						HttpMacro.send404(headerLine, out);
 					}
 				}
 			} catch (NullPointerException e) {

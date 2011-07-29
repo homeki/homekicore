@@ -9,17 +9,20 @@ import java.util.StringTokenizer;
 public class HttpGetResolver {
 	
 	public enum Actions {
-		ECHO, TIME, ON, OFF, DIM, DEVICES, STATUS, BAD_ACTION
+		ECHO, TIME, ON, OFF, DIM, DEVICES, STATUS, BAD_ACTION,NO_ACTION
 	}
 	
-	public static boolean resolve(StringTokenizer st, HttpApi api, DataOutputStream out) throws IOException {
-		if (!st.hasMoreTokens())
-			return false;
-		String token = st.nextToken();
-		if (token.equals("get") || token.equals("set")) {
-			return resolveGet(st, api, out);
+	public static void resolve(StringTokenizer st, HttpApi api, DataOutputStream out) throws IOException {
+		if (!st.hasMoreTokens()) {
+			HttpMacro.send404("Missing tokens.", out);
+		} else {
+			String token = st.nextToken();
+			if (token.equals("get") || token.equals("set")) {
+				resolveGet(st, api, out);
+			} else {
+				HttpMacro.send404("Missing tokens.", out);
+			}
 		}
-		return false;
 	}
 	
 	public static boolean eat(StringTokenizer st, String mustBe) {
@@ -27,45 +30,52 @@ public class HttpGetResolver {
 			return true;
 		return false;
 	}
-	//TODO: fix static boolean issue
-	private static boolean resolveGet(StringTokenizer st, HttpApi api, DataOutputStream out) throws IOException {
-		if (!st.hasMoreTokens())
-			return false;
-		
-		String token = st.nextToken();
-		Actions action;
-		try {
-			action = Actions.valueOf(token.toUpperCase());
-		} catch (IllegalArgumentException e) {
-			action = Actions.BAD_ACTION;
+	
+	// TODO: fix static boolean issue
+	private static void resolveGet(StringTokenizer st, HttpApi api, DataOutputStream out) throws IOException {
+		Actions action = Actions.NO_ACTION;
+		String token = "";
+		if (st.hasMoreTokens()) {
+			token = st.nextToken();
+			try {
+				action = Actions.valueOf(token.toUpperCase());
+			} catch (IllegalArgumentException e) {
+				action = Actions.BAD_ACTION;
+			}
 		}
 		
 		switch (action) {
 		case ECHO:
-			return resolveGetEcho(st, api, out);
+			resolveGetEcho(st, api, out);
+			break;
 		case TIME:
-			return resolveGetTime(st, api, out);
+			resolveGetTime(st, api, out);
+			break;
 		case STATUS:
-			return resolveGetStatus(st, api, out);
+			resolveGetStatus(st, api, out);
+			break;
 		case DEVICES:
-			return resolveGetDevices(st, api, out);
+			resolveGetDevices(st, api, out);
+			break;
 		case ON:
-			return resolveGetOn(st, api, out, true);
+			resolveGetOn(st, api, out, true);
+			break;
 		case OFF:
-			return resolveGetOn(st, api, out, false);
+			resolveGetOn(st, api, out, false);
+			break;
 		case BAD_ACTION:
 			HttpMacro.send404("Get does not allow command '" + token + "'.", out);
-			return true;
-		default:
-			return false;
+			break;
+		case NO_ACTION:
+			HttpMacro.send404("No action specified.'.", out);
+			break;
 		}
 	}
 	
-	private static boolean resolveGetStatus(StringTokenizer st, HttpApi api, DataOutputStream out) throws IOException {
+	private static void resolveGetStatus(StringTokenizer st, HttpApi api, DataOutputStream out) throws IOException {
 		HashMap<String, String> args = getArguments(st);
 		Integer id = HttpArguments.demandInteger("id", args, out);
 		HttpMacro.sendResponse(200, api.getStatus(id), out);
-		return true;
 	}
 	
 	private static HashMap<String, String> getArguments(StringTokenizer st) {
@@ -78,41 +88,39 @@ public class HttpGetResolver {
 		return args;
 	}
 	
-	private static boolean resolveGetOn(StringTokenizer st, HttpApi api, DataOutputStream out, boolean on) throws IOException {
+	private static void resolveGetOn(StringTokenizer st, HttpApi api, DataOutputStream out, boolean on) throws IOException {
 		HashMap<String, String> args = getArguments(st);
 		Integer id = HttpArguments.demandInteger("id", args, out);
-		if (id == null)
-			return true;
-		try {			
-			if (on) {
-				api.switchOn(id);
-			} else {
-				api.switchOff(id);
+		if (id == null) {
+			HttpMacro.send404("id is not a string.", out);
+		} else {
+			try {
+				if (on) {
+					api.switchOn(id);
+				} else {
+					api.switchOff(id);
+				}
+			} catch (ClassCastException e) {
+				HttpMacro.send404("The device with id=" + id + " is not switchable.", out);
 			}
-		} catch (ClassCastException e) {
-			// TODO: implementing somthing nice that return 404 or whatever
+			HttpMacro.sendResponse(200, "Device " + id + " is now " + (on ? "on" : "off") + ".", out);
 		}
-		HttpMacro.sendResponse(200, "Device " + id + " is now " + (on ? "on" : "off") + ".", out);
-		return true;
 	}
 	
-	private static boolean resolveGetDevices(StringTokenizer st, HttpApi api, DataOutputStream out) throws IOException {
+	private static void resolveGetDevices(StringTokenizer st, HttpApi api, DataOutputStream out) throws IOException {
 		HttpMacro.sendResponse(200, api.getDevices(), out);
-		return true;
 	}
 	
-	private static boolean resolveGetTime(StringTokenizer st, HttpApi api, DataOutputStream out) throws IOException {
+	private static void resolveGetTime(StringTokenizer st, HttpApi api, DataOutputStream out) throws IOException {
 		HttpMacro.sendResponse(200, "Time is: " + (new Date()).toString(), out);
-		return true;
 	}
 	
-	private static boolean resolveGetEcho(StringTokenizer st, HttpApi api, DataOutputStream out) throws IOException {
+	private static void resolveGetEcho(StringTokenizer st, HttpApi api, DataOutputStream out) throws IOException {
 		if (!st.hasMoreTokens())
 			HttpMacro.sendResponse(204, "No content to echo.", out);
 		else {
 			String token = st.nextToken();
 			HttpMacro.sendResponse(200, token, out);
 		}
-		return true;
 	}
 }

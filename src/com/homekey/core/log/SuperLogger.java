@@ -53,7 +53,7 @@ public class SuperLogger {
 		outs.add(new StreamHolder(out, LEVEL_DEBUG, true, false));
 	}
 	
-	private void log(String message, int level) {
+	public void log(String message, int level) {
 		log(message, level, false);
 	}
 	

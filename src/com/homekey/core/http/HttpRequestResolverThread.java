@@ -39,13 +39,14 @@ public class HttpRequestResolverThread extends Thread {
 			} else {
 				requestString = requestString.replace(" HTTP/1.1", "");
 				StringTokenizer st = new StringTokenizer(requestString, "/ ?&");
-				boolean result = false;
 				if (st.hasMoreTokens()) {
 					String token = st.nextToken();
 					if(token.equals("GET")){
-						result = HttpGetResolver.resolve(st,api, out);
+						HttpGetResolver.resolve(st,api, out);
 					}else if(token.equals("SET")){
-						result = HttpGetResolver.resolve(st,api, out);
+						HttpGetResolver.resolve(st,api, out);
+					}else{
+						HttpMacro.send404(httpQueryString, out);
 					}
 				}
 			}
