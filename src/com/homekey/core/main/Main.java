@@ -1,14 +1,29 @@
 package com.homekey.core.main;
 
+import java.util.Scanner;
+
 import com.homekey.core.Logs;
 import com.homekey.core.log.L;
 
 public class Main {
 	public static void main(String[] args) {
-		ThreadMaster tm = new ThreadMaster();
 		L.setStandard("homekey");
+		L.getLogger("homekey").setMinimumLevel(L.LEVEL_INFO);
+		ThreadMaster tm = new ThreadMaster();
 		
-//		tm.shutdown();
+		L.getLogger("homekey").addRemoveFilter("Problem while reading tellstick");
+		L.getLogger("homekey").addRemoveFilter("1-wire network not found");
+		
+		// tm.shutdown();
+		
+		Scanner sc = new Scanner(System.in);
+		while (true) {
+			String next = sc.next();
+			L.i("Got command: " + next);
+			if(next.equals("restart")){
+				tm.restart();
+			}
+		}
 		
 		// DoSomeTesting(tm.getMonitor(),b);
 		// tm.shutdown();

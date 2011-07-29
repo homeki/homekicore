@@ -15,7 +15,6 @@ public class DetectorThread extends ControlledThread {
 	
 	public DetectorThread(Monitor monitor) {
 		super(10000);
-		L.d("Creating detector thread..");
 		this.monitor = monitor;
 		this.detectors = new Detector[] { 
 				new MockDetector(),

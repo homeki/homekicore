@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
+import org.junit.Ignore;
+
 public class L {
 	public static final int LEVEL_DEBUG = 10;
 	public static final int LEVEL_INFO = 20;
@@ -13,6 +15,7 @@ public class L {
 	public static final int LEVEL_ERROR = 40;
 	
 	private static String std;
+	private List<String> ignore;
 	
 	private int minLevel;
 	
@@ -53,6 +56,7 @@ public class L {
 		this.minLevel = LEVEL_DEBUG;
 		this.outs = new ArrayList<StreamHolder>();
 		this.label = label;
+		this.ignore = new ArrayList<String>();
 	}
 	
 	public void addOutput(PrintStream out, int minLevel, boolean showTime, boolean showDate) {
@@ -77,6 +81,8 @@ public class L {
 	}
 	
 	private void addLog(String message, StreamHolder sh, int level, boolean removeDescriptor) {
+		if (ignoreThis(message))
+			return;
 		String full = "";
 		full += "[" + label;
 		Calendar c = Calendar.getInstance();
@@ -88,16 +94,13 @@ public class L {
 			if (sh.showTime) {
 				full += c.get(Calendar.HOUR_OF_DAY) + ":" + c.get(Calendar.MINUTE) + ":" + c.get(Calendar.SECOND);
 			}
-		} else {
-		}
+		} else {}
 		full += " | " + Thread.currentThread().getName();
 		full += "] ";
 		full += levelToString(level) + ": ";
 		if (removeDescriptor) {
 			full = "                                                                                      ".substring(0, full.length());
 		}
-		
-
 		
 		full += message;
 		sh.out.println(full);
@@ -117,7 +120,7 @@ public class L {
 		}
 	}
 	
-	private void setMinimumLevel(int minLevel) {
+	public void setMinimumLevel(int minLevel) {
 		this.minLevel = minLevel;
 	}
 	
@@ -140,9 +143,23 @@ public class L {
 	public static void e(String msg) {
 		getStd().log(msg, LEVEL_ERROR);
 	}
-
+	
 	public static void d(Object obj, String msg) {
-		getStd().log(msg, LEVEL_DEBUG,false);
-		getStd().log(obj.toString(), LEVEL_DEBUG,true);
+		if (!getStd().ignoreThis(msg)) {
+			getStd().log(msg, LEVEL_DEBUG, false);
+			getStd().log(obj.toString(), LEVEL_DEBUG, true);
+		}
+	}
+	
+	private boolean ignoreThis(String msg) {
+		for (String s : ignore) {
+			if (msg.contains(s))
+				return true;
+		}
+		return false;
+	}
+	
+	public void addRemoveFilter(String string) {
+		ignore.add(string);
 	}
 }

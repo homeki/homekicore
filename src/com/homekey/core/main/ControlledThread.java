@@ -11,6 +11,7 @@ public abstract class ControlledThread extends Thread {
 		super();
 		this.shutdown = false;
 		this.interval = interval;
+		setName(this.getClass().getSimpleName());
 	}
 	
 	protected boolean keepRunning() {
@@ -18,6 +19,7 @@ public abstract class ControlledThread extends Thread {
 	}
 	
 	public void run() {
+		L.i("Starting thread.");
 		try {
 			while (!shutdown) {
 				iteration();
