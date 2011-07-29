@@ -11,11 +11,9 @@ import com.homekey.core.device.mock.MockDeviceDimmer;
 
 public class DeviceTest {
 	private MockDeviceDimmer device;
-	private int assignedId;
 	private String assignedName;
 	@Before
 	public void setUp() throws Exception {
-		this.assignedId = 1857293476;
 		this.assignedName = "My Device #5";
 		this.device = new MockDeviceDimmer("ID123");
 		this.device.setName(this.assignedName);
@@ -36,10 +34,6 @@ public class DeviceTest {
 		assertEquals("Name is not the assigned name.", this.device.getName(), this.assignedName);
 	}
 	
-	@Test
-	public void testGetId() {
-		assertEquals("Id is not the assigned id.", this.device.getId(), this.assignedId);
-	}
 	
 	@Test
 	public void testEqualsObject() {

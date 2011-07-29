@@ -40,11 +40,6 @@ public class TellStickSwitchTest {
 	}
 	
 	@Test
-	public void testGetId() {
-		assertEquals("Id is not the assigned id.", this.device.getId(), this.assignedId);
-	}
-	
-	@Test
 	public void testEqualsObject() {
 		assertTrue(this.device.equals(this.device));
 		assertTrue(((Device)this.device).equals(this.device));

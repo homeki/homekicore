@@ -85,8 +85,6 @@ public class InternalDataTest {
 		
 		String s = api.getDevices();
 		
-		System.out.println("HTTAPI: " + api.getDevices());
-		
 		assertTrue("s is " + s,s.contains("My MockDevice #1") && s.contains("MockDeviceSwitcher"));
 		assertTrue("s is " + s,s.contains("My MockDevice #2") && s.contains("MockDeviceDimmer"));
 		

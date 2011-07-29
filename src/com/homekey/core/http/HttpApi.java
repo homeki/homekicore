@@ -10,6 +10,7 @@ import com.homekey.core.device.Queryable;
 import com.homekey.core.device.Switchable;
 import com.homekey.core.http.json.JsonDevice;
 import com.homekey.core.http.json.JsonStatus;
+import com.homekey.core.log.L;
 import com.homekey.core.main.Monitor;
 
 public class HttpApi {

@@ -30,7 +30,7 @@ public class L {
 			return "INFO";
 		if (level >= LEVEL_DEBUG)
 			return "DEBUG";
-		return "NO PRIOROTY";
+		return "NO PRIORITY";
 		
 	}
 	
@@ -88,16 +88,16 @@ public class L {
 			if (sh.showTime) {
 				full += c.get(Calendar.HOUR_OF_DAY) + ":" + c.get(Calendar.MINUTE) + ":" + c.get(Calendar.SECOND);
 			}
-			full = full + "] ";
 		} else {
-			full += "] ";
 		}
-		
+		full += " | " + Thread.currentThread().getName();
+		full += "] ";
+		full += levelToString(level) + ": ";
 		if (removeDescriptor) {
 			full = "                                                                                      ".substring(0, full.length());
 		}
 		
-		full += levelToString(level) + ": ";
+
 		
 		full += message;
 		sh.out.println(full);
@@ -139,6 +139,10 @@ public class L {
 	
 	public static void e(String msg) {
 		getStd().log(msg, LEVEL_ERROR);
+	}
+
+	public static void d(Object obj, String msg) {
+		getStd().log(msg, LEVEL_DEBUG,true);
 	}
 	
 }

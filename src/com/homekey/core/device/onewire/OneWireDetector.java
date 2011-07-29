@@ -6,7 +6,6 @@ import java.io.*;
 
 import com.homekey.core.device.Detector;
 import com.homekey.core.device.Device;
-import com.homekey.core.log.SuperLogger;
 
 public class OneWireDetector extends Detector {
 	private final String OWFS_MOUNT_POINT = "/mnt/1wire/";
