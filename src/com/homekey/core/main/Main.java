@@ -1,14 +1,19 @@
 package com.homekey.core.main;
 
-import com.homekey.core.log.SuperLogger;
+import com.homekey.core.Logs;
+import com.homekey.core.log.L;
 
 public class Main {
 	public static void main(String[] args) {
 		new ThreadMaster();
-		SuperLogger log =  SuperLogger.getLogger("homekey");
-		log.addOutput(System.out);
+		L.setStandard("homekey");
 		
-		log.log("Server has started", SuperLogger.LEVEL_INFO);
+		L.d("Här är en debug");
+		L.i("Här är en info");
+		L.w("Här är en varning!!!!");
+		L.e("Här är EETTT FEEEEL!!!!!!!!!!!!!!!!!!!!!!!!!");
+		
+		
 		// DoSomeTesting(tm.getMonitor(),b);
 		// tm.shutdown();
 		// b.close();

@@ -31,7 +31,6 @@ public class HttpGetResolver {
 		return false;
 	}
 	
-	// TODO: fix static boolean issue
 	private static void resolveGet(StringTokenizer st, HttpApi api, DataOutputStream out) throws IOException {
 		Actions action = Actions.NO_ACTION;
 		String token = "";

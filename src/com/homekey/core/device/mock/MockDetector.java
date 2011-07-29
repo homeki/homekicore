@@ -11,9 +11,9 @@ public class MockDetector extends Detector {
 	@Override
 	public List<Device> findDevices() {
 		List<Device> devices = new ArrayList<Device>();
-		devices.add(new MockDeviceSwitcher("switch1", true));
-		devices.add(new MockDeviceSwitcher("switch2", true));
-		devices.add(new MockDeviceDimmer("dimmer1", true));;
+		devices.add(new MockDeviceSwitcher("switch1"));
+		devices.add(new MockDeviceSwitcher("switch2"));
+		devices.add(new MockDeviceDimmer("dimmer1"));;
 		return devices;
 	}
 }

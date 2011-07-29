@@ -19,8 +19,8 @@ public class InternalDataTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		dev1 = new MockDeviceSwitcher("DA", true);
-		dev2 = new MockDeviceDimmer("DDD", true);
+		dev1 = new MockDeviceSwitcher("DA");
+		dev2 = new MockDeviceDimmer("DDD");
 		//dev1.setId(10);
 		dev1.setName("My MockDevice #1");
 		//dev2.setId(20);

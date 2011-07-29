@@ -47,7 +47,6 @@ public class TellStickDetector extends Detector {
 				String match = m.group(1);
 				String id = getMatch(match, idFinder);
 				String model = getMatch(match, modelFinder);
-				System.out.println(id + " " + model);
 				if (model.equals("\"selflearning-switch\"")) {
 					devices.add(new TellStickSwitch(id));
 				} else if (model.equals("\"selflearning-dimmer\"")){
