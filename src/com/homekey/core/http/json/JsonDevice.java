@@ -1,6 +1,7 @@
 package com.homekey.core.http.json;
 
 import java.util.Date;
+import java.util.List;
 
 import com.homekey.core.device.Device;
 
@@ -19,10 +20,10 @@ public class JsonDevice {
 		active = d.isActive();
 	}
 
-	public static JsonDevice[] makeArray(Device[] devices) {
-		JsonDevice[] jsonDevices = new JsonDevice[devices.length];
+	public static JsonDevice[] makeArray(List<Device> devices) {
+		JsonDevice[] jsonDevices = new JsonDevice[devices.size()];
 		for (int i = 0; i < jsonDevices.length; i++) {
-			jsonDevices[i] = new JsonDevice(devices[i]);
+			jsonDevices[i] = new JsonDevice(devices.get(i));
 		}
 		return jsonDevices;
 	}

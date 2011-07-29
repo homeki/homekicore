@@ -26,7 +26,8 @@ public class DetectorThread extends Thread {
 		while (true) {
 			for (Detector d : detectors) {
 				List<Device> devs = d.findDevices();
-				//TODO: "gör det som commandet gjorde innan fast här direkt" "lägga in devices och såhär"
+
+				
 			}
 			
 			try {

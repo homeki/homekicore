@@ -1,5 +1,6 @@
 package com.homekey.core.main;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,23 +15,30 @@ public class Monitor {
 		devices = new HashMap<Integer, Device>();
 	}
 	
-	public void addDevice(Device dev) {
+	public synchronized void addDevice(Device dev) {
 		devices.put(dev.getId(), dev);
 	}
 	
-	public List<IntervalLoggable<?>> getLoggableDevices() {
-		//TODO: implement
-		return null;
+	public synchronized List<IntervalLoggable<?>> getLoggableDevices() {
+		List<IntervalLoggable<?>> list = new ArrayList<IntervalLoggable<?>>();
+		
+		for (Device d : devices.values()) {
+			if (d instanceof IntervalLoggable<?>) {
+				list.add((IntervalLoggable<?>)d);
+			}
+		}
+		
+		return list;
 	}
 	
-	public Device getDevice(int i) {
-		if (devices.containsKey(i)) {
-			return devices.get(i);
+	public synchronized Device getDevice(int id) {
+		if (devices.containsKey(id)) {
+			return devices.get(id);
 		}
 		return null;
 	}
 	
-	public Device[] getDevices() {
-		return devices.values().toArray(new Device[devices.size()]);
+	public synchronized List<Device> getDevices() {
+		return new ArrayList<Device>(devices.values());
 	}
 }

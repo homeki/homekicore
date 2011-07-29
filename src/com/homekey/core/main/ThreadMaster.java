@@ -4,8 +4,6 @@ import java.util.LinkedList;
 
 import com.homekey.core.http.HttpApi;
 import com.homekey.core.http.HttpListenerThread;
-import com.homekey.core.storage.Database;
-import com.homekey.core.storage.impl.SqliteDatabase;
 
 public class ThreadMaster {
 	private Monitor monitor;
