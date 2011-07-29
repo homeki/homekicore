@@ -1,7 +1,7 @@
 package com.homekey.core.storage;
 
 public abstract class Database {
-	public final String DEVICE_TABLE_NAME_PREFIX = "D_";
+	public final String DEVICE_TABLE_NAME_PREFIX = "d_";
 	
 	protected static final String DEFAULT_DATABASE_NAME = "homekey.db";
 	
