@@ -1,9 +1,14 @@
 package com.homekey.core.main;
 
+import com.homekey.core.log.SuperLogger;
+
 public class Main {
 	public static void main(String[] args) {
 		new ThreadMaster();
+		SuperLogger log =  SuperLogger.getLogger("homekey");
+		log.addOutput(System.out);
 		
+		log.log("Server has started", SuperLogger.LEVEL_INFO);
 		// DoSomeTesting(tm.getMonitor(),b);
 		// tm.shutdown();
 		// b.close();
