@@ -13,7 +13,6 @@ public class OneWireTemperatureSensor extends OneWireDevice implements IntervalL
 
 	@Override
 	public Float getValue() {
-		//Tydligt och bra:
 		return getFloatVar("temperature");
 	}
 	
