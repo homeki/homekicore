@@ -1,4 +1,4 @@
-package com.homekey.core.storage.impl;
+package com.homekey.core.storage.mock;
 
 import java.util.Date;
 

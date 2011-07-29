@@ -15,10 +15,11 @@ public class HttpRequestResolverThread extends ControlledThread {
 	
 	public HttpRequestResolverThread(Socket client, HttpApi a) {
 		super(0);
+		quiet();
 		connectedClient = client;
 		api = a;
 	}
-	
+
 	enum Type {
 		GET, SET;
 	}

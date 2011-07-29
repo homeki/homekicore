@@ -6,10 +6,12 @@ public abstract class ControlledThread extends Thread {
 	
 	private boolean shutdown;
 	private int interval;
+	private boolean quiet;
 	
 	public ControlledThread(int interval) {
 		super();
 		this.shutdown = false;
+		this.quiet = false;
 		this.interval = interval;
 		setName(this.getClass().getSimpleName());
 	}
@@ -18,8 +20,13 @@ public abstract class ControlledThread extends Thread {
 		return !shutdown;
 	}
 	
+	public void quiet() {
+		this.quiet = true;
+	}
+	
 	public void run() {
-		L.i("Starting thread.");
+		if (!quiet)
+			L.i("Starting thread.");
 		try {
 			while (!shutdown) {
 				iteration();
@@ -32,6 +39,7 @@ public abstract class ControlledThread extends Thread {
 		if (!shutdown) {
 			L.e("Thread exited without permission.");
 		} else {
+			if (!quiet)
 			L.i("Thread was shut down.");
 		}
 	}

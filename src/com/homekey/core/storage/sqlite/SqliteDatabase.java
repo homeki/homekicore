@@ -1,4 +1,4 @@
-package com.homekey.core.storage.impl;
+package com.homekey.core.storage.sqlite;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -53,74 +53,34 @@ public class SqliteDatabase extends Database {
 	public void addRow(String table, String[] columns, Object[] values) {
 		String sql = "INSERT INTO " + table + "(";
 		
-		// generate sql command from table design
-		for (int i = 0; i < columns.length; i++) {
-			sql += columns[i] + ", ";
-		}
+		sql += SqliteUtil.merge(columns, 0, ", ");
 		sql = sql.substring(0, sql.length() - 2) + ") VALUES(";
-		for (int i = 0; i < columns.length; i++) {
-			sql += "?, ";
-		}
+		sql += SqliteUtil.merge(columns.length, "?, ");
 		sql = sql.substring(0, sql.length() - 2) + ");";
 		
-		PreparedStatement stat;
-		
-		try {
-			stat = conn.prepareStatement(sql);
-			
-			// add parameters to sql command
-			for (int i = 0; i < columns.length; i++) {
-				if (values[i] instanceof String) {
-					stat.setString(i + 1, (String) values[i]);
-				} else if (values[i] instanceof Boolean) {
-					stat.setBoolean(i + 1, (Boolean) values[i]);
-				} else if (values[i] instanceof Integer) {
-					stat.setInt(i + 1, (Integer) values[i]);
-				} else if (values[i] instanceof Float) {
-					stat.setFloat(i + 1, (Float) values[i]);
-				} else if (values[i] instanceof java.util.Date) {
-					java.util.Date javaDate = (java.util.Date) values[i];
-					java.sql.Date sqlDate = new java.sql.Date(javaDate.getTime());
-					stat.setDate(i + 1, sqlDate);
-				}
-			}
-			
-			stat.execute();
-		} catch (SQLException ex) {
-			System.err.println("addRow(): Couldn't execute INSERT SQL.");
-		}
+		executeParametrized(columns, values, sql);
 	}
 	
 	@Override
 	public void updateRow(String table, String[] columns, Object[] values) {
 		String sql = "UPDATE " + table + " SET ";
 		
-		// generate sql command from table design
-		for (int i = 0; i < columns.length - 1; i++) {
-			sql += columns[i] + " = ?, ";
-		}
+		sql = sql + SqliteUtil.merge(columns, -1, " = ?, ");
+		
 		sql = sql.substring(0, sql.length() - 2) + " WHERE " + columns[columns.length - 1] + " = ?;";
 		
+		executeParametrized(columns, values, sql);
+	}
+	
+	
+	private void executeParametrized(String[] columns, Object[] values, String sql) {
 		PreparedStatement stat;
 		
 		try {
 			stat = conn.prepareStatement(sql);
 			
-			// add parameters to sql command
 			for (int i = 0; i < columns.length; i++) {
-				if (values[i] instanceof String) {
-					stat.setString(i + 1, (String) values[i]);
-				} else if (values[i] instanceof Boolean) {
-					stat.setBoolean(i + 1, (Boolean) values[i]);
-				} else if (values[i] instanceof Integer) {
-					stat.setInt(i + 1, (Integer) values[i]);
-				} else if (values[i] instanceof Float) {
-					stat.setFloat(i + 1, (Float) values[i]);
-				} else if (values[i] instanceof java.util.Date) {
-					java.util.Date javaDate = (java.util.Date) values[i];
-					java.sql.Date sqlDate = new java.sql.Date(javaDate.getTime());
-					stat.setDate(i + 1, sqlDate);
-				}
+				setParameter(values[i], stat,i+1);
 			}
 			
 			stat.execute();
@@ -129,43 +89,48 @@ public class SqliteDatabase extends Database {
 		}
 	}
 	
+	private void setParameter(Object value, PreparedStatement stat, int i) throws SQLException {
+		if (value instanceof String) {
+			stat.setString(i, (String) value);
+		} else if (value instanceof Boolean) {
+			stat.setBoolean(i , (Boolean) value);
+		} else if (value instanceof Integer) {
+			stat.setInt(i, (Integer) value);
+		} else if (value instanceof Float) {
+			stat.setFloat(i , (Float) value);
+		} else if (value instanceof java.util.Date) {
+			java.util.Date javaDate = (java.util.Date) value;
+			java.sql.Date sqlDate = new java.sql.Date(javaDate.getTime());
+			stat.setDate(i , sqlDate);
+		}
+	}
+	
 	@Override
 	public Object[] getRow(String table, String[] columns, Object value) {
-		Object[] values = new Object[columns.length-1];
+		Object[] values = null;
 		String sql = "SELECT ";
-		
-		for (int i = 0; i < columns.length - 1; i++) {
-			sql += columns[i] + ", ";
-		}
-		sql = sql.substring(0, sql.length() - 2) + " FROM " + table + " WHERE " + columns[columns.length-1] + " = ?;";
+		sql += SqliteUtil.merge(columns, -1, ", ");
+		sql = sql.substring(0, sql.length() - 2) + " FROM " + table + " WHERE " + columns[columns.length - 1] + " = ?;";
 		
 		PreparedStatement stat;
 		
 		try {
 			stat = conn.prepareStatement(sql);
-			
-			
-			if (value instanceof String) {
-				stat.setString(1, (String) value);
-			} else if (value instanceof Integer) {
-				stat.setInt(1, (Integer) value);
-			}
-			
+			setParameter(value, stat, 1);
 			ResultSet rs = stat.executeQuery();
 			
-			if (!rs.next()) {
-				return null;
-			}
-			
-			try {
-				for (int i = 0; i < columns.length - 1; i++) {
-					values[i] = rs.getObject(i+1);
+			if (rs.next()) {
+				values = new Object[columns.length - 1];
+				try {
+					for (int i = 0; i < columns.length - 1; i++) {
+						values[i] = rs.getObject(i + 1);
+					}
+				} finally {
+					rs.close();
 				}
-			} finally {
-				rs.close();
 			}
 		} catch (SQLException ex) {
-			System.err.println("loadDevice(): Couldn't execute SQL query.");
+			L.e("Couldn't execute SQL query.");
 		}
 		
 		return values;
@@ -176,31 +141,30 @@ public class SqliteDatabase extends Database {
 		return executeScalar("SELECT COUNT(name) FROM sqlite_master WHERE type='table' AND name='" + name + "';") > 0;
 	}
 	
-
 	@Override
 	public String getFieldAsString(String table, String[] columns, Object value) {
 		Object[] fields = getRow(table, columns, value);
-		return (String)fields[0];
+		return (String) fields[0];
 	}
-
+	
 	@Override
 	public boolean getFieldAsBoolean(String table, String[] columns, Object value) {
 		Object[] fields = getRow(table, columns, value);
-		return (Integer)fields[0] != 0;
+		return (Integer) fields[0] != 0;
 	}
-
+	
 	@Override
 	public int getFieldAsInteger(String table, String[] columns, Object value) {
 		Object[] fields = getRow(table, columns, value);
-		return (Integer)fields[0];
+		return (Integer) fields[0];
 	}
-
+	
 	@Override
 	public Date getFieldAsDate(String table, String[] columns, Object value) {
 		Object[] fields = getRow(table, columns, value);
-		return new Date((Long)fields[0]);
+		return new Date((Long) fields[0]);
 	}
-
+	
 	@Override
 	public Object getField(String table, String column, String orderByColumn) {
 		Object value = null;
@@ -243,28 +207,11 @@ public class SqliteDatabase extends Database {
 		String sql = "CREATE TABLE " + name + " (Id INTEGER PRIMARY KEY AUTOINCREMENT, ";
 		
 		for (int i = 0; i < table.getColumnCount(); i++) {
-			sql += table.getName(i) + " " + convertToSqlRepresentation(table.getType(i)) + ", ";
+			sql += table.getName(i) + " " + SqliteUtil.convertToSqlRepresentation(table.getType(i)) + ", ";
 		}
 		
 		sql = sql.substring(0, sql.length() - 2) + ");";
 		executeUpdate(sql);
-	}
-	
-	private String convertToSqlRepresentation(ColumnType type) {
-		switch (type) {
-		case Integer:
-			return "INTEGER";
-		case DateTime:
-			return "DATETIME";
-		case Float:
-			return "REAL";
-		case String:
-			return "TEXT";
-		case Boolean:
-			return "BOOLEAN";
-		default:
-			throw new IllegalArgumentException();
-		}
 	}
 	
 	private void executeUpdate(String sql) {
