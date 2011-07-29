@@ -9,7 +9,6 @@ import com.homekey.core.storage.impl.SqliteDatabase;
 
 public class ThreadMaster {
 	private Monitor monitor;
-	private Database db;
 	private LinkedList<Thread> threads;
 	private HttpApi api;
 	
@@ -17,7 +16,6 @@ public class ThreadMaster {
 		threads = new LinkedList<Thread>();
 		monitor = new Monitor();
 		api = new HttpApi(monitor);
-		db = new SqliteDatabase();
 		
 		// create all threads
 		threads.add(new DetectorThread(monitor));

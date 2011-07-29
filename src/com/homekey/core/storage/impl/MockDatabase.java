@@ -1,36 +1,37 @@
 package com.homekey.core.storage.impl;
 
-import com.homekey.core.device.Device;
 import com.homekey.core.storage.Database;
 import com.homekey.core.storage.DatabaseTable;
 
 public class MockDatabase extends Database {
 	@Override
 	public void close() {
+		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	protected void open() {
-
-	}
-
-	@Override
-	protected void addDevice(Device device) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	protected void loadDevice(Device device) {
+	public void addRow(String table, String[] columns, Object[] values) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	protected boolean deviceExists(Device device) {
+	public void updateRow(String table, String[] columns, Object[] values) {
 		// TODO Auto-generated method stub
-		return false;
+		
+	}
+
+	@Override
+	public Object[] getFields(String table, String[] columns, Object value) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
@@ -45,9 +46,4 @@ public class MockDatabase extends Database {
 		return false;
 	}
 
-	@Override
-	public void putRow(Device device, Object[] values) {
-		// TODO Auto-generated method stub
-		
-	}
 }

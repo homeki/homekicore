@@ -7,19 +7,32 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import com.homekey.core.device.Device;
 import com.homekey.core.storage.ColumnType;
 import com.homekey.core.storage.Database;
 import com.homekey.core.storage.DatabaseTable;
 
 public class SqliteDatabase extends Database {
+	private static Database database;
+	
 	private Connection conn;
 	
-	public SqliteDatabase(String databaseName) {
+	public static Database getInstance() {
+		return getInstance(DEFAULT_DATABASE_NAME);
+	}
+	
+	public static Database getInstance(String databaseName) {
+		if (database == null) {
+			database = new SqliteDatabase();
+		}
+		
+		return database;
+	}
+	
+	private SqliteDatabase(String databaseName) {
 		super(databaseName);
 	}
 	
-	public SqliteDatabase() {
+	private SqliteDatabase() {
 		super();
 	}
 	
@@ -34,17 +47,15 @@ public class SqliteDatabase extends Database {
 	}
 	
 	@Override
-	public void putRow(Device device, Object[] values) {
-		DatabaseTable table = device.getTableDesign();
-		String tableName = getTableName(device);
-		String sql = "INSERT INTO " + tableName + "(";
+	public void addRow(String table, String[] columns, Object[] values) {
+		String sql = "INSERT INTO " + table + "(";
 		
 		// generate sql command from table design
-		for (int i = 0; i < table.getColumnCount(); i++) {
-			sql += table.getName(i) + ", ";
+		for (int i = 0; i < columns.length; i++) {
+			sql += columns[i] + ", ";
 		}
 		sql = sql.substring(0, sql.length() - 2) + ") VALUES(";
-		for (int i = 0; i < table.getColumnCount(); i++) {
+		for (int i = 0; i < columns.length; i++) {
 			sql += "?, ";
 		}
 		sql = sql.substring(0, sql.length() - 2) + ");";
@@ -55,34 +66,105 @@ public class SqliteDatabase extends Database {
 			stat = conn.prepareStatement(sql);
 			
 			// add parameters to sql command
-			for (int i = 0; i < table.getColumnCount(); i++) {
-				switch (table.getType(i)) {
-				case String:
+			for (int i = 0; i < columns.length; i++) {
+				if (values[i] instanceof String) {
 					stat.setString(i + 1, (String) values[i]);
-					break;
-				case Boolean:
+				} else if (values[i] instanceof Boolean) {
 					stat.setBoolean(i + 1, (Boolean) values[i]);
-					break;
-				case Integer:
+				} else if (values[i] instanceof Integer) {
 					stat.setInt(i + 1, (Integer) values[i]);
-					break;
-				case Float:
+				} else if (values[i] instanceof Float) {
 					stat.setFloat(i + 1, (Float) values[i]);
-					break;
-				case DateTime:
+				} else if (values[i] instanceof java.util.Date) {
 					java.util.Date javaDate = (java.util.Date) values[i];
 					java.sql.Date sqlDate = new java.sql.Date(javaDate.getTime());
 					stat.setDate(i + 1, sqlDate);
-					break;
-				default:
-					throw new IllegalArgumentException();
 				}
 			}
 			
 			stat.execute();
 		} catch (SQLException ex) {
-			System.err.println("putRow(): Couldn't execute INSERT SQL.");
+			System.err.println("addRow(): Couldn't execute INSERT SQL.");
 		}
+	}
+	
+	@Override
+	public void updateRow(String table, String[] columns, Object[] values) {
+		String sql = "UPDATE " + table + " SET ";
+		
+		// generate sql command from table design
+		for (int i = 0; i < columns.length - 1; i++) {
+			sql += columns[i] + " = ?, ";
+		}
+		sql = sql.substring(0, sql.length() - 2) + " WHERE " + columns[columns.length - 1] + " = ?;";
+		
+		PreparedStatement stat;
+		
+		try {
+			stat = conn.prepareStatement(sql);
+			
+			// add parameters to sql command
+			for (int i = 0; i < columns.length; i++) {
+				if (values[i] instanceof String) {
+					stat.setString(i + 1, (String) values[i]);
+				} else if (values[i] instanceof Boolean) {
+					stat.setBoolean(i + 1, (Boolean) values[i]);
+				} else if (values[i] instanceof Integer) {
+					stat.setInt(i + 1, (Integer) values[i]);
+				} else if (values[i] instanceof Float) {
+					stat.setFloat(i + 1, (Float) values[i]);
+				} else if (values[i] instanceof java.util.Date) {
+					java.util.Date javaDate = (java.util.Date) values[i];
+					java.sql.Date sqlDate = new java.sql.Date(javaDate.getTime());
+					stat.setDate(i + 1, sqlDate);
+				}
+			}
+			
+			stat.execute();
+		} catch (SQLException ex) {
+			System.err.println("updateRow(): Couldn't execute UPDATE SQL.");
+		}
+	}
+	
+	@Override
+	public Object[] getFields(String table, String[] columns, Object value) {
+		Object[] values = new Object[columns.length];
+		String sql = "SELECT ";
+		
+		for (int i = 0; i < columns.length - 1; i++) {
+			sql += columns[i] + ", ";
+		}
+		sql += sql.substring(0, sql.length() - 2) + " FROM " + table + " WHERE " + columns[columns.length] + " = ?;";
+		
+		PreparedStatement stat;
+		
+		try {
+			stat = conn.prepareStatement(sql);
+			
+			if (value instanceof String) {
+				stat.setString(1, (String) value);
+			} else if (value instanceof Integer) {
+				stat.setInt(1, (Integer) value);
+			}
+			
+			ResultSet rs = stat.executeQuery();
+			
+			if (!rs.next()) {
+				return null;
+			}
+			
+			try {
+				for (int i = 0; i < columns.length - 1; i++) {
+					values[i] = rs.getObject(i);
+				}
+			} finally {
+				rs.close();
+			}
+		} catch (SQLException ex) {
+			System.err.println("loadDevice(): Couldn't execute SQL query.");
+		}
+		
+		return values;
 	}
 	
 	@Override
@@ -103,30 +185,6 @@ public class SqliteDatabase extends Database {
 		} catch (SQLException ex) {
 			System.err.println("open(): Couldn't open database named " + databaseName + ".");
 		}
-	}
-	
-	@Override
-	protected void addDevice(Device device) {
-		PreparedStatement stat;
-		
-		try {
-			stat = conn.prepareStatement("INSERT INTO devices(internalid, type, name, added, active) VALUES(?, ?, ?, ?, ?);");
-			stat.setString(1, device.getInternalId());
-			stat.setString(2, device.getClass().getSimpleName());
-			stat.setString(3, device.getName());
-			stat.setDate(4, new java.sql.Date(device.getAdded().getTime()));
-			stat.setBoolean(5, device.isActive());
-			stat.execute();
-		} catch (SQLException ex) {
-			System.err.println("addDevice(): Couldn't execute INSERT SQL.");
-		}
-		
-		device.setId(executeScalar("SELECT id FROM devices WHERE internalid = '" + device.getInternalId() + "';"));
-	}
-	
-	@Override
-	protected boolean deviceExists(Device device) {
-		return executeScalar("SELECT COUNT(internalid) FROM devices WHERE internalid ='" + device.getInternalId() + "';") > 0;
 	}
 	
 	@Override
@@ -155,31 +213,6 @@ public class SqliteDatabase extends Database {
 			return "BOOLEAN";
 		default:
 			throw new IllegalArgumentException();
-		}
-	}
-	
-	protected void loadDevice(Device device) {
-		Statement stat;
-		
-		try {
-			stat = conn.createStatement();
-			
-			ResultSet rs = stat.executeQuery("SELECT * FROM devices WHERE internalid = '" + device.getInternalId() + "';");
-			rs.next();
-			
-			try {
-				if (!rs.getString("type").equals(device.getClass().getSimpleName())) {
-					throw new ClassCastException("The device sent to function was of type " + device.getClass().getSimpleName() + ", but corresponding object in database was of type " + rs.getString("type") + ".");
-				}
-				
-				device.setId(rs.getInt("id"));
-				device.setName(rs.getString("name"));
-				device.setActive(rs.getBoolean("active"));
-			} finally {
-				rs.close();
-			}
-		} catch (SQLException ex) {
-			System.err.println("loadDevice(): Couldn't execute SQL query.");
 		}
 	}
 	
