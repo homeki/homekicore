@@ -44,7 +44,8 @@ public abstract class Device {
 	}
 	
 	public Date getAdded() {
-		return db.getField("devices", new String[] { "added", "id" }, id);
+		Long date = db.getField("devices", new String[] { "added", "id" }, id);
+		return new Date(date);
 	}
 	
 	public boolean isActive() {
