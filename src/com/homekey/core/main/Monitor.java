@@ -41,4 +41,8 @@ public class Monitor {
 	public synchronized List<Device> getDevices() {
 		return new ArrayList<Device>(devices.values());
 	}
+
+	public synchronized boolean containsDevice(Device dev) {
+		return devices.containsValue(dev);
+	}
 }

@@ -24,14 +24,18 @@ public class DetectorThread extends Thread {
 	@Override
 	public void run() {
 		while (true) {
-			for (Detector d : detectors) {
-				List<Device> devs = d.findDevices();
-
+			for (Detector det : detectors) {
+				List<Device> devs = det.findDevices();
 				
+				for (Device d : devs) {
+					if (!monitor.containsDevice(d)) {
+						monitor.addDevice(d);
+					}
+				}
 			}
 			
 			try {
-				Thread.sleep(10000);
+				Thread.sleep(20000);
 			} catch (InterruptedException e) {
 				System.out.println("DetectorThread interrupted.");
 				return;
