@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 
 import com.homekey.core.device.Detector;
 import com.homekey.core.device.Device;
+import com.homekey.core.log.L;
 
 public class TellStickDetector extends Detector {
 	private static final String valueFinder = "%s\\s*?=\\s*?(\\w+|\".*?\")";
@@ -52,15 +53,13 @@ public class TellStickDetector extends Detector {
 				} else if (model.equals("\"selflearning-dimmer\"")){
 					devices.add(new TellStickDimmer(id));
 				} else {
-					System.err.println("Unknown device!");
+					L.e("Unknown device!");
 				}
 				
 			}
 			
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
-			e.printStackTrace();
+			L.e("Problem while reading tellstick.conf - " + e.getMessage());
 		}
 		return devices;
 		

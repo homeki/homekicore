@@ -7,11 +7,14 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 import java.util.StringTokenizer;
 
-public class HttpRequestResolverThread extends Thread {
+import com.homekey.core.main.ControlledThread;
+
+public class HttpRequestResolverThread extends ControlledThread {
 	private HttpApi api = null;
 	private Socket connectedClient = null;
 	
 	public HttpRequestResolverThread(Socket client, HttpApi a) {
+		super(0);
 		connectedClient = client;
 		api = a;
 	}
@@ -24,7 +27,8 @@ public class HttpRequestResolverThread extends Thread {
 		OFF, ON, DIM, STATUS, DEVICES;
 	}
 	
-	public void run() {
+	@Override
+	public void iteration() throws InterruptedException {
 		String httpQueryString = "";
 		BufferedReader in;
 		DataOutputStream out;
@@ -53,7 +57,7 @@ public class HttpRequestResolverThread extends Thread {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+		shutdown();
 	}
 	
 }

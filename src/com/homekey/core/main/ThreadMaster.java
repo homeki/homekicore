@@ -12,6 +12,10 @@ public class ThreadMaster {
 	private HttpApi api;
 	
 	public ThreadMaster() {
+		start();
+	}
+	
+	private void start() {
 		threads = new LinkedList<ControlledThread>();
 		monitor = new Monitor();
 		api = new HttpApi(monitor);
@@ -33,5 +37,18 @@ public class ThreadMaster {
 		L.i("ThreadMaster shutting down threads...");
 		for (ControlledThread t : threads)
 			t.shutdown();
+	}
+	
+	public void restart() {
+		L.i("Doing forced restart. Shutting down threads.");
+		shutdown();
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		L.i("Starting threads.");
+		start();
+		
 	}
 }
