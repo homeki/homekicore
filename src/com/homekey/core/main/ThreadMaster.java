@@ -30,7 +30,7 @@ public class ThreadMaster {
 	}
 	
 	public void shutdown() {
-		System.out.println("Shutting down threads..");
+		L.i("ThreadMaster shutting down threads...");
 		for (ControlledThread t : threads)
 			t.shutdown();
 	}

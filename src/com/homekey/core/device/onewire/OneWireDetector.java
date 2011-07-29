@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 
 import com.homekey.core.device.Detector;
 import com.homekey.core.device.Device;
+import com.homekey.core.log.L;
 
 public class OneWireDetector extends Detector {
 	private final String OWFS_MOUNT_POINT = "/mnt/1wire/";
@@ -24,7 +25,7 @@ public class OneWireDetector extends Detector {
 		String[] items = root.list();
 
 		if (items == null) {
-			System.err.println("1-wire network not found. Detection of devices failed.");
+			L.w("1-wire network not found. Detection of devices failed.");
 			return null;
 		}
 
@@ -61,7 +62,7 @@ public class OneWireDetector extends Detector {
 				device = new OneWireTemperatureSensor(s, deviceDirPath);
 				devices.add(device);
 			} else {
-				System.err.println("OneWireDetector didn't understand device type " + type + ".");
+				L.w("Found no corresponding device for 1-wire device type " + type + ".");
 				continue;
 			}
 		}
