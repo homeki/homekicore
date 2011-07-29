@@ -142,7 +142,7 @@ public class L {
 	}
 
 	public static void d(Object obj, String msg) {
-		getStd().log(msg, LEVEL_DEBUG,true);
+		getStd().log(msg, LEVEL_DEBUG,false);
+		getStd().log(obj.toString(), LEVEL_DEBUG,true);
 	}
-	
 }
