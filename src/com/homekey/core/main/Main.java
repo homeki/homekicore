@@ -5,15 +5,10 @@ import com.homekey.core.log.L;
 
 public class Main {
 	public static void main(String[] args) {
-		new ThreadMaster();
+		ThreadMaster tm = new ThreadMaster();
 		L.setStandard("homekey");
 		
-		L.d("Här är en debug");
-		L.i("Här är en info");
-		L.w("Här är en varning!!!!");
-		L.e("Här är EETTT FEEEEL!!!!!!!!!!!!!!!!!!!!!!!!!");
-		
-		
+//		tm.shutdown();
 		
 		// DoSomeTesting(tm.getMonitor(),b);
 		// tm.shutdown();

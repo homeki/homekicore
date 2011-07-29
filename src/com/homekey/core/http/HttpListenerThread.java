@@ -5,17 +5,21 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-public class HttpListenerThread extends Thread {
-	private HttpApi api;
+import com.homekey.core.main.ControlledThread;
 
-	public HttpListenerThread(HttpApi a) {
+public class HttpListenerThread extends ControlledThread {
+	private HttpApi api;
+	ServerSocket Server;
+	
+	public HttpListenerThread(HttpApi a) throws IOException {
+		super(0);
 		api = a;
+		Server = new ServerSocket(5000, 10, null);
 	}
 	
-	public void run() {
-		ServerSocket Server;
+	@Override
+	public void iteration() throws InterruptedException {
 		try {
-			Server = new ServerSocket(5000, 10, null);
 			while (true) {
 				Socket connected;
 				connected = Server.accept();
@@ -26,6 +30,6 @@ public class HttpListenerThread extends Thread {
 			throw new RuntimeException("You suck!");
 		} catch (IOException e) {
 			e.printStackTrace();
-		} 
+		}
 	}
 }

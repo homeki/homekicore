@@ -14,6 +14,8 @@ public class DetectorThread extends ControlledThread {
 	private Monitor monitor;
 	
 	public DetectorThread(Monitor monitor) {
+		super(10000);
+		L.d("Creating detector thread..");
 		this.monitor = monitor;
 		this.detectors = new Detector[] { 
 				new MockDetector(),
@@ -21,21 +23,9 @@ public class DetectorThread extends ControlledThread {
 				new TellStickDetector("/etc/tellstick.conf") //TODO: put in better place
 			};
 	}
-	
-	@Override
-	public void run() {
-		while (keepRunning()) {
-			try {
-				Thread.sleep(20000);
-			} catch (InterruptedException e) {
-				L.w("DetectorThread stopped.");
-				return;
-			}
-		}
-	}
 
 	@Override
-	public void internalLoop() throws InterruptedException {
+	public void iteration() throws InterruptedException {
 		for (Detector det : detectors) {
 			List<Device> devs = det.findDevices();
 			
