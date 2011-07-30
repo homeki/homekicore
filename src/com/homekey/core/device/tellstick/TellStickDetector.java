@@ -1,11 +1,5 @@
 package com.homekey.core.device.tellstick;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.nio.channels.FileChannel;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -14,6 +8,7 @@ import java.util.regex.Pattern;
 import com.homekey.core.device.Detector;
 import com.homekey.core.device.DeviceInformation;
 import com.homekey.core.log.L;
+import com.homekey.core.main.Util;
 
 public class TellStickDetector extends Detector {
 	private static final String valueFinder = "%s\\s*?=\\s*?(\\w+|\".*?\")";
@@ -25,44 +20,30 @@ public class TellStickDetector extends Detector {
 		this.path = path;
 	}
 	
-	private CharSequence fromFile(String filename) throws IOException {
-		FileInputStream fis = new FileInputStream(filename);
-		FileChannel fc = fis.getChannel();
-		
-		// Create a read-only CharBuffer on the file
-		ByteBuffer bbuf = fc.map(FileChannel.MapMode.READ_ONLY, 0, (int) fc.size());
-		CharBuffer cbuf = Charset.forName("8859_1").newDecoder().decode(bbuf);
-		return cbuf;
-	}
-	
 	@Override
 	public List<DeviceInformation> findDevices() {
 		List<DeviceInformation> devices = new ArrayList<DeviceInformation>();
-		try {
-			Pattern idFinder = Pattern.compile(String.format(valueFinder, "id"));
-			Pattern modelFinder = Pattern.compile(String.format(valueFinder, "model"));
-			
-			Pattern p = Pattern.compile(deviceFinder, Pattern.DOTALL);
-			Matcher m = p.matcher(fromFile(path));
-			while (m.find()) {
-				String match = m.group(1);
-				String id = getMatch(match, idFinder);
-				String model = getMatch(match, modelFinder);
-				if (model.equals("\"selflearning-switch\"")) {
-					devices.add(new DeviceInformation(id, TellStickSwitch.class));
-				} else if (model.equals("\"selflearning-dimmer\"")){
-					devices.add(new DeviceInformation(id, TellStickDimmer.class));
-				} else {
-					L.w("TellStickDetector found unknown device.");
-				}
-				
-			}
-			
-		} catch (IOException e) {
-			L.e("Problem while reading tellstick.conf - " + e.getMessage());
-		}
-		return devices;
 		
+		Pattern idFinder = Pattern.compile(String.format(valueFinder, "id"));
+		Pattern modelFinder = Pattern.compile(String.format(valueFinder, "model"));
+		
+		Pattern p = Pattern.compile(deviceFinder, Pattern.DOTALL);
+		Matcher m = p.matcher(Util.fromFile(path));
+		
+		while (m.find()) {
+			String match = m.group(1);
+			String id = getMatch(match, idFinder);
+			String model = getMatch(match, modelFinder);
+			if (model.equals("\"selflearning-switch\"")) {
+				devices.add(new DeviceInformation(id, TellStickSwitch.class));
+			} else if (model.equals("\"selflearning-dimmer\"")) {
+				devices.add(new DeviceInformation(id, TellStickDimmer.class));
+			} else {
+				L.w("TellStickDetector found unknown device.");
+			}
+		}
+		
+		return devices;
 	}
 	
 	private String getMatch(String string, Pattern p) {

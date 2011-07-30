@@ -16,8 +16,8 @@ public class HttpApi {
 	
 	private Monitor monitor;
 	
-	public HttpApi(Monitor queue) {
-		this.monitor = queue;
+	public HttpApi(Monitor monitor) {
+		this.monitor = monitor;
 	}
 	
 	public String getDevices() {
