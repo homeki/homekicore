@@ -63,6 +63,10 @@ public class L {
 	}
 	
 	public void addOutput(PrintStream out) {
+		for (StreamHolder sh : outs) {
+			if (sh.out.equals(out))
+				throw new RuntimeException("You already added this PrintStream?");
+		}
 		outs.add(new StreamHolder(out, LEVEL_DEBUG, true, false));
 	}
 	

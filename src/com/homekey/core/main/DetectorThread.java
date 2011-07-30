@@ -16,7 +16,7 @@ public class DetectorThread extends ControlledThread {
 	private Database db;
 	
 	public DetectorThread(Monitor monitor, Database db) {
-		super(10000);
+		super(1000);
 		this.db = db;
 		this.monitor = monitor;
 		this.detectors = new Detector[] { 
