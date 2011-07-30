@@ -2,7 +2,6 @@ package com.homekey.core.main;
 
 import java.util.Scanner;
 
-import com.homekey.core.Logs;
 import com.homekey.core.log.L;
 
 public class Main {

@@ -1,7 +1,6 @@
 package com.homekey.core.main;
 
 import com.homekey.core.device.IntervalLoggable;
-import com.homekey.core.log.L;
 
 public class CollectorThread extends ControlledThread {
 	
