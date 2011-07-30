@@ -44,6 +44,11 @@ public class L {
 	
 	public static void setStandard(String standard) {
 		std = standard;
+		getLogger(standard);
+		for (StreamHolder sh : getStd().outs) {
+			if (sh.out.equals(System.out))
+				return;
+		}
 		getLogger(standard).addOutput(System.out);
 	}
 	
@@ -63,6 +68,10 @@ public class L {
 	}
 	
 	public void addOutput(PrintStream out) {
+		for (StreamHolder sh : outs) {
+			if (sh.out.equals(out))
+				throw new RuntimeException("You already added this PrintStream?");
+		}
 		outs.add(new StreamHolder(out, LEVEL_DEBUG, true, false));
 	}
 	
