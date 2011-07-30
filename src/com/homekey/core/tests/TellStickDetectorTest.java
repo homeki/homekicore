@@ -14,7 +14,7 @@ import com.homekey.core.device.tellstick.TellStickDimmer;
 import com.homekey.core.device.tellstick.TellStickSwitch;
 
 public class TellStickDetectorTest {
-	private static final String TEST_CONF_PATH = "src/com/homekey/core/tests/files/tellstick.conf";
+	private static final String TEST_CONF_PATH = "test/tellstick/tellstick.conf";
 	
 	private TellStickDetector tsd;
 	
