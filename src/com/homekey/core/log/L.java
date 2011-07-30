@@ -33,7 +33,6 @@ public class L {
 		if (level >= LEVEL_DEBUG)
 			return "DEBUG";
 		return "NO PRIORITY";
-		
 	}
 	
 	public static L getLogger(String label) {
