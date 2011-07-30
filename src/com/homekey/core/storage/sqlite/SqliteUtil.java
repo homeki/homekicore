@@ -21,15 +21,15 @@ public class SqliteUtil {
 	
 	protected static String convertToSqlRepresentation(ColumnType type) {
 		switch (type) {
-		case Integer:
+		case INTEGER:
 			return "INTEGER";
-		case DateTime:
+		case DATETIME:
 			return "DATETIME";
-		case Float:
+		case DOUBLE:
 			return "REAL";
-		case String:
+		case STRING:
 			return "TEXT";
-		case Boolean:
+		case BOOLEAN:
 			return "BOOLEAN";
 		default:
 			throw new IllegalArgumentException();

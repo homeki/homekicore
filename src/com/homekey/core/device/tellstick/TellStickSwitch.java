@@ -39,14 +39,14 @@ public class TellStickSwitch extends Device implements Switchable, Queryable<Boo
 	
 	@Override
 	public Boolean getValue() {
-		return (Integer)db.getField(databaseTableName, "value", "registered") > 0; 
+		return (Integer)db.getTopFieldOrderByDescending(databaseTableName, "value", "registered") > 0; 
 	}
 	
 	@Override
 	public void createDatabaseTable() {
 		DatabaseTable table = new DatabaseTable(2);
-		table.setColumn(0, "registered", ColumnType.DateTime);
-		table.setColumn(1, "value", ColumnType.Boolean);
+		table.setColumn(0, "registered", ColumnType.DATETIME);
+		table.setColumn(1, "value", ColumnType.BOOLEAN);
 		db.createTable(databaseTableName, table);
 	}
 }

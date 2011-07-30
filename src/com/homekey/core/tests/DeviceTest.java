@@ -1,52 +1,58 @@
 package com.homekey.core.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.homekey.core.device.Device;
+import com.homekey.core.device.mock.MockDevice;
 import com.homekey.core.device.mock.MockDeviceDimmer;
 import com.homekey.core.storage.Database;
-import com.homekey.core.storage.mock.MockDatabase;
 
 public class DeviceTest {
+	private static final String INTERNAL_ID = "mock1";
+	private static final String NAME = "My MockDevice #1";
+	
 	private Database db;
-	private MockDeviceDimmer device;
-	private String assignedName;
+	private Device device;
 	
 	@Before
 	public void setUp() throws Exception {
-		this.db = new MockDatabase();
-		this.assignedName = "My Device #5";
-		this.device = new MockDeviceDimmer("ID123", db);
-		this.device.setName(this.assignedName);
-		//this.device.setId(this.assignedId);
+		db = TestUtil.getEmptyTestDatabase();
+		device = new MockDevice(INTERNAL_ID, db);
+		device.setName(NAME);
 	}
 	
 	@After
 	public void tearDown() throws Exception {
+		
 	}
 	
 	@Test
 	public void testHashCode() {
-		assertEquals("Hashcode must be equal to id." ,this.device.hashCode(), this.device.getId());
+		assertEquals("Hashcode must be equal to ID.", device.hashCode(), device.getId());
 	}
 	
 	@Test
 	public void testGetName() {
-		assertEquals("Name is not the assigned name.", this.device.getName(), this.assignedName);
+		assertEquals("Name is not the assigned name.", NAME, device.getName());
 	}
 	
+	@Test
+	public void testGetInternalId() {
+		assertEquals("Internal ID is not the assigned internal ID.", INTERNAL_ID, device.getInternalId());
+	}
 	
 	@Test
-	public void testEqualsObject() {
-		assertTrue(this.device.equals(this.device));
-		assertTrue(((Device)this.device).equals(this.device));
-		Device notTheSame = new MockDeviceDimmer("323", db);
-		//notTheSame.setId(1213131);
-		notTheSame.setName("Another Device");
-		assertFalse(this.device.equals(notTheSame));
+	public void testEquals() {
+		assertTrue(device.equals(device));
+		assertTrue(((Device) device).equals(device));
+		Device notTheSame = new MockDeviceDimmer("notTheSame1", db);
+		notTheSame.setName("NotTheSame");
+		assertFalse(device.equals(notTheSame));
 	}
 }

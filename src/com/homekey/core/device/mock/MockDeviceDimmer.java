@@ -38,8 +38,8 @@ public class MockDeviceDimmer extends Device implements Dimmable, Queryable<Inte
 	@Override
 	public void createDatabaseTable() {
 		DatabaseTable table = new DatabaseTable(2);
-		table.setColumn(0, "registered", ColumnType.DateTime);
-		table.setColumn(1, "value", ColumnType.Integer);
+		table.setColumn(0, "registered", ColumnType.DATETIME);
+		table.setColumn(1, "value", ColumnType.INTEGER);
 		db.createTable(databaseTableName, table);
 	}
 	

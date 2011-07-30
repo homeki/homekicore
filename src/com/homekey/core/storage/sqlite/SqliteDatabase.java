@@ -7,7 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import com.homekey.core.Logs;
 import com.homekey.core.log.L;
 import com.homekey.core.storage.Database;
 import com.homekey.core.storage.DatabaseTable;
@@ -26,10 +25,10 @@ public class SqliteDatabase extends Database {
 	@Override
 	public void close() {
 		try {
-			L.getLogger(Logs.HOMEKEY).log("Shutting down database");
+			L.i("Shutting down database");
 			conn.close();
 		} catch (SQLException ex) {
-			System.err.println("close(): Couldn't close database connection.");
+			L.e("Problem closing database connection.", ex);
 		}
 	}
 	
@@ -51,8 +50,8 @@ public class SqliteDatabase extends Database {
 				stat.setObject(i + 1, values[i]);
 			}
 			stat.execute();
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} catch (SQLException ex) {
+			L.e("Couldn't add row to database.", ex);
 		}
 	}
 	
@@ -70,10 +69,10 @@ public class SqliteDatabase extends Database {
 			for (int i = 0; i < updateColumns.length; i++) {
 				stat.setObject(i + 1, updateValues[i]);
 			}
-			stat.setObject(updateColumns.length, whereValue);
+			stat.setObject(updateColumns.length+1, whereValue);
 			stat.execute();
-		} catch (SQLException e) {
-			e.printStackTrace();
+		} catch (SQLException ex) {
+			L.e("Couldn't update row in database.", ex);
 		}
 	}
 	
@@ -102,7 +101,7 @@ public class SqliteDatabase extends Database {
 				}
 			}
 		} catch (SQLException ex) {
-			L.e("Couldn't execute SQL query.");
+			L.e("Couldn't get row from database.", ex);
 		}
 		
 		return values;
@@ -120,9 +119,9 @@ public class SqliteDatabase extends Database {
 	}
 	
 	@Override
-	public Object getField(String table, String column, String orderByColumn) {
+	public Object getTopFieldOrderByDescending(String table, String column, String orderByColumn) {
 		Object value = null;
-		String sql = "SELECT LIMIT 1 " + column + " FROM " + table + " ORDER BY " + orderByColumn + " DESC";
+		String sql = "SELECT " + column + " FROM " + table + " ORDER BY " + orderByColumn + " DESC LIMIT 1";
 		
 		try {
 			Statement stat = conn.createStatement();
@@ -135,7 +134,7 @@ public class SqliteDatabase extends Database {
 				rs.close();
 			}
 		} catch (SQLException ex) {
-			System.err.println("loadDevice(): Couldn't execute SQL query.");
+			L.e("Couldn't get field from database.", ex);
 		}
 		
 		return value;
@@ -146,13 +145,13 @@ public class SqliteDatabase extends Database {
 		try {
 			Class.forName("org.sqlite.JDBC");
 		} catch (ClassNotFoundException ex) {
-			System.err.println("open(): Couldn't load SQlite JDBC driver.");
+			L.e("Couldn't load driver for SQlite.", ex);
 		}
 		
 		try {
 			conn = DriverManager.getConnection("jdbc:sqlite:" + databaseName);
 		} catch (SQLException ex) {
-			System.err.println("open(): Couldn't open database named " + databaseName + ".");
+			L.e("Couldn't open database.", ex);
 		}
 	}
 	
@@ -175,7 +174,7 @@ public class SqliteDatabase extends Database {
 			stat = conn.createStatement();
 			stat.executeUpdate(sql);
 		} catch (SQLException ex) {
-			System.err.println("executeUpdate(): Couldn't execute SQL command.");
+			L.e("Couldn't execute SQL command in database.", ex);
 		}
 	}
 	
@@ -191,7 +190,7 @@ public class SqliteDatabase extends Database {
 			count = rs.getInt(1);
 			rs.close();
 		} catch (SQLException ex) {
-			System.err.println("executeScalar(): Couldn't execute SQL query.");
+			L.e("Couldn't get integer value from field in database.", ex);
 		}
 		
 		return count;

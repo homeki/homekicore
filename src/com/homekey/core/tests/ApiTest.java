@@ -1,13 +1,10 @@
 package com.homekey.core.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import com.homekey.core.device.mock.MockDeviceDimmer;
-import com.homekey.core.device.mock.MockDeviceSwitcher;
 
 public class ApiTest {
 	

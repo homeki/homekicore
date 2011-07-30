@@ -20,14 +20,14 @@ public class OneWireTemperatureSensor extends OneWireDevice implements IntervalL
 	@Override
 	public void createDatabaseTable() {
 		DatabaseTable table = new DatabaseTable(2);
-		table.setColumn(0, "registered", ColumnType.DateTime);
-		table.setColumn(1, "value", ColumnType.Float);
+		table.setColumn(0, "registered", ColumnType.DATETIME);
+		table.setColumn(1, "value", ColumnType.DOUBLE);
 		db.createTable(databaseTableName, table);
 	}
 
 	@Override
 	public void updateValue() {
 		float value = getFloatVar("temperature");
-		db.addRow(databaseTableName, new String[] { "registered", "value" }, new Object[] { new Date(), value });
+		db.addRow(databaseTableName, new String[] { "registered", "value" }, new Object[] { new Date(), (double)value });
 	}
 }
