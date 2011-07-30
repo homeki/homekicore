@@ -36,11 +36,11 @@ public abstract class Database {
 		if (!tableExists("devices")) {
 			DatabaseTable table = new DatabaseTable(5);
 		
-			table.setColumn(0, "internalid", ColumnType.String);
-			table.setColumn(1, "type", ColumnType.String);
-			table.setColumn(2, "name", ColumnType.String);
-			table.setColumn(3, "added", ColumnType.DateTime);
-			table.setColumn(4, "active", ColumnType.Boolean);
+			table.setColumn(0, "internalid", ColumnType.STRING);
+			table.setColumn(1, "type", ColumnType.STRING);
+			table.setColumn(2, "name", ColumnType.STRING);
+			table.setColumn(3, "added", ColumnType.DATETIME);
+			table.setColumn(4, "active", ColumnType.BOOLEAN);
 			
 			createTable("devices", table);
 		}

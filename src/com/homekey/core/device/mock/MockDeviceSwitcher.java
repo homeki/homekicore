@@ -37,8 +37,8 @@ public class MockDeviceSwitcher extends Device implements Switchable, Queryable<
 	@Override
 	public void createDatabaseTable() {
 		DatabaseTable table = new DatabaseTable(2);
-		table.setColumn(0, "registered", ColumnType.DateTime);
-		table.setColumn(1, "value", ColumnType.Boolean);
+		table.setColumn(0, "registered", ColumnType.DATETIME);
+		table.setColumn(1, "value", ColumnType.BOOLEAN);
 		db.createTable(databaseTableName, table);
 	}
 }

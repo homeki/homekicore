@@ -32,9 +32,9 @@ public class SqliteDatabaseTest {
 	
 	private void createTestTable() {
 		DatabaseTable table = new DatabaseTable(3);
-		table.setColumn(0, "name", ColumnType.String);
-		table.setColumn(1, "integernumber", ColumnType.Integer);
-		table.setColumn(2, "realnumber", ColumnType.Float);
+		table.setColumn(0, "name", ColumnType.STRING);
+		table.setColumn(1, "integernumber", ColumnType.INTEGER);
+		table.setColumn(2, "realnumber", ColumnType.DOUBLE);
 		db.createTable("table1", table);
 	}
 	
