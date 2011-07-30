@@ -14,14 +14,17 @@ import com.homekey.core.device.mock.MockDeviceDimmer;
 import com.homekey.core.storage.Database;
 
 public class DeviceTest {
+	private static final String INTERNAL_ID = "mock1";
+	private static final String NAME = "My MockDevice #1";
+	
 	private Database db;
 	private Device device;
 	
 	@Before
 	public void setUp() throws Exception {
 		db = TestUtil.getEmptyTestDatabase();
-		device = new MockDevice("mock1", db);
-		device.setName("My MockDevice #1");
+		device = new MockDevice(INTERNAL_ID, db);
+		device.setName(NAME);
 	}
 	
 	@After
@@ -36,7 +39,12 @@ public class DeviceTest {
 	
 	@Test
 	public void testGetName() {
-		assertEquals("Name is not the assigned name.", device.getName(), "My MockDevice #1");
+		assertEquals("Name is not the assigned name.", NAME, device.getName());
+	}
+	
+	@Test
+	public void testGetInternalId() {
+		assertEquals("Internal ID is not the assigned internal ID.", INTERNAL_ID, device.getInternalId());
 	}
 	
 	@Test

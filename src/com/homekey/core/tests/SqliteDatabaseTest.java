@@ -12,6 +12,13 @@ import com.homekey.core.storage.Database;
 import com.homekey.core.storage.DatabaseTable;
 
 public class SqliteDatabaseTest {
+	private static final String TABLE_NAME = "table1";
+	private static final String[] COLUMNS = new String[] { "name", "integernumber", "realnumber" };
+	private static final Object[] JONAS_ROW = new Object[] { "jonas", 1986, 1986.05 };
+	private static final Object[] MARCUS_ROW = new Object[] { "marcus", 1986, 1986.04 };
+	private static final Object[] LINUS_ROW = new Object[] { "linus", 1986, 1986.03 };
+	private static final String ID_FIELD = "id";
+	
 	private Database db;
 	
 	@Before
@@ -25,30 +32,30 @@ public class SqliteDatabaseTest {
 	}
 	
 	private void addSomeRows() {
-		db.addRow("table1", new String[] { "name", "integernumber", "realnumber" }, new Object[] { "jonas", 1986, 1986.05 });
-		db.addRow("table1", new String[] { "name", "integernumber", "realnumber" }, new Object[] { "marcus", 1986, 1986.04 });
-		db.addRow("table1", new String[] { "name", "integernumber", "realnumber" }, new Object[] { "linus", 1986, 1986.03 });
+		db.addRow(TABLE_NAME, COLUMNS, JONAS_ROW);
+		db.addRow(TABLE_NAME, COLUMNS, MARCUS_ROW);
+		db.addRow(TABLE_NAME, COLUMNS, LINUS_ROW);
 	}
 	
 	private void createTestTable() {
 		DatabaseTable table = new DatabaseTable(3);
-		table.setColumn(0, "name", ColumnType.STRING);
-		table.setColumn(1, "integernumber", ColumnType.INTEGER);
-		table.setColumn(2, "realnumber", ColumnType.DOUBLE);
-		db.createTable("table1", table);
+		table.setColumn(0, COLUMNS[0], ColumnType.STRING);
+		table.setColumn(1, COLUMNS[1], ColumnType.INTEGER);
+		table.setColumn(2, COLUMNS[2], ColumnType.DOUBLE);
+		db.createTable(TABLE_NAME, table);
 	}
 	
 	@Test
 	public void testCreateTableAndTableExists() {
 		createTestTable();
-		assertTrue(db.tableExists("table1"));
+		assertTrue(db.tableExists(TABLE_NAME));
 	}
 	
 	@Test
 	public void testAddRowsAndGetTopFieldOrderBy() {
 		createTestTable();
 		addSomeRows();
-		int id = (Integer)db.getTopFieldOrderByDescending("table1", "id", "id");
+		int id = (Integer)db.getTopFieldOrderByDescending(TABLE_NAME, ID_FIELD, ID_FIELD);
 		assertEquals("The row should exist with ID 1 since it is the first row.", id, 3);
 	}
 	
@@ -56,29 +63,34 @@ public class SqliteDatabaseTest {
 	public void testGetRow() {
 		createTestTable();
 		addSomeRows();
-		Object[] objs = db.getRow("table1", new String[] { "name", "integernumber", "realnumber" }, "id", 2);
-		assertEquals("marcus", objs[0]);
-		assertEquals(1986, objs[1]);
-		assertEquals(1986.04, objs[2]);
+		Object[] objs = db.getRow(TABLE_NAME, COLUMNS, ID_FIELD, 2);
+		assertEquals(MARCUS_ROW[0], objs[0]);
+		assertEquals(MARCUS_ROW[1], objs[1]);
+		assertEquals(MARCUS_ROW[2], objs[2]);
 	}
 	
 	@Test
 	public void testGetSingleField() {
 		createTestTable();
 		addSomeRows();
-		int value = (Integer)db.getField("table1", "integernumber", "id", 2);
-		assertEquals(1986, value);
+		int value = (Integer)db.getField(TABLE_NAME, COLUMNS[1], ID_FIELD, 2);
+		assertEquals(MARCUS_ROW[1], value);
+		// TODO: fundera på Float/Double/Integer/Date-problemet mot DB
+		Double fvalue = (Double)db.getField(TABLE_NAME, COLUMNS[2], ID_FIELD, 2);
+		assertEquals(MARCUS_ROW[2], fvalue);
 	}
 	
 	@Test
 	public void testUpdateRow() {
+		final Object[] NIKLAS_ROW = new Object[] { "niklas", 1987, 1987.04 };
+		
 		createTestTable();
 		addSomeRows();
-		db.updateRow("table1", new String[] { "name", "integernumber", "realnumber" }, new Object[] { "niklas", 1987, 1987.04 }, "id", 2);
-		Object[] objs = db.getRow("table1", new String[] { "name", "integernumber", "realnumber" }, "id", 2);
-		assertEquals("niklas", objs[0]);
-		assertEquals(1987, objs[1]);
-		assertEquals(1987.04, objs[2]);
+		db.updateRow(TABLE_NAME, COLUMNS, NIKLAS_ROW, ID_FIELD, 2);
+		Object[] objs = db.getRow(TABLE_NAME, COLUMNS, ID_FIELD, 2);
+		assertEquals(NIKLAS_ROW[0], objs[0]);
+		assertEquals(NIKLAS_ROW[1], objs[1]);
+		assertEquals(NIKLAS_ROW[2], objs[2]);
 	}
 	
 	@Test
