@@ -70,7 +70,7 @@ public class SqliteDatabase extends Database {
 			for (int i = 0; i < updateColumns.length; i++) {
 				stat.setObject(i + 1, updateValues[i]);
 			}
-			stat.setObject(updateColumns.length, whereValue);
+			stat.setObject(updateColumns.length+1, whereValue);
 			stat.execute();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -120,9 +120,9 @@ public class SqliteDatabase extends Database {
 	}
 	
 	@Override
-	public Object getField(String table, String column, String orderByColumn) {
+	public Object getTopFieldOrderByDescending(String table, String column, String orderByColumn) {
 		Object value = null;
-		String sql = "SELECT LIMIT 1 " + column + " FROM " + table + " ORDER BY " + orderByColumn + " DESC";
+		String sql = "SELECT " + column + " FROM " + table + " ORDER BY " + orderByColumn + " DESC LIMIT 1";
 		
 		try {
 			Statement stat = conn.createStatement();

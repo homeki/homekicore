@@ -8,13 +8,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.homekey.core.device.Device;
 import com.homekey.core.device.DeviceInformation;
 import com.homekey.core.device.tellstick.TellStickDetector;
 import com.homekey.core.device.tellstick.TellStickDimmer;
 import com.homekey.core.device.tellstick.TellStickSwitch;
-import com.homekey.core.storage.Database;
-import com.homekey.core.storage.mock.MockDatabase;
 
 public class TellStickDetectorTest {
 	private static final String TEST_CONF_PATH = "src/com/homekey/core/tests/files/tellstick.conf";

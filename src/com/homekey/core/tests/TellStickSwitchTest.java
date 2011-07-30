@@ -13,16 +13,15 @@ import com.homekey.core.device.tellstick.TellStickSwitch;
 
 public class TellStickSwitchTest {
 	private TellStickSwitch device;
-	private int assignedId;
 	private String assignedName;
+	private String assignedInternalId;
 	
 	@Before
 	public void setUp() throws Exception {
-		this.assignedId = 1857293476;
-		this.assignedName = "My Device #5";
-		this.device = new TellStickSwitch("ID123", null);
-		this.device.setName(this.assignedName);
-		//this.device.setId(this.assignedId);
+		assignedInternalId = "mock1";
+		assignedName = "My Device #5";
+		device = new TellStickSwitch(assignedInternalId, null);
+		device.setName(assignedName);
 	}
 	
 	@After

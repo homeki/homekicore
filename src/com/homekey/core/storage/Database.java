@@ -1,7 +1,7 @@
 package com.homekey.core.storage;
 
 public abstract class Database {
-	public final String DEVICE_TABLE_NAME_PREFIX = "d_";
+	public static final String DEVICE_TABLE_NAME_PREFIX = "d_";
 	
 	protected static final String DEFAULT_DATABASE_NAME = "homekey.db";
 	
@@ -27,7 +27,7 @@ public abstract class Database {
 	public abstract void updateRow(String table, String[] updateColumns, Object[] updateValues, String whereColumn, Object whereValue);
 	public abstract Object[] getRow(String table, String[] selectColumns, String whereColumn, Object whereValue) ;
 	public abstract Object getField(String table, String selectColumn, String whereColumn, Object whereValue);
-	public abstract Object getField(String table, String column, String orderByColumn);
+	public abstract Object getTopFieldOrderByDescending(String table, String column, String orderByColumn);
 	
 	public abstract void createTable(String name, DatabaseTable table);
 	public abstract boolean tableExists(String name);
