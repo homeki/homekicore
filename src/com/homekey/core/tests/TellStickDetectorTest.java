@@ -1,6 +1,6 @@
 package com.homekey.core.tests;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
@@ -29,16 +29,15 @@ public class TellStickDetectorTest {
 	}
 	
 	@Test
-	public void testParsing() {
+	public void testFindDevices() {
 		List<DeviceInformation> devices = tsd.findDevices();
 
 		DeviceInformation a = devices.get(0);
-		DeviceInformation b = devices.get(1);
+		assertEquals("1", a.getInternalId());
+		assertEquals(TellStickSwitch.class, a.getType());
 		
-		assertTrue(a.getInternalId().equals("1"));
-		assertTrue(b.getInternalId().equals("2"));
-		assertTrue(a.getType() == TellStickSwitch.class);
-		assertTrue(b.getType() == TellStickDimmer.class);		
+		DeviceInformation b = devices.get(1);
+		assertEquals("2", b.getInternalId());
+		assertEquals(TellStickDimmer.class, b.getType());		
 	}
-	
 }

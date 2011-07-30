@@ -7,8 +7,8 @@ import com.homekey.core.storage.ColumnType;
 import com.homekey.core.storage.Database;
 import com.homekey.core.storage.DatabaseTable;
 
-public class OneWireTemperatureSensor extends OneWireDevice implements IntervalLoggable<Float> {	
-	public OneWireTemperatureSensor(String internalId, Database db, String deviceDirPath) {
+public class OneWireTemperatureDevice extends OneWireDevice implements IntervalLoggable<Float> {	
+	public OneWireTemperatureDevice(String internalId, Database db, String deviceDirPath) {
 		super(internalId, db, deviceDirPath);
 	}
 
