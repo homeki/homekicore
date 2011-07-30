@@ -22,7 +22,7 @@ public class DetectorThread extends ControlledThread {
 		this.detectors = new Detector[] { 
 				new MockDetector(),
 				new OneWireDetector("/mnt/1wire/uncached"),
-				new TellStickDetector("/etc/tellstick.conf") //TODO: put in better place
+				new TellStickDetector("/etc/tellstick.conf")
 			};
 	}
 
