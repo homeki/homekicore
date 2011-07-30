@@ -27,7 +27,7 @@ public class OneWireTemperatureSensor extends OneWireDevice implements IntervalL
 
 	@Override
 	public void updateValue() {
-		float value = getFloatVar("temperature");
+		Float value = getFloatVar("temperature");
 		db.addRow(databaseTableName, new String[] { "registered", "value" }, new Object[] { new Date(), value });
 	}
 }
