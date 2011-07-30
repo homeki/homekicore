@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import com.homekey.core.device.Device;
 import com.homekey.core.device.mock.MockDevice;
-import com.homekey.core.device.mock.MockDeviceDimmer;
+import com.homekey.core.device.mock.MockDimmerDevice;
 import com.homekey.core.storage.Database;
 
 public class DeviceTest {
@@ -51,7 +51,7 @@ public class DeviceTest {
 	public void testEquals() {
 		assertTrue(device.equals(device));
 		assertTrue(((Device) device).equals(device));
-		Device notTheSame = new MockDeviceDimmer("notTheSame1", db);
+		Device notTheSame = new MockDimmerDevice("notTheSame1", db);
 		notTheSame.setName("NotTheSame");
 		assertFalse(device.equals(notTheSame));
 	}

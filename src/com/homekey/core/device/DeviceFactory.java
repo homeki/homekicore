@@ -1,7 +1,7 @@
 package com.homekey.core.device;
 
-import com.homekey.core.device.mock.MockDeviceDimmer;
-import com.homekey.core.device.mock.MockDeviceSwitcher;
+import com.homekey.core.device.mock.MockDimmerDevice;
+import com.homekey.core.device.mock.MockSwitchDevice;
 import com.homekey.core.device.onewire.OneWireTemperatureDevice;
 import com.homekey.core.device.tellstick.TellStickDimmer;
 import com.homekey.core.device.tellstick.TellStickSwitch;
@@ -19,11 +19,11 @@ public class DeviceFactory {
 		else if (di.getType() == TellStickDimmer.class) {
 			return new TellStickDimmer(di.getInternalId(), db);
 		}
-		else if (di.getType() == MockDeviceSwitcher.class) {
-			return new MockDeviceSwitcher(di.getInternalId(), db);	
+		else if (di.getType() == MockSwitchDevice.class) {
+			return new MockSwitchDevice(di.getInternalId(), db);	
 		}
-		else if (di.getType() == MockDeviceDimmer.class) {
-			return new MockDeviceDimmer(di.getInternalId(), db);	
+		else if (di.getType() == MockDimmerDevice.class) {
+			return new MockDimmerDevice(di.getInternalId(), db);	
 		}
 		
 		throw new IllegalArgumentException("Corresponding device class not found.");

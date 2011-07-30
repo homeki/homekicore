@@ -6,18 +6,21 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.homekey.core.http.HttpApi;
+import com.homekey.core.main.Monitor;
+import com.homekey.core.storage.Database;
+
 public class ApiTest {
+	private HttpApi api;
+	private Database db;
 	
 	@Before
 	public void setUp() throws Exception {
-		/*
-		dev1 = new MockDeviceSwitcher("DA", true);
-		dev2 = new MockDeviceDimmer("DDD", true);
-		dev1.setId(10);
-		dev1.setName("My MockDevice #1");
-		dev2.setId(20);
-		dev2.setName("My MockDevice #2");
-		*/
+		db = TestUtil.getEmptyTestDatabase();
+		
+		Monitor mon = new Monitor();
+		
+		
 	}
 	
 	@After

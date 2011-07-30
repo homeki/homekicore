@@ -9,10 +9,10 @@ import com.homekey.core.storage.ColumnType;
 import com.homekey.core.storage.Database;
 import com.homekey.core.storage.DatabaseTable;
 
-public class MockDeviceSwitcher extends Device implements Switchable, Queryable<Boolean> {
+public class MockSwitchDevice extends Device implements Switchable, Queryable<Boolean> {
 	private boolean on;
 	
-	public MockDeviceSwitcher(String internalId, Database db) {
+	public MockSwitchDevice(String internalId, Database db) {
 		super(internalId, db);
 		L.getLogger(Logs.MOCK).log("MockInfo: Created MockDeviceSwitcher called '" + getName() + "'.");
 	}
