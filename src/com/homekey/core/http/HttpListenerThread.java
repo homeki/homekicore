@@ -1,12 +1,9 @@
 package com.homekey.core.http;
 
-import java.util.List;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
 
 import com.homekey.core.log.L;
 import com.homekey.core.main.ControlledThread;

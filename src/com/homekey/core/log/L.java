@@ -1,13 +1,11 @@
 package com.homekey.core.log;
 
-import java.text.SimpleDateFormat;
-import java.util.List;
 import java.io.PrintStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
-
-import org.junit.Ignore;
+import java.util.List;
 
 public class L {
 	public static final int LEVEL_DEBUG = 10;

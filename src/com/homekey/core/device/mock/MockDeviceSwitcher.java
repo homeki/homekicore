@@ -10,7 +10,6 @@ import com.homekey.core.storage.Database;
 import com.homekey.core.storage.DatabaseTable;
 
 public class MockDeviceSwitcher extends Device implements Switchable, Queryable<Boolean> {
-	private boolean talk;
 	private boolean on;
 	
 	public MockDeviceSwitcher(String internalId, Database db) {
