@@ -5,11 +5,14 @@ import java.util.LinkedList;
 import com.homekey.core.http.HttpApi;
 import com.homekey.core.http.HttpListenerThread;
 import com.homekey.core.log.L;
+import com.homekey.core.storage.Database;
+import com.homekey.core.storage.sqlite.SqliteDatabase;
 
 public class ThreadMaster {
 	private Monitor monitor;
 	private LinkedList<ControlledThread> threads;
 	private HttpApi api;
+	private Database db;
 	
 	public ThreadMaster() {
 		start();
@@ -19,9 +22,10 @@ public class ThreadMaster {
 		threads = new LinkedList<ControlledThread>();
 		monitor = new Monitor();
 		api = new HttpApi(monitor);
+		db = new SqliteDatabase();
 		
 		// create all threads
-		threads.add(new DetectorThread(monitor));
+		threads.add(new DetectorThread(monitor, db));
 		try {
 			threads.add(new HttpListenerThread(api));
 		} catch (Exception e) {

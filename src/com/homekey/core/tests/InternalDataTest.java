@@ -12,15 +12,19 @@ import com.homekey.core.device.mock.MockDeviceDimmer;
 import com.homekey.core.device.mock.MockDeviceSwitcher;
 import com.homekey.core.http.HttpApi;
 import com.homekey.core.main.Monitor;
+import com.homekey.core.storage.Database;
+import com.homekey.core.storage.mock.MockDatabase;
 
 public class InternalDataTest {
+	private Database db;
 	private MockDeviceSwitcher dev1;
 	private MockDeviceDimmer dev2;
 	
 	@Before
 	public void setUp() throws Exception {
-		dev1 = new MockDeviceSwitcher("DA");
-		dev2 = new MockDeviceDimmer("DDD");
+		db = new MockDatabase();
+		dev1 = new MockDeviceSwitcher("DA", db);
+		dev2 = new MockDeviceDimmer("DDD", db);
 		//dev1.setId(10);
 		dev1.setName("My MockDevice #1");
 		//dev2.setId(20);

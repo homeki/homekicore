@@ -4,7 +4,6 @@ import java.util.Date;
 
 import com.homekey.core.log.L;
 import com.homekey.core.storage.Database;
-import com.homekey.core.storage.sqlite.SqliteDatabase;
 
 public abstract class Device {
 	protected Database db;
@@ -74,7 +73,7 @@ public abstract class Device {
 		return id == ((Device) obj).id;
 	}
 	
-	protected String getInternalId() {
+	public String getInternalId() {
 		return (String) getVar("internalid");
 	}
 	

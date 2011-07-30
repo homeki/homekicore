@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.homekey.core.device.Detector;
 import com.homekey.core.device.Device;
+import com.homekey.core.device.DeviceFactory;
+import com.homekey.core.device.DeviceInformation;
 import com.homekey.core.device.mock.MockDetector;
 import com.homekey.core.device.onewire.OneWireDetector;
 import com.homekey.core.device.tellstick.TellStickDetector;
@@ -21,7 +23,7 @@ public class DetectorThread extends ControlledThread {
 		this.monitor = monitor;
 		this.detectors = new Detector[] { 
 				new MockDetector(),
-				new OneWireDetector(),
+				new OneWireDetector("/mnt/1wire/uncached"),
 				new TellStickDetector("/etc/tellstick.conf") //TODO: put in better place
 			};
 	}
@@ -29,12 +31,12 @@ public class DetectorThread extends ControlledThread {
 	@Override
 	public void iteration() throws InterruptedException {
 		for (Detector det : detectors) {
-			List<Device> devs = det.findDevices();
+			List<DeviceInformation> devs = det.findDevices();
 			
 			if (devs != null) {
-				for (Device d : devs) {
-					if (!monitor.containsDevice(d)) {
-						monitor.addDevice(d);
+				for (DeviceInformation d : devs) {
+					if (!monitor.containsDevice(d.getInternalId())) {
+						monitor.addDevice(DeviceFactory.createDevice(db, d));
 					}
 				}
 			}

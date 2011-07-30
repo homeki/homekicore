@@ -17,11 +17,11 @@ import com.homekey.core.storage.DatabaseTable;
 public class SqliteDatabase extends Database {
 	private Connection conn;
 	
-	private SqliteDatabase(String databaseName) {
+	public SqliteDatabase(String databaseName) {
 		super(databaseName);
 	}
 	
-	private SqliteDatabase() {
+	public SqliteDatabase() {
 		super();
 	}
 	

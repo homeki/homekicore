@@ -1,6 +1,6 @@
 package com.homekey.core.device.tellstick;
+
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
@@ -12,14 +12,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.homekey.core.device.Detector;
-import com.homekey.core.device.Device;
+import com.homekey.core.device.DeviceInformation;
 import com.homekey.core.log.L;
 
 public class TellStickDetector extends Detector {
 	private static final String valueFinder = "%s\\s*?=\\s*?(\\w+|\".*?\")";
 	private static final String deviceFinder = "device?\\s*\\{(.*?)parameters";
-
-	private final String path;
+	
+	private String path;
 	
 	public TellStickDetector(String path) {
 		this.path = path;
@@ -36,8 +36,8 @@ public class TellStickDetector extends Detector {
 	}
 	
 	@Override
-	public List<Device> findDevices() {
-		List<Device> devices = new ArrayList<Device>();
+	public List<DeviceInformation> findDevices() {
+		List<DeviceInformation> devices = new ArrayList<DeviceInformation>();
 		try {
 			Pattern idFinder = Pattern.compile(String.format(valueFinder, "id"));
 			Pattern modelFinder = Pattern.compile(String.format(valueFinder, "model"));
@@ -49,11 +49,11 @@ public class TellStickDetector extends Detector {
 				String id = getMatch(match, idFinder);
 				String model = getMatch(match, modelFinder);
 				if (model.equals("\"selflearning-switch\"")) {
-					devices.add(new TellStickSwitch(id));
+					devices.add(new DeviceInformation(id, TellStickSwitch.class));
 				} else if (model.equals("\"selflearning-dimmer\"")){
-					devices.add(new TellStickDimmer(id));
+					devices.add(new DeviceInformation(id, TellStickDimmer.class));
 				} else {
-					L.e("Unknown device!");
+					L.w("TellStickDetector found unknown device.");
 				}
 				
 			}

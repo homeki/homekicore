@@ -7,20 +7,19 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.homekey.core.device.Detector;
-import com.homekey.core.device.Device;
+import com.homekey.core.device.DeviceInformation;
 import com.homekey.core.log.L;
 
 public class OneWireDetector extends Detector {
-	private final String OWFS_MOUNT_POINT = "/mnt/1wire/";
-	private final String SENSOR_ROOT = "uncached/";
+	private String path;
 	
-	public OneWireDetector() {
-		
+	public OneWireDetector(String path) {
+		this.path = path;
 	}
 	
 	private List<String> findInternalIds() {
 		List<String> dirList = new ArrayList<String>();
-		File root = new File(OWFS_MOUNT_POINT + SENSOR_ROOT);
+		File root = new File(path);
 		
 		String[] items = root.list();
 
@@ -42,25 +41,25 @@ public class OneWireDetector extends Detector {
 		return dirList;
 	}
 	
-	public List<Device> findDevices() {
+	public List<DeviceInformation> findDevices() {
 		// TODO: add check if owfs is running, and if not, run it
 		
 		List<String> sensors = findInternalIds();
-		List<Device> devices = new ArrayList<Device>();
+		List<DeviceInformation> devices = new ArrayList<DeviceInformation>();
 		
 		if (sensors == null) {
 			return null;
 		}
 		
 		for (String s : sensors) {
-			String deviceDirPath = OWFS_MOUNT_POINT + SENSOR_ROOT + s;
-			Device device;
-			
+			String deviceDirPath = path + "/" + s;
+			DeviceInformation di;
 			String type = OneWireDevice.getStringVar(deviceDirPath, "type");
 			
 			if (type.equals("DS18S20")) {
-				device = new OneWireTemperatureSensor(s, deviceDirPath);
-				devices.add(device);
+				di = new DeviceInformation(s, OneWireTemperatureSensor.class);
+				di.addAdditionalData("deviceDirPath", deviceDirPath);
+				devices.add(di);
 			} else {
 				L.w("Found no corresponding device for 1-wire device type " + type + ".");
 				continue;

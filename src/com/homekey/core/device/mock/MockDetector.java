@@ -4,16 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.homekey.core.device.Detector;
-import com.homekey.core.device.Device;
+import com.homekey.core.device.DeviceInformation;
 
 public class MockDetector extends Detector {
 	
 	@Override
-	public List<Device> findDevices() {
-		List<Device> devices = new ArrayList<Device>();
-		devices.add(new MockDeviceSwitcher("switch1"));
-		devices.add(new MockDeviceSwitcher("switch2"));
-		devices.add(new MockDeviceDimmer("dimmer1"));;
+	public List<DeviceInformation> findDevices() {
+		List<DeviceInformation> devices = new ArrayList<DeviceInformation>();
+		devices.add(new DeviceInformation("switch1", MockDeviceSwitcher.class));
+		devices.add(new DeviceInformation("switch2", MockDeviceSwitcher.class));
+		devices.add(new DeviceInformation("dimmer1", MockDeviceDimmer.class));
 		return devices;
 	}
 }

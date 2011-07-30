@@ -42,7 +42,13 @@ public class Monitor {
 		return new ArrayList<Device>(devices.values());
 	}
 
-	public synchronized boolean containsDevice(Device dev) {
-		return devices.containsValue(dev);
+	public synchronized boolean containsDevice(String internalId) {
+		for (Device d : devices.values()) {
+			if (d.getInternalId().equals(internalId)) {
+				return true;
+			}
+		}
+		
+		return false;
 	}
 }

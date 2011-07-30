@@ -20,7 +20,7 @@ public class TellStickSwitchTest {
 	public void setUp() throws Exception {
 		this.assignedId = 1857293476;
 		this.assignedName = "My Device #5";
-		this.device = new TellStickSwitch("ID123");
+		this.device = new TellStickSwitch("ID123", null);
 		this.device.setName(this.assignedName);
 		//this.device.setId(this.assignedId);
 	}
@@ -44,7 +44,7 @@ public class TellStickSwitchTest {
 		assertTrue(this.device.equals(this.device));
 		assertTrue(((Device)this.device).equals(this.device));
 		
-		Device notTheSame = new TellStickSwitch("323");
+		Device notTheSame = new TellStickSwitch("323", null);
 		//notTheSame.setId(1213131);
 		notTheSame.setName("Another Device");
 		assertFalse(this.device.equals(notTheSame));

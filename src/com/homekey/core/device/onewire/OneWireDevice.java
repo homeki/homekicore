@@ -10,12 +10,12 @@ import com.homekey.core.storage.Database;
 public abstract class OneWireDevice extends Device {
 	private String deviceDirPath;
 	
-	public OneWireDevice(String internalId, String deviceDirPath, Database db) {
+	public OneWireDevice(String internalId, Database db, String deviceDirPath) {
 		super(internalId, db);
 		this.deviceDirPath = deviceDirPath;
 	}
 	
-	public synchronized static String getStringVar(String deviceDirPath, String var) {
+	public static String getStringVar(String deviceDirPath, String var) {
 		String varFilePath = deviceDirPath + "/" + var;
 		File varFile = new File(varFilePath);
 		Scanner varScanner = null;
