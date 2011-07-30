@@ -2,7 +2,6 @@ package com.homekey.core.device;
 
 import java.util.Date;
 
-import com.homekey.core.log.L;
 import com.homekey.core.storage.Database;
 
 public abstract class Device {
@@ -58,8 +57,6 @@ public abstract class Device {
 	}
 	
 	public boolean isActive() {
-		L.setStandard("asdf");
-		L.d("getvar=" + getVar("active"));
 		return  getVar("active").equals("true");
 	}
 	
