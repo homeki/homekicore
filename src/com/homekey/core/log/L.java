@@ -153,6 +153,13 @@ public class L {
 		getStd().log(msg, LEVEL_ERROR);
 	}
 	
+	public static void e(String msg, Exception ex) {
+		if (!getStd().ignoreThis(msg)) {
+			getStd().log(msg, LEVEL_ERROR, false);
+			getStd().log(ex.getMessage(), LEVEL_ERROR, true);
+		}
+	}
+	
 	public static void d(Object obj, String msg) {
 		if (!getStd().ignoreThis(msg)) {
 			getStd().log(msg, LEVEL_DEBUG, false);
