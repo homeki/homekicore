@@ -10,8 +10,6 @@ public class TellStickSwitchTest {
 	private static final String INTERNAL_ID = "mock1";
 	private static final String NAME = "My Device #5";
 	
-	// TODO: Linus: implement more testing
-	
 	private TellStickSwitch device;
 	private Database db;
 	

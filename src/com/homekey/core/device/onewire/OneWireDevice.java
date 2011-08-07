@@ -9,7 +9,6 @@ import com.homekey.core.storage.Database;
 
 public abstract class OneWireDevice extends Device {
 	private String deviceDirPath;
-	// TODO: JONAS: if 1-wire bus is disconnected, throw appropriate warning instead of throwing exception (files disappear in folders)
 	
 	public OneWireDevice(String internalId, Database db, String deviceDirPath) {
 		super(internalId, db);

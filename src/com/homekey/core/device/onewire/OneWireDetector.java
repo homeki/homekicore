@@ -42,8 +42,6 @@ public class OneWireDetector extends Detector {
 	}
 	
 	public List<DeviceInformation> findDevices() {
-		// TODO: add check if owfs is running, and if not, run it
-		
 		List<String> sensors = findInternalIds();
 		List<DeviceInformation> devices = new ArrayList<DeviceInformation>();
 		

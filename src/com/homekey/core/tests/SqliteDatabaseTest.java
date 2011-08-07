@@ -75,7 +75,6 @@ public class SqliteDatabaseTest {
 		addSomeRows();
 		int value = (Integer)db.getField(TABLE_NAME, COLUMNS[1], ID_FIELD, 2);
 		assertEquals(MARCUS_ROW[1], value);
-		// TODO: fundera på Float/Double/Integer/Date-problemet mot DB
 		Double fvalue = (Double)db.getField(TABLE_NAME, COLUMNS[2], ID_FIELD, 2);
 		assertEquals(MARCUS_ROW[2], fvalue);
 	}
