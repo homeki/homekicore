@@ -7,15 +7,20 @@ import com.homekey.core.storage.IIntegerHistoryTable;
 import com.homekey.core.storage.ITableFactory;
 
 public class SqliteTableFactory implements ITableFactory {
+	private final String databasePath;
+	
+	public SqliteTableFactory(String databasePath) {
+		this.databasePath = databasePath;
+	}
 
-	public SqliteTableFactory(String string) {
-		// TODO Auto-generated constructor stub
+	@Override
+	public void ensureTables() {
+		getDeviceTable().ensureTable();
 	}
 
 	@Override
 	public IDeviceTable getDeviceTable() {
-		// TODO Auto-generated method stub
-		return null;
+		return new SqliteDeviceTable(databasePath);
 	}
 
 	@Override
@@ -34,6 +39,5 @@ public class SqliteTableFactory implements ITableFactory {
 	public IIntegerHistoryTable getIntegerHistoryTable(String tableName) {
 		// TODO Auto-generated method stub
 		return null;
-	}
-	
+	}	
 }

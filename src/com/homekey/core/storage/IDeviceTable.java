@@ -3,6 +3,7 @@ package com.homekey.core.storage;
 import java.util.Date;
 
 public interface IDeviceTable {
+	void ensureTable();
 	boolean rowExists(String internalId);
 	int createRow(String internalId, String type);
 	int getId(String internalId);

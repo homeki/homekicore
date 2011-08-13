@@ -12,6 +12,20 @@ public class SqliteDeviceTable extends SqliteTable implements IDeviceTable {
 	protected SqliteDeviceTable(String databaseName) {
 		super(databaseName);
 	}
+	
+	@Override
+	public void ensureTable() {
+		if (!tableExists("devices")) {
+			String sql = "CREATE TABLE devices(id INTEGER PRIMARY KEY AUTOINCREMENT," +
+											  "internalid STRING, " +
+											  "type STRING, " +
+											  "name STRING, " +
+											  "added DATETIME, " +
+											  "active BOOLEAN)";
+
+			executeUpdate(sql);
+		}
+	}
 
 	@Override
 	public boolean rowExists(String internalId) {
@@ -32,7 +46,7 @@ public class SqliteDeviceTable extends SqliteTable implements IDeviceTable {
 			stat.setDate(4, new java.sql.Date(new Date().getTime()));
 			stat.setBoolean(5, true);
 			
-			stat.execute();
+			stat.executeUpdate();
 			
 			id = stat.getGeneratedKeys().getInt(1);
 		} catch (SQLException e) {

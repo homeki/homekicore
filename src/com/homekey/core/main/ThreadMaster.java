@@ -24,6 +24,8 @@ public class ThreadMaster {
 		api = new HttpApi(monitor);
 		dbf = new SqliteTableFactory("sqlite.db");
 		
+		dbf.ensureTables();
+		
 		// create all threads
 		threads.add(new DetectorThread(monitor, dbf));
 		try {

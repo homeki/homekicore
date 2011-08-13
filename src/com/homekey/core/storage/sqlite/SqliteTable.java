@@ -12,10 +12,10 @@ import java.util.Date;
 import com.homekey.core.log.L;
 
 public class SqliteTable {
-	protected String databaseName;
+	private final String databaseName;
 	
-	protected SqliteTable(String databaseName) {
-		this.databaseName = databaseName;
+	protected SqliteTable(String databasePath) {
+		this.databaseName = databasePath;
 	}
 	
 	protected Connection openConnection() {
@@ -93,9 +93,9 @@ public class SqliteTable {
 			PreparedStatement stat = conn.prepareStatement(sql);
 			
 			addFirstParameter(stat, value);
-			stat.setInt(2, id);
 			
-			stat.execute();
+			stat.setInt(2, id);
+			stat.executeUpdate();
 		} catch (SQLException ex) {
 			L.e("Couldn't update row in database.", ex);
 		}
@@ -145,6 +145,25 @@ public class SqliteTable {
 		}
 		else if (value instanceof Boolean) {
 			prep.setBoolean(1, (Boolean)value);
+		}
+	}
+	
+	protected boolean tableExists(String tableName) {
+		return getScalar("SELECT COUNT(name) FROM sqlite_master WHERE type = 'table' AND name = ?", tableName) > 0;
+	}
+	
+	protected void executeUpdate(String sql) {
+		Connection conn = openConnection();
+		Statement stat;
+		
+		try {
+			stat = conn.createStatement();
+			stat.executeUpdate(sql);
+		} catch (SQLException e) {
+			L.e("Couldn't execute UPDATE SQL.", e);
+		}
+		finally {
+			closeConnection(conn);
 		}
 	}
 }
