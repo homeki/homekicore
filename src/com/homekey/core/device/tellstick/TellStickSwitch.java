@@ -6,13 +6,15 @@ import java.util.Date;
 import com.homekey.core.device.Device;
 import com.homekey.core.device.Queryable;
 import com.homekey.core.device.Switchable;
-import com.homekey.core.storage.ColumnType;
-import com.homekey.core.storage.Database;
-import com.homekey.core.storage.DatabaseTable;
+import com.homekey.core.log.L;
+import com.homekey.core.storage.IBooleanHistoryTable;
+import com.homekey.core.storage.ITableFactory;
 
 public class TellStickSwitch extends Device implements Switchable, Queryable<Boolean> {
-	public TellStickSwitch(String internalId, Database db) {
-		super(internalId, db);
+	IBooleanHistoryTable boolHistoryTable;
+	
+	public TellStickSwitch(String internalId, ITableFactory factory) {
+		super(internalId, factory);
 	}
 	
 	@Override
@@ -20,10 +22,11 @@ public class TellStickSwitch extends Device implements Switchable, Queryable<Boo
 		try {
 			Runtime.getRuntime().exec(String.format("tdtool -f %s", getInternalId()));
 		} catch (IOException e) {
-			e.printStackTrace();
+			L.e("Couldn't send command using tdtool.");
 			return;
 		}
-		db.addRow(databaseTableName, new String[] { "registered", "value" }, new Object[] { new Date(), false });
+		
+		boolHistoryTable.putValue(new Date(), false);
 	}
 	
 	@Override
@@ -31,22 +34,20 @@ public class TellStickSwitch extends Device implements Switchable, Queryable<Boo
 		try {
 			Runtime.getRuntime().exec(String.format("tdtool -n %s", getInternalId()));
 		} catch (IOException e) {
-			e.printStackTrace();
+			L.e("Couldn't send command using tdtool.");
 			return;
 		}
-		db.addRow(databaseTableName, new String[] { "registered", "value" }, new Object[] { new Date(), true });
+		
+		boolHistoryTable.putValue(new Date(), true);
 	}
 	
 	@Override
 	public Boolean getValue() {
-		return (Integer)db.getTopFieldOrderByDescending(databaseTableName, "value", "registered") > 0; 
+		return boolHistoryTable.getLatestValue();
 	}
-	
+
 	@Override
-	public void createDatabaseTable() {
-		DatabaseTable table = new DatabaseTable(2);
-		table.setColumn(0, "registered", ColumnType.DATETIME);
-		table.setColumn(1, "value", ColumnType.BOOLEAN);
-		db.createTable(databaseTableName, table);
+	protected void ensureHistoryTable(ITableFactory factory, String tableName) {
+		boolHistoryTable = factory.getBoolHistoryTable(tableName);
 	}
 }

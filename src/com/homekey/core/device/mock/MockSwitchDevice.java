@@ -1,19 +1,16 @@
 package com.homekey.core.device.mock;
 
 import com.homekey.core.Logs;
-import com.homekey.core.device.Device;
 import com.homekey.core.device.Queryable;
 import com.homekey.core.device.Switchable;
 import com.homekey.core.log.L;
-import com.homekey.core.storage.ColumnType;
-import com.homekey.core.storage.Database;
-import com.homekey.core.storage.DatabaseTable;
+import com.homekey.core.storage.ITableFactory;
 
-public class MockSwitchDevice extends Device implements Switchable, Queryable<Boolean> {
+public class MockSwitchDevice extends MockDevice implements Switchable, Queryable<Boolean> {
 	private boolean on;
 	
-	public MockSwitchDevice(String internalId, Database db) {
-		super(internalId, db);
+	public MockSwitchDevice(String internalId, ITableFactory factory) {
+		super(internalId, factory);
 		L.getLogger(Logs.MOCK).log("MockInfo: Created MockDeviceSwitcher called '" + getName() + "'.");
 	}
 	
@@ -32,13 +29,5 @@ public class MockSwitchDevice extends Device implements Switchable, Queryable<Bo
 	@Override
 	public Boolean getValue() {
 		return on;
-	}
-	
-	@Override
-	public void createDatabaseTable() {
-		DatabaseTable table = new DatabaseTable(2);
-		table.setColumn(0, "registered", ColumnType.DATETIME);
-		table.setColumn(1, "value", ColumnType.BOOLEAN);
-		db.createTable(databaseTableName, table);
 	}
 }

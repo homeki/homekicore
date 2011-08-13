@@ -11,19 +11,19 @@ import org.junit.Test;
 import com.homekey.core.device.Device;
 import com.homekey.core.device.mock.MockDevice;
 import com.homekey.core.device.mock.MockDimmerDevice;
-import com.homekey.core.storage.Database;
+import com.homekey.core.storage.ITableFactory;
 
 public class DeviceTest {
 	private static final String INTERNAL_ID = "mock1";
 	private static final String NAME = "My MockDevice #1";
 	
-	private Database db;
+	private ITableFactory factory;
 	private Device device;
 	
 	@Before
 	public void setUp() throws Exception {
-		db = TestUtil.getEmptyTestDatabase();
-		device = new MockDevice(INTERNAL_ID, db);
+		factory = TestUtil.getEmptyTestDatabase();
+		device = new MockDevice(INTERNAL_ID, factory);
 		device.setName(NAME);
 	}
 	
@@ -51,7 +51,7 @@ public class DeviceTest {
 	public void testEquals() {
 		assertTrue(device.equals(device));
 		assertTrue(((Device) device).equals(device));
-		Device notTheSame = new MockDimmerDevice("notTheSame1", db);
+		Device notTheSame = new MockDimmerDevice("notTheSame1", factory);
 		notTheSame.setName("NotTheSame");
 		assertFalse(device.equals(notTheSame));
 	}

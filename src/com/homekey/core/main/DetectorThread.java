@@ -8,16 +8,16 @@ import com.homekey.core.device.DeviceInformation;
 import com.homekey.core.device.mock.MockDetector;
 import com.homekey.core.device.onewire.OneWireDetector;
 import com.homekey.core.device.tellstick.TellStickDetector;
-import com.homekey.core.storage.Database;
+import com.homekey.core.storage.ITableFactory;
 
 public class DetectorThread extends ControlledThread {
 	private Detector[] detectors;
 	private Monitor monitor;
-	private Database db;
+	private ITableFactory dbf;
 	
-	public DetectorThread(Monitor monitor, Database db) {
+	public DetectorThread(Monitor monitor, ITableFactory dbf) {
 		super(10000);
-		this.db = db;
+		this.dbf = dbf;
 		this.monitor = monitor;
 		this.detectors = new Detector[] { 
 				new MockDetector(),
@@ -34,7 +34,7 @@ public class DetectorThread extends ControlledThread {
 			if (devs != null) {
 				for (DeviceInformation d : devs) {
 					if (!monitor.containsDevice(d.getInternalId())) {
-						monitor.addDevice(DeviceFactory.createDevice(db, d));
+						monitor.addDevice(DeviceFactory.createDevice(dbf, d));
 					}
 				}
 			}

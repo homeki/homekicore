@@ -1,7 +1,7 @@
 package com.homekey.core.tests;
 
-import static org.junit.Assert.fail;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import org.junit.After;
 import org.junit.Before;
@@ -11,30 +11,30 @@ import com.homekey.core.device.mock.MockDimmerDevice;
 import com.homekey.core.device.mock.MockSwitchDevice;
 import com.homekey.core.http.HttpApi;
 import com.homekey.core.main.Monitor;
-import com.homekey.core.storage.Database;
+import com.homekey.core.storage.ITableFactory;
 
 public class ApiTest {
 	private static final String GET_DEVICES_JSON = TestUtil.getStringFromTextFile("get_devices_json");
 	
 	private HttpApi api;
-	private Database db;
+	private ITableFactory factory;
 	
 	@Before
 	public void setUp() throws Exception {
-		db = TestUtil.getEmptyTestDatabase();
+		factory = TestUtil.getEmptyTestDatabase();
 		
 		Monitor mon = new Monitor();
 		api = new HttpApi(mon);
 		
-		mon.addDevice(new MockSwitchDevice("switch1", db)); // id 1 in db
+		mon.addDevice(new MockSwitchDevice("switch1", factory)); // id 1 in db
 		// TODO: lägg till möjlighet att ändra datum på MockDevice (basklassen) i efterhand (typ dev.mockChangeAddedDate(new Date())
-		mon.addDevice(new MockDimmerDevice("dimmer1", db)); // id 2 in db
+		mon.addDevice(new MockDimmerDevice("dimmer1", factory)); // id 2 in db
 		//mon.addDevice(new MockTemperatureDevice("dimmer1", db)); // id 3 in db
 	}
 	
 	@After
 	public void tearDown() throws Exception {
-		db.close();
+		
 	}
 	
 	@Test

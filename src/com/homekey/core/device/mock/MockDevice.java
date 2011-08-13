@@ -1,15 +1,15 @@
 package com.homekey.core.device.mock;
 
 import com.homekey.core.device.Device;
-import com.homekey.core.storage.Database;
+import com.homekey.core.storage.ITableFactory;
 
 public class MockDevice extends Device {
-	public MockDevice(String internalId, Database db) {
-		super(internalId, db);
+	public MockDevice(String internalId, ITableFactory factory) {
+		super(internalId, factory);
 	}
 
 	@Override
-	protected void createDatabaseTable() {
-		// no need for a table when we won't have any specific data for the device
+	protected void ensureHistoryTable(ITableFactory factory, String tableName) {
+		// no need to save history for a mock device... yet
 	}
 }
