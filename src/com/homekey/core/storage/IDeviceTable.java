@@ -4,12 +4,16 @@ import java.util.Date;
 
 public interface IDeviceTable {
 	boolean rowExists(String internalId);
-	int createRow(String internalId, String simpleName);
+	int createRow(String internalId, String type);
 	int getId(String internalId);
-	void setName(int id, String name);
-	void setActive(int id, boolean active);
+	String getInternalId(int id);
+	String getType(int id);
 	String getName(int id);
 	Date getAdded(int id);
 	boolean isActive(int id);
-	String getInternalId(int id);
+	void setInternalId(int id, String name);
+	void setType(int id, String type);
+	void setName(int id, String name);
+	void setAdded(int id, Date added);
+	void setActive(int id, boolean active);
 }
