@@ -98,13 +98,13 @@ public class ApiTest {
 		assertEquals(255, (int) mock2.getValue());
 
 		// Turn them on via API
-		api.switchOn(mock2.getId());
+		api.switchOff(mock2.getId());
 		assertEquals(true, mock1.getValue());
-		assertEquals(255, (int) mock2.getValue());
+		assertEquals(0, (int) mock2.getValue());
 
-		api.switchOn(mock1.getId());
-		assertEquals(true, mock1.getValue());
-		assertEquals(255, (int) mock2.getValue());
+		api.switchOff(mock1.getId());
+		assertEquals(false, mock1.getValue());
+		assertEquals(0, (int) mock2.getValue());
 	}
 
 	@Test

@@ -13,43 +13,47 @@ import com.homekey.core.http.json.JsonStatus;
 import com.homekey.core.main.Monitor;
 
 public class HttpApi {
-	
+
 	private Monitor monitor;
-	
+
 	public HttpApi(Monitor monitor) {
 		this.monitor = monitor;
 	}
-	
+
 	public String getDevices() {
 		return new Gson().toJson(JsonDevice.makeArray(monitor.getDevices()));
 	}
-	
+
 	public void switchOn(int id) {
 		Device d = monitor.getDevice(id);
 		Switchable s = (Switchable) d;
 		s.on();
 	}
-	
+
 	public void switchOff(int id) {
 		Device d = monitor.getDevice(id);
 		Switchable s = (Switchable) d;
 		s.off();
 	}
-	
+
 	public void dim(int id, int level) {
 		Device dev = monitor.getDevice(id);
 		Dimmable d = (Dimmable) dev;
 		d.dim(level);
 	}
-	
+
 	public String getData(int id, Date start, Date end) {
 		return null;
 	}
-	
+
 	public String getStatus(int id) {
 		Device d = monitor.getDevice(id);
-		Queryable<?> q = (Queryable<?>) d;
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
-		return gson.toJson(new JsonStatus(q.getValue()));
+		if (d == null) {
+			Queryable<?> q = (Queryable<?>) d;
+			JsonStatus status = new JsonStatus(q.getValue());
+			return gson.toJson(status);
+		}
+		return gson.toJson(JsonStatus.wrongId());
 	}
 }
