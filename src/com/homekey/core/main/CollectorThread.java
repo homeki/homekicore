@@ -3,7 +3,6 @@ package com.homekey.core.main;
 import com.homekey.core.device.IntervalLoggable;
 
 public class CollectorThread extends ControlledThread {
-	
 	private Monitor monitor;
 
 	public CollectorThread(Monitor monitor) {
