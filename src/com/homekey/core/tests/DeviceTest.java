@@ -25,7 +25,7 @@ public class DeviceTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		factory = TestUtil.getEmptyTestDatabase();
+		factory = TestUtil.getEmptyTestTableFactory();
 		device = new MockDevice(INTERNAL_ID, factory);
 		device.setName(NAME);
 	}

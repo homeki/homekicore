@@ -10,9 +10,11 @@ public class TestUtil {
 	private final static String TEST_DATABASE_PATH = "/tmp/homekeytest.db";
 	private final static String TEXT_DIR_PATH = "test/texts/";
 	
-	public static ITableFactory getEmptyTestDatabase() {
+	public static ITableFactory getEmptyTestTableFactory() {
 		removeDbIfExists(TEST_DATABASE_PATH);
-		return new SqliteTableFactory(TEST_DATABASE_PATH);	
+		ITableFactory dbf = new SqliteTableFactory(TEST_DATABASE_PATH);
+		dbf.ensureTables();
+		return dbf;
 	}
 	
 	public static String getStringFromTextFile(String fileName) {

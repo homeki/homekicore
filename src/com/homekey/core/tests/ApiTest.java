@@ -37,7 +37,7 @@ public class ApiTest {
 	@Before
 	public void setUp() throws Exception {
 		mon = new Monitor();
-		dbf = TestUtil.getEmptyTestDatabase();
+		dbf = TestUtil.getEmptyTestTableFactory();
 		
 		Monitor mon = new Monitor();
 		api = new HttpApi(mon);
