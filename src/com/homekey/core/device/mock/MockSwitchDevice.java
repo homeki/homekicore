@@ -9,7 +9,7 @@ import com.homekey.core.storage.ColumnType;
 import com.homekey.core.storage.Database;
 import com.homekey.core.storage.DatabaseTable;
 
-public class MockSwitchDevice extends Device implements Switchable, Queryable<Boolean> {
+public class MockSwitchDevice extends MockDevice implements Switchable, Queryable<Boolean> {
 	private boolean on;
 	
 	public MockSwitchDevice(String internalId, Database db) {

@@ -6,7 +6,7 @@ import java.net.Socket;
 import java.net.SocketException;
 
 import com.homekey.core.log.L;
-import com.homekey.core.main.ControlledThread;
+import com.homekey.core.threads.ControlledThread;
 
 public class HttpListenerThread extends ControlledThread {
 	private HttpApi api;

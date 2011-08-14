@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Date;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,9 +18,11 @@ import com.homekey.core.storage.Database;
 public class DeviceTest {
 	private static final String INTERNAL_ID = "mock1";
 	private static final String NAME = "My MockDevice #1";
-	
+	private static Date testStart = new Date();
 	private Database db;
 	private Device device;
+	
+	Date someTimeAgo;
 	
 	@Before
 	public void setUp() throws Exception {
@@ -54,5 +58,21 @@ public class DeviceTest {
 		Device notTheSame = new MockDimmerDevice("notTheSame1", db);
 		notTheSame.setName("NotTheSame");
 		assertFalse(device.equals(notTheSame));
+	}
+	
+	@Test
+	public void testGetAdded() {
+		Date d = device.getAdded();
+		Date now = new Date();
+		assertTrue(now.after(d));
+		assertTrue(testStart.before(d));
+	}
+	
+	@Test
+	public void testActive() {
+		device.setActive(true);
+		assertTrue(device.isActive());
+		device.setActive(false);
+		assertTrue(!device.isActive());
 	}
 }

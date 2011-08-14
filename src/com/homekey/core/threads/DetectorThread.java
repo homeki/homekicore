@@ -1,4 +1,4 @@
-package com.homekey.core.main;
+package com.homekey.core.threads;
 
 import java.util.List;
 
@@ -8,6 +8,7 @@ import com.homekey.core.device.DeviceInformation;
 import com.homekey.core.device.mock.MockDetector;
 import com.homekey.core.device.onewire.OneWireDetector;
 import com.homekey.core.device.tellstick.TellStickDetector;
+import com.homekey.core.main.Monitor;
 import com.homekey.core.storage.Database;
 
 public class DetectorThread extends ControlledThread {

@@ -1,5 +1,7 @@
 package com.homekey.core.device.mock;
 
+import java.util.Date;
+
 import com.homekey.core.Logs;
 import com.homekey.core.device.Device;
 import com.homekey.core.device.Dimmable;
@@ -9,13 +11,15 @@ import com.homekey.core.storage.ColumnType;
 import com.homekey.core.storage.Database;
 import com.homekey.core.storage.DatabaseTable;
 
-public class MockDimmerDevice extends Device implements Dimmable, Queryable<Integer> {
+public class MockDimmerDevice extends MockDevice implements Dimmable, Queryable<Integer> {
 	private int level;
+	private Date date;
 	
 	public MockDimmerDevice(String internalId, Database db) {
 		super(internalId, db);
 		L.getLogger(Logs.MOCK).log("MockInfo: Created MockDeviceDimmer called '" + getName() + "'.");
 	}
+
 	
 	@Override
 	public void dim(int level) {

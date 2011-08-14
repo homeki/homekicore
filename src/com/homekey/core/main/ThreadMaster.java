@@ -7,6 +7,9 @@ import com.homekey.core.http.HttpListenerThread;
 import com.homekey.core.log.L;
 import com.homekey.core.storage.Database;
 import com.homekey.core.storage.sqlite.SqliteDatabase;
+import com.homekey.core.threads.CollectorThread;
+import com.homekey.core.threads.ControlledThread;
+import com.homekey.core.threads.DetectorThread;
 
 public class ThreadMaster {
 	private Monitor monitor;

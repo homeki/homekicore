@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 import java.util.StringTokenizer;
 
-import com.homekey.core.main.ControlledThread;
+import com.homekey.core.threads.ControlledThread;
 
 public class HttpRequestResolverThread extends ControlledThread {
 	private HttpApi api = null;
