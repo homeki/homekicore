@@ -1,9 +1,9 @@
 package com.homekey.core.storage;
 
+import java.lang.reflect.Type;
+
 public interface ITableFactory {
 	void ensureTables();
 	IDeviceTable getDeviceTable();
-	IFloatHistoryTable getFloatHistoryTable(String tableName);
-	IBooleanHistoryTable getBoolHistoryTable(String tableName);
-	IIntegerHistoryTable getIntegerHistoryTable(String tableName);
+	IHistoryTable getHistoryTable(String tableName, Type valueType);
 }

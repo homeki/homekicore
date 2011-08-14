@@ -7,11 +7,11 @@ import com.homekey.core.device.Device;
 import com.homekey.core.device.Queryable;
 import com.homekey.core.device.Switchable;
 import com.homekey.core.log.L;
-import com.homekey.core.storage.IBooleanHistoryTable;
+import com.homekey.core.storage.IHistoryTable;
 import com.homekey.core.storage.ITableFactory;
 
 public class TellStickSwitch extends Device implements Switchable, Queryable<Boolean> {
-	IBooleanHistoryTable boolHistoryTable;
+	private IHistoryTable historyTable;
 	
 	public TellStickSwitch(String internalId, ITableFactory factory) {
 		super(internalId, factory);
@@ -26,7 +26,7 @@ public class TellStickSwitch extends Device implements Switchable, Queryable<Boo
 			return;
 		}
 		
-		boolHistoryTable.putValue(new Date(), false);
+		historyTable.putValue(new Date(), false);
 	}
 	
 	@Override
@@ -38,16 +38,16 @@ public class TellStickSwitch extends Device implements Switchable, Queryable<Boo
 			return;
 		}
 		
-		boolHistoryTable.putValue(new Date(), true);
+		historyTable.putValue(new Date(), true);
 	}
 	
 	@Override
 	public Boolean getValue() {
-		return boolHistoryTable.getLatestValue();
+		return (Boolean)historyTable.getLatestValue();
 	}
 
 	@Override
 	protected void ensureHistoryTable(ITableFactory factory, String tableName) {
-		boolHistoryTable = factory.getBoolHistoryTable(tableName);
+		historyTable = factory.getHistoryTable(tableName, Boolean.class);
 	}
 }

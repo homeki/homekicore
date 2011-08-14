@@ -1,9 +1,9 @@
 package com.homekey.core.storage.sqlite;
 
-import com.homekey.core.storage.IBooleanHistoryTable;
+import java.lang.reflect.Type;
+
 import com.homekey.core.storage.IDeviceTable;
-import com.homekey.core.storage.IFloatHistoryTable;
-import com.homekey.core.storage.IIntegerHistoryTable;
+import com.homekey.core.storage.IHistoryTable;
 import com.homekey.core.storage.ITableFactory;
 
 public class SqliteTableFactory implements ITableFactory {
@@ -24,17 +24,7 @@ public class SqliteTableFactory implements ITableFactory {
 	}
 
 	@Override
-	public IFloatHistoryTable getFloatHistoryTable(String tableName) {
-		return new SqliteFloatHistoryTable(databasePath, tableName);
-	}
-
-	@Override
-	public IBooleanHistoryTable getBoolHistoryTable(String tableName) {
-		return new SqliteBoolHistoryTable(databasePath, tableName);
-	}
-
-	@Override
-	public IIntegerHistoryTable getIntegerHistoryTable(String tableName) {
-		return new SqliteIntegerHistoryTable(databasePath, tableName);
+	public IHistoryTable getHistoryTable(String tableName, Type valueType) {
+		return new SqliteHistoryTable(databasePath, tableName, valueType);
 	}	
 }

@@ -3,11 +3,11 @@ package com.homekey.core.device.onewire;
 import java.util.Date;
 
 import com.homekey.core.device.IntervalLoggable;
-import com.homekey.core.storage.IFloatHistoryTable;
+import com.homekey.core.storage.IHistoryTable;
 import com.homekey.core.storage.ITableFactory;
 
 public class OneWireTemperatureDevice extends OneWireDevice implements IntervalLoggable<Float> {
-	private IFloatHistoryTable floatHistoryTable;
+	private IHistoryTable historyTable;
 	
 	public OneWireTemperatureDevice(String internalId, ITableFactory factory, String deviceDirPath) {
 		super(internalId, factory, deviceDirPath);
@@ -21,11 +21,11 @@ public class OneWireTemperatureDevice extends OneWireDevice implements IntervalL
 	@Override
 	public void updateValue() {
 		float value = getFloatVar("temperature");
-		floatHistoryTable.putValue(new Date(), value);
+		historyTable.putValue(new Date(), value);
 	}
 
 	@Override
 	protected void ensureHistoryTable(ITableFactory factory, String tableName) {
-		floatHistoryTable = factory.getFloatHistoryTable(tableName);
+		historyTable = factory.getHistoryTable(tableName, Float.class);
 	}
 }

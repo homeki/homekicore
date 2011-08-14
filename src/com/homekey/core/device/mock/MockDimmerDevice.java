@@ -6,11 +6,11 @@ import com.homekey.core.Logs;
 import com.homekey.core.device.Dimmable;
 import com.homekey.core.device.Queryable;
 import com.homekey.core.log.L;
-import com.homekey.core.storage.IIntegerHistoryTable;
+import com.homekey.core.storage.IHistoryTable;
 import com.homekey.core.storage.ITableFactory;
 
 public class MockDimmerDevice extends MockDevice implements Dimmable, Queryable<Integer> {
-	private IIntegerHistoryTable history;
+	private int level;
 	
 	public MockDimmerDevice(String internalId, ITableFactory factory) {
 		super(internalId, factory);
@@ -19,7 +19,7 @@ public class MockDimmerDevice extends MockDevice implements Dimmable, Queryable<
 	
 	@Override
 	public void dim(int level) {
-		history.putValue(new Date(), level);
+		this.level = level;
 		L.getLogger(Logs.MOCK).log("MockInfo: MockDeviceDimmer called '" + getName() + "' now has dim level " + level + ".");
 	}
 	
@@ -37,12 +37,6 @@ public class MockDimmerDevice extends MockDevice implements Dimmable, Queryable<
 	
 	@Override
 	public Integer getValue() {
-		return history.getLatestValue();
-	}
-	
-	@Override
-	protected void ensureHistoryTable(ITableFactory factory, String tableName) {
-		history = factory.getIntegerHistoryTable(tableName);
-		history.ensureTable();
+		return level;
 	}
 }

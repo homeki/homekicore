@@ -30,9 +30,4 @@ public class MockSwitchDevice extends MockDevice implements Switchable, Queryabl
 	public Boolean getValue() {
 		return on;
 	}
-	
-	@Override
-	protected void ensureHistoryTable(ITableFactory factory, String tableName) {
-		// no history for a simple mockdevice
-	}
 }
