@@ -11,19 +11,19 @@ public class MockSwitchDevice extends MockDevice implements Switchable, Queryabl
 	
 	public MockSwitchDevice(String internalId, ITableFactory factory) {
 		super(internalId, factory);
-		L.getLogger(Logs.MOCK).log("MockInfo: Created MockDeviceSwitcher called '" + getName() + "'.");
+		L.getLogger(Logs.CORE_MOCK).log("Created MockSwitchDevice.");
 	}
 	
 	@Override
 	public void off() {
 		on = false;
-		L.getLogger(Logs.MOCK).log("MockInfo: MockDeviceSwitcher called '" + getName() + "' is now OFF!");
+		L.getLogger(Logs.CORE_MOCK).log("MockSwitchDevice '" + getInternalId() + "' is now OFF!");
 	}
 	
 	@Override
 	public void on() {
 		on = true;
-		L.getLogger(Logs.MOCK).log("MockInfo: MockDeviceSwitcher called '" + getName() + "' is now ON!");
+		L.getLogger(Logs.CORE_MOCK).log("MockSwitchDevice '" + getInternalId() + "' is now ON!");
 	}
 	
 	@Override

@@ -23,5 +23,6 @@ public class TellStickDimmer extends TellStickSwitch implements Dimmable {
 	@Override
 	protected void ensureHistoryTable(ITableFactory factory, String tableName) {
 		historyTable = factory.getHistoryTable(tableName, Integer.class);
+		historyTable.ensureTable();
 	}
 }

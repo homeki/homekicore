@@ -1,6 +1,6 @@
 package com.homekey.core;
 
 public class Logs {
-	public static final String HOMEKEY = "homekey";
-	public static final String MOCK = "mock";
+	public static final String CORE = "core";
+	public static final String CORE_MOCK = "core.mock";
 }

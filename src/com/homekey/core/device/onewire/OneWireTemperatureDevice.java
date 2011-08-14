@@ -27,5 +27,6 @@ public class OneWireTemperatureDevice extends OneWireDevice implements IntervalL
 	@Override
 	protected void ensureHistoryTable(ITableFactory factory, String tableName) {
 		historyTable = factory.getHistoryTable(tableName, Float.class);
+		historyTable.ensureTable();
 	}
 }

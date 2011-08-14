@@ -3,11 +3,10 @@ package com.homekey.core.main;
 import java.util.List;
 
 import com.homekey.core.device.Detector;
+import com.homekey.core.device.Device;
 import com.homekey.core.device.DeviceFactory;
 import com.homekey.core.device.DeviceInformation;
 import com.homekey.core.device.mock.MockDetector;
-import com.homekey.core.device.onewire.OneWireDetector;
-import com.homekey.core.device.tellstick.TellStickDetector;
 import com.homekey.core.storage.ITableFactory;
 
 public class DetectorThread extends ControlledThread {
@@ -34,7 +33,10 @@ public class DetectorThread extends ControlledThread {
 			if (devs != null) {
 				for (DeviceInformation d : devs) {
 					if (!monitor.containsDevice(d.getInternalId())) {
-						monitor.addDevice(DeviceFactory.createDevice(dbf, d));
+						Device dev = DeviceFactory.createDevice(dbf, d);
+						if (dev != null) {
+							monitor.addDevice(dev);
+						}
 					}
 				}
 			}

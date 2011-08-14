@@ -59,9 +59,15 @@ public class SqliteHistoryTable extends SqliteTable implements IHistoryTable {
 				return;
 			}
 			
+			if (valueType == Boolean.class) {
+				stat.setBoolean(2, (Boolean)value);
+			} else if (valueType == Float.class) {
+				stat.setFloat(2, (Float)value);
+			} else if (valueType == Integer.class) {
+				stat.setInt(2, (Integer)value);
+			}
 			
-			
-			//stat.executeUpdate();
+			stat.executeUpdate();
 			stat.close();
 		} catch (SQLException e) {
 			L.e("Couldn't put value to table " + tableName + " in database.", e);
@@ -74,7 +80,7 @@ public class SqliteHistoryTable extends SqliteTable implements IHistoryTable {
 	public Object getLatestValue() {
 		Connection conn = openConnection();
 		PreparedStatement stat;
-		int value = 0;
+		Object value = null;
 		
 		try {
 			stat = conn.prepareStatement("SELECT value FROM " + tableName + " ORDER BY registered DESC LIMIT 1");
@@ -82,7 +88,23 @@ public class SqliteHistoryTable extends SqliteTable implements IHistoryTable {
 			ResultSet rs = stat.executeQuery();
 			
 			if (rs.next()) {
-				value = rs.getInt(1);
+				if (valueType == Boolean.class) {
+					value = rs.getBoolean(1);
+				} else if (valueType == Float.class) {
+					value = rs.getFloat(1);
+				} else if (valueType == Integer.class) {
+					value = rs.getInt(1);
+				}
+			}
+			else {
+				// default values
+				if (valueType == Boolean.class) {
+					value = false;
+				} else if (valueType == Float.class) {
+					value = 0.0f;
+				} else if (valueType == Integer.class) {
+					value = 0;
+				}
 			}
 			
 			stat.close();

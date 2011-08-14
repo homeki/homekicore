@@ -1,12 +1,9 @@
 package com.homekey.core.device.mock;
 
-import java.util.Date;
-
 import com.homekey.core.Logs;
 import com.homekey.core.device.Dimmable;
 import com.homekey.core.device.Queryable;
 import com.homekey.core.log.L;
-import com.homekey.core.storage.IHistoryTable;
 import com.homekey.core.storage.ITableFactory;
 
 public class MockDimmerDevice extends MockDevice implements Dimmable, Queryable<Integer> {
@@ -14,25 +11,25 @@ public class MockDimmerDevice extends MockDevice implements Dimmable, Queryable<
 	
 	public MockDimmerDevice(String internalId, ITableFactory factory) {
 		super(internalId, factory);
-		L.getLogger(Logs.MOCK).log("MockInfo: Created MockDeviceDimmer called '" + getName() + "'.");
+		L.getLogger(Logs.CORE_MOCK).log("MockInfo: Created MockDeviceDimmer called '" + getName() + "'.");
 	}
 	
 	@Override
 	public void dim(int level) {
 		this.level = level;
-		L.getLogger(Logs.MOCK).log("MockInfo: MockDeviceDimmer called '" + getName() + "' now has dim level " + level + ".");
+		L.getLogger(Logs.CORE_MOCK).log("MockInfo: MockDeviceDimmer called '" + getName() + "' now has dim level " + level + ".");
 	}
 	
 	@Override
 	public void off() {
 		dim(0);
-		L.getLogger(Logs.MOCK).log("MockInfo: MockDeviceDimmer called '" + getName() + "' is now OFF!");
+		L.getLogger(Logs.CORE_MOCK).log("MockInfo: MockDeviceDimmer called '" + getName() + "' is now OFF!");
 	}
 	
 	@Override
 	public void on() {
 		dim(255);
-		L.getLogger(Logs.MOCK).log("MockInfo: MockDeviceDimmer called '" + getName() + "' is now ON!");
+		L.getLogger(Logs.CORE_MOCK).log("MockInfo: MockDeviceDimmer called '" + getName() + "' is now ON!");
 	}
 	
 	@Override
