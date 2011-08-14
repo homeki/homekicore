@@ -7,36 +7,25 @@ import java.sql.SQLException;
 import java.util.Date;
 
 import com.homekey.core.log.L;
-import com.homekey.core.storage.IIntegerHistoryTable;
+import com.homekey.core.storage.IBooleanHistoryTable;
 
-public class SqliteIntegerHistoryTable extends SqliteTable implements IIntegerHistoryTable {
-	private final String tableName;
+public class SqliteBooleanHistoryTable extends SqliteTable implements IBooleanHistoryTable {
+	private String tableName;
 	
-	protected SqliteIntegerHistoryTable(String databasePath, String tableName) {
+	protected SqliteBooleanHistoryTable(String databasePath, String tableName) {
 		super(databasePath);
 		this.tableName = tableName;
 	}
 
 	@Override
-	public void ensureTable() {
-		if (!tableExists(tableName)) {
-			String sql = "CREATE TABLE " + tableName + "(id INTEGER PRIMARY KEY AUTOINCREMENT," +
-					  "registered DATETIME, " +
-					  "value INTEGER)";
-
-			executeUpdate(sql);
-		}
-	}
-
-	@Override
-	public void putValue(Date date, int value) {
+	public void putValue(Date date, boolean value) {
 		Connection conn = openConnection();
 
 		try {
 			PreparedStatement stat = conn.prepareStatement("INSERT INTO " + tableName + "(registered, value) VALUES(?, ?)");
 			
 			stat.setDate(1, convertToSqlDate(date));
-			stat.setInt(2, value);
+			stat.setBoolean(2, value);
 			
 			stat.executeUpdate();
 			stat.close();
@@ -49,16 +38,18 @@ public class SqliteIntegerHistoryTable extends SqliteTable implements IIntegerHi
 	}
 
 	@Override
-	public int getLatestValue() {
+	public Boolean getLatestValue() {
 		Connection conn = openConnection();
 		PreparedStatement stat;
-		int value = 0;
+		boolean value = 0;
 		
 		try {
 			stat = conn.prepareStatement("SELECT value FROM " + tableName + " ORDER BY registered DESC LIMIT 1");
 			
 			ResultSet rs = stat.executeQuery();
-			rs.next();
+			if (rs.next()) {
+				
+			}
 			value = rs.getInt(1);
 			stat.close();
 		} catch (SQLException e) {
@@ -69,5 +60,16 @@ public class SqliteIntegerHistoryTable extends SqliteTable implements IIntegerHi
 		}
 		
 		return value;
+	}
+
+	@Override
+	public void ensureTable() {
+		if (!tableExists(tableName)) {
+			String sql = "CREATE TABLE " + tableName + "(id INTEGER PRIMARY KEY AUTOINCREMENT," +
+					  "registered DATETIME, " +
+					  "value BOOLEAN)";
+
+			executeUpdate(sql);
+		}
 	}
 }

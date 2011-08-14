@@ -49,6 +49,7 @@ public class SqliteDeviceTable extends SqliteTable implements IDeviceTable {
 			stat.executeUpdate();
 			
 			id = stat.getGeneratedKeys().getInt(1);
+			stat.close();
 		} catch (SQLException e) {
 			L.e("Couldn't insert new device in database.", e);
 		}

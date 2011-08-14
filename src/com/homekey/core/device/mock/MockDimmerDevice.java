@@ -1,5 +1,7 @@
 package com.homekey.core.device.mock;
 
+import java.util.Date;
+
 import com.homekey.core.Logs;
 import com.homekey.core.device.Dimmable;
 import com.homekey.core.device.Queryable;
@@ -9,7 +11,6 @@ import com.homekey.core.storage.ITableFactory;
 
 public class MockDimmerDevice extends MockDevice implements Dimmable, Queryable<Integer> {
 	private IIntegerHistoryTable history;
-	private int level;
 	
 	public MockDimmerDevice(String internalId, ITableFactory factory) {
 		super(internalId, factory);
@@ -18,7 +19,7 @@ public class MockDimmerDevice extends MockDevice implements Dimmable, Queryable<
 	
 	@Override
 	public void dim(int level) {
-		this.level = level;
+		history.putValue(new Date(), level);
 		L.getLogger(Logs.MOCK).log("MockInfo: MockDeviceDimmer called '" + getName() + "' now has dim level " + level + ".");
 	}
 	
@@ -36,7 +37,7 @@ public class MockDimmerDevice extends MockDevice implements Dimmable, Queryable<
 	
 	@Override
 	public Integer getValue() {
-		return level;
+		return history.getLatestValue();
 	}
 	
 	@Override

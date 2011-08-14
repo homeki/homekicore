@@ -57,26 +57,24 @@ public class SqliteTable {
 			ResultSet rs = stat.executeQuery();
 			
 			if (rs.next()) {
-				try {
-					if (returnType == Integer.class) {
-						value = rs.getInt(1);
-					}
-					else if (returnType == String.class) {
-						value = rs.getString(1);
-					}
-					else if (returnType == Float.class) {
-						value = rs.getFloat(1);
-					}
-					else if (returnType == Date.class) {
-						value = rs.getDate(1);
-					}
-					else if (returnType == Boolean.class) {
-						value = rs.getBoolean(1);
-					}
-				} finally {
-					rs.close();
+				if (returnType == Integer.class) {
+					value = rs.getInt(1);
+				}
+				else if (returnType == String.class) {
+					value = rs.getString(1);
+				}
+				else if (returnType == Float.class) {
+					value = rs.getFloat(1);
+				}
+				else if (returnType == Date.class) {
+					value = rs.getDate(1);
+				}
+				else if (returnType == Boolean.class) {
+					value = rs.getBoolean(1);
 				}
 			}
+			
+			stat.close();
 		} catch (SQLException e) {
 			L.e("Couldn't get " + returnType.getClass().getSimpleName() + " value from database.", e);
 		} finally {
@@ -96,6 +94,7 @@ public class SqliteTable {
 			
 			stat.setInt(2, id);
 			stat.executeUpdate();
+			stat.close();
 		} catch (SQLException ex) {
 			L.e("Couldn't update row in database.", ex);
 		}
@@ -117,7 +116,7 @@ public class SqliteTable {
 			ResultSet rs = stat.executeQuery();
 			rs.next();
 			count = rs.getInt(1);
-			rs.close();
+			stat.close();
 		} catch (SQLException e) {
 			L.e("Couldn't get scalar from row in database.", e);
 		}
@@ -157,6 +156,7 @@ public class SqliteTable {
 		try {
 			stat = conn.createStatement();
 			stat.executeUpdate(sql);
+			stat.close();
 		} catch (SQLException e) {
 			L.e("Couldn't execute UPDATE SQL.", e);
 		}
