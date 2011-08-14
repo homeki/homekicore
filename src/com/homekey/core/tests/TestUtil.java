@@ -3,16 +3,16 @@ package com.homekey.core.tests;
 import java.io.File;
 
 import com.homekey.core.main.Util;
-import com.homekey.core.storage.Database;
-import com.homekey.core.storage.sqlite.SqliteDatabase;
+import com.homekey.core.storage.ITableFactory;
+import com.homekey.core.storage.sqlite.SqliteTableFactory;
 
 public class TestUtil {
 	private final static String TEST_DATABASE_PATH = "/tmp/homekeytest.db";
 	private final static String TEXT_DIR_PATH = "test/texts/";
 	
-	public static Database getEmptyTestDatabase() {
+	public static ITableFactory getEmptyTestDatabase() {
 		removeDbIfExists(TEST_DATABASE_PATH);
-		return new SqliteDatabase(TEST_DATABASE_PATH);	
+		return new SqliteTableFactory(TEST_DATABASE_PATH);	
 	}
 	
 	public static String getStringFromTextFile(String fileName) {

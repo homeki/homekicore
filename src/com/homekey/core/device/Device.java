@@ -2,49 +2,39 @@ package com.homekey.core.device;
 
 import java.util.Date;
 
-import com.homekey.core.storage.Database;
+import com.homekey.core.storage.IDeviceTable;
+import com.homekey.core.storage.ITableFactory;
 
 public abstract class Device {
-	protected Database db;
-	protected int id;
-	protected String databaseTableName;
+	protected final int id;
 	
-	public Device(String internalId, Database db) {
-		this.db = db;
+	private IDeviceTable deviceTable;
+	
+	public Device(String internalId, ITableFactory factory) {
+		deviceTable = factory.getDeviceTable();
 		
-		Object field = db.getField("devices", "id", "internalid", internalId);
-		
-		if (field == null) {
-			db.addRow("devices", new String[] { "internalid", "type", "name", "added", "active" }, new Object[] { internalId, this.getClass().getSimpleName(), "", new Date(), true });
-			field = db.getField("devices", "id", "internalid", internalId);
+		// if a row doesn't exist for the device, create one. 
+		// else, just load the id for the row
+		if (!deviceTable.rowExists(internalId)) {
+			id = deviceTable.createRow(internalId, this.getClass().getSimpleName());
+		}
+		else {
+			id = deviceTable.getId(internalId);
 		}
 		
-		id = (Integer) field;
-		databaseTableName = (Database.DEVICE_TABLE_NAME_PREFIX + this.getClass().getSimpleName() + "_" + id).toLowerCase();
-		
-		if (!db.tableExists(databaseTableName)) {
-			createDatabaseTable();
-		}
+		ensureHistoryTable(factory, ("D_" + this.getClass().getSimpleName() + "_" + id).toLowerCase());
 	}
 	
 	public void setName(String name) {
-		setVar("name", name);
-	}
-	
-	private void setVar(String column, Object val) {
-		db.updateRow("devices", new String[] { column }, new Object[] { val }, "id", id);
+		deviceTable.setName(id, name);
 	}
 	
 	public void setActive(boolean active) {
-		setVar("active", active);
+		deviceTable.setActive(id, active);
 	}
 	
 	public String getName() {
-		return (String) getVar("name");
-	}
-	
-	public Object getVar(String column) {
-		return db.getField("devices", column, "id", id);
+		return deviceTable.getName(id);
 	}
 	
 	public int getId() {
@@ -52,12 +42,15 @@ public abstract class Device {
 	}
 	
 	public Date getAdded() {
-		Long time = (Long) getVar("added");
-		return new Date( time);
+		return deviceTable.getAdded(id);
 	}
 	
 	public boolean isActive() {
-		return  getVar("active").equals("true");
+		return deviceTable.isActive(id);
+	}
+	
+	public String getInternalId() {
+		return deviceTable.getInternalId(id);
 	}
 	
 	@Override
@@ -70,9 +63,5 @@ public abstract class Device {
 		return id == ((Device) obj).id;
 	}
 	
-	public String getInternalId() {
-		return (String) getVar("internalid");
-	}
-	
-	protected abstract void createDatabaseTable();
+	protected abstract void ensureHistoryTable(ITableFactory factory, String tableName);
 }

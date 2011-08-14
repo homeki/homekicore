@@ -5,17 +5,17 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 import com.homekey.core.device.Device;
-import com.homekey.core.storage.Database;
+import com.homekey.core.storage.ITableFactory;
 
 public abstract class OneWireDevice extends Device {
 	private String deviceDirPath;
 	
-	public OneWireDevice(String internalId, Database db, String deviceDirPath) {
-		super(internalId, db);
+	public OneWireDevice(String internalId, ITableFactory factory, String deviceDirPath) {
+		super(internalId, factory);
 		this.deviceDirPath = deviceDirPath;
 	}
 	
-	public static String getStringVar(String deviceDirPath, String var) {
+	protected static String getStringVar(String deviceDirPath, String var) {
 		String varFilePath = deviceDirPath + "/" + var;
 		File varFile = new File(varFilePath);
 		Scanner varScanner = null;

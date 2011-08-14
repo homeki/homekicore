@@ -4,7 +4,6 @@ import com.homekey.core.device.IntervalLoggable;
 import com.homekey.core.main.Monitor;
 
 public class CollectorThread extends ControlledThread {
-	
 	private Monitor monitor;
 
 	public CollectorThread(Monitor monitor) {
