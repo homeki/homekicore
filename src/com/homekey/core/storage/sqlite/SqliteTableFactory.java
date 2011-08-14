@@ -25,19 +25,16 @@ public class SqliteTableFactory implements ITableFactory {
 
 	@Override
 	public IFloatHistoryTable getFloatHistoryTable(String tableName) {
-		// TODO Auto-generated method stub
-		return null;
+		return new SqliteFloatHistoryTable(databasePath, tableName);
 	}
 
 	@Override
 	public IBooleanHistoryTable getBoolHistoryTable(String tableName) {
-		// TODO Auto-generated method stub
-		return null;
+		return new SqliteBoolHistoryTable(databasePath, tableName);
 	}
 
 	@Override
 	public IIntegerHistoryTable getIntegerHistoryTable(String tableName) {
-		// TODO Auto-generated method stub
-		return null;
+		return new SqliteIntegerHistoryTable(databasePath, tableName);
 	}	
 }

@@ -4,9 +4,11 @@ import com.homekey.core.Logs;
 import com.homekey.core.device.Dimmable;
 import com.homekey.core.device.Queryable;
 import com.homekey.core.log.L;
+import com.homekey.core.storage.IIntegerHistoryTable;
 import com.homekey.core.storage.ITableFactory;
 
 public class MockDimmerDevice extends MockDevice implements Dimmable, Queryable<Integer> {
+	private IIntegerHistoryTable history;
 	private int level;
 	
 	public MockDimmerDevice(String internalId, ITableFactory factory) {
@@ -35,5 +37,11 @@ public class MockDimmerDevice extends MockDevice implements Dimmable, Queryable<
 	@Override
 	public Integer getValue() {
 		return level;
+	}
+	
+	@Override
+	protected void ensureHistoryTable(ITableFactory factory, String tableName) {
+		history = factory.getIntegerHistoryTable(tableName);
+		history.ensureTable();
 	}
 }

@@ -21,8 +21,8 @@ public class DetectorThread extends ControlledThread {
 		this.monitor = monitor;
 		this.detectors = new Detector[] { 
 				new MockDetector(),
-				new OneWireDetector("/mnt/1wire/uncached"),
-				new TellStickDetector("/etc/tellstick.conf")
+				//new OneWireDetector("/mnt/1wire/uncached"),
+				//new TellStickDetector("/etc/tellstick.conf")
 			};
 	}
 

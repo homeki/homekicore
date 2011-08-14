@@ -10,6 +10,6 @@ public class MockDevice extends Device {
 
 	@Override
 	protected void ensureHistoryTable(ITableFactory factory, String tableName) {
-		// no need to save history for a mock device... yet
+		// no history for a simple mockdevice
 	}
 }

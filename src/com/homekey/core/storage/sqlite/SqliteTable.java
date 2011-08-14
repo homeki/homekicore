@@ -139,9 +139,7 @@ public class SqliteTable {
 			prep.setFloat(1, (Float)value);
 		}
 		else if (value instanceof java.util.Date) {
-			java.util.Date utilDate = (java.util.Date)value;
-			java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-			prep.setDate(1, sqlDate);
+			prep.setDate(1, convertToSqlDate((java.util.Date)value));
 		}
 		else if (value instanceof Boolean) {
 			prep.setBoolean(1, (Boolean)value);
@@ -165,5 +163,10 @@ public class SqliteTable {
 		finally {
 			closeConnection(conn);
 		}
+	}
+	
+	protected java.sql.Date convertToSqlDate(java.util.Date date) {
+		java.util.Date utilDate = (java.util.Date)date;
+		return new java.sql.Date(utilDate.getTime());
 	}
 }
