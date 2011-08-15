@@ -5,7 +5,7 @@ import java.util.Date;
 import com.homekey.core.device.Device;
 import com.homekey.core.storage.Database;
 
-public class MockDevice extends Device {
+public abstract class MockDevice extends Device {
 	private Date fakeAdded;
 
 	public MockDevice(String internalId, Database db) {

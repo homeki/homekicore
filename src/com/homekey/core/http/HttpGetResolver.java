@@ -77,6 +77,7 @@ public class HttpGetResolver {
 	private static void resolveGetStatus(StringTokenizer st, HttpApi api, DataOutputStream out) throws IOException {
 		HashMap<String, String> args = getArguments(st);
 		Integer id = HttpArguments.demandInteger("id", args, out);
+		
 		HttpMacro.sendResponse(200, api.getStatus(id), out);
 	}
 	

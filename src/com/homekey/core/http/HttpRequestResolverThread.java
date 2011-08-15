@@ -59,7 +59,7 @@ public class HttpRequestResolverThread extends ControlledThread {
 				if (token.equals("GET")) {
 					HttpGetResolver.resolve(st, api, out);
 				} else if (token.equals("SET")) {
-					HttpGetResolver.resolve(st, api, out);
+					HttpSetResolver.resolve(st, api, out);
 				} else {
 					HttpMacro.send404(requestString, out);
 				}

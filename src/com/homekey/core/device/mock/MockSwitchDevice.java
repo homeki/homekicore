@@ -2,6 +2,7 @@ package com.homekey.core.device.mock;
 
 import com.homekey.core.Logs;
 import com.homekey.core.device.Device;
+import com.homekey.core.device.IntervalLoggable;
 import com.homekey.core.device.Queryable;
 import com.homekey.core.device.Switchable;
 import com.homekey.core.log.L;

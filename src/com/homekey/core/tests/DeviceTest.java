@@ -27,7 +27,7 @@ public class DeviceTest {
 	@Before
 	public void setUp() throws Exception {
 		db = TestUtil.getEmptyTestDatabase();
-		device = new MockDevice(INTERNAL_ID, db);
+		device = new MockDimmerDevice(INTERNAL_ID, db);
 		device.setName(NAME);
 	}
 	

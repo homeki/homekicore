@@ -28,7 +28,7 @@ public class ThreadMaster {
 		db = new SqliteDatabase();
 		
 		// create all threads
-		threads.add(new DetectorThread(monitor, db));
+		threads.add(new DetectorThread(monitor, db,true));
 		try {
 			threads.add(new HttpListenerThread(api));
 		} catch (Exception e) {

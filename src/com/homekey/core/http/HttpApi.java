@@ -1,6 +1,7 @@
 package com.homekey.core.http;
 
 import java.util.Date;
+import java.util.NoSuchElementException;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -49,11 +50,11 @@ public class HttpApi {
 	public String getStatus(int id) {
 		Device d = monitor.getDevice(id);
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
-		if (d == null) {
+		if (d != null) {
 			Queryable<?> q = (Queryable<?>) d;
 			JsonStatus status = new JsonStatus(q.getValue());
 			return gson.toJson(status);
 		}
-		return gson.toJson(JsonStatus.wrongId());
+		throw new NoSuchElementException("There is no device with id = "+id);
 	}
 }

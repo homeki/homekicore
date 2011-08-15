@@ -15,23 +15,26 @@ public class DetectorThread extends ControlledThread {
 	private Detector[] detectors;
 	private Monitor monitor;
 	private Database db;
-	
-	public DetectorThread(Monitor monitor, Database db) {
+
+	public DetectorThread(Monitor monitor, Database db, boolean useMock) {
 		super(10000);
 		this.db = db;
 		this.monitor = monitor;
-		this.detectors = new Detector[] { 
-				new MockDetector(),
-				new OneWireDetector("/mnt/1wire/uncached"),
-				new TellStickDetector("/etc/tellstick.conf")
-			};
+		if (useMock)
+			this.detectors = new Detector[] { new MockDetector(),
+					new OneWireDetector("/mnt/1wire/uncached"),
+					new TellStickDetector("/etc/tellstick.conf") };
+		else
+			this.detectors = new Detector[] {
+					new OneWireDetector("/mnt/1wire/uncached"),
+					new TellStickDetector("/etc/tellstick.conf") };
 	}
 
 	@Override
 	public void iteration() throws InterruptedException {
 		for (Detector det : detectors) {
 			List<DeviceInformation> devs = det.findDevices();
-			
+
 			if (devs != null) {
 				for (DeviceInformation d : devs) {
 					if (!monitor.containsDevice(d.getInternalId())) {
