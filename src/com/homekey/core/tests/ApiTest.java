@@ -25,15 +25,13 @@ public class ApiTest {
 	private static final String JSON_STATUS_INT = "{\n  \"status\": %d\n}";
 	
 	private HttpApi api;
-	Monitor mon;
-	MockSwitchDevice mock1;
-	MockDimmerDevice mock2;
+	private MockSwitchDevice mock1;
+	private MockDimmerDevice mock2;
 	
 	private ITableFactory dbf;
 	
 	@Before
 	public void setUp() throws Exception {
-		mon = new Monitor();
 		dbf = TestUtil.getEmptyTestTableFactory();
 		
 		Monitor mon = new Monitor();
