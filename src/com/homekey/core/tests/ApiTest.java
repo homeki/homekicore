@@ -1,18 +1,15 @@
 package com.homekey.core.tests;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.omg.PortableInterceptor.USER_EXCEPTION;
 
 import com.homekey.core.device.mock.MockDevice;
 import com.homekey.core.device.mock.MockDimmerDevice;
