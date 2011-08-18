@@ -10,7 +10,7 @@ public class TestUtil {
 	private final static String TEST_DATABASE_PATH = "/tmp/homekeytest.db";
 	private final static String TEXT_DIR_PATH = "test/texts/";
 	
-	public static ITableFactory getEmptyTestTableFactory() {
+	public static ITableFactory getEmptySqliteTestTableFactory() {
 		removeDbIfExists(TEST_DATABASE_PATH);
 		ITableFactory dbf = new SqliteTableFactory(TEST_DATABASE_PATH);
 		dbf.ensureTables();

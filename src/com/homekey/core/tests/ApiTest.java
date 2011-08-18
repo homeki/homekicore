@@ -32,7 +32,7 @@ public class ApiTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		dbf = TestUtil.getEmptyTestTableFactory();
+		dbf = TestUtil.getEmptySqliteTestTableFactory();
 		
 		Monitor mon = new Monitor();
 		api = new HttpApi(mon);
