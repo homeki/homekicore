@@ -1,4 +1,10 @@
 <project>
+	<path id="ant-deb.classpath">
+        <fileset dir="libs-ant" includes="*.jar"/>
+    </path>
+
+    <taskdef name="deb" classname="com.googlecode.ant_deb_task.Deb" classpathref="ant-deb.classpath"/>
+
     <target name="clean">
         <delete dir="build"/>
     </target>
@@ -24,6 +30,18 @@
         </jar>
         <chmod file="build/jar/homekeycore.jar" perm="a+x" />
     </target>
+    
+    <target name="dist">
+		<mkdir dir="build/dist"/>
+		<deb todir="build/dist" package="homekey" section="graphics" architecture="i386" depends="sun-java6-jre">
+			<version upstream="0.0.1"/>
+			<maintainer name="homeKey Development Team" email="contact@homekey.com"/>
+			<description synopsis="Short description.">
+				Long description.
+			</description>
+			<tarfileset dir="build/jar" prefix="bin/" filemode="755"/>
+		</deb>
+	</target>
 
     <target name="run">
         <java jar="build/jar/homekeycore.jar" fork="true"/>
