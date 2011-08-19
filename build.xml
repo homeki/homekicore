@@ -33,13 +33,13 @@
     
     <target name="dist">
 		<mkdir dir="build/dist"/>
-		<deb todir="build/dist" package="homekey" section="graphics" architecture="i386" depends="sun-java6-jre">
+		<deb todir="build/dist" package="homekey" section="misc" architecture="i386" depends="default-jdk">
 			<version upstream="0.0.1"/>
 			<maintainer name="homeKey Development Team" email="contact@homekey.com"/>
 			<description synopsis="Short description.">
 				Long description.
 			</description>
-			<tarfileset dir="build/jar" prefix="bin/" filemode="755"/>
+			<tarfileset dir="build/jar" prefix="opt/homekey/" filemode="755"/>
 		</deb>
 	</target>
 
