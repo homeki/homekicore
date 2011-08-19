@@ -1,0 +1,31 @@
+<project>
+    <target name="clean">
+        <delete dir="build"/>
+    </target>
+
+    <target name="compile">
+        <mkdir dir="build/classes"/>
+        <javac srcdir="src" destdir="build/classes">
+		<classpath>
+			<pathelement location="libs/"/>
+			<pathelement path="${java.class.path}/"/>
+			<pathelement path="${additional.path}"/>
+		</classpath>
+        </javac>
+    </target>
+
+    <target name="jar">
+        <mkdir dir="build/jar"/>
+        <jar destfile="build/jar/homekeycore.jar" basedir="build/classes">
+        	<zipgroupfileset dir="libs/" includes="*.jar"/>
+            <manifest>
+                <attribute name="Main-Class" value="com.homekey.core.main.Main"/>
+            </manifest>
+        </jar>
+        <chmod file="build/jar/homekeycore.jar" perm="a+x" />
+    </target>
+
+    <target name="run">
+        <java jar="build/jar/homekeycore.jar" fork="true"/>
+    </target>
+</project>
