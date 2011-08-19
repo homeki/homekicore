@@ -1,17 +1,13 @@
 #! /bin/sh
 
-#Original /etc/init.d/skeleton modified for http://mydebian.blogdns.org
-
-# PATH should only include /usr/* if it runs after the mountnfs.sh script
 PATH=/sbin:/usr/sbin:/bin:/usr/bin
-DESC=""
-NAME="homeKey"
+NAME="homekey"
 DAEMON=/usr/bin/java
 DAEMON_ARGS="-jar /opt/homekey/homekeycore.jar"
+CURRENT_DIR="/opt/homekey"
 PIDFILE=/var/run/$NAME.pid
 SCRIPTNAME=/etc/init.d/homekeyd
-#the user that will run the script
-USER=UserName
+USER=homekey
 
 # NO NEED TO MODIFY THE LINES BELOW
 
@@ -28,7 +24,7 @@ USER=UserName
 do_start()
 {
 
-	start-stop-daemon -b --start --quiet --chuid $USER -m -p $PIDFILE --exec $DAEMON -- $DAEMON_ARGS \
+	start-stop-daemon -b --start --quiet --chdir $CURRENT_DIR --chuid $USER -m -p $PIDFILE --exec $DAEMON -- $DAEMON_ARGS \
 		|| return 2
 }
 
@@ -45,7 +41,7 @@ do_stop()
 
 case "$1" in
   start)
-	[ "$VERBOSE" != no ] && log_daemon_msg "Starting $DESC" "$NAME"
+	[ "$VERBOSE" != no ] && log_daemon_msg "Starting $NAME" "$NAME"
 	do_start
 	case "$?" in
 		0|1) [ "$VERBOSE" != no ] && log_end_msg 0 ;;
@@ -53,7 +49,7 @@ case "$1" in
 	esac
 	;;
   stop)
-	[ "$VERBOSE" != no ] && log_daemon_msg "Stopping $DESC" "$NAME"
+	[ "$VERBOSE" != no ] && log_daemon_msg "Stopping $NAME" "$NAME"
 	do_stop
 	case "$?" in
 		0|1) [ "$VERBOSE" != no ] && log_end_msg 0 ;;
@@ -65,7 +61,7 @@ case "$1" in
 	# If the "reload" option is implemented then remove the
 	# 'force-reload' alias
 	#
-	log_daemon_msg "Restarting $DESC" "$NAME"
+	log_daemon_msg "Restarting $NAME" "$NAME"
 	do_stop
 	case "$?" in
 	  0|1)

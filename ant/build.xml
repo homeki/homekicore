@@ -41,6 +41,7 @@
 				Long description.
 			</description>
 			<tarfileset dir="../build/jar" prefix="opt/homekey/" filemode="755"/>
+			<tarfileset file="../ant/homekeyd" prefix="etc/init.d" filemode="755"/>
 		</deb>
 	</target>
 </project>
