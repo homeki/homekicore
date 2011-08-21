@@ -10,9 +10,7 @@ import com.homekey.core.threads.ControlledThread;
 
 public class HttpListenerThread extends ControlledThread {
 	private HttpApi api;
-	ServerSocket Server;
-	
-	// List<HttpRequestResolverThread> threads;
+	private ServerSocket Server;
 	
 	public HttpListenerThread(HttpApi a) throws IOException {
 		super(0);
