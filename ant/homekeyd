@@ -1,13 +1,11 @@
 #! /bin/sh
 
-PATH=/sbin:/usr/sbin:/bin:/usr/bin
+PATH="/sbin:/usr/sbin:/bin:/usr/bin"
 NAME="homekey"
-DAEMON=/usr/bin/java
-DAEMON_ARGS="-jar /opt/homekey/homekeycore.jar"
 CURRENT_DIR="/opt/homekey"
-PIDFILE=/var/run/$NAME.pid
-SCRIPTNAME=/etc/init.d/homekeyd
-USER=homekey
+PIDFILE="/opt/homekey/homekey.pid"
+SCRIPTNAME="/etc/init.d/homekeyd"
+USER="homekey"
 
 # NO NEED TO MODIFY THE LINES BELOW
 
@@ -23,8 +21,7 @@ USER=homekey
 #
 do_start()
 {
-
-	start-stop-daemon -b --start --quiet --chdir $CURRENT_DIR --chuid $USER -m -p $PIDFILE --exec $DAEMON -- $DAEMON_ARGS \
+	start-stop-daemon --start --background --chdir $CURRENT_DIR --chuid $USER -m -p $PIDFILE --exec /opt/homekey/start.sh \
 		|| return 2
 }
 
@@ -33,7 +30,7 @@ do_start()
 #
 do_stop()
 {
-	start-stop-daemon --stop --quiet --oknodo --pidfile $PIDFILE
+	start-stop-daemon --stop --oknodo --pidfile $PIDFILE
 	RETVAL="$?"
 	rm -f $PIDFILE
 	return "$RETVAL"

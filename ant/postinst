@@ -1,0 +1,12 @@
+#!/bin/sh
+
+set -e
+
+if [ "$1" = "configure" ] ; then
+	chown -R homekey:homekey /opt/homekey
+	chmod a+w /opt/homekey/stdout.log
+	chmod a+w /opt/homekey/stderr.log
+	/etc/init.d/homekeyd start
+fi
+
+exit 0
