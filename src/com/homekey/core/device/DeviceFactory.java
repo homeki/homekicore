@@ -4,6 +4,7 @@ import com.homekey.core.device.mock.MockDimmerDevice;
 import com.homekey.core.device.mock.MockHistoryDimmerDevice;
 import com.homekey.core.device.mock.MockHistorySwitchDevice;
 import com.homekey.core.device.mock.MockSwitchDevice;
+import com.homekey.core.device.mock.MockTemperatureDevice;
 import com.homekey.core.device.onewire.OneWireTemperatureDevice;
 import com.homekey.core.device.tellstick.TellStickDimmer;
 import com.homekey.core.device.tellstick.TellStickSwitch;
@@ -27,6 +28,8 @@ public class DeviceFactory {
 			return new MockHistorySwitchDevice(di.getInternalId(), factory);
 		} else if (di.getType() == MockHistoryDimmerDevice.class) {
 			return new MockHistoryDimmerDevice(di.getInternalId(), factory);
+		} else if (di.getType() == MockTemperatureDevice.class) {
+			return new MockTemperatureDevice(di.getInternalId(), factory);
 		}
 		
 		L.e("Corresponding device class not found for DeviceInformation in DeviceFactory.");
