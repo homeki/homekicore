@@ -66,7 +66,7 @@ public class HttpGetResolver {
 			resolveGetOn(st, api, out, false);
 			break;
 		case BAD_ACTION:
-			HttpMacro.send404("Get does not allow command '" + token + "'.", out);
+			HttpMacro.send405("Command 'get' does not contain resource '" + token + "'.", out);
 			break;
 		case NO_ACTION:
 			HttpMacro.send404("No action specified.'.", out);

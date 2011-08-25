@@ -56,7 +56,7 @@ public class HttpResolverTest {
 
 	@Test
 	public void testStatusRequest() {
-		ITableFactory db = TestUtil.getEmptyTestTableFactory();
+		ITableFactory db = TestUtil.getEmptySqliteTestTableFactory();
 		Device dev = new MockDimmerDevice("hejsan", db);
 		monitor.addDevice(dev);
 		try {

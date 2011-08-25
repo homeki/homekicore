@@ -45,4 +45,12 @@ public class HttpMacro {
 		}
 		out.close();
 	}
+
+	public static void send405(String info, DataOutputStream out) {
+		try {
+			sendResponse(405, info, out);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }

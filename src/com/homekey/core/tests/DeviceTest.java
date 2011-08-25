@@ -11,7 +11,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.homekey.core.device.Device;
-import com.homekey.core.device.mock.MockDevice;
 import com.homekey.core.device.mock.MockDimmerDevice;
 import com.homekey.core.storage.ITableFactory;
 
@@ -25,7 +24,7 @@ public class DeviceTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		factory = TestUtil.getEmptyTestTableFactory();
+		factory = TestUtil.getEmptySqliteTestTableFactory();
 		device = new MockDimmerDevice(INTERNAL_ID, factory);
 		device.setName(NAME);
 	}

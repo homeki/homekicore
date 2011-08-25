@@ -1,18 +1,15 @@
 package com.homekey.core.tests;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.omg.PortableInterceptor.USER_EXCEPTION;
 
 import com.homekey.core.device.mock.MockDevice;
 import com.homekey.core.device.mock.MockDimmerDevice;
@@ -28,16 +25,14 @@ public class ApiTest {
 	private static final String JSON_STATUS_INT = "{\n  \"status\": %d\n}";
 	
 	private HttpApi api;
-	Monitor mon;
-	MockSwitchDevice mock1;
-	MockDimmerDevice mock2;
+	private MockSwitchDevice mock1;
+	private MockDimmerDevice mock2;
 	
 	private ITableFactory dbf;
 	
 	@Before
 	public void setUp() throws Exception {
-		mon = new Monitor();
-		dbf = TestUtil.getEmptyTestTableFactory();
+		dbf = TestUtil.getEmptySqliteTestTableFactory();
 		
 		Monitor mon = new Monitor();
 		api = new HttpApi(mon);

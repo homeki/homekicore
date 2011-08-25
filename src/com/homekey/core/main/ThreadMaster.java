@@ -18,14 +18,19 @@ public class ThreadMaster {
 	private ITableFactory dbf;
 	
 	public ThreadMaster() {
-		start();
+		addShutdownHook();
 	}
 	
-	private void start() {
+	private void addShutdownHook() {
+		Runtime rt = Runtime.getRuntime();
+		rt.addShutdownHook(new Thread() { public void run() { shutdown(); }; });
+	}
+	
+	public void launch() {
 		threads = new LinkedList<ControlledThread>();
 		monitor = new Monitor();
 		api = new HttpApi(monitor);
-		dbf = new SqliteTableFactory("sqlite.db");
+		dbf = new SqliteTableFactory("homekey.db");
 		
 		dbf.ensureTables();
 		
@@ -57,7 +62,7 @@ public class ThreadMaster {
 			e.printStackTrace();
 		}
 		L.i("Starting threads.");
-		start();
+		launch();
 		
 	}
 }

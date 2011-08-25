@@ -35,7 +35,7 @@ public class MonitorTest {
 	@Test
 	public void testGetLoggableDevices() {
 		Monitor m = new Monitor();
-		ITableFactory db = TestUtil.getEmptyTestTableFactory();
+		ITableFactory db = TestUtil.getEmptySqliteTestTableFactory();
 		assertEquals(0, m.getLoggableDevices().size());
 		m.addDevice(new MockSwitchDevice("asdf", db));
 		assertEquals(0, m.getLoggableDevices().size());
@@ -52,7 +52,7 @@ public class MonitorTest {
 	@Test
 	public void testContainsDevice(){
 		Monitor m = new Monitor();
-		ITableFactory db = TestUtil.getEmptyTestTableFactory();
+		ITableFactory db = TestUtil.getEmptySqliteTestTableFactory();
 		m.addDevice(new MockSwitchDevice("switch1", db));
 		MockSwitchDevice switch2 = new MockSwitchDevice("switch2", db);
 		assertFalse("Device was found before it was added.",m.containsDevice("switch2"));

@@ -1,6 +1,7 @@
 package com.homekey.core.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -8,7 +9,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.homekey.core.threads.ControlledThread;
 import com.homekey.core.threads.mock.ControlledMockThread;
 
 public class ControlledThreadTest {

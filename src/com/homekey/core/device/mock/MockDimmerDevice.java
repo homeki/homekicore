@@ -1,7 +1,5 @@
 package com.homekey.core.device.mock;
 
-import java.util.Date;
-
 import com.homekey.core.Logs;
 import com.homekey.core.device.Dimmable;
 import com.homekey.core.device.Queryable;
@@ -11,7 +9,6 @@ import com.homekey.core.storage.ITableFactory;
 
 public class MockDimmerDevice extends MockDevice implements Dimmable, Queryable<Integer> {
 	private int level;
-	private Date date;
 	
 	public MockDimmerDevice(String internalId, ITableFactory factory) {
 		super(internalId, factory);
