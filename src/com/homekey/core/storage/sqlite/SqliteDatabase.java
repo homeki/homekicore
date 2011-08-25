@@ -1,18 +1,8 @@
 package com.homekey.core.storage.sqlite;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 
-import com.homekey.core.log.L;
-import com.homekey.core.storage.Database;
-import com.homekey.core.storage.DatabaseTable;
-
-public class SqliteDatabase extends Database {
-	private Connection conn;
+public class SqliteDatabase {
+	/*private Connection conn;
 	
 	public SqliteDatabase(String databaseName) {
 		super(databaseName);
@@ -194,5 +184,5 @@ public class SqliteDatabase extends Database {
 		}
 		
 		return count;
-	}
+	}*/
 }

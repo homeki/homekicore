@@ -39,6 +39,9 @@ public class ControlledThreadTest {
 		} catch (InterruptedException e) {
 			fail();
 		}
+		while(!t.isAlive()){
+			t.hashCode();
+		}
 		ms += System.currentTimeMillis();
 		// The thread should run during one second
 		ms = Math.abs(ms - 1005);

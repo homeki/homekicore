@@ -8,13 +8,11 @@ import com.homekey.core.device.Dimmable;
 import com.homekey.core.device.IntervalLoggable;
 import com.homekey.core.device.Queryable;
 import com.homekey.core.log.L;
-import com.homekey.core.storage.ColumnType;
-import com.homekey.core.storage.Database;
-import com.homekey.core.storage.DatabaseTable;
+import com.homekey.core.storage.ITableFactory;
 
 
 public class LoggableMockDimmerDevice extends MockDimmerDevice implements IntervalLoggable<Integer> {
-	public LoggableMockDimmerDevice(String internalId, Database db) {
+	public LoggableMockDimmerDevice(String internalId, ITableFactory db) {
 		super(internalId, db);
 	}
 

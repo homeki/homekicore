@@ -7,12 +7,10 @@ import org.junit.Test;
 import com.homekey.core.Logs;
 
 public class ConstantsTest {
-
 	@Test
 	public void test() {
-		assertEquals(Logs.HOMEKEY,"homekey");
-		assertEquals(Logs.MOCK,"mock");
+		assertEquals(Logs.CORE,"core");
+		assertEquals(Logs.CORE_MOCK,"core.mock");
 		new Logs();
 	}
-
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 import com.homekey.core.device.Device;
 import com.homekey.core.device.IntervalLoggable;
@@ -35,7 +36,7 @@ public class Monitor {
 		if (devices.containsKey(id)) {
 			return devices.get(id);
 		}
-		return null;
+		throw new NoSuchElementException("No device with such id: " + id);
 	}
 	
 	public synchronized List<Device> getDevices() {
@@ -50,5 +51,9 @@ public class Monitor {
 		}
 		
 		return false;
+	}
+
+	public synchronized boolean hasDevice(int id) {
+		return devices.containsKey(id);
 	}
 }

@@ -19,12 +19,10 @@ public class L {
 	private List<String> ignore;
 
 	private int minLevel;
-
 	List<StreamHolder> outs;
+	
 	private String label;
-
-	static HashMap<String, L> all = new HashMap<String, L>();
-
+	private static HashMap<String, L> all = new HashMap<String, L>();
 	private String levelToString(int level) {
 		if (level >= LEVEL_ERROR)
 			return "ERROR";

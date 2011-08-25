@@ -22,7 +22,7 @@ import com.homekey.core.http.HttpApi;
 import com.homekey.core.http.HttpRequestResolverThread;
 import com.homekey.core.http.HttpSetResolver;
 import com.homekey.core.main.Monitor;
-import com.homekey.core.storage.Database;
+import com.homekey.core.storage.ITableFactory;
 
 public class HttpResolverTest {
 	DataOutputStream os;
@@ -56,7 +56,7 @@ public class HttpResolverTest {
 
 	@Test
 	public void testStatusRequest() {
-		Database db = TestUtil.getEmptyTestDatabase();
+		ITableFactory db = TestUtil.getEmptyTestTableFactory();
 		Device dev = new MockDimmerDevice("hejsan", db);
 		monitor.addDevice(dev);
 		try {

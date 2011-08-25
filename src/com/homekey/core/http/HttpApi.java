@@ -27,14 +27,22 @@ public class HttpApi {
 
 	public void switchOn(int id) {
 		Device d = monitor.getDevice(id);
-		Switchable s = (Switchable) d;
-		s.on();
+		if (monitor.hasDevice(id)) {
+			Switchable s = (Switchable) d;
+			s.on();
+		} else {
+
+		}
 	}
 
 	public void switchOff(int id) {
 		Device d = monitor.getDevice(id);
-		Switchable s = (Switchable) d;
-		s.off();
+		if (monitor.hasDevice(id)) {
+			Switchable s = (Switchable) d;
+			s.off();
+		} else {
+
+		}
 	}
 
 	public void dim(int id, int level) {
@@ -55,6 +63,6 @@ public class HttpApi {
 			JsonStatus status = new JsonStatus(q.getValue());
 			return gson.toJson(status);
 		}
-		throw new NoSuchElementException("There is no device with id = "+id);
+		throw new NoSuchElementException("There is no device with id = " + id);
 	}
 }
