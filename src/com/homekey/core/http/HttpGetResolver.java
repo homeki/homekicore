@@ -11,7 +11,7 @@ import com.homekey.core.log.L;
 public class HttpGetResolver {
 	
 	public enum Actions {
-		ECHO, TIME, ON, OFF, DIM, DEVICES, STATUS, BAD_ACTION, NO_ACTION
+		ECHO, TIME, ON, OFF, DIM, DEVICES, STATUS, HISTORY, BAD_ACTION, NO_ACTION
 	}
 	
 	public static void resolve(StringTokenizer st, HttpApi api, DataOutputStream out) throws IOException {
@@ -59,6 +59,9 @@ public class HttpGetResolver {
 		case DEVICES:
 			resolveGetDevices(st, api, out);
 			break;
+		case HISTORY:
+			resolveGetHistory(st, api, out);
+			break;
 		case ON:
 			resolveGetOn(st, api, out, true);
 			break;
@@ -103,7 +106,7 @@ public class HttpGetResolver {
 					api.switchOff(id);
 				}
 			} catch (ClassCastException e) {
-				HttpMacro.send404("The device with id=" + id + " is not switchable.", out);
+				HttpMacro.send404("The device with id " + id + " is not switchable.", out);
 			}
 			HttpMacro.sendResponse(200, "Device " + id + " is now " + (on ? "on" : "off") + ".", out);
 		}
@@ -115,6 +118,18 @@ public class HttpGetResolver {
 	
 	private static void resolveGetTime(StringTokenizer st, HttpApi api, DataOutputStream out) throws IOException {
 		HttpMacro.sendResponse(200, "Time is: " + (new Date()).toString(), out);
+	}
+	
+	private static void resolveGetHistory(StringTokenizer st, HttpApi api, DataOutputStream out) throws IOException {
+		HashMap<String, String> args = getArguments(st);
+		
+		Integer id = HttpArguments.demandInteger("id", args, out);
+		Date from = HttpArguments.demandDate("from", args, out);
+		Date to = HttpArguments.demandDate("to", args, out);
+		
+		if (id != null && from != null && to != null) {
+			HttpMacro.sendResponse(200, api.getHistory(id, from, to), out);
+		}
 	}
 	
 	private static void resolveGetEcho(StringTokenizer st, HttpApi api, DataOutputStream out) throws IOException {

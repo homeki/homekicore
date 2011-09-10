@@ -1,32 +1,20 @@
 package com.homekey.core.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintStream;
 
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.homekey.core.log.L;
 
 public class LTest {
-	L testlog;
-	ByteArrayOutputStream bos;
-
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
-
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
+	private L testlog;
+	private ByteArrayOutputStream bos;
 
 	@Before
 	public void setUp() throws Exception {
@@ -34,10 +22,6 @@ public class LTest {
 		testlog = L.getLogger("testlog");
 		bos = new ByteArrayOutputStream();
 		testlog.addOutput(bos);
-	}
-
-	@After
-	public void tearDown() throws Exception {
 	}
 
 	@Test

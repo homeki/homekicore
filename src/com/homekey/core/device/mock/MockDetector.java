@@ -11,9 +11,9 @@ public class MockDetector extends Detector {
 	@Override
 	public List<DeviceInformation> findDevices() {
 		List<DeviceInformation> devices = new ArrayList<DeviceInformation>();
-		devices.add(new DeviceInformation("switch1", MockHistorySwitchDevice.class));
-		devices.add(new DeviceInformation("switch2", MockHistorySwitchDevice.class));
-		devices.add(new DeviceInformation("dimmer1", MockHistoryDimmerDevice.class));
+		devices.add(new DeviceInformation("switch1", MockSwitchDevice.class));
+		devices.add(new DeviceInformation("switch2", MockSwitchDevice.class));
+		devices.add(new DeviceInformation("dimmer1", MockDimmerDevice.class));
 		devices.add(new DeviceInformation("temp1", MockTemperatureDevice.class));
 		devices.add(new DeviceInformation("temp2", MockTemperatureDevice.class));
 		return devices;

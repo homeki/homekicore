@@ -1,11 +1,11 @@
 package com.homekey.core.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import java.util.Calendar;
 import java.util.Date;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -28,11 +28,6 @@ public class SqliteDeviceTableTest {
 	public void setUp() throws Exception {
 		ITableFactory factory = TestUtil.getEmptySqliteTestTableFactory();
 		deviceTable = factory.getDeviceTable();
-	}
-	
-	@After
-	public void tearDown() throws Exception {
-		
 	}
 	
 	@Test

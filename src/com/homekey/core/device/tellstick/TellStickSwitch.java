@@ -2,11 +2,13 @@ package com.homekey.core.device.tellstick;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 import com.homekey.core.device.Device;
 import com.homekey.core.device.Queryable;
 import com.homekey.core.device.Switchable;
 import com.homekey.core.log.L;
+import com.homekey.core.storage.DatumPoint;
 import com.homekey.core.storage.IHistoryTable;
 import com.homekey.core.storage.ITableFactory;
 
@@ -50,5 +52,10 @@ public class TellStickSwitch extends Device implements Switchable, Queryable<Boo
 	protected void ensureHistoryTable(ITableFactory factory, String tableName) {
 		historyTable = factory.getHistoryTable(tableName, Boolean.class);
 		historyTable.ensureTable();
+	}
+
+	@Override
+	public List<DatumPoint> getHistory(Date from, Date to) {
+		return historyTable.getValues(from, to);
 	}
 }

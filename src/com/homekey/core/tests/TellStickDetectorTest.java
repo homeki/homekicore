@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,11 +20,6 @@ public class TellStickDetectorTest {
 	@Before
 	public void setUp() throws Exception {
 		tsd = new TellStickDetector(TEST_CONF_PATH);
-	}
-	
-	@After
-	public void tearDown() throws Exception {
-		
 	}
 	
 	@Test

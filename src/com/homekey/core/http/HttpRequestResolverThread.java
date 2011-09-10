@@ -20,17 +20,8 @@ public class HttpRequestResolverThread extends ControlledThread {
 		api = a;
 	}
 
-	enum Type {
-		GET, SET;
-	}
-
-	enum Command {
-		OFF, ON, DIM, STATUS, DEVICES;
-	}
-
 	@Override
 	public void iteration() throws InterruptedException {
-
 		BufferedReader in;
 		DataOutputStream out;
 

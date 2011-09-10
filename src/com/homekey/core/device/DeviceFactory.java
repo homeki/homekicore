@@ -1,8 +1,8 @@
 package com.homekey.core.device;
 
 import com.homekey.core.device.mock.MockDimmerDevice;
-import com.homekey.core.device.mock.MockHistoryDimmerDevice;
-import com.homekey.core.device.mock.MockHistorySwitchDevice;
+import com.homekey.core.device.mock.MockDimmerDevice;
+import com.homekey.core.device.mock.MockSwitchDevice;
 import com.homekey.core.device.mock.MockSwitchDevice;
 import com.homekey.core.device.mock.MockTemperatureDevice;
 import com.homekey.core.device.onewire.OneWireTemperatureDevice;
@@ -24,10 +24,10 @@ public class DeviceFactory {
 			return new MockSwitchDevice(di.getInternalId(), factory);
 		} else if (di.getType() == MockDimmerDevice.class) {
 			return new MockDimmerDevice(di.getInternalId(), factory);
-		} else if (di.getType() == MockHistorySwitchDevice.class) {
-			return new MockHistorySwitchDevice(di.getInternalId(), factory);
-		} else if (di.getType() == MockHistoryDimmerDevice.class) {
-			return new MockHistoryDimmerDevice(di.getInternalId(), factory);
+		} else if (di.getType() == MockSwitchDevice.class) {
+			return new MockSwitchDevice(di.getInternalId(), factory);
+		} else if (di.getType() == MockDimmerDevice.class) {
+			return new MockDimmerDevice(di.getInternalId(), factory);
 		} else if (di.getType() == MockTemperatureDevice.class) {
 			return new MockTemperatureDevice(di.getInternalId(), factory);
 		}

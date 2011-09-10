@@ -36,7 +36,7 @@ public class Monitor {
 		if (devices.containsKey(id)) {
 			return devices.get(id);
 		}
-		throw new NoSuchElementException("No device with such id: " + id);
+		throw new NoSuchElementException("No device with id " + id + ".");
 	}
 	
 	public synchronized List<Device> getDevices() {

@@ -1,33 +1,26 @@
 package com.homekey.core.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.NoSuchElementException;
-import java.util.StringTokenizer;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.homekey.core.device.Device;
-import com.homekey.core.device.mock.MockDevice;
 import com.homekey.core.device.mock.MockDimmerDevice;
 import com.homekey.core.http.HttpApi;
 import com.homekey.core.http.HttpRequestResolverThread;
-import com.homekey.core.http.HttpSetResolver;
 import com.homekey.core.main.Monitor;
 import com.homekey.core.storage.ITableFactory;
 
 public class HttpResolverTest {
-	DataOutputStream os;
-	Monitor monitor;
-	HttpApi api;
+	private DataOutputStream os;
+	private Monitor monitor;
+	private HttpApi api;
 
 	@Before
 	public void setUp() throws Exception {
@@ -35,10 +28,6 @@ public class HttpResolverTest {
 		os = new DataOutputStream(bos);
 		monitor = new Monitor();
 		api = new HttpApi(monitor);
-	}
-
-	@After
-	public void tearDown() throws Exception {
 	}
 
 	@Test

@@ -20,7 +20,7 @@ public class JsonDevice {
 		active = d.isActive();
 	}
 
-	public static JsonDevice[] makeArray(List<Device> devices) {
+	public static JsonDevice[] convertList(List<Device> devices) {
 		JsonDevice[] jsonDevices = new JsonDevice[devices.size()];
 		for (int i = 0; i < jsonDevices.length; i++) {
 			jsonDevices[i] = new JsonDevice(devices.get(i));

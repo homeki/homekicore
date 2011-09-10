@@ -1,8 +1,5 @@
 package com.homekey.core.http.json;
 
-import com.google.gson.JsonElement;
-
-
 public class JsonStatus {
 	@SuppressWarnings("unused")
 	private Object status;

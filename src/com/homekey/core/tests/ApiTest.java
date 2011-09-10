@@ -7,7 +7,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -52,11 +51,6 @@ public class ApiTest {
 		d = sdf.parse("2011-07-30 18:50:41");
 		mock1.setPretendAddedDate(d);
 		mock2.setPretendAddedDate(d);
-	}
-	
-	@After
-	public void tearDown() throws Exception {
-		
 	}
 	
 	@Test

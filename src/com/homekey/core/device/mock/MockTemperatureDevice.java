@@ -1,9 +1,11 @@
 package com.homekey.core.device.mock;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 import com.homekey.core.device.IntervalLoggable;
+import com.homekey.core.storage.DatumPoint;
 import com.homekey.core.storage.IHistoryTable;
 import com.homekey.core.storage.ITableFactory;
 
@@ -41,5 +43,10 @@ public class MockTemperatureDevice extends MockDevice implements IntervalLoggabl
 		} catch (InterruptedException e) { }
 		
 		return (rnd.nextFloat() * 2 - 1) * 40;
+	}
+
+	@Override
+	public List<DatumPoint> getHistory(Date from, Date to) {
+		return historyTable.getValues(from, to);
 	}
 }

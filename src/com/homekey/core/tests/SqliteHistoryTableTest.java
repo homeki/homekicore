@@ -1,11 +1,10 @@
 package com.homekey.core.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.Calendar;
 import java.util.Date;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,12 +22,6 @@ public class SqliteHistoryTableTest {
 		historyTable = factory.getHistoryTable(TABLE_NAME, Float.class);
 		historyTable.ensureTable();
 	}
-	
-	@After
-	public void tearDown() throws Exception {
-		
-	}
-
 	
 	@Test
 	public void testPutValue() {

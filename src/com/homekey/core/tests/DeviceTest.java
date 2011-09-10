@@ -6,7 +6,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -27,11 +26,6 @@ public class DeviceTest {
 		factory = TestUtil.getEmptySqliteTestTableFactory();
 		device = new MockDimmerDevice(INTERNAL_ID, factory);
 		device.setName(NAME);
-	}
-	
-	@After
-	public void tearDown() throws Exception {
-		
 	}
 	
 	@Test

@@ -15,7 +15,6 @@ import org.junit.Test;
 import com.homekey.core.http.HttpArguments;
 
 public class HttpArgumentsTest {
-
 	@Test
 	public void testConstructor() {
 		new HttpArguments();

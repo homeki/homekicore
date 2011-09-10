@@ -1,8 +1,10 @@
 package com.homekey.core.device.onewire;
 
 import java.util.Date;
+import java.util.List;
 
 import com.homekey.core.device.IntervalLoggable;
+import com.homekey.core.storage.DatumPoint;
 import com.homekey.core.storage.IHistoryTable;
 import com.homekey.core.storage.ITableFactory;
 
@@ -28,5 +30,10 @@ public class OneWireTemperatureDevice extends OneWireDevice implements IntervalL
 	protected void ensureHistoryTable(ITableFactory factory, String tableName) {
 		historyTable = factory.getHistoryTable(tableName, Float.class);
 		historyTable.ensureTable();
+	}
+
+	@Override
+	public List<DatumPoint> getHistory(Date from, Date to) {
+		return historyTable.getValues(from, to);
 	}
 }

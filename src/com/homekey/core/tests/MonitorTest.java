@@ -1,37 +1,18 @@
 package com.homekey.core.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.homekey.core.device.mock.LoggableMockDimmerDevice;
 import com.homekey.core.device.mock.MockDimmerDevice;
 import com.homekey.core.device.mock.MockSwitchDevice;
+import com.homekey.core.device.mock.MockTemperatureDevice;
 import com.homekey.core.main.Monitor;
 import com.homekey.core.storage.ITableFactory;
 
 public class MonitorTest {
-
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
-
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
-
-	@Before
-	public void setUp() throws Exception {
-	}
-
-	@After
-	public void tearDown() throws Exception {
-	}
-
 	@Test
 	public void testGetLoggableDevices() {
 		Monitor m = new Monitor();
@@ -41,9 +22,9 @@ public class MonitorTest {
 		assertEquals(0, m.getLoggableDevices().size());
 		m.addDevice(new MockDimmerDevice("asdf", db));
 		assertEquals(0, m.getLoggableDevices().size());
-		m.addDevice(new LoggableMockDimmerDevice("mylogdev1", db));
+		m.addDevice(new MockTemperatureDevice("mylogdev1", db));
 		assertEquals(1, m.getLoggableDevices().size());
-		m.addDevice(new LoggableMockDimmerDevice("mylogdev2", db));
+		m.addDevice(new MockTemperatureDevice("mylogdev2", db));
 		assertEquals(2, m.getLoggableDevices().size());
 		m.addDevice(new MockDimmerDevice("asdf", db));
 		assertEquals(2, m.getLoggableDevices().size());

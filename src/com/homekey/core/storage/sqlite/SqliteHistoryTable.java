@@ -5,9 +5,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.homekey.core.log.L;
+import com.homekey.core.storage.DatumPoint;
 import com.homekey.core.storage.IHistoryTable;
 
 public class SqliteHistoryTable extends SqliteTable implements IHistoryTable {
@@ -115,5 +118,38 @@ public class SqliteHistoryTable extends SqliteTable implements IHistoryTable {
 		}
 		
 		return value;
+	}
+	
+	public List<DatumPoint> getValues(Date from, Date to) {
+		List<DatumPoint> list = new ArrayList<DatumPoint>();
+		Connection conn = openConnection();
+		PreparedStatement stat;
+		
+		try {
+			stat = conn.prepareStatement("SELECT registered, value FROM " + tableName + " WHERE registered BETWEEN ? AND ? ORDER BY registered ASC");
+			
+			stat.setDate(1, convertToSqlDate(from));
+			stat.setDate(2, convertToSqlDate(to));
+			
+			ResultSet rs = stat.executeQuery();
+			
+			while (rs.next()) {
+				if (valueType == Boolean.class) {
+					list.add(new DatumPoint(rs.getDate(1), rs.getBoolean(2)));
+				} else if (valueType == Float.class) {
+					list.add(new DatumPoint(rs.getDate(1), rs.getFloat(2)));
+				} else if (valueType == Integer.class) {
+					list.add(new DatumPoint(rs.getDate(1), rs.getInt(2)));
+				}
+			}
+			
+			stat.close();
+		} catch (SQLException e) {
+			L.e("Couldn't get values from table " + tableName + " in database.", e);
+		} finally {
+			closeConnection(conn);
+		}
+		
+		return list;
 	}
 }
