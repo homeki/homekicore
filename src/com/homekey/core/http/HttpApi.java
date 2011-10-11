@@ -20,7 +20,7 @@ public class HttpApi {
 	private Monitor monitor;
 
 	public HttpApi(Monitor monitor) {
-		this.gson = new GsonBuilder().setPrettyPrinting().create();
+		this.gson = new GsonBuilder().setPrettyPrinting().setDateFormat("yyyy-MM-dd hh:mm:ss").create();
 		this.monitor = monitor;
 	}
 
