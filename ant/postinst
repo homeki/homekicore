@@ -3,11 +3,11 @@
 set -e
 
 if [ "$1" = "configure" ] ; then
-	chown -R homekey:homekey /opt/homekey
-	chmod a+w /opt/homekey/stdout.log
-	chmod a+w /opt/homekey/stderr.log
-	ln -sf /etc/init.d/homekeyd /etc/rc2.d/S99homekey
-	/etc/init.d/homekeyd start
+	chown -R homeki:homeki /opt/homeki
+	chmod a+w /opt/homeki/stdout.log
+	chmod a+w /opt/homeki/stderr.log
+	ln -sf /etc/init.d/homekid /etc/rc2.d/S99homeki
+	/etc/init.d/homekid start
 fi
 
 exit 0

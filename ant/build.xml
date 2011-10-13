@@ -23,26 +23,26 @@
 
     <target name="jar">
         <mkdir dir="../build/jar"/>
-        <jar destfile="../build/jar/homekeycore.jar" basedir="../build/classes">
+        <jar destfile="../build/jar/homekicore.jar" basedir="../build/classes">
         	<zipgroupfileset dir="../libs/" includes="*.jar"/>
             <manifest>
-                <attribute name="Main-Class" value="com.homekey.core.main.Main"/>
+                <attribute name="Main-Class" value="com.homeki.core.main.Main"/>
             </manifest>
         </jar>
-        <chmod file="../build/jar/homekeycore.jar" perm="a+x" />
+        <chmod file="../build/jar/homekicore.jar" perm="a+x" />
     </target>
     
     <target name="dist">
 		<mkdir dir="../build/dist"/>
-		<deb todir="../build/dist" package="homekey" section="misc" architecture="i386" depends="default-jdk" prerm="prerm" postinst="postinst" preinst="preinst">
+		<deb todir="../build/dist" package="homeki" section="misc" architecture="i386" depends="default-jdk" prerm="prerm" postinst="postinst" preinst="preinst">
 			<version upstream="0.0.1"/>
-			<maintainer name="homeKey Development Team" email="contact@homekey.com"/>
+			<maintainer name="Homeki Development Team" email="contact@homeki.com"/>
 			<description synopsis="Short description.">
 				Long description.
 			</description>
-			<tarfileset dir="../build/jar" prefix="opt/homekey/" filemode="755"/>
-			<tarfileset file="../ant/homekeyd" prefix="etc/init.d" filemode="755"/>
-			<tarfileset file="../ant/start.sh" prefix="/opt/homekey/" filemode="755"/>
+			<tarfileset dir="../build/jar" prefix="opt/homeki/" filemode="755"/>
+			<tarfileset file="../ant/homekid" prefix="etc/init.d" filemode="755"/>
+			<tarfileset file="../ant/start.sh" prefix="/opt/homeki/" filemode="755"/>
 		</deb>
 	</target>
 </project>

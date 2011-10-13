@@ -3,13 +3,13 @@
 set -e
 
 if [ "$1" = "remove" ] ; then
-	/etc/init.d/homekeyd stop
-	rm -f /opt/homekey/stdout.log
-	rm -f /opt/homekey/stderr.log
-	rm -f /opt/homekey/homekey.pid
-	rm -f /etc/rc2.d/S99homekey
-	mkdir -p /home/homekey
-	mv -f /opt/homekey/homekey.db /home/homekey/`date +%Y%m%d-%H%M%S`-homekey.db
+	/etc/init.d/homekid stop
+	rm -f /opt/homeki/stdout.log
+	rm -f /opt/homeki/stderr.log
+	rm -f /opt/homeki/homeki.pid
+	rm -f /etc/rc2.d/S99homeki
+	mkdir -p /home/homeki
+	mv -f /opt/homeki/homeki.db /home/homeki/`date +%Y%m%d-%H%M%S`-homeki.db
 fi
 
 exit 0
