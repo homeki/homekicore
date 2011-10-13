@@ -19,7 +19,7 @@ public class HttpMacro {
 			DataOutputStream out) throws IOException {
 
 		String statusLine = null;
-		String serverdetails = "Server: Homekey Java HTTP Server";
+		String serverdetails = "Server: Homeki Java HTTP Server";
 		String contentLengthLine = null;
 		String contentTypeLine = "Content-Type: text/html" + "\r\n";
 
