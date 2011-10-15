@@ -1,1 +1,16 @@
-[{"type":"MockSwitchDevice","id":1,"name":"","added":"Jul 30, 2011 6:50:41 PM","active":true},{"type":"MockDimmerDevice","id":2,"name":"","added":"Jul 30, 2011 6:50:41 PM","active":true}]
+[
+  {
+    "type": "MockSwitchDevice",
+    "id": 1,
+    "name": "",
+    "added": "2011-07-30 06:50:41",
+    "active": true
+  },
+  {
+    "type": "MockDimmerDevice",
+    "id": 2,
+    "name": "",
+    "added": "2011-07-30 06:50:41",
+    "active": true
+  }
+]

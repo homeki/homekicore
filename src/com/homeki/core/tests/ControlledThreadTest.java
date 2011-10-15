@@ -5,6 +5,7 @@ import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
+import com.homeki.core.log.L;
 import com.homeki.core.threads.mock.ControlledMockThread;
 
 public class ControlledThreadTest {
@@ -18,8 +19,9 @@ public class ControlledThreadTest {
 		} catch (InterruptedException e) {
 			fail();
 		}
-		while(!t.isAlive()){
+		while(!t.getState().equals(Thread.State.TERMINATED)){
 			t.hashCode();
+			if(System.currentTimeMillis() + ms > 3000) throw new AssertionError("Thread did not died after one seccond.. Bad thread! No soup for you!");
 		}
 		ms += System.currentTimeMillis();
 		// The thread should run during one second
