@@ -2,13 +2,16 @@ package com.homeki.core.device;
 
 import java.util.Date;
 
+import com.homeki.core.log.L;
 import com.homeki.core.storage.IDeviceTable;
+import com.homeki.core.storage.IHistoryTable;
 import com.homeki.core.storage.ITableFactory;
 
 public abstract class Device {
 	protected final int id;
 	
 	private IDeviceTable deviceTable;
+	protected IHistoryTable historyTable;
 	
 	public Device(String internalId, ITableFactory factory) {
 		deviceTable = factory.getDeviceTable();

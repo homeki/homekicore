@@ -1,28 +1,69 @@
 package com.homeki.core.device.tellstick;
 
+import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
+import com.homeki.core.device.Device;
 import com.homeki.core.device.Dimmable;
+import com.homeki.core.device.Queryable;
+import com.homeki.core.device.Switchable;
 import com.homeki.core.log.L;
-import com.homeki.core.storage.IHistoryTable;
+import com.homeki.core.storage.DatumPoint;
 import com.homeki.core.storage.ITableFactory;
 
-public class TellStickDimmer extends TellStickSwitch implements Dimmable {
-	private IHistoryTable historyTable;
-	
+public class TellStickDimmer extends Device implements Dimmable ,Switchable,Queryable<Integer>{
+
 	public TellStickDimmer(String internalId, ITableFactory factory) {
 		super(internalId, factory);
+
 	}
 
 	@Override
 	public void dim(int level) {
-		L.w("TellStick command not sent to dimmer, not implemented.");
+		try {
+			String cmd = String.format("tdtool --dimlevel %d --dim %s",
+					level,getInternalId());
+			if(level == 0){
+				cmd = String.format("tdtool --off %s",
+						getInternalId());
+			}else if(level == 255){
+				cmd = String.format("tdtool --on %s",
+						getInternalId());
+			}
+
+			Runtime.getRuntime().exec(cmd);
+		} catch (IOException e) {
+			L.e("Couldn't send command using tdtool.");
+			return;
+		}
+
 		historyTable.putValue(new Date(), level);
 	}
-	
+
 	@Override
 	protected void ensureHistoryTable(ITableFactory factory, String tableName) {
 		historyTable = factory.getHistoryTable(tableName, Integer.class);
 		historyTable.ensureTable();
+	}
+
+	@Override
+	public void off() {
+		dim(0);
+	}
+
+	@Override
+	public Integer getValue() {
+		return (Integer)historyTable.getLatestValue();
+	}
+	
+	@Override
+	public void on() {
+		dim(255);
+	}
+
+	@Override
+	public List<DatumPoint> getHistory(Date from, Date to) {
+		return historyTable.getValues(from, to);
 	}
 }

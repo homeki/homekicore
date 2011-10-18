@@ -39,7 +39,8 @@ public class ThreadMaster {
 		try {
 			threads.add(new HttpListenerThread(api));
 		} catch (Exception e) {
-			L.e("Could not start HttpListenerThread.");
+			L.e("Could not start HttpListenerThread. Killing Homeki.");
+			return;
 		}
 		threads.add(new CollectorThread(monitor));
 		

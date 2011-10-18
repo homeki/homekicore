@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 import java.util.StringTokenizer;
 
+import com.homeki.core.log.L;
 import com.homeki.core.threads.ControlledThread;
 
 public class HttpRequestResolverThread extends ControlledThread {
@@ -30,18 +31,21 @@ public class HttpRequestResolverThread extends ControlledThread {
 					connectedClient.getInputStream()));
 			out = new DataOutputStream(connectedClient.getOutputStream());
 			String requestString = in.readLine();
-			handleRequest(requestString, out,api);
+			handleRequest(requestString, out, api);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		shutdown();
 	}
 
-	public static void handleRequest(String requestString, DataOutputStream out, HttpApi api)
-			throws IOException {
-
+	public static void handleRequest(String requestString,
+			DataOutputStream out, HttpApi api) throws IOException {
+		if (requestString == null) {
+			HttpMacro.send404("Undefined requestString.", out);
+			return;
+		}
 		if (!requestString.endsWith(" HTTP/1.1")) {
-			HttpMacro.send404(requestString, out);
+			HttpMacro.send404(requestString + " did not return valid HTTP.", out);
 		} else {
 			requestString = requestString.replace(" HTTP/1.1", "");
 			StringTokenizer st = new StringTokenizer(requestString, "/ ?&");

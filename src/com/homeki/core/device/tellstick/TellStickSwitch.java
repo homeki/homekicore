@@ -13,7 +13,7 @@ import com.homeki.core.storage.IHistoryTable;
 import com.homeki.core.storage.ITableFactory;
 
 public class TellStickSwitch extends Device implements Switchable, Queryable<Boolean> {
-	private IHistoryTable historyTable;
+	
 	
 	public TellStickSwitch(String internalId, ITableFactory factory) {
 		super(internalId, factory);

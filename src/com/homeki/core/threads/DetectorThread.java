@@ -7,6 +7,7 @@ import com.homeki.core.device.Device;
 import com.homeki.core.device.DeviceFactory;
 import com.homeki.core.device.DeviceInformation;
 import com.homeki.core.device.mock.MockDetector;
+import com.homeki.core.device.tellstick.TellStickDetector;
 import com.homeki.core.main.Monitor;
 import com.homeki.core.storage.ITableFactory;
 
@@ -16,13 +17,13 @@ public class DetectorThread extends ControlledThread {
 	private ITableFactory dbf;
 	
 	public DetectorThread(Monitor monitor, ITableFactory dbf) {
-		super(10000);
+		super(1000);
 		this.dbf = dbf;
 		this.monitor = monitor;
 		this.detectors = new Detector[] { 
-				new MockDetector(),
+				/*new MockDetector()*/
 				//new OneWireDetector("/mnt/1wire/uncached"),
-				//new TellStickDetector("/etc/tellstick.conf")
+				new TellStickDetector("/etc/tellstick.conf")
 			};
 	}
 

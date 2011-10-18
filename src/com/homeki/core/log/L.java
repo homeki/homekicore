@@ -41,20 +41,21 @@ public class L {
 		return all.get(label);
 	}
 
-	public static void setStandard(String standard) {
-		setStandard(standard,true);
+	public static L setStandard(String standard) {
+		return setStandard(standard,true);
 	}
 
-	public static void setStandard(String standard, boolean addStdOut) {
+	public static L setStandard(String standard, boolean addStdOut) {
 		std = standard;
 		getLogger(standard);
 		if (addStdOut) {
 			for (StreamHolder sh : getStd().outs) {
 				if (sh.out.equals(System.out))
-					return;
+					return getLogger(std);
 			}
 			getLogger(standard).addOutput(System.out);
 		}
+		return getLogger(std);
 	}
 
 	private static L getStd() {

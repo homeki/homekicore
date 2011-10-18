@@ -9,7 +9,7 @@ import com.homeki.core.log.L;
 public class HttpMacro {
 	public static void send404(String httpQueryString, DataOutputStream out) {
 		try {
-			sendResponse(404, httpQueryString + " does not exist", out);
+			sendResponse(404, httpQueryString, out);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
