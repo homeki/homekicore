@@ -37,6 +37,7 @@ public class HttpGetResolver {
 
 	private static void resolveGet(StringTokenizer st, HttpApi api,
 			DataOutputStream out) throws IOException {
+
 		Actions action = Actions.NO_ACTION;
 		String token = "";
 		if (st.hasMoreTokens()) {
@@ -61,6 +62,7 @@ public class HttpGetResolver {
 			break;
 		case DIM:
 			resolveGetDim(st, api, out);
+			break;
 		case DEVICES:
 			resolveGetDevices(st, api, out);
 			break;
@@ -72,6 +74,7 @@ public class HttpGetResolver {
 			break;
 		case OFF:
 			resolveGetOn(st, api, out, false);
+			break;
 		case BAD_ACTION:
 			HttpMacro.send405("Command 'get' does not contain resource '"
 					+ token + "'.", out);
@@ -98,8 +101,7 @@ public class HttpGetResolver {
 		HashMap<String, String> args = getArguments(st);
 		Integer id = HttpArguments.demandInteger("id", args, out);
 		Integer level = HttpArguments.demandInteger("level", args, out);
-		
-		L.d("setting shit..");
+
 		if (id != null && level != null) {
 			try {
 				api.dim(id, level);
@@ -108,8 +110,8 @@ public class HttpGetResolver {
 						+ " is not dimmable.", out);
 				return;
 			}
-			HttpMacro.sendResponse(200, "Device " + id + " has level "
-					+ level + ".", out);
+			HttpMacro.sendResponse(200, "Device " + id + " has level " + level
+					+ ".", out);
 		}
 	}
 

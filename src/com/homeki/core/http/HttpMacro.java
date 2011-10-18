@@ -31,7 +31,6 @@ public class HttpMacro {
 		contentLengthLine = "Content-Length: " + responseString.length()
 				+ "\r\n";
 		try {
-
 			out.writeBytes(statusLine);
 			out.writeBytes(serverdetails);
 			out.writeBytes(contentTypeLine);
@@ -42,6 +41,7 @@ public class HttpMacro {
 			out.writeBytes(responseString);
 		} catch (SocketException e) {
 			L.w("Socket crashed while sending response: " + e.getMessage());
+			throw e;
 		}
 		out.close();
 	}
