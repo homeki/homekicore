@@ -28,7 +28,7 @@ public class Util {
 				try {
 					fis.close();
 				} catch (IOException ex) {
-					L.e("Problem closing file", ex);
+					L.e("Problem closing file.", ex);
 				}
 			}
 		}
