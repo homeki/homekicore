@@ -35,4 +35,14 @@ public class Util {
 		
 		return result;
 	}
+	
+	public static void sleep(int ms){
+		try {
+			Thread.sleep(ms);
+		} catch (InterruptedException e) {
+			L.e("Util.sleep failed.");
+			e.printStackTrace();
+		}
+		
+	}
 }
