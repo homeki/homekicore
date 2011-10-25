@@ -7,7 +7,7 @@ public class Main {
 	public static void main(String[] args) {
 		L l = L.setStandard(Logs.CORE);
 		l.setMinimumLevel(L.LEVEL_DEBUG);
-		l.addOutput(System.err,L.LEVEL_WARN,true,true);
+		l.addOutput(System.err, L.LEVEL_WARN, true, true);
 		
 		new ThreadMaster().launch();
 	}
