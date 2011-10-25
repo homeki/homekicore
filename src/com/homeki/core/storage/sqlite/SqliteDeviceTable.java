@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.Date;
 
 import com.homeki.core.log.L;
+import com.homeki.core.main.Util;
 import com.homeki.core.storage.IDeviceTable;
 
 public class SqliteDeviceTable extends SqliteTable implements IDeviceTable {
@@ -39,15 +40,12 @@ public class SqliteDeviceTable extends SqliteTable implements IDeviceTable {
 		
 		try {
 			PreparedStatement stat = conn.prepareStatement("INSERT INTO devices(internalid, type, name, added, active) VALUES(?, ?, ?, ?, ?)");
-			
 			stat.setString(1, internalId);
 			stat.setString(2, type);
 			stat.setString(3, "");
 			stat.setDate(4, new java.sql.Date(new Date().getTime()));
 			stat.setBoolean(5, true);
-			
 			stat.executeUpdate();
-			
 			id = stat.getGeneratedKeys().getInt(1);
 			stat.close();
 		} catch (SQLException e) {

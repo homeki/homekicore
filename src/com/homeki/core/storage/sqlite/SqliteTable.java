@@ -10,6 +10,7 @@ import java.sql.Statement;
 import java.util.Date;
 
 import com.homeki.core.log.L;
+import com.homeki.core.main.Util;
 
 public class SqliteTable {
 	private final String databaseName;
@@ -44,7 +45,7 @@ public class SqliteTable {
 		}
 	}
 	
-	protected Object getField(String sql, Object where, Type returnType) {
+	protected synchronized Object getField(String sql, Object where, Type returnType) {
 		Connection conn = openConnection();
 		PreparedStatement stat;
 		Object value = null;
@@ -84,14 +85,12 @@ public class SqliteTable {
 		return value;
 	}
 	
-	protected void setField(String sql, Object value, int id) {
+	protected synchronized void setField(String sql, Object value, int id) {
 		Connection conn = openConnection();
 		
 		try {
 			PreparedStatement stat = conn.prepareStatement(sql);
-			
 			addFirstParameter(stat, value);
-			
 			stat.setInt(2, id);
 			stat.executeUpdate();
 			stat.close();
