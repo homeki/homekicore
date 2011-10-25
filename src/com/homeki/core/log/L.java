@@ -77,8 +77,7 @@ public class L {
 	public void addOutput(OutputStream out) {
 		for (StreamHolder sh : outs) {
 			if (sh.out.equals(out))
-				throw new RuntimeException(
-						"You already added this PrintStream?");
+				throw new RuntimeException("You already added this PrintStream?");
 		}
 		outs.add(new StreamHolder(out, LEVEL_DEBUG, true, false));
 	}
@@ -96,23 +95,23 @@ public class L {
 		}
 	}
 
-	private void addLog(String message, StreamHolder sh, int level,
-			boolean removeDescriptor) {
+	private void addLog(String message, StreamHolder sh, int level, boolean removeDescriptor) {
 		if (ignoreThis(message))
 			return;
-		String full = "";
-		full += "[" + label;
+		String full = "[" + label;
 		Calendar c = Calendar.getInstance();
 		if (sh.showDate || sh.showTime) {
 			full = full + " | ";
 			if (sh.showDate) {
-				full += c.get(Calendar.YEAR) + "/" + c.get(Calendar.MONTH)
-						+ "/" + c.get(Calendar.DAY_OF_MONTH);
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				full += sdf.format(c.getTime());
+				
+				if (sh.showTime) 
+					full += " ";
 			}
 			if (sh.showTime) {
 				SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
 				full += sdf.format(c.getTime());
-				;
 			}
 		} else {
 		}
