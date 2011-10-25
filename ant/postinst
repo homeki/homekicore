@@ -8,6 +8,7 @@ if [ "$1" = "configure" ] ; then
 	chmod a+w /opt/homeki/stderr.log
 	ln -sf /etc/init.d/homekid /etc/rc2.d/S99homeki
 	/etc/init.d/homekid start
+	echo "------------------- APT: STARTED HOMEKI -------------------" >> /opt/homeki/stdout.log 
 fi
 
 exit 0

@@ -42,7 +42,7 @@
     <target name="dist">
 		<mkdir dir="../build/dist"/>
 		<deb todir="../build/dist" package="homeki" section="misc" depends="default-jdk" prerm="prerm" postinst="postinst" preinst="preinst">
-			<version upstream="0.0.2"/>
+			<version upstream="0.0.3"/>
 			<maintainer name="Homeki Development Team" email="contact@homeki.com"/>
 			<description synopsis="Short description.">
 				Long description.
