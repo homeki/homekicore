@@ -1,13 +1,13 @@
 [
   {
-    "type": "MockSwitchDevice",
+    "type": "MockSwitch",
     "id": 1,
     "name": "",
     "added": "2011-07-30 06:50:41",
     "active": true
   },
   {
-    "type": "MockDimmerDevice",
+    "type": "MockDimmer",
     "id": 2,
     "name": "",
     "added": "2011-07-30 06:50:41",

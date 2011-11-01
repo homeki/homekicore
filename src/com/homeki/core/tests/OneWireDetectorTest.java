@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import com.homeki.core.device.DeviceInformation;
 import com.homeki.core.device.onewire.OneWireDetector;
-import com.homeki.core.device.onewire.OneWireTemperatureDevice;
+import com.homeki.core.device.onewire.OneWireThermometer;
 
 public class OneWireDetectorTest {
 	private static final String ONEWIRE_ROOT_DIR = "test/1wire/uncached";
@@ -27,7 +27,7 @@ public class OneWireDetectorTest {
 		
 		DeviceInformation a = devices.get(0);
 		assertEquals("10.7B3F7F010800", a.getInternalId());
-		assertEquals(OneWireTemperatureDevice.class, a.getType());
+		assertEquals(OneWireThermometer.class, a.getType());
 		assertEquals(ONEWIRE_ROOT_DIR + "/" + a.getInternalId(), a.getAdditionalData("deviceDirPath"));
 	}
 }

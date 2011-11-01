@@ -1,7 +1,10 @@
 package com.homeki.core.device.mock;
 
+import java.lang.reflect.Type;
 import java.util.Date;
 import java.util.List;
+
+import javax.management.RuntimeErrorException;
 
 import com.homeki.core.Logs;
 import com.homeki.core.device.Dimmable;
@@ -11,10 +14,9 @@ import com.homeki.core.storage.DatumPoint;
 import com.homeki.core.storage.IHistoryTable;
 import com.homeki.core.storage.ITableFactory;
 
-public class MockDimmerDevice extends MockDevice implements Dimmable, Queryable<Integer> {
-	private IHistoryTable historyTable;
+public class MockDimmer extends MockDevice implements Dimmable, Queryable<Integer> {
 	
-	public MockDimmerDevice(String internalId, ITableFactory factory) {
+	public MockDimmer(String internalId, ITableFactory factory) {
 		super(internalId, factory);
 		L.getLogger(Logs.CORE_MOCK).log("Created MockHistoryDimmerDevice.");
 	}
@@ -39,17 +41,18 @@ public class MockDimmerDevice extends MockDevice implements Dimmable, Queryable<
 	
 	@Override
 	public Integer getValue() {
-		return (Integer)historyTable.getLatestValue();
-	}
-	
-	@Override
-	protected void ensureHistoryTable(ITableFactory factory, String tableName) {
-		historyTable = factory.getHistoryTable(tableName, Integer.class);
-		historyTable.ensureTable();
+		if(historyTable == null) System.out.println("historyTable is null???");
+		Object k = historyTable.getLatestValue();
+		return (Integer)k;
 	}
 
 	@Override
 	public List<DatumPoint> getHistory(Date from, Date to) {
 		return historyTable.getValues(from, to);
+	}
+
+	@Override
+	protected Type getTableValueType() {
+		return Integer.class;
 	}
 }

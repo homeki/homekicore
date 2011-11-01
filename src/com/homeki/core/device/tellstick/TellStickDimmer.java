@@ -1,6 +1,7 @@
 package com.homeki.core.device.tellstick;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.Date;
 import java.util.List;
 
@@ -42,12 +43,6 @@ public class TellStickDimmer extends Device implements Dimmable ,Switchable,Quer
 	}
 
 	@Override
-	protected void ensureHistoryTable(ITableFactory factory, String tableName) {
-		historyTable = factory.getHistoryTable(tableName, Integer.class);
-		historyTable.ensureTable();
-	}
-
-	@Override
 	public void off() {
 		dim(0);
 	}
@@ -65,5 +60,10 @@ public class TellStickDimmer extends Device implements Dimmable ,Switchable,Quer
 	@Override
 	public List<DatumPoint> getHistory(Date from, Date to) {
 		return historyTable.getValues(from, to);
+	}
+
+	@Override
+	protected Type getTableValueType() {
+		return Integer.class;
 	}
 }

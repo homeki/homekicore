@@ -1,5 +1,6 @@
 package com.homeki.core.device;
 
+import java.lang.reflect.Type;
 import java.util.Date;
 
 import com.homeki.core.log.L;
@@ -66,5 +67,10 @@ public abstract class Device {
 		return id == ((Device) obj).id;
 	}
 	
-	protected abstract void ensureHistoryTable(ITableFactory factory, String tableName);
+	protected void ensureHistoryTable(ITableFactory factory, String tableName){
+		historyTable = factory.getHistoryTable(tableName, getTableValueType());
+		historyTable.ensureTable();
+	}
+
+	protected abstract Type getTableValueType();
 }

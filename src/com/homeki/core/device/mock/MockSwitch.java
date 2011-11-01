@@ -1,5 +1,6 @@
 package com.homeki.core.device.mock;
 
+import java.lang.reflect.Type;
 import java.util.Date;
 import java.util.List;
 
@@ -11,10 +12,9 @@ import com.homeki.core.storage.DatumPoint;
 import com.homeki.core.storage.IHistoryTable;
 import com.homeki.core.storage.ITableFactory;
 
-public class MockSwitchDevice extends MockDevice implements Switchable, Queryable<Boolean> {
-	private IHistoryTable historyTable;
+public class MockSwitch extends MockDevice implements Switchable, Queryable<Boolean> {
 	
-	public MockSwitchDevice(String internalId, ITableFactory factory) {
+	public MockSwitch(String internalId, ITableFactory factory) {
 		super(internalId, factory);
 	}
 	
@@ -36,13 +36,12 @@ public class MockSwitchDevice extends MockDevice implements Switchable, Queryabl
 	}
 	
 	@Override
-	protected void ensureHistoryTable(ITableFactory factory, String tableName) {
-		historyTable = factory.getHistoryTable(tableName, Boolean.class);
-		historyTable.ensureTable();
+	public List<DatumPoint> getHistory(Date from, Date to) {
+		return historyTable.getValues(from, to);
 	}
 
 	@Override
-	public List<DatumPoint> getHistory(Date from, Date to) {
-		return historyTable.getValues(from, to);
+	protected Type getTableValueType() {
+		return  Boolean.class;
 	}
 }

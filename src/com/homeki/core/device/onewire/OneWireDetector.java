@@ -55,7 +55,7 @@ public class OneWireDetector extends Detector {
 			String type = OneWireDevice.getStringVar(deviceDirPath, "type");
 			
 			if (type.equals("DS18S20")) {
-				di = new DeviceInformation(s, OneWireTemperatureDevice.class);
+				di = new DeviceInformation(s, OneWireThermometer.class);
 				di.addAdditionalData("deviceDirPath", deviceDirPath);
 				devices.add(di);
 			} else {

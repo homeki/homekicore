@@ -11,8 +11,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.homeki.core.device.mock.MockDevice;
-import com.homeki.core.device.mock.MockDimmerDevice;
-import com.homeki.core.device.mock.MockSwitchDevice;
+import com.homeki.core.device.mock.MockDimmer;
+import com.homeki.core.device.mock.MockSwitch;
 import com.homeki.core.http.HttpApi;
 import com.homeki.core.main.Monitor;
 import com.homeki.core.storage.ITableFactory;
@@ -24,8 +24,8 @@ public class ApiTest {
 	private static final String JSON_STATUS_INT = "{\n  \"status\": %d\n}";
 	
 	private HttpApi api;
-	private MockSwitchDevice mock1;
-	private MockDimmerDevice mock2;
+	private MockSwitch mock1;
+	private MockDimmer mock2;
 	
 	private ITableFactory dbf;
 	
@@ -36,8 +36,8 @@ public class ApiTest {
 		Monitor mon = new Monitor();
 		api = new HttpApi(mon);
 		
-		mock1 = new MockSwitchDevice("switch1", dbf);
-		mock2 = new MockDimmerDevice("dimmer1", dbf);
+		mock1 = new MockSwitch("switch1", dbf);
+		mock2 = new MockDimmer("dimmer1", dbf);
 		
 		setMockDate(mock1, mock2);
 		

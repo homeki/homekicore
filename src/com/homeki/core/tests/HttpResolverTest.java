@@ -11,7 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.homeki.core.device.Device;
-import com.homeki.core.device.mock.MockDimmerDevice;
+import com.homeki.core.device.mock.MockDimmer;
 import com.homeki.core.http.HttpApi;
 import com.homeki.core.http.HttpRequestResolverThread;
 import com.homeki.core.main.Monitor;
@@ -46,7 +46,7 @@ public class HttpResolverTest {
 	@Test
 	public void testStatusRequest() {
 		ITableFactory db = TestUtil.getEmptySqliteTestTableFactory();
-		Device dev = new MockDimmerDevice("hejsan", db);
+		Device dev = new MockDimmer("hejsan", db);
 		monitor.addDevice(dev);
 		try {
 			String req = String.format("GET get/status?id=%d HTTP/1.1",

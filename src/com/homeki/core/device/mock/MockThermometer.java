@@ -1,5 +1,6 @@
 package com.homeki.core.device.mock;
 
+import java.lang.reflect.Type;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -9,33 +10,27 @@ import com.homeki.core.storage.DatumPoint;
 import com.homeki.core.storage.IHistoryTable;
 import com.homeki.core.storage.ITableFactory;
 
-public class MockTemperatureDevice extends MockDevice implements IntervalLoggable<Float> {
+public class MockThermometer extends MockDevice implements IntervalLoggable<Float> {
 	private IHistoryTable historyTable;
 	private Random rnd;
 	
-	public MockTemperatureDevice(String internalId, ITableFactory factory) {
+	public MockThermometer(String internalId, ITableFactory factory) {
 		super(internalId, factory);
 		rnd = new Random();
 	}
 	
 	@Override
-	protected void ensureHistoryTable(ITableFactory factory, String tableName) {
-		historyTable = factory.getHistoryTable(tableName, Float.class);
-		historyTable.ensureTable();
-	}
-
-	@Override
 	public Float getValue() {
-		return getRandomTemperatureValue();
+		return getRandomThermometerValue();
 	}
 
 	@Override
 	public void updateValue() {
-		float value = getRandomTemperatureValue();
+		float value = getRandomThermometerValue();
 		historyTable.putValue(new Date(), value);
 	}
 	
-	private Float getRandomTemperatureValue() {
+	private Float getRandomThermometerValue() {
 		long sleepTime = 1000 + (rnd.nextInt(500) - 250);
 		
 		try {
@@ -48,5 +43,10 @@ public class MockTemperatureDevice extends MockDevice implements IntervalLoggabl
 	@Override
 	public List<DatumPoint> getHistory(Date from, Date to) {
 		return historyTable.getValues(from, to);
+	}
+
+	@Override
+	protected Type getTableValueType() {
+		return Float.class;
 	}
 }

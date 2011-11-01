@@ -1,6 +1,7 @@
 package com.homeki.core.device.tellstick;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.Date;
 import java.util.List;
 
@@ -49,13 +50,12 @@ public class TellStickSwitch extends Device implements Switchable, Queryable<Boo
 	}
 
 	@Override
-	protected void ensureHistoryTable(ITableFactory factory, String tableName) {
-		historyTable = factory.getHistoryTable(tableName, Boolean.class);
-		historyTable.ensureTable();
+	public List<DatumPoint> getHistory(Date from, Date to) {
+		return historyTable.getValues(from, to);
 	}
 
 	@Override
-	public List<DatumPoint> getHistory(Date from, Date to) {
-		return historyTable.getValues(from, to);
+	protected Type getTableValueType() {
+		return Boolean.class;
 	}
 }
