@@ -11,10 +11,14 @@ public class HttpSetResolver {
 	public static boolean resolve(StringTokenizer st, HttpApi api, DataOutputStream out) throws IOException {
 		if (!st.hasMoreTokens())
 			return false;
-		if (st.nextToken().equals("GET")) {
+		String httpMethod = st.nextToken();
+		if (httpMethod.equals("GET")) {
 			if (HttpGetResolver.eat(st, "set")) {
 				return resolveSet(st, api, out);
 			}
+		}
+		else if (httpMethod.equals("POST")) {
+			
 		}
 		return false;
 	}

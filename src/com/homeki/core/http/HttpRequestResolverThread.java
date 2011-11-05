@@ -1,65 +1,49 @@
 package com.homeki.core.http;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.Socket;
-import java.util.StringTokenizer;
+
+import org.apache.http.ConnectionClosedException;
+import org.apache.http.HttpException;
+import org.apache.http.HttpServerConnection;
+import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.protocol.HttpContext;
+import org.apache.http.protocol.HttpService;
 
 import com.homeki.core.log.L;
 import com.homeki.core.threads.ControlledThread;
 
 public class HttpRequestResolverThread extends ControlledThread {
-	private HttpApi api = null;
-	private Socket connectedClient = null;
-
-	public HttpRequestResolverThread(Socket client, HttpApi a) {
-		super(0);
-		quiet();
-		connectedClient = client;
-		api = a;
+	private HttpService httpservice;
+    private HttpServerConnection conn;
+    private HttpContext context;
+	
+    public HttpRequestResolverThread(HttpService httpservice, HttpServerConnection conn) {
+		super(1000);
+		this.context = new BasicHttpContext(null);
+        this.httpservice = httpservice;
+        this.conn = conn;
 	}
+    
+    public void run() {
+
+    }
 
 	@Override
 	public void iteration() throws InterruptedException {
-		BufferedReader in;
-		DataOutputStream out;
-
-		try {
-			in = new BufferedReader(new InputStreamReader(
-					connectedClient.getInputStream()));
-			out = new DataOutputStream(connectedClient.getOutputStream());
-			String requestString = in.readLine();
-			handleRequest(requestString, out, api);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		shutdown();
+        try {
+            while (!Thread.interrupted() && this.conn.isOpen()) {
+                this.httpservice.handleRequest(this.conn, context);
+            }
+        } catch (ConnectionClosedException ex) {
+            L.e("Client closed connection.", ex);
+        } catch (IOException ex) {
+            L.e("I/O error.", ex);
+        } catch (HttpException ex) {
+            L.e("Unrecoverable HTTP protocol violation.", ex);
+        } finally {
+            try {
+                this.conn.shutdown();
+            } catch (IOException ignore) {}
+        }
 	}
-
-	public static void handleRequest(String requestString,
-			DataOutputStream out, HttpApi api) throws IOException {
-		if (requestString == null) {
-			HttpMacro.send404("Undefined requestString.", out);
-			return;
-		}
-		if (!requestString.endsWith(" HTTP/1.1")) {
-			HttpMacro.send404(requestString + " did not return valid HTTP.", out);
-		} else {
-			requestString = requestString.replace(" HTTP/1.1", "");
-			StringTokenizer st = new StringTokenizer(requestString, "/ ?&");
-			if (st.hasMoreTokens()) {
-				String token = st.nextToken();
-				if (token.equals("GET")) {
-					HttpGetResolver.resolve(st, api, out);
-				} else if (token.equals("SET")) {
-					HttpSetResolver.resolve(st, api, out);
-				} else {
-					HttpMacro.send404(requestString, out);
-				}
-			}
-		}
-	}
-
 }
