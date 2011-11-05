@@ -44,7 +44,8 @@ public class HttpListenerThread extends ControlledThread {
         this.params.setParameter(CoreProtocolPNames.ORIGIN_SERVER, "HttpComponents/1.1");
         
         HttpRequestHandlerRegistry reqistry = new HttpRequestHandlerRegistry();
-        reqistry.register("*", null);
+        reqistry.register("get/*", new HttpGetHandler());
+        reqistry.register("set/*", new HttpSetHandler());
         
         HttpProcessor proc = new ImmutableHttpProcessor(new HttpResponseInterceptor[] {
                 new ResponseDate(),
