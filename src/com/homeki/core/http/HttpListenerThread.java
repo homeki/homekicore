@@ -14,6 +14,7 @@ import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.SyncBasicHttpParams;
 import org.apache.http.protocol.HttpProcessor;
+import org.apache.http.protocol.HttpRequestHandlerRegistry;
 import org.apache.http.protocol.HttpService;
 import org.apache.http.protocol.ImmutableHttpProcessor;
 import org.apache.http.protocol.ResponseConnControl;
@@ -41,6 +42,9 @@ public class HttpListenerThread extends ControlledThread {
         this.params.setBooleanParameter(CoreConnectionPNames.STALE_CONNECTION_CHECK, false);
         this.params.setBooleanParameter(CoreConnectionPNames.TCP_NODELAY, true);
         this.params.setParameter(CoreProtocolPNames.ORIGIN_SERVER, "HttpComponents/1.1");
+        
+        HttpRequestHandlerRegistry reqistry = new HttpRequestHandlerRegistry();
+        reqistry.register("*", null);
         
         HttpProcessor proc = new ImmutableHttpProcessor(new HttpResponseInterceptor[] {
                 new ResponseDate(),
