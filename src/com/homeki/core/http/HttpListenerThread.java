@@ -37,8 +37,8 @@ public class HttpListenerThread extends ControlledThread {
 		this.listenSocket = new ServerSocket(5000, 10, null);
 		
         this.params = new SyncBasicHttpParams();
-        this.params.setIntParameter(CoreConnectionPNames.SO_TIMEOUT, 15000);
-        this.params.setIntParameter(CoreConnectionPNames.SOCKET_BUFFER_SIZE, 8 * 1024);
+        this.params.setIntParameter(CoreConnectionPNames.SO_TIMEOUT, 2500);
+        this.params.setIntParameter(CoreConnectionPNames.SOCKET_BUFFER_SIZE, 1024);
         this.params.setBooleanParameter(CoreConnectionPNames.STALE_CONNECTION_CHECK, false);
         this.params.setBooleanParameter(CoreConnectionPNames.TCP_NODELAY, true);
         this.params.setParameter(CoreProtocolPNames.ORIGIN_SERVER, "HttpComponents/1.1");

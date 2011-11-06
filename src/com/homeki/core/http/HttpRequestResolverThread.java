@@ -32,9 +32,7 @@ public class HttpRequestResolverThread extends ControlledThread {
                 this.httpservice.handleRequest(this.conn, context);
             }
         } catch (ConnectionClosedException ignore) {
-        	
-        } catch (IOException ex) {
-            L.e("I/O error.", ex);
+        } catch (IOException ignore) {
         } catch (HttpException ex) {
             L.e("Unrecoverable HTTP protocol violation.", ex);
         } finally {
