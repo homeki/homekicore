@@ -23,6 +23,8 @@
 				<pathelement location="../libs/gson-1.7.1.jar"/>
 				<pathelement location="../libs/junit-4.8.2.jar"/>
 				<pathelement location="../libs/sqlitejdbc-v056.jar"/>
+				<pathelement location="../libs/httpclient-4.1.2.jar"/>
+				<pathelement location="../libs/httpcore-4.1.3.jar"/>
 				<pathelement path="${java.class.path}/"/>
 			</classpath>
         </javac>
@@ -42,7 +44,7 @@
     <target name="dist">
 		<mkdir dir="../build/dist"/>
 		<deb todir="../build/dist" package="homeki" section="misc" depends="default-jdk" prerm="prerm" postinst="postinst" preinst="preinst">
-			<version upstream="0.0.3"/>
+			<version upstream="0.0.5"/>
 			<maintainer name="Homeki Development Team" email="contact@homeki.com"/>
 			<description synopsis="Short description.">
 				Long description.
