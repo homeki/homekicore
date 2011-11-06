@@ -19,14 +19,11 @@ public class HttpRequestResolverThread extends ControlledThread {
 	
     public HttpRequestResolverThread(HttpService httpservice, HttpServerConnection conn) {
 		super(1000);
+		this.quiet();
 		this.context = new BasicHttpContext(null);
         this.httpservice = httpservice;
         this.conn = conn;
-	}
-    
-    public void run() {
-
-    }
+	} 	
 
 	@Override
 	public void iteration() throws InterruptedException {
@@ -34,8 +31,8 @@ public class HttpRequestResolverThread extends ControlledThread {
             while (!Thread.interrupted() && this.conn.isOpen()) {
                 this.httpservice.handleRequest(this.conn, context);
             }
-        } catch (ConnectionClosedException ex) {
-            L.e("Client closed connection.", ex);
+        } catch (ConnectionClosedException ignore) {
+        	
         } catch (IOException ex) {
             L.e("I/O error.", ex);
         } catch (HttpException ex) {
