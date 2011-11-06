@@ -44,7 +44,7 @@
     <target name="dist">
 		<mkdir dir="../build/dist"/>
 		<deb todir="../build/dist" package="homeki" section="misc" depends="default-jdk" prerm="prerm" postinst="postinst" preinst="preinst">
-			<version upstream="0.0.5"/>
+			<version upstream="0.0.6"/>
 			<maintainer name="Homeki Development Team" email="contact@homeki.com"/>
 			<description synopsis="Unified interface for all your sensors and devices connected to your server.">
 				Provides a JSON HTTP API for accessing, logging, modifying and managing various devices and sensors connected to your server.
