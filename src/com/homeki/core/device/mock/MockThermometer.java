@@ -11,7 +11,6 @@ import com.homeki.core.storage.IHistoryTable;
 import com.homeki.core.storage.ITableFactory;
 
 public class MockThermometer extends MockDevice implements IntervalLoggable<Float> {
-	private IHistoryTable historyTable;
 	private Random rnd;
 	
 	public MockThermometer(String internalId, ITableFactory factory) {

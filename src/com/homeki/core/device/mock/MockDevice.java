@@ -11,9 +11,6 @@ public abstract class MockDevice extends Device {
 
 	public MockDevice(String internalId, ITableFactory factory) {
 		super(internalId, factory);
-		if(historyTable == null){
-			System.out.println("WHATAFACK!?");
-		}
 	}
 	
 	public void setPretendAddedDate(Date date){
