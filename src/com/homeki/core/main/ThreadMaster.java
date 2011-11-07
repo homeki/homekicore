@@ -1,5 +1,6 @@
 package com.homeki.core.main;
 
+import java.io.FileNotFoundException;
 import java.util.LinkedList;
 
 import com.homeki.core.http.HttpApi;
@@ -16,6 +17,7 @@ public class ThreadMaster {
 	private LinkedList<ControlledThread> threads;
 	private HttpApi api;
 	private ITableFactory dbf;
+	private ConfigurationFile file;
 	
 	public ThreadMaster() {
 		addShutdownHook();
@@ -27,21 +29,38 @@ public class ThreadMaster {
 	}
 	
 	public void launch() {
+		file = new ConfigurationFile();
 		threads = new LinkedList<ControlledThread>();
 		monitor = new Monitor();
 		api = new HttpApi(monitor);
 		dbf = new SqliteTableFactory("homeki.db");
 		
+		try {
+			file.load();
+		} catch (FileNotFoundException ex) {
+			L.e("Could not find configuration file, killing Homeki.");
+			return;
+		} catch (Exception ex) {
+			L.e("Exception when parsing configuration file.", ex);
+			return;
+		}
+		
 		dbf.ensureTables();
 		
-		// create all threads
-		threads.add(new DetectorThread(monitor, dbf));
+		// create detector thread
+		DetectorThread dthread = new DetectorThread(monitor, dbf);
+		dthread.configure(file);
+		threads.add(dthread);
+		
+		// create http listener thread
 		try {
 			threads.add(new HttpListenerThread(api));
 		} catch (Exception e) {
-			L.e("Could not start HttpListenerThread. Killing Homeki.");
+			L.e("Could not bind socket for HttpListenerThread, killing Homeki.");
 			return;
 		}
+		
+		// create collector thread
 		threads.add(new CollectorThread(monitor));
 		
 		for (Thread t : threads)
@@ -52,18 +71,5 @@ public class ThreadMaster {
 		L.i("ThreadMaster shutting down threads...");
 		for (ControlledThread t : threads)
 			t.shutdown();
-	}
-	
-	public void restart() {
-		L.i("Doing forced restart. Shutting down threads.");
-		shutdown();
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		L.i("Starting threads.");
-		launch();
-		
 	}
 }
