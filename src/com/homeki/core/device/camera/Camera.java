@@ -7,15 +7,14 @@ import com.homeki.core.storage.ITableFactory;
 
 public class Camera extends Device {
 
-	public Camera(String internalId, ITableFactory factory) {
+	public Camera(String internalId, String nick, ITableFactory factory) {
 		super(internalId, factory);
-		// TODO Auto-generated constructor stub
+		setName(nick);
 	}
 
+ 
 	@Override
 	protected Type getTableValueType() {
-		// TODO Auto-generated method stub
-		return null;
+		return Boolean.class;
 	}
-	
 }

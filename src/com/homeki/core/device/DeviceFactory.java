@@ -30,10 +30,11 @@ public class DeviceFactory {
 		} else if (di.getType() == MockThermometer.class) {
 			return new MockThermometer(di.getInternalId(), factory);
 		}else if (di.getType() == Camera.class) {
-			return new MockThermometer(di.getInternalId(), factory);
+			return new Camera(di.getInternalId(),di.getAdditionalData("nick"), factory);
 		}
 		
 		L.e("Corresponding device class not found for DeviceInformation in DeviceFactory.");
+		// TODO: Why do we not throw an Exception here?
 		return null;
 	}
 }

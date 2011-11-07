@@ -21,8 +21,8 @@ public class DetectorThread extends ControlledThread {
 		this.dbf = dbf;
 		this.monitor = monitor;
 		this.detectors = new Detector[] { 
-				/*new CameraDetector()*/
-				new MockDetector()
+				new CameraDetector(),
+				/*new MockDetector()*/
 				//new OneWireDetector("/mnt/1wire/uncached"),
 				/*new TellStickDetector("/etc/tellstick.conf")*/
 			};
@@ -39,6 +39,7 @@ public class DetectorThread extends ControlledThread {
 						Device dev = DeviceFactory.createDevice(dbf, d);
 						if (dev != null) {
 							monitor.addDevice(dev);
+							System.out.println("adding: " +dev.toString());
 						}
 					}
 				}

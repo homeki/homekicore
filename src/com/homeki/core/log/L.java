@@ -22,6 +22,7 @@ public class L {
 	private List<StreamHolder> outs;
 	private int minLevel;
 	private String label;
+	private boolean omitErrors;
 	
 	private String levelToString(int level) {
 		if (level >= LEVEL_ERROR)
@@ -67,6 +68,7 @@ public class L {
 		this.outs = new ArrayList<StreamHolder>();
 		this.label = label;
 		this.ignore = new ArrayList<String>();
+		this.omitErrors = false;
 	}
 	
 	public void addOutput(PrintStream out, int minLevel, boolean showTime, boolean showDate) {
@@ -97,6 +99,7 @@ public class L {
 	private void addLog(String message, StreamHolder sh, int level, boolean removeDescriptor) {
 		if (ignoreThis(message))
 			return;
+		if(level >= LEVEL_ERROR && this.omitErrors) return;
 		String full = "[" + label;
 		Calendar c = Calendar.getInstance();
 		if (sh.showDate || sh.showTime) {
@@ -200,5 +203,9 @@ public class L {
 	public static void reset() {
 		all.clear();
 		all = new HashMap<String, L>();
+	}
+
+	public void omitErrors(boolean b) {
+		this.omitErrors = b;
 	}
 }
