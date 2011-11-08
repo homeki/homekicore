@@ -3,7 +3,6 @@ package com.homeki.core.device;
 import java.lang.reflect.Type;
 import java.util.Date;
 
-import com.homeki.core.log.L;
 import com.homeki.core.storage.IDeviceTable;
 import com.homeki.core.storage.IHistoryTable;
 import com.homeki.core.storage.ITableFactory;

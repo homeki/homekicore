@@ -10,7 +10,6 @@ import com.homeki.core.device.Queryable;
 import com.homeki.core.device.Switchable;
 import com.homeki.core.log.L;
 import com.homeki.core.storage.DatumPoint;
-import com.homeki.core.storage.IHistoryTable;
 import com.homeki.core.storage.ITableFactory;
 
 public class TellStickSwitch extends Device implements Switchable, Queryable<Boolean> {

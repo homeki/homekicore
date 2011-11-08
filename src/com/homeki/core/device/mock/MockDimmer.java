@@ -4,14 +4,11 @@ import java.lang.reflect.Type;
 import java.util.Date;
 import java.util.List;
 
-import javax.management.RuntimeErrorException;
-
 import com.homeki.core.Logs;
 import com.homeki.core.device.Dimmable;
 import com.homeki.core.device.Queryable;
 import com.homeki.core.log.L;
 import com.homeki.core.storage.DatumPoint;
-import com.homeki.core.storage.IHistoryTable;
 import com.homeki.core.storage.ITableFactory;
 
 public class MockDimmer extends MockDevice implements Dimmable, Queryable<Integer> {

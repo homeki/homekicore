@@ -5,7 +5,6 @@ import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
-import com.homeki.core.log.L;
 import com.homeki.core.threads.mock.ControlledMockThread;
 
 public class ControlledThreadTest {

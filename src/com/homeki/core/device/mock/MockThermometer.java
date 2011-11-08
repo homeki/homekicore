@@ -7,7 +7,6 @@ import java.util.Random;
 
 import com.homeki.core.device.IntervalLoggable;
 import com.homeki.core.storage.DatumPoint;
-import com.homeki.core.storage.IHistoryTable;
 import com.homeki.core.storage.ITableFactory;
 
 public class MockThermometer extends MockDevice implements IntervalLoggable<Float> {

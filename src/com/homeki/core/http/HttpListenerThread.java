@@ -26,14 +26,12 @@ import com.homeki.core.log.L;
 import com.homeki.core.threads.ControlledThread;
 
 public class HttpListenerThread extends ControlledThread {
-	private HttpApi api;
 	private HttpParams params;
 	private HttpService service;
 	private ServerSocket listenSocket;
 	
 	public HttpListenerThread(HttpApi api) throws IOException {
 		super(0);
-		this.api = api;
 		this.listenSocket = new ServerSocket(5000, 10, null);
 		
         this.params = new SyncBasicHttpParams();

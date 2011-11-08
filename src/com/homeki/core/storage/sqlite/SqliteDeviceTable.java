@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.util.Date;
 
 import com.homeki.core.log.L;
-import com.homeki.core.main.Util;
 import com.homeki.core.storage.IDeviceTable;
 
 public class SqliteDeviceTable extends SqliteTable implements IDeviceTable {

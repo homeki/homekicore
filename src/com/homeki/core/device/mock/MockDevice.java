@@ -3,7 +3,6 @@ package com.homeki.core.device.mock;
 import java.util.Date;
 
 import com.homeki.core.device.Device;
-import com.homeki.core.storage.IHistoryTable;
 import com.homeki.core.storage.ITableFactory;
 
 public abstract class MockDevice extends Device {

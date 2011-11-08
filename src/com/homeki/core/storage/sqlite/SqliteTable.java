@@ -10,7 +10,6 @@ import java.sql.Statement;
 import java.util.Date;
 
 import com.homeki.core.log.L;
-import com.homeki.core.main.Util;
 
 public class SqliteTable {
 	private final String databaseName;
