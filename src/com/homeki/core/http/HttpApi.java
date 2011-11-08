@@ -12,6 +12,7 @@ import com.homeki.core.device.Switchable;
 import com.homeki.core.http.json.JsonDevice;
 import com.homeki.core.http.json.JsonPair;
 import com.homeki.core.http.json.JsonStatus;
+import com.homeki.core.log.L;
 import com.homeki.core.main.Monitor;
 import com.homeki.core.storage.DatumPoint;
 
@@ -58,5 +59,12 @@ public class HttpApi {
 		Queryable<?> q = (Queryable<?>) d;
 		JsonStatus status = new JsonStatus(q.getValue());
 		return gson.toJson(status);
+	}
+	
+	public void setDevice(int id, String gsonString) {
+		Device d = monitor.getDevice(id);
+		JsonDevice gsonDev = gson.fromJson(gsonString, JsonDevice.class);
+		L.d("Name: " + gsonDev.name);
+		d.setName(gsonDev.name);
 	}
 }

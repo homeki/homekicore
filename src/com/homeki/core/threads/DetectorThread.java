@@ -57,10 +57,8 @@ public class DetectorThread extends ControlledThread implements Configurable {
 				for (DeviceInformation d : devs) {
 					if (!monitor.containsDevice(d.getInternalId())) {
 						Device dev = DeviceFactory.createDevice(dbf, d);
-						if (dev != null) {
+						if (dev != null)
 							monitor.addDevice(dev);
-							System.out.println("adding: " +dev.toString());
-						}
 					}
 				}
 			}

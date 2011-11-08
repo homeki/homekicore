@@ -6,7 +6,7 @@ import com.homeki.core.log.L;
 
 public class HttpSetHandler extends HttpHandler {
 	public enum Actions {
-		ON, OFF, DIM, BAD_ACTION
+		ON, OFF, DIM, DEVICE, BAD_ACTION
 	}
 	
 	public HttpSetHandler(HttpApi api) {
@@ -31,6 +31,9 @@ public class HttpSetHandler extends HttpHandler {
 				break;
 			case DIM:
 				resolveDim();
+				break;
+			case DEVICE:
+				resolveDevice();
 				break;
 			default:
 				sendString(404, "No such action, " + action + ".");
@@ -74,6 +77,21 @@ public class HttpSetHandler extends HttpHandler {
 			response.setStatusCode(200);
 		} catch (ClassCastException ex) {
 			sendString(405, "Device with id " + id + " is not dimmable.");
+		}
+	}
+	
+	private void resolveDevice() {
+		int id = getIntParameter("id");
+		String post = getPost();
+		
+		if (id == -1 || post.equals(""))
+			return;
+		
+		try {
+			api.setDevice(id, post);
+		}
+		catch (Exception ex) {
+			sendString(405, "Problem parsing POST JSON for set device.");
 		}
 	}
 }

@@ -11,6 +11,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpEntityEnclosingRequest;
 import org.apache.http.HttpException;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
@@ -19,6 +21,7 @@ import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.protocol.HttpRequestHandler;
+import org.apache.http.util.EntityUtils;
 
 import com.homeki.core.log.L;
 
@@ -102,6 +105,31 @@ public abstract class HttpHandler implements HttpRequestHandler {
 		}
 		
 		return "";
+	}
+	
+	protected String getPost() {
+		String s = "";
+		
+		if (!request.getRequestLine().getMethod().toUpperCase().equals("POST")) {
+			sendString(405, "HTTP method not POST.");
+			return "";
+		}
+		
+		if (!(request instanceof HttpEntityEnclosingRequest)) {
+			sendString(405, "POST data not provided.");
+			return "";
+		}
+		
+		HttpEntity entity = ((HttpEntityEnclosingRequest)request).getEntity();
+		
+		try {
+			s = EntityUtils.toString(entity);
+		} catch (Exception ex) {
+			L.e("Could not parse POST data.", ex);
+			sendString(405, "Could not parse POST data.");
+		}
+		
+		return s;
 	}
 	
 	protected abstract void handle(String method, StringTokenizer path);
