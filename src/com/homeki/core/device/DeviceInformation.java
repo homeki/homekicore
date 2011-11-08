@@ -1,15 +1,24 @@
 package com.homeki.core.device;
 
-import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
 public class DeviceInformation {
+	public enum DeviceType {
+		MockSwitch, 
+		MockDimmer,
+		MockThermometer,
+		TellStickSwitch,
+		TellStickDimmer,
+		OneWireThermometer,
+		Camera
+	}
+	
 	private String internalId;
-	private Type type;
+	private DeviceType type;
 	private Map<String, String> additionalData;
 	
-	public DeviceInformation(String internalId, Type type) {
+	public DeviceInformation(String internalId, DeviceType type) {
 		this.internalId = internalId;
 		this.type = type;
 		this.additionalData = new HashMap<String, String>();
@@ -19,7 +28,7 @@ public class DeviceInformation {
 		return internalId;
 	}
 	
-	public Type getType() {
+	public DeviceType getType() {
 		return type;
 	}
 	

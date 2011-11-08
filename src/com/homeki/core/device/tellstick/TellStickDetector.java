@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 
 import com.homeki.core.device.Detector;
 import com.homeki.core.device.DeviceInformation;
+import com.homeki.core.device.DeviceInformation.DeviceType;
 import com.homeki.core.log.L;
 import com.homeki.core.main.Util;
 
@@ -35,9 +36,9 @@ public class TellStickDetector extends Detector {
 			String id = getMatch(match, idFinder);
 			String model = getMatch(match, modelFinder);
 			if (model.equals("\"selflearning-switch\"")) {
-				devices.add(new DeviceInformation(id, TellStickSwitch.class));
+				devices.add(new DeviceInformation(id, DeviceType.TellStickSwitch));
 			} else if (model.equals("\"selflearning-dimmer\"")) {
-				devices.add(new DeviceInformation(id, TellStickDimmer.class));
+				devices.add(new DeviceInformation(id, DeviceType.TellStickDimmer));
 			} else {
 				L.w("TellStickDetector found unknown device.");
 			}

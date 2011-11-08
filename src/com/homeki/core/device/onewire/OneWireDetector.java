@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 
 import com.homeki.core.device.Detector;
 import com.homeki.core.device.DeviceInformation;
+import com.homeki.core.device.DeviceInformation.DeviceType;
 import com.homeki.core.log.L;
 
 public class OneWireDetector extends Detector {
@@ -55,7 +56,7 @@ public class OneWireDetector extends Detector {
 			String type = OneWireDevice.getStringVar(deviceDirPath, "type");
 			
 			if (type.equals("DS18S20")) {
-				di = new DeviceInformation(s, OneWireThermometer.class);
+				di = new DeviceInformation(s, DeviceType.OneWireThermometer);
 				di.addAdditionalData("deviceDirPath", deviceDirPath);
 				devices.add(di);
 			} else {

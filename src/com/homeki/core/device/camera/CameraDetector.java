@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.homeki.core.device.Detector;
 import com.homeki.core.device.DeviceInformation;
+import com.homeki.core.device.DeviceInformation.DeviceType;
 
 public class CameraDetector extends Detector {
 	private static final int MAX_WEBCAMS = 5;
@@ -17,7 +18,7 @@ public class CameraDetector extends Detector {
 			String path = "/dev/video"+i;
 			File f = new File(path);
 			if(f.canRead()){
-				DeviceInformation di = new DeviceInformation(path, Camera.class);
+				DeviceInformation di = new DeviceInformation(path, DeviceType.Camera);
 				di.addAdditionalData("nick", "Camera #"+ (i+1));
 				devices.add(di);
 			}
