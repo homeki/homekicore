@@ -9,6 +9,7 @@ import com.homeki.core.device.Device;
 import com.homeki.core.device.Dimmable;
 import com.homeki.core.device.Queryable;
 import com.homeki.core.device.Switchable;
+import com.homeki.core.device.camera.Camera;
 import com.homeki.core.http.json.JsonDevice;
 import com.homeki.core.http.json.JsonPair;
 import com.homeki.core.http.json.JsonStatus;
@@ -66,5 +67,11 @@ public class HttpApi {
 		JsonDevice gsonDev = gson.fromJson(gsonString, JsonDevice.class);
 		L.d("Name: " + gsonDev.name);
 		d.setName(gsonDev.name);
+	}
+
+	public String getSnapshotPath(int id) {
+		Device dev = monitor.getDevice(id);
+		Camera c = (Camera)dev;
+		return c.snapshot();
 	}
 }
