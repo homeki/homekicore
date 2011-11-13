@@ -6,6 +6,11 @@ if [ "$1" = "configure" ] ; then
 	chown -R homeki:homeki /opt/homeki
 	chmod a+w /opt/homeki/stdout.log
 	chmod a+w /opt/homeki/stderr.log
+	
+	if [ ! -f /opt/homeki/homeki.conf ] ; then
+		cp /opt/homeki/homeki.default.conf /opt/homeki/homeki.conf
+	fi
+	
 	ln -sf /etc/init.d/homekid /etc/rc2.d/S99homeki
 	/etc/init.d/homekid start
 	echo "------------------- APT: STARTED HOMEKI -------------------" >> /opt/homeki/stdout.log 

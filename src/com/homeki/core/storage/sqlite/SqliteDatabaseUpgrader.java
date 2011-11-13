@@ -25,8 +25,8 @@ public class SqliteDatabaseUpgrader extends SqliteTable {
 		this.fromVersion = fromVersion;
 	}
 	
-	private void to0_0_8() {
-		versions.add(new Version("0.0.8") {
+	private void to0_0_9() {
+		versions.add(new Version("0.0.9") {
 			@Override
 			public void run() {
 				executeUpdate("BEGIN TRANSACTION;" +
@@ -52,12 +52,7 @@ public class SqliteDatabaseUpgrader extends SqliteTable {
 		});
 	}
 	
-	private void to0_0_9() {
-		
-	}
-	
 	public void execute() {
-		to0_0_8();
 		to0_0_9();
 		
 		boolean myVersionFound = false;

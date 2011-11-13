@@ -21,17 +21,19 @@ public class SqliteTableFactory implements ITableFactory {
 	}
 
 	@Override
-	public void upgrade(String version) {
+	public void upgrade(String toVersion) {
 		ISettingsTable settingsTable = getSettingsTable();
 		
 		if (settingsTable.getString("version").isEmpty())
-			settingsTable.setString("version", version);
+			settingsTable.setString("version", toVersion);
 		
 		String fromVersion = settingsTable.getString("version");
 		
 		SqliteDatabaseUpgrader upg = new SqliteDatabaseUpgrader(databasePath, fromVersion);
 		upg.execute();
-	}	
+		
+		settingsTable.setString("version", toVersion);
+	}
 
 	@Override
 	public IDeviceTable getDeviceTable() {
