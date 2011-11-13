@@ -15,7 +15,7 @@ public class SqliteSettingsTable extends SqliteTable implements ISettingsTable {
 	@Override
 	public void ensureTable() {
 		if (!tableExists("settings")) {
-			String sql = "CREATE TABLE devices(id INTEGER PRIMARY KEY AUTOINCREMENT," +
+			String sql = "CREATE TABLE settings(id INTEGER PRIMARY KEY AUTOINCREMENT," +
 											  "key STRING, " +
 											  "value STRING)";
 			executeUpdate(sql);
@@ -56,7 +56,7 @@ public class SqliteSettingsTable extends SqliteTable implements ISettingsTable {
 
 	@Override
 	public int getInt(String key) {
-		return 0;
+		return Integer.parseInt(getValue(key));
 	}
 	
 	private String getValue(String key) {
