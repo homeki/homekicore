@@ -1,22 +1,16 @@
 package com.homeki.core.http;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.Date;
 import java.util.StringTokenizer;
 
-import org.apache.http.Header;
-import org.apache.http.HttpEntity;
 import org.apache.http.entity.FileEntity;
-import org.w3c.dom.Entity;
 
 import com.homeki.core.log.L;
 
 public class HttpGetHandler extends HttpHandler {
 	public enum Actions {
-		TIME, DEVICES, STATUS, HISTORY, BAD_ACTION, IMAGE
+		TIME, DEVICES, STATUS, HISTORY, IMAGE, BAD_ACTION
 	}
 	
 	public HttpGetHandler(HttpApi api) {

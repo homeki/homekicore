@@ -42,7 +42,7 @@ public class HttpSetHandler extends HttpHandler {
 		} catch (Exception ex) {
 			L.e("Unknown exception occured while processing HTTP request.", ex);
 			try {
-				sendString(405, "Something went wrong while processing the HTTP request.");
+				sendString(500, "Something went wrong while processing the HTTP request.");
 			} catch (Exception ignore) {}
 		}
 	}
@@ -87,17 +87,6 @@ public class HttpSetHandler extends HttpHandler {
 		if (id == -1 || post.equals(""))
 			return;
 		
-		try {
-			api.setDevice(id, post);
-		}
-		catch (Exception ex) {
-			sendString(405, "Problem parsing POST JSON for set device.");
-		}
-		
-		// TODO: lägg till så att det loggas fel i L vid alla sendString
-		// TODO: kolla så att exception kastas från HttpApi:et, och se till så att alla fångas och skrivs ut här
-		// TODO: fixa setDevice så att den kollar vilka fält som är satta och sedan kör update på endast de som är satta
-		// TODO: fixa samma på Android-klienten, så att asynctasken har setters för det man kan sätta på en device och så
-		//       att den använder ett JsonDevice som serialiseras till JSON
+		api.setDevice(id, post);
 	}
 }

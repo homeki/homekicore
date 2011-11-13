@@ -77,6 +77,7 @@ public abstract class HttpHandler implements HttpRequestHandler {
 			id = Integer.parseInt(getParameter(key));
 		} catch (NumberFormatException ex) {
 			id = -1;
+			L.e("Could not parse '" + key + "' as an integer.");
 			sendString(405, "Could not parse '" + key + "' as an integer.");
 		}
 		
@@ -90,6 +91,7 @@ public abstract class HttpHandler implements HttpRequestHandler {
 		try {
 			d = df.parse(getParameter(key));
 		} catch (ParseException ex) {
+			L.e("Could not parse '" + key + "' as a date.");
 			sendString(405, "Could not parse '" + key + "' as a date.");
 			d = null;
 		}
@@ -111,11 +113,13 @@ public abstract class HttpHandler implements HttpRequestHandler {
 		String s = "";
 		
 		if (!request.getRequestLine().getMethod().toUpperCase().equals("POST")) {
+			L.e("Expected POST HTTP, but received something else.");
 			sendString(405, "HTTP method not POST.");
 			return "";
 		}
 		
 		if (!(request instanceof HttpEntityEnclosingRequest)) {
+			L.e("Missing POST HTTP data.");
 			sendString(405, "POST data not provided.");
 			return "";
 		}

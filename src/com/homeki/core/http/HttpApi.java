@@ -13,7 +13,6 @@ import com.homeki.core.device.camera.Camera;
 import com.homeki.core.http.json.JsonDevice;
 import com.homeki.core.http.json.JsonPair;
 import com.homeki.core.http.json.JsonStatus;
-import com.homeki.core.log.L;
 import com.homeki.core.main.Monitor;
 import com.homeki.core.storage.DatumPoint;
 
@@ -64,9 +63,10 @@ public class HttpApi {
 	
 	public void setDevice(int id, String gsonString) {
 		Device d = monitor.getDevice(id);
-		JsonDevice gsonDev = gson.fromJson(gsonString, JsonDevice.class);
-		L.d("Name: " + gsonDev.name);
-		d.setName(gsonDev.name);
+		JsonDevice gsond = gson.fromJson(gsonString, JsonDevice.class);
+		
+		if (gsond.name != null)
+			d.setName(gsond.name);
 	}
 
 	public String getSnapshotPath(int id) {
