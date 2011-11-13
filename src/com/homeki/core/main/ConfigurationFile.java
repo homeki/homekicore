@@ -6,6 +6,19 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+/*
+ * Configuration file format (shows all possible settings):
+ * 
+ * [detectors]
+ * detector.mock.use = true
+ * detector.tellstick.use = true
+ * detector.tellstick.path = /etc/tellstick.conf
+ * detector.onewire.use = true
+ * detector.onewire.path = /mnt/1wire/uncached
+ * detector.camera.use = true
+ * 
+ */
+
 public class ConfigurationFile {
 	private Map<String, String> values;
 	
