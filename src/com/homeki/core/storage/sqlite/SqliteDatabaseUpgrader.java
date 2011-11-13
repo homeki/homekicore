@@ -17,12 +17,12 @@ public class SqliteDatabaseUpgrader extends SqliteTable {
 	}
 	
 	private List<Version> versions;
-	private String version;
+	private String fromVersion;
 	
-	public SqliteDatabaseUpgrader(String databasePath, String version) {
+	public SqliteDatabaseUpgrader(String databasePath, String fromVersion) {
 		super(databasePath);
 		this.versions = new ArrayList<Version>();
-		this.version = version;
+		this.fromVersion = fromVersion;
 	}
 	
 	private void to0_0_8() {
@@ -65,7 +65,7 @@ public class SqliteDatabaseUpgrader extends SqliteTable {
 		for (int i = 0; i < versions.size(); i++) {
 			Version v = versions.get(i);
 			
-			if (v.version.equals(version))
+			if (v.version.equals(fromVersion))
 				myVersionFound = true;
 			
 			if (myVersionFound) {

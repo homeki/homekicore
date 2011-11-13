@@ -26,8 +26,10 @@ public class SqliteTableFactory implements ITableFactory {
 		
 		if (settingsTable.getString("version").isEmpty())
 			settingsTable.setString("version", version);
-			
-		SqliteDatabaseUpgrader upg = new SqliteDatabaseUpgrader(databasePath, version);
+		
+		String fromVersion = settingsTable.getString("version");
+		
+		SqliteDatabaseUpgrader upg = new SqliteDatabaseUpgrader(databasePath, fromVersion);
 		upg.execute();
 	}	
 
