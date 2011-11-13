@@ -7,10 +7,10 @@ import com.homeki.core.device.Device;
 
 public class JsonDevice {
 	public String type;
-	public int id;
+	public Integer id;
 	public String name;
 	public Date added;
-	public boolean active;
+	public Boolean active;
 	
 	public JsonDevice(Device d){
 		type = d.getClass().getSimpleName();
