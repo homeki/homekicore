@@ -6,4 +6,5 @@ public interface ITableFactory {
 	void ensureTables();
 	IDeviceTable getDeviceTable();
 	IHistoryTable getHistoryTable(String tableName, Type valueType);
+	ISettingsTable getSettingsTable();
 }

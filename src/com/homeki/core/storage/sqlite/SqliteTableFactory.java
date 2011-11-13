@@ -4,6 +4,7 @@ import java.lang.reflect.Type;
 
 import com.homeki.core.storage.IDeviceTable;
 import com.homeki.core.storage.IHistoryTable;
+import com.homeki.core.storage.ISettingsTable;
 import com.homeki.core.storage.ITableFactory;
 
 public class SqliteTableFactory implements ITableFactory {
@@ -26,5 +27,10 @@ public class SqliteTableFactory implements ITableFactory {
 	@Override
 	public IHistoryTable getHistoryTable(String tableName, Type valueType) {
 		return new SqliteHistoryTable(databasePath, tableName, valueType);
+	}
+
+	@Override
+	public ISettingsTable getSettingsTable() {
+		return new SqliteSettingsTable(databasePath);
 	}	
 }
