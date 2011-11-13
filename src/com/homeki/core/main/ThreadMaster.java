@@ -25,10 +25,27 @@ public class ThreadMaster {
 	
 	private void addShutdownHook() {
 		Runtime rt = Runtime.getRuntime();
-		rt.addShutdownHook(new Thread() { public void run() { shutdown(); }; });
+		rt.addShutdownHook(new Thread() { 
+			public void run() { 
+				shutdown(); 
+				L.i("Homekey version " + getVersion() + "exited.");
+			}; 
+		});
+	}
+	
+	private String getVersion() {
+		Package p = getClass().getPackage();
+		String version = p.getImplementationVersion();
+		
+		if (version == null)
+			version = "DEV";
+		
+		return version;
 	}
 	
 	public void launch() {
+		String version = getVersion();
+		
 		file = new ConfigurationFile();
 		threads = new LinkedList<ControlledThread>();
 		monitor = new Monitor();
@@ -45,7 +62,10 @@ public class ThreadMaster {
 			return;
 		}
 		
+		L.i("Homeki Core v." + version + " started.");
+		
 		dbf.ensureTables();
+		dbf.upgrade(version);
 		
 		// create detector thread
 		DetectorThread dthread = new DetectorThread(monitor, dbf);

@@ -16,8 +16,20 @@ public class SqliteTableFactory implements ITableFactory {
 
 	@Override
 	public void ensureTables() {
+		getSettingsTable().ensureTable();
 		getDeviceTable().ensureTable();
 	}
+
+	@Override
+	public void upgrade(String version) {
+		ISettingsTable settingsTable = getSettingsTable();
+		
+		if (settingsTable.getString("version").isEmpty())
+			settingsTable.setString("version", version);
+			
+		SqliteDatabaseUpgrader upg = new SqliteDatabaseUpgrader(databasePath, version);
+		upg.execute();
+	}	
 
 	@Override
 	public IDeviceTable getDeviceTable() {
@@ -32,5 +44,5 @@ public class SqliteTableFactory implements ITableFactory {
 	@Override
 	public ISettingsTable getSettingsTable() {
 		return new SqliteSettingsTable(databasePath);
-	}	
+	}
 }

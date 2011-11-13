@@ -1,4 +1,6 @@
 <project>
+	<property name="version" value="0.0.7"/>
+	
 	<path id="ant-deb.classpath">
         <fileset dir="../ant" includes="*.jar"/>
     </path>
@@ -35,6 +37,7 @@
         <jar destfile="../build/jar/homekicore.jar" basedir="../build/classes">
         	<zipgroupfileset dir="../libs/" includes="*.jar"/>
             <manifest>
+            	<attribute name="Implementation-Version" value="${version}"/> 
                 <attribute name="Main-Class" value="com.homeki.core.main.Main"/>
             </manifest>
         </jar>
@@ -44,7 +47,7 @@
     <target name="dist">
 		<mkdir dir="../build/dist"/>
 		<deb todir="../build/dist" package="homeki" section="misc" depends="default-jdk" prerm="prerm" postinst="postinst" preinst="preinst">
-			<version upstream="0.0.6"/>
+			<version upstream="${version}"/>
 			<maintainer name="Homeki Development Team" email="contact@homeki.com"/>
 			<description synopsis="Unified interface for all your sensors and devices connected to your server.">
 				Provides a JSON HTTP API for accessing, logging, modifying and managing various devices and sensors connected to your server.

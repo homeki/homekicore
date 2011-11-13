@@ -2,6 +2,7 @@ package com.homeki.core.tests;
 
 import java.io.File;
 
+import com.homeki.core.main.Main;
 import com.homeki.core.main.Util;
 import com.homeki.core.storage.ITableFactory;
 import com.homeki.core.storage.sqlite.SqliteTableFactory;
@@ -23,8 +24,7 @@ public class TestUtil {
 	
 	private static void removeDbIfExists(String path) {
 		File f = new File(path);
-		if (f.exists()) {
+		if (f.exists())
 			f.delete();
-		}
 	}
 }
