@@ -55,7 +55,6 @@ public class HttpGetHandler extends HttpHandler {
 	}
 	
 	private void resolveImage() {
-		L.i("woho!");
 		int id = getIntParameter("id");
 		String path = api.getSnapshotPath(id);
 		response.setEntity(new FileEntity(new File(path), "image"));
