@@ -24,6 +24,9 @@ public class SqliteSettingsTableTest {
 		settingsTable.setString("key2", "value2");
 		assertEquals("value2", settingsTable.getString("key2"));
 		assertEquals("value1", settingsTable.getString("key1"));
+		settingsTable.setString("key1", "value1-changed");
+		assertEquals("value2", settingsTable.getString("key2"));
+		assertEquals("value1-changed", settingsTable.getString("key1"));
 	}
 	
 	@Test
@@ -31,6 +34,9 @@ public class SqliteSettingsTableTest {
 		settingsTable.setInt("key1", 10);
 		settingsTable.setInt("key2", -11);
 		assertEquals(10, settingsTable.getInt("key1"));
+		assertEquals(-11, settingsTable.getInt("key2"));
+		settingsTable.setInt("key1", 12);
+		assertEquals(12, settingsTable.getInt("key1"));
 		assertEquals(-11, settingsTable.getInt("key2"));
 	}
 }

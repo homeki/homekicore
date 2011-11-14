@@ -23,20 +23,7 @@ public class SqliteSettingsTable extends SqliteTable implements ISettingsTable {
 	}
 
 	public void executeSql(String sql, String key, String value) {
-		Connection conn = openConnection();
-		
-		try {
-			PreparedStatement stat = conn.prepareStatement("INSERT INTO settings(key, value) VALUES(?, ?)");
-			stat.setString(1, key);
-			stat.setString(2, value);
-			stat.executeUpdate();
-			stat.close();
-		} catch (SQLException e) {
-			L.e("Couldn't insert value in database.", e);
-		}
-		finally {
-			closeConnection(conn);
-		}
+
 	}
 	
 	@Override
@@ -70,10 +57,34 @@ public class SqliteSettingsTable extends SqliteTable implements ISettingsTable {
 	
 	private void setValue(String key, String value) {
 		int count = getScalar("SELECT COUNT(id) FROM settings WHERE key = ?", key);
+		Connection conn = openConnection();
 		
-		if (count == 0)
-			executeSql("INSERT INTO settings(key, value) VALUES(?, ?)", key, value);
-		else
-			executeSql("UPDATE settings SET value = ? WHERE key = ?", key, value);
+		if (count == 0) {
+			try {
+				PreparedStatement stat = conn.prepareStatement("INSERT INTO settings(key, value) VALUES(?, ?)");
+				stat.setString(1, key);
+				stat.setString(2, value);
+				stat.executeUpdate();
+				stat.close();
+			} catch (SQLException e) {
+				L.e("Couldn't insert value in database.", e);
+			}
+			finally {
+				closeConnection(conn);
+			}
+		} else {
+			try {
+				PreparedStatement stat = conn.prepareStatement("UPDATE settings SET value = ? WHERE key = ?");
+				stat.setString(1, value);
+				stat.setString(2, key);
+				stat.executeUpdate();
+				stat.close();
+			} catch (SQLException e) {
+				L.e("Couldn't insert value in database.", e);
+			}
+			finally {
+				closeConnection(conn);
+			}
+		}
 	}
 }
