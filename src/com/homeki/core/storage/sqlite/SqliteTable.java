@@ -12,10 +12,10 @@ import java.util.Date;
 import com.homeki.core.log.L;
 
 public class SqliteTable {
-	private final String databaseName;
+	protected final String databasePath;
 	
 	protected SqliteTable(String databasePath) {
-		this.databaseName = databasePath;
+		this.databasePath = databasePath;
 	}
 	
 	protected Connection openConnection() {
@@ -25,7 +25,7 @@ public class SqliteTable {
 			Class.forName("org.sqlite.JDBC");
 			
 			try {
-				conn = DriverManager.getConnection("jdbc:sqlite:" + databaseName);
+				conn = DriverManager.getConnection("jdbc:sqlite:" + databasePath);
 			} catch (SQLException e) {
 				L.e("Couldn't open database.", e);
 			}

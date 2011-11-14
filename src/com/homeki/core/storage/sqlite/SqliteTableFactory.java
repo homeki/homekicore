@@ -2,6 +2,7 @@ package com.homeki.core.storage.sqlite;
 
 import java.lang.reflect.Type;
 
+import com.homeki.core.log.L;
 import com.homeki.core.storage.IDeviceTable;
 import com.homeki.core.storage.IHistoryTable;
 import com.homeki.core.storage.ISettingsTable;
@@ -30,7 +31,11 @@ public class SqliteTableFactory implements ITableFactory {
 		String fromVersion = settingsTable.getString("version");
 		
 		SqliteDatabaseUpgrader upg = new SqliteDatabaseUpgrader(databasePath, fromVersion);
-		upg.execute();
+		
+		if (!upg.execute())
+			L.i("Database upgrade complete.");
+		else
+			L.i("No database upgrade for version " + toVersion + " needed.");
 		
 		settingsTable.setString("version", toVersion);
 	}
