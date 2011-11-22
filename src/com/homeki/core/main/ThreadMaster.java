@@ -11,6 +11,7 @@ import com.homeki.core.storage.sqlite.SqliteTableFactory;
 import com.homeki.core.threads.CollectorThread;
 import com.homeki.core.threads.ControlledThread;
 import com.homeki.core.threads.DetectorThread;
+import com.homeki.core.threads.TellstickCommandDispatcherThread;
 
 public class ThreadMaster {
 	private Monitor monitor;
@@ -82,6 +83,7 @@ public class ThreadMaster {
 		
 		// create collector thread
 		threads.add(new CollectorThread(monitor));
+		threads.add(new TellstickCommandDispatcherThread(1000));
 		
 		for (Thread t : threads)
 			t.start();
