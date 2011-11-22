@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.homeki.core.log.L;
-import com.homeki.core.storage.sqlite.versions.To0_0_16;
+import com.homeki.core.storage.sqlite.versions.To0_0_20;
 
 public class SqliteDatabaseUpgrader extends SqliteTable {
 	private List<SqliteDatabaseVersion> versions;
@@ -17,22 +17,22 @@ public class SqliteDatabaseUpgrader extends SqliteTable {
 	}
 	
 	public boolean execute() {
-		versions.add(new To0_0_16(databasePath));
+		versions.add(new To0_0_20(databasePath));
 		
-		boolean updateFromNow = false;
+		boolean upgradeFromNow = false;
 		
 		for (int i = 0; i < versions.size(); i++) {
 			SqliteDatabaseVersion v = versions.get(i);
 			
 			if (v.compareTo(fromVersion) > 0)
-				updateFromNow = true;
+				upgradeFromNow = true;
 			
-			if (updateFromNow) {
+			if (upgradeFromNow) {
 				v.run();
 				L.i("Upgraded database to version " + v + ".");
 			}
 		}
 		
-		return updateFromNow;
+		return upgradeFromNow;
 	}
 }
