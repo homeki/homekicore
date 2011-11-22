@@ -28,7 +28,7 @@ public class ThreadMaster {
 		rt.addShutdownHook(new Thread() { 
 			public void run() { 
 				shutdown(); 
-				L.i("Homekey version " + getVersion() + "exited.");
+				L.i("Homekey version " + getVersion() + " exited.");
 			}; 
 		});
 	}
@@ -38,7 +38,7 @@ public class ThreadMaster {
 		String version = p.getImplementationVersion();
 		
 		if (version == null)
-			version = "DEV";
+			version = "(DEV)";
 		
 		return version;
 	}
@@ -62,7 +62,7 @@ public class ThreadMaster {
 			return;
 		}
 		
-		L.i("Homeki Core v." + version + " started.");
+		L.i("Homeki Core version " + version + " started.");
 		
 		dbf.ensureTables();
 		dbf.upgrade(version);

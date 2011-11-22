@@ -23,6 +23,9 @@ public class SqliteTableFactory implements ITableFactory {
 
 	@Override
 	public void upgrade(String toVersion) {
+		if (toVersion.equals("(DEV)"))
+			return;
+		
 		ISettingsTable settingsTable = getSettingsTable();
 		
 		if (settingsTable.getString("version").isEmpty())
@@ -30,9 +33,11 @@ public class SqliteTableFactory implements ITableFactory {
 		
 		String fromVersion = settingsTable.getString("version");
 		
+		L.i("Starting database upgrade from version " + fromVersion + " to version " + toVersion + ".");
+		
 		SqliteDatabaseUpgrader upg = new SqliteDatabaseUpgrader(databasePath, fromVersion);
 		
-		if (!upg.execute())
+		if (upg.execute())
 			L.i("Database upgrade complete.");
 		else
 			L.i("No database upgrade for version " + toVersion + " needed.");

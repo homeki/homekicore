@@ -8,7 +8,7 @@ public class Main {
 		L l = L.setStandard(Logs.CORE);
 		
 		l.setMinimumLevel(L.LEVEL_DEBUG);
-		l.addOutput(System.err, L.LEVEL_WARN, true, true);
+		l.addOutput(System.err, L.LEVEL_ERROR, true, true);	
 		
 		new ThreadMaster().launch();
 	}

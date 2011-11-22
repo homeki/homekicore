@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+import com.homeki.core.log.L;
+
 /*
  * Configuration file format (shows all possible settings):
  * 
@@ -31,18 +33,26 @@ public class ConfigurationFile {
 		Scanner sc = new Scanner(f);
 		
 		while (sc.hasNextLine()) {
-			Scanner line = new Scanner(sc.nextLine());
+			String text = sc.nextLine().trim();
+			
+			if (text.isEmpty() || text.startsWith("[") || text.startsWith("#"))
+				continue;
+			
+			Scanner line = new Scanner(text);
 			line.useDelimiter("=");
 			
-			String key = line.next().trim();
+			String key;
 			String value;
 			
-			if (!key.startsWith("[")) {
-				value = line.next().trim();
-			
-				if (!key.startsWith("#")) {
-					values.put(key, value);
+			try {
+				key = line.next().trim();
+				
+				if (line.hasNext()) {
+					value = line.next().trim();
+					values.put(key, value);	
 				}
+			} catch (Exception ex) {
+				L.e("Failed parsing one of the keys in the configuration file.");
 			}
 		}
 	}

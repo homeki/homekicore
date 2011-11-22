@@ -3,10 +3,8 @@ package com.homeki.core.storage.sqlite;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.runner.Version;
-
 import com.homeki.core.log.L;
-import com.homeki.core.storage.sqlite.versions.To0_0_12;
+import com.homeki.core.storage.sqlite.versions.To0_0_16;
 
 public class SqliteDatabaseUpgrader extends SqliteTable {
 	private List<SqliteDatabaseVersion> versions;
@@ -15,11 +13,11 @@ public class SqliteDatabaseUpgrader extends SqliteTable {
 	public SqliteDatabaseUpgrader(String databasePath, String fromVersion) {
 		super(databasePath);
 		this.versions = new ArrayList<SqliteDatabaseVersion>();
-		this.fromVersion = new SqliteDatabaseVersion(databasePath, fromVersion);
+		this.fromVersion = new SqliteDatabaseVersion(fromVersion, databasePath);
 	}
 	
 	public boolean execute() {
-		versions.add(new To0_0_12(databasePath));
+		versions.add(new To0_0_16(databasePath));
 		
 		boolean updateFromNow = false;
 		

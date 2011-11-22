@@ -7,7 +7,7 @@ if [ "$1" = "configure" ] ; then
 	chmod a+w /opt/homeki/stdout.log
 	chmod a+w /opt/homeki/stderr.log
 	
-	if [ ! -f /opt/homeki/homeki.conf ] ; then
+	if [ ! -e /opt/homeki/homeki.conf ] ; then
 		cp /opt/homeki/homeki.default.conf /opt/homeki/homeki.conf
 	fi
 	

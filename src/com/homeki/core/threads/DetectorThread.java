@@ -31,21 +31,16 @@ public class DetectorThread extends ControlledThread implements Configurable {
 	
 	@Override
 	public void configure(ConfigurationFile file) {
-		if (file.getBool("detector.mock.use")) {
+		if (file.getBool("detector.mock.use"))
 			detectors.add(new MockDetector());
-		}
-		if (file.getBool("detector.tellstick.use")) {
+		if (file.getBool("detector.tellstick.use"))
 			detectors.add(new TellStickDetector(file.getString("detector.tellstick.path")));
-		}
-		if (file.getBool("detector.onewire.use")) {
+		if (file.getBool("detector.onewire.use"))
 			detectors.add(new OneWireDetector(file.getString("detector.onewire.path")));
-		}
-		if (file.getBool("detector.camera.use")) {
+		if (file.getBool("detector.camera.use"))
 			detectors.add(new CameraDetector());
-		}	
-		if (detectors.size() == 0) {
+		if (detectors.size() == 0)
 			L.w("No detectors specified, no new devices will be found.");
-		}
 	}
 
 	@Override
