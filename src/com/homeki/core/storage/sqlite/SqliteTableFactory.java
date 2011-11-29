@@ -7,7 +7,6 @@ import com.homeki.core.storage.IDeviceTable;
 import com.homeki.core.storage.IHistoryTable;
 import com.homeki.core.storage.ISettingsTable;
 import com.homeki.core.storage.ITableFactory;
-import com.homeki.core.storage.sqlite.versions.To0_0_20;
 
 public class SqliteTableFactory implements ITableFactory {
 	private final String databasePath;

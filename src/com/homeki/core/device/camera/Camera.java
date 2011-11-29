@@ -1,18 +1,10 @@
 package com.homeki.core.device.camera;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.lang.reflect.Type;
-
-import javax.naming.BinaryRefAddr;
 
 import com.homeki.core.device.Device;
 import com.homeki.core.log.L;
-import com.homeki.core.main.Util;
 import com.homeki.core.storage.ITableFactory;
 
 public class Camera extends Device {
