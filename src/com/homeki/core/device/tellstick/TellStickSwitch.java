@@ -9,7 +9,7 @@ import com.homeki.core.device.Queryable;
 import com.homeki.core.device.Switchable;
 import com.homeki.core.storage.DatumPoint;
 import com.homeki.core.storage.ITableFactory;
-import com.homeki.core.threads.TellstickCommandDispatcherThread;
+import com.homeki.core.threads.TellStickCommandDispatcherThread;
 
 public class TellStickSwitch extends Device implements Switchable, Queryable<Boolean> {
 	
@@ -20,13 +20,13 @@ public class TellStickSwitch extends Device implements Switchable, Queryable<Boo
 	
 	@Override
 	public void off() {
-		TellstickCommandDispatcherThread.off(getInternalId());
+		TellStickCommandDispatcherThread.off(getInternalId());
 		historyTable.putValue(new Date(), false);
 	}
 	
 	@Override
 	public void on() {
-		TellstickCommandDispatcherThread.on(getInternalId());
+		TellStickCommandDispatcherThread.on(getInternalId());
 		historyTable.putValue(new Date(), true);
 	}
 	

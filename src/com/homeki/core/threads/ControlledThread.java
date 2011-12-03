@@ -43,8 +43,8 @@ public abstract class ControlledThread extends Thread {
 		}
 	}
 
-	public abstract void iteration() throws InterruptedException;
-
+	protected abstract void iteration() throws InterruptedException;
+	
 	public void shutdown() {
 		shutdown = true;
 		interrupt();

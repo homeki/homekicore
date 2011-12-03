@@ -6,10 +6,10 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import com.homeki.core.log.L;
 
-public class TellstickCommandDispatcherThread extends ControlledThread {
+public class TellStickCommandDispatcherThread extends ControlledThread {
 	private static BlockingQueue<Runnable> queue = new LinkedBlockingQueue<Runnable>();
 	
-	public TellstickCommandDispatcherThread(int interval) {
+	public TellStickCommandDispatcherThread(int interval) {
 		super(interval);
 	}
 	

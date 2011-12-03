@@ -11,13 +11,13 @@ import com.homeki.core.log.L;
 /*
  * Configuration file format (shows all possible settings):
  * 
- * [detectors]
- * detector.mock.use = true
- * detector.tellstick.use = true
- * detector.tellstick.path = /etc/tellstick.conf
- * detector.onewire.use = true
- * detector.onewire.path = /mnt/1wire/uncached
- * detector.camera.use = true
+ * [modules]
+ * module.mock.use = true
+ * module.tellstick.use = true
+ * module.tellstick.path = /etc/tellstick.conf
+ * module.onewire.use = true
+ * module.onewire.path = /mnt/1wire/uncached
+ * module.camera.use = true
  * 
  */
 
