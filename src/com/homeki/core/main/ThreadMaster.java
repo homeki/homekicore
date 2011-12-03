@@ -19,7 +19,6 @@ import com.homeki.core.storage.sqlite.SqliteTableFactory;
 import com.homeki.core.threads.CollectorThread;
 import com.homeki.core.threads.ControlledThread;
 import com.homeki.core.threads.DetectorThread;
-import com.homeki.core.threads.TellStickCommandDispatcherThread;
 
 public class ThreadMaster {
 	private Monitor monitor;
@@ -84,7 +83,7 @@ public class ThreadMaster {
 		dbf.ensureTables();
 		dbf.upgrade(version);
 		
-		List<Module> modules = setupModules(file);
+		modules = setupModules(file);
 		List<Detector> detectors = new ArrayList<Detector>();
 		
 		for (Module module : modules)
@@ -99,7 +98,6 @@ public class ThreadMaster {
 		
 		threads.add(new DetectorThread(detectors, monitor, dbf));
 		threads.add(new CollectorThread(monitor));
-		threads.add(new TellStickCommandDispatcherThread(1000));
 		
 		for (Thread t : threads)
 			t.start();

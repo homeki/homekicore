@@ -41,14 +41,11 @@ public class ConfigurationFile {
 			Scanner line = new Scanner(text);
 			line.useDelimiter("=");
 			
-			String key;
-			String value;
-			
 			try {
-				key = line.next().trim();
+				String key = line.next().trim();
 				
 				if (line.hasNext()) {
-					value = line.next().trim();
+					String value = line.next().trim();
 					values.put(key, value);	
 				}
 			} catch (Exception ex) {
