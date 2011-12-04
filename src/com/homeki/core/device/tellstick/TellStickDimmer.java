@@ -10,10 +10,8 @@ import com.homeki.core.device.Queryable;
 import com.homeki.core.device.Switchable;
 import com.homeki.core.storage.DatumPoint;
 import com.homeki.core.storage.ITableFactory;
-import com.homeki.core.threads.TellStickCommandDispatcherThread;
 
 public class TellStickDimmer extends Device implements Dimmable ,Switchable,Queryable<Integer>{
-
 	public TellStickDimmer(String internalId, ITableFactory factory) {
 		super(internalId, factory);
 	}
