@@ -15,7 +15,7 @@ public class DetectorThread extends ControlledThread {
 	private ITableFactory dbf;
 	
 	public DetectorThread(List<Detector> detectors, Monitor monitor, ITableFactory dbf) {
-		super(1000);
+		super(10000);
 		this.dbf = dbf;
 		this.monitor = monitor;
 		this.detectors = detectors;

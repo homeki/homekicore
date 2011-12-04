@@ -2,7 +2,6 @@ package com.homeki.core.main;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import com.homeki.core.device.Detector;
@@ -58,7 +57,8 @@ public class ThreadMaster {
 		L.i("Homeki Core version " + version + " started.");
 		
 		file = new ConfigurationFile();
-		threads = new LinkedList<ControlledThread>();
+		threads = new ArrayList<ControlledThread>();
+		modules = new ArrayList<Module>();
 		monitor = new Monitor();
 		api = new HttpApi(monitor);
 		dbf = new SqliteTableFactory("homeki.db");
@@ -75,15 +75,16 @@ public class ThreadMaster {
 		
 		try {
 			System.loadLibrary("homekijni");
-		} catch (Exception ex) {
-			L.e("Failed to load Homeki JNI library, killing Homeki.", ex);
+		} catch (UnsatisfiedLinkError ex) {
+			L.e("Failed to load Homeki JNI library, killing Homeki.");
 			return;
 		}
 		
 		dbf.ensureTables();
 		dbf.upgrade(version);
 		
-		modules = setupModules(file);
+		setupModules(file);
+		
 		List<Detector> detectors = new ArrayList<Detector>();
 		
 		for (Module module : modules)
@@ -103,9 +104,7 @@ public class ThreadMaster {
 			t.start();
 	}
 	
-	private List<Module> setupModules(ConfigurationFile file) {
-		ArrayList<Module> modules = new ArrayList<Module>();
-		
+	private void setupModules(ConfigurationFile file) {
 		if (file.getBool("module.mock.use"))
 			modules.add(new MockModule());
 		if (file.getBool("module.tellstick.use"))
@@ -117,17 +116,17 @@ public class ThreadMaster {
 		
 		if (modules.size() == 0)
 			L.w("No modules enabled, nothing will happen.");
-		
-		return modules;
 	}
 	
 	public void shutdown() {
 		L.i("Shutting down threads...");
 		for (ControlledThread t : threads)
 			t.shutdown();
+		L.i("All threads shutdown.");
 		
 		L.i("Destructing modules...");
 		for (Module m : modules)
 			m.destruct();
+		L.i("All modules destructed.");
 	}
 }

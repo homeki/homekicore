@@ -9,7 +9,7 @@ import com.homeki.core.threads.TellStickCommandDispatcherThread;
 
 public class TellStickModule implements Module {
 	private ControlledThread thread;
-	
+
 	@Override
 	public void construct(List<Detector> detectors) {
 		TellStickNative.open();

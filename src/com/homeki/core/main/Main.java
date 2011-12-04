@@ -1,7 +1,6 @@
 package com.homeki.core.main;
 
 import com.homeki.core.Logs;
-import com.homeki.core.device.tellstick.TellStickNative;
 import com.homeki.core.log.L;
 
 public class Main {

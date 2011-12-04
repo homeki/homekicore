@@ -4,4 +4,5 @@ public class TellStickNative {
 	public static native void open();
 	public static native void close();
     public static native int[] getDeviceIds();
+    public static native String getDeviceType(int id);
 }
