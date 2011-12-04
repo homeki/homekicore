@@ -38,6 +38,9 @@ public class SqliteTableFactory implements ITableFactory {
 		
 		String fromVersion = settingsTable.getString("version");
 		
+		if (fromVersion.equals(toVersion))
+			return;
+		
 		L.i("Starting database upgrade from version " + fromVersion + " to version " + toVersion + ".");
 		
 		SqliteDatabaseUpgrader upg = new SqliteDatabaseUpgrader(databasePath, fromVersion);
