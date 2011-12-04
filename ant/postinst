@@ -11,6 +11,8 @@ if [ "$1" = "configure" ] ; then
 		cp /opt/homeki/homeki.default.conf /opt/homeki/homeki.conf
 	fi
 	
+	rm /opt/homeki/homeki.default.conf
+	
 	ln -sf /etc/init.d/homekid /etc/rc2.d/S99homeki
 	/etc/init.d/homekid start
 	echo "------------------- APT: STARTED HOMEKI -------------------" >> /opt/homeki/stdout.log 
