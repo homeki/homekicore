@@ -1,5 +1,5 @@
 <project>
-	<property name="version" value="0.0.22"/>
+	<property name="version" value="0.0.23"/>
 	
 	<path id="ant-deb.classpath">
         <fileset dir="../ant" includes="*.jar"/>
@@ -56,6 +56,7 @@
 			<tarfileset file="../ant/homekid" prefix="etc/init.d" filemode="755"/>
 			<tarfileset file="../ant/start.sh" prefix="/opt/homeki/" filemode="755"/>
 			<tarfileset file="../ant/homeki.default.conf" prefix="/opt/homeki/" filemode="755"/>
+			<tarfileset file="../libs/libhomekijni.so" prefix="/opt/homeki/lib" filemode="755" />
 		</deb>
 	</target>
 </project>

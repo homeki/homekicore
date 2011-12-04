@@ -8,19 +8,19 @@ import com.homeki.core.threads.ControlledThread;
 import com.homeki.core.threads.TellStickCommandDispatcherThread;
 
 public class TellStickModule implements Module {
-	private ControlledThread thread;
+	//private ControlledThread thread;
 
 	@Override
 	public void construct(List<Detector> detectors) {
 		TellStickNative.open();
 		detectors.add(new TellStickDetector());
-		thread = new TellStickCommandDispatcherThread(1000);
-		thread.start();
+		//thread = new TellStickCommandDispatcherThread(1000);
+		//thread.start();
 	}
 
 	@Override
 	public void destruct() {
-		thread.shutdown();
+		//thread.shutdown();
 		TellStickNative.close();
 	}
 }

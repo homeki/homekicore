@@ -20,7 +20,8 @@ public class TellStickDimmer extends Device implements Dimmable ,Switchable,Quer
 
 	@Override
 	public void dim(int level) {
-		TellStickCommandDispatcherThread.dim(level, getInternalId());
+		//TellStickCommandDispatcherThread.dim(level, getInternalId());
+		TellStickNative.dim(Integer.parseInt(getInternalId()), level);
 		historyTable.putValue(new Date(), level);
 	}
 
