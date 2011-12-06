@@ -12,7 +12,6 @@ import com.homeki.core.storage.DatumPoint;
 import com.homeki.core.storage.ITableFactory;
 
 public class MockSwitch extends MockDevice implements Switchable, Queryable<Boolean> {
-	
 	public MockSwitch(String internalId, ITableFactory factory) {
 		super(internalId, factory);
 	}
@@ -42,5 +41,10 @@ public class MockSwitch extends MockDevice implements Switchable, Queryable<Bool
 	@Override
 	protected Type getTableValueType() {
 		return  Boolean.class;
+	}
+
+	@Override
+	public String getType() {
+		return "switch";
 	}
 }

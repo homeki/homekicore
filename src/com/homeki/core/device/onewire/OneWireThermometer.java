@@ -36,4 +36,9 @@ public class OneWireThermometer extends OneWireDevice implements IntervalLoggabl
 	protected Type getTableValueType() {
 		return Float.class;
 	}
+
+	@Override
+	public String getType() {
+		return "thermometer";
+	}
 }

@@ -11,14 +11,13 @@ import com.homeki.core.device.Switchable;
 import com.homeki.core.storage.DatumPoint;
 import com.homeki.core.storage.ITableFactory;
 
-public class TellStickDimmer extends Device implements Dimmable ,Switchable,Queryable<Integer>{
+public class TellStickDimmer extends Device implements Dimmable, Switchable, Queryable<Integer> {
 	public TellStickDimmer(String internalId, ITableFactory factory) {
 		super(internalId, factory);
 	}
 
 	@Override
 	public void dim(int level) {
-		//TellStickCommandDispatcherThread.dim(level, getInternalId());
 		TellStickNative.dim(Integer.parseInt(getInternalId()), level);
 		historyTable.putValue(new Date(), level);
 	}
@@ -46,5 +45,10 @@ public class TellStickDimmer extends Device implements Dimmable ,Switchable,Quer
 	@Override
 	protected Type getTableValueType() {
 		return Integer.class;
+	}
+
+	@Override
+	public String getType() {
+		return "dimmer";
 	}
 }

@@ -10,6 +10,7 @@ public class DeviceInformation {
 		MockThermometer,
 		TellStickSwitch,
 		TellStickDimmer,
+		TellStickFakeDimmer,
 		OneWireThermometer,
 		Camera
 	}

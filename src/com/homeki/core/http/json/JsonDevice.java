@@ -14,7 +14,7 @@ public class JsonDevice {
 	public Boolean active;
 	
 	public JsonDevice(Device d) {
-		type = d.getClass().getSimpleName();
+		type = d.getType();
 		id = d.getId();
 		name = d.getName();
 		added = d.getAdded();
