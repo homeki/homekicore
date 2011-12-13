@@ -21,5 +21,7 @@
 			<attribute name="javadoc_location" value="http://hc.apache.org/httpcomponents-client-ga/httpclient/apidocs/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="libs/hibernate3.jar"/>
+	<classpathentry kind="lib" path="libs/hsqldb.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
