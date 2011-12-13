@@ -9,7 +9,7 @@
 
         <!-- Database connection settings -->
         <property name="connection.driver_class">org.hsqldb.jdbcDriver</property>
-        <property name="connection.url">jdbc:hsqldb:file:homeki.db</property>
+        <property name="connection.url">jdbc:hsqldb:file:db/homeki-hsql.db</property>
         <property name="connection.username">sa</property>
         <property name="connection.password"></property>
 
@@ -31,7 +31,8 @@
         <!-- Drop and re-create the database schema on startup -->
         <property name="hbm2ddl.auto">update</property>
 
-        <mapping resource="org/hibernate/tutorial/domain/Event.hbm.xml"/>
+        <mapping resource="com/homeki/core/storage/hsqldb/HDevice.hbm.xml"/>
+        <mapping resource="com/homeki/core/storage/hsqldb/HSettings.hbm.xml"/>
 
     </session-factory>
 

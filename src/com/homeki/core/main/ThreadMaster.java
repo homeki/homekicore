@@ -2,7 +2,10 @@ package com.homeki.core.main;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import org.hibernate.Session;
 
 import com.homeki.core.device.Detector;
 import com.homeki.core.device.Module;
@@ -14,6 +17,8 @@ import com.homeki.core.http.HttpApi;
 import com.homeki.core.http.HttpListenerThread;
 import com.homeki.core.log.L;
 import com.homeki.core.storage.ITableFactory;
+import com.homeki.core.storage.hsqldb.HDevice;
+import com.homeki.core.storage.hsqldb.HibernateUtil;
 import com.homeki.core.storage.sqlite.SqliteTableFactory;
 import com.homeki.core.threads.CollectorThread;
 import com.homeki.core.threads.ControlledThread;
@@ -52,6 +57,20 @@ public class ThreadMaster {
 	}
 	
 	public void launch() {
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        session.beginTransaction();
+
+        HDevice theEvent = new HDevice();
+        theEvent.setName("test");
+        theEvent.setAdded(new Date());
+        session.save(theEvent);
+
+        session.getTransaction().commit();
+        
+        HibernateUtil.getSessionFactory().close();
+        
+        // *****************
+		
 		String version = getVersion();
 		
 		L.i("Homeki Core version " + version + " started.");
