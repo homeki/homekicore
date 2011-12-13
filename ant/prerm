@@ -9,7 +9,7 @@ if [ "$1" = "remove" ] ; then
 	rm -f /opt/homeki/homeki.pid
 	rm -f /etc/rc2.d/S99homeki
 	mkdir -p /home/homeki
-	mv -f /opt/homeki/homeki.db /home/homeki/`date +%Y%m%d-%H%M%S`-homeki.db
+	mv -f /opt/homeki/db /home/homeki/`date +%Y%m%d-%H%M%S`-db
 	mv -f /opt/homeki/homeki.conf /home/homeki/`date +%Y%m%d-%H%M%S`-homeki.conf
 fi
 
