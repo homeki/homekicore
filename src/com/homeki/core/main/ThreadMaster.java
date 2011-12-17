@@ -18,7 +18,8 @@ import com.homeki.core.http.HttpListenerThread;
 import com.homeki.core.log.L;
 import com.homeki.core.storage.ITableFactory;
 import com.homeki.core.storage.hsqldb.HDevice;
-import com.homeki.core.storage.hsqldb.HibernateUtil;
+import com.homeki.core.storage.hsqldb.HSetting;
+import com.homeki.core.storage.hsqldb.Hibernate;
 import com.homeki.core.storage.sqlite.SqliteTableFactory;
 import com.homeki.core.threads.CollectorThread;
 import com.homeki.core.threads.ControlledThread;
@@ -57,18 +58,21 @@ public class ThreadMaster {
 	}
 	
 	public void launch() {
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        session.beginTransaction();
+		Hibernate db = new Hibernate();
+		
+		Session session = db.openSession();
 
         HDevice theEvent = new HDevice();
         theEvent.setName("test");
         theEvent.setAdded(new Date());
         session.save(theEvent);
 
-        session.getTransaction().commit();
+        HSetting theSettings = new HSetting();
+        theSettings.setKey("jonas");
+        theSettings.setValue("en kille");
+        session.save(theSettings);
         
-        HibernateUtil.getSessionFactory().close();
-        
+        db.commitSession(session);
         // *****************
 		
 		String version = getVersion();

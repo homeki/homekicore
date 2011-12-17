@@ -1,6 +1,6 @@
 package com.homeki.core.storage.hsqldb;
 
-public class HSettings {
+public class HSetting {
 	private Long id;
 	private String key;
 	private String value;

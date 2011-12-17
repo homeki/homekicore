@@ -1,24 +1,37 @@
 package com.homeki.core.storage.hsqldb;
 
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.context.ManagedSessionContext;
 
-public class HibernateUtil {
+public class Hibernate {
     private static final SessionFactory sessionFactory = buildSessionFactory();
-
+    
     private static SessionFactory buildSessionFactory() {
         try {
-            // Create the SessionFactory from hibernate.cfg.xml
             return new Configuration().configure().buildSessionFactory();
         }
         catch (Throwable ex) {
-            // Make sure you log the exception, as it might be swallowed
             System.err.println("Initial SessionFactory creation failed." + ex);
             throw new ExceptionInInitializerError(ex);
         }
     }
 
-    public static SessionFactory getSessionFactory() {
+    private static SessionFactory getSessionFactory() {
         return sessionFactory;
+    }
+    
+    public Session openSession() {
+    	Session session = getSessionFactory().openSession();
+    	session.beginTransaction();
+    	return session;
+    }
+    
+    public void commitSession(Session session) {
+        ManagedSessionContext.unbind(getSessionFactory());
+        session.flush();
+        session.getTransaction().commit();
+        session.close();
     }
 }
