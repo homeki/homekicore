@@ -31,7 +31,15 @@ public class HTemperatureHistoryPoint implements HistoryPoint {
 		return registered;
 	}
 	
+	public void setRegistered(Date registered) {
+		this.registered = registered;
+	}
+	
 	public Float getValue() {
 		return value;
+	}
+	
+	public void setValue(Float value) {
+		this.value = value;
 	}
 }

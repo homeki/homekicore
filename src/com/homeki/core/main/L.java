@@ -37,6 +37,19 @@ public class L {
 			return;
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		ps.println("[" + sdf.format(new Date()) + " | " + Thread.currentThread().getName() + "] " + msg);
+		ps.println("[" + sdf.format(new Date()) + " | " + levelToString(level) + " | " + Thread.currentThread().getName() + "] " + msg);
+	}
+	
+	private static String levelToString(int level) {
+		switch (level) {
+		case INFO:
+			return "INFO";
+		case WARN:
+			return "WARN";
+		case ERROR:
+			return "ERROR";
+		default:
+			return "";
+		}
 	}
 }

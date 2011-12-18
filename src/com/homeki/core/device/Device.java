@@ -12,7 +12,9 @@ public abstract class Device {
 	
 	public Device(String internalId) {
 		Session session = Hibernate.openSession();
-		HDevice device = (HDevice)session.createQuery("from HDevice as dev where dev.internalId = ?").setString(0, internalId).uniqueResult();
+		HDevice device = (HDevice)session.createQuery("from HDevice as dev where dev.internalId = ?")
+				.setString(0, internalId)
+				.uniqueResult();
 		
 		if (device == null) {
 			device = new HDevice();

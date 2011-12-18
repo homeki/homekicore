@@ -31,7 +31,15 @@ public class HSwitchHistoryPoint implements HistoryPoint {
 		return registered;
 	}
 	
+	public void setRegistered(Date registered) {
+		this.registered = registered;
+	}
+	
 	public Boolean getValue() {
 		return value;
+	}
+	
+	public void setValue(Boolean value) {
+		this.value = value;
 	}
 }

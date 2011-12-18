@@ -31,7 +31,15 @@ public class HDimmerHistoryPoint implements HistoryPoint {
 		return registered;
 	}
 	
+	public void setRegistered(Date registered) {
+		this.registered = registered;
+	}
+	
 	public Integer getValue() {
 		return value;
+	}
+	
+	public void setValue(Integer value) {
+		this.value = value;
 	}
 }
