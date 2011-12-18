@@ -4,8 +4,13 @@ import java.lang.reflect.Type;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.Session;
+
 import com.homeki.core.device.abilities.IntervalLoggable;
 import com.homeki.core.storage.DatumPoint;
+import com.homeki.core.storage.Hibernate;
+import com.homeki.core.storage.entities.HDevice;
+import com.homeki.core.storage.entities.HTemperatureHistory;
 
 public class OneWireThermometer extends OneWireDevice implements IntervalLoggable<Float> {
 	public OneWireThermometer(String internalId, String deviceDirPath) {
@@ -19,8 +24,15 @@ public class OneWireThermometer extends OneWireDevice implements IntervalLoggabl
 
 	@Override
 	public void updateValue() {
-		float value = getFloatVar("Thermometer");
-		//historyTable.putValue(new Date(), value);
+		float temp = getFloatVar("Thermometer");
+		Session session = Hibernate.openSession();
+		HDevice dev = (HDevice)session.load(HDevice.class, id);
+		HTemperatureHistory value = new HTemperatureHistory();
+		value.setRegistered(new Date());
+		value.setDevice(dev);
+		value.setValue(temp);
+		session.save(value);
+		Hibernate.closeSession(session);
 	}
 
 	@Override
