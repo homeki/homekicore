@@ -74,6 +74,4 @@ public abstract class Device {
 	}
 	
 	public abstract String getType();
-	
-	protected abstract Type getTableValueType();
 }

@@ -6,17 +6,13 @@ import com.homeki.core.device.Detector;
 import com.homeki.core.main.Module;
 
 public class MockModule implements Module {
-	
 	@Override
 	public void construct(List<Detector> detectors) {
-		// TODO Auto-generated method stub
-		
+		detectors.add(new MockDetector());
 	}
 	
 	@Override
 	public void destruct() {
-		// TODO Auto-generated method stub
 		
 	}
-	
 }

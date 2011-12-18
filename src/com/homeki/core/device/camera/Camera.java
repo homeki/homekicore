@@ -1,7 +1,6 @@
 package com.homeki.core.device.camera;
 
 import java.io.File;
-import java.lang.reflect.Type;
 
 import com.homeki.core.device.Device;
 import com.homeki.core.main.L;
@@ -40,11 +39,6 @@ public class Camera extends Device {
 		
 	}
 	
-	@Override
-	protected Type getTableValueType() {
-		return Boolean.class;
-	}
-
 	@Override
 	public String getType() {
 		return "camera";

@@ -7,7 +7,7 @@ public class CollectorThread extends ControlledThread {
 	private Monitor monitor;
 
 	public CollectorThread(Monitor monitor) {
-		super(10000);
+		super(1000);
 		this.monitor = monitor;
 	}
 

@@ -2,7 +2,9 @@ package com.homeki.core.storage.entities;
 
 import java.util.Date;
 
-public class HDimmerHistory {
+import com.homeki.core.storage.HistoryPoint;
+
+public class HDimmerHistoryPoint implements HistoryPoint {
 	private Integer id;
 	private HDevice device;
 	private Date registered;

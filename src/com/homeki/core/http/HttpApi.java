@@ -14,7 +14,7 @@ import com.homeki.core.http.json.JsonDevice;
 import com.homeki.core.http.json.JsonPair;
 import com.homeki.core.http.json.JsonStatus;
 import com.homeki.core.main.Monitor;
-import com.homeki.core.storage.DatumPoint;
+import com.homeki.core.storage.HistoryPoint;
 
 public class HttpApi {
 	private Gson gson;
@@ -50,7 +50,7 @@ public class HttpApi {
 	public String getHistory(int id, Date from, Date to) {
 		Device dev = monitor.getDevice(id);
 		Queryable<?> q = (Queryable<?>)dev;
-		List<DatumPoint> points = q.getHistory(from, to);
+		List<HistoryPoint> points = q.getHistory(from, to);
 		return gson.toJson(JsonPair.convertList(points));
 	}
 

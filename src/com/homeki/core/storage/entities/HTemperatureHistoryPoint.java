@@ -2,11 +2,13 @@ package com.homeki.core.storage.entities;
 
 import java.util.Date;
 
-public class HSwitchHistory {
+import com.homeki.core.storage.HistoryPoint;
+
+public class HTemperatureHistoryPoint implements HistoryPoint {
 	private Integer id;
 	private HDevice device;
 	private Date registered;
-	private Boolean value;
+	private Float value;
 	
 	public Integer getId() {
 		return id;
@@ -28,11 +30,11 @@ public class HSwitchHistory {
 		this.registered = registered;
 	}
 	
-	public Boolean getValue() {
+	public Float getValue() {
 		return value;
 	}
 	
-	public void setValue(Boolean value) {
+	public void setValue(Float value) {
 		this.value = value;
 	}
 }

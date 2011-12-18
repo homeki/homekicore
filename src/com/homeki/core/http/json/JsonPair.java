@@ -3,7 +3,7 @@ package com.homeki.core.http.json;
 import java.util.Date;
 import java.util.List;
 
-import com.homeki.core.storage.DatumPoint;
+import com.homeki.core.storage.HistoryPoint;
 
 public class JsonPair {	
 	Date registered;
@@ -13,13 +13,13 @@ public class JsonPair {
 		
 	}
 	
-	public static JsonPair[] convertList(List<DatumPoint> points) {
+	public static JsonPair[] convertList(List<HistoryPoint> points) {
 		JsonPair[] pairs = new JsonPair[points.size()];
 		
 		for (int i = 0; i < pairs.length; i++) {
 			JsonPair jp = new JsonPair();
-			jp.registered = points.get(i).registered;
-			jp.value = points.get(i).value;
+			jp.registered = points.get(i).getRegistered();
+			jp.value = points.get(i).getValue();
 			pairs[i] = jp;
 		}
 		
