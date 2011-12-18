@@ -10,6 +10,11 @@ public class HSwitchHistoryPoint implements HistoryPoint {
 	private Date registered;
 	private Boolean value;
 	
+	public HSwitchHistoryPoint(Boolean value) {
+		this.registered = new Date();
+		this.value = value;
+	}
+	
 	public Integer getId() {
 		return id;
 	}
@@ -26,15 +31,7 @@ public class HSwitchHistoryPoint implements HistoryPoint {
 		return registered;
 	}
 	
-	public void setRegistered(Date registered) {
-		this.registered = registered;
-	}
-	
 	public Boolean getValue() {
 		return value;
-	}
-	
-	public void setValue(Boolean value) {
-		this.value = value;
 	}
 }

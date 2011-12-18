@@ -1,6 +1,5 @@
 package com.homeki.core.device;
 
-import java.lang.reflect.Type;
 import java.util.Date;
 
 import org.hibernate.Session;
