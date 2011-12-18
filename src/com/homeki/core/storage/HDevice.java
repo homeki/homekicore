@@ -1,9 +1,10 @@
-package com.homeki.core.storage.hsqldb;
+package com.homeki.core.storage;
 
 import java.util.Date;
 
 public class HDevice {
 	private Long id;
+	private String internalId;
 	private String name;
 	private String description;
 	private String type;
@@ -11,6 +12,14 @@ public class HDevice {
 	
 	public Long getId() {
 		return id;
+	}
+	
+	public String getInternalId() {
+		return internalId;
+	}
+	
+	public void setInternalId(String internalId) {
+		this.internalId = internalId;
 	}
 
 	public String getDescription() {

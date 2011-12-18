@@ -3,33 +3,38 @@ package com.homeki.core.device;
 import java.lang.reflect.Type;
 import java.util.Date;
 
-import com.homeki.core.storage.IDeviceTable;
-import com.homeki.core.storage.IHistoryTable;
-import com.homeki.core.storage.ITableFactory;
+import org.hibernate.Session;
+
+import com.homeki.core.storage.HDevice;
+import com.homeki.core.storage.Hibernate;
 
 public abstract class Device {
-	protected final int id;
+	protected final Long id;
 	
-	private IDeviceTable deviceTable;
-	protected IHistoryTable historyTable;
-	
-	public Device(String internalId, ITableFactory factory) {
-		deviceTable = factory.getDeviceTable();
+	public Device(String internalId) {
+		Session session = Hibernate.openSession();
+		Object deviceId = session.createQuery("from HDevice where HDevice.internalid = ?").setEntity(0, internalId).uniqueResult();
 		
 		// if a row doesn't exist for the device, create one. 
 		// else, just load the id for the row
-		if (!deviceTable.rowExists(internalId)) {
-			id = deviceTable.createRow(internalId, this.getClass().getSimpleName());
+		if (deviceId == null) {
+			HDevice dev = new HDevice();
+			dev.setInternalId(internalId);
+			session.save(dev);
+			id = dev.getId();
 		}
 		else {
-			id = deviceTable.getId(internalId);
+			id = (Long)deviceId;
 		}
 		
-		ensureHistoryTable(factory, ("D_" + this.getClass().getSimpleName() + "_" + id).toLowerCase());
+		Hibernate.commitSession(session);
 	}
 	
 	public void setName(String name) {
-		deviceTable.setName(id, name);
+		Session session = Hibernate.openSession();
+		HDevice dev = (HDevice)session.load(HDevice.class, id);
+		dev.setName(name);
+		Hibernate.commitSession(session);
 	}
 	
 	public void setActive(boolean active) {
@@ -68,11 +73,5 @@ public abstract class Device {
 	
 	public abstract String getType();
 	
-	protected void ensureHistoryTable(ITableFactory factory, String tableName){
-		historyTable = factory.getHistoryTable(tableName, getTableValueType());
-		historyTable.ensureTable();
-	}
-
 	protected abstract Type getTableValueType();
-	
 }

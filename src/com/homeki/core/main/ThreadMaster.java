@@ -2,10 +2,7 @@ package com.homeki.core.main;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-
-import org.hibernate.Session;
 
 import com.homeki.core.device.Detector;
 import com.homeki.core.device.Module;
@@ -16,11 +13,6 @@ import com.homeki.core.device.tellstick.TellStickModule;
 import com.homeki.core.http.HttpApi;
 import com.homeki.core.http.HttpListenerThread;
 import com.homeki.core.log.L;
-import com.homeki.core.storage.ITableFactory;
-import com.homeki.core.storage.hsqldb.HDevice;
-import com.homeki.core.storage.hsqldb.HSetting;
-import com.homeki.core.storage.hsqldb.Hibernate;
-import com.homeki.core.storage.sqlite.SqliteTableFactory;
 import com.homeki.core.threads.CollectorThread;
 import com.homeki.core.threads.ControlledThread;
 import com.homeki.core.threads.DetectorThread;
@@ -30,7 +22,6 @@ public class ThreadMaster {
 	private List<ControlledThread> threads;
 	private List<Module> modules;
 	private HttpApi api;
-	private ITableFactory dbf;
 	private ConfigurationFile file;
 	
 	public ThreadMaster() {
@@ -58,23 +49,6 @@ public class ThreadMaster {
 	}
 	
 	public void launch() {
-		Hibernate db = new Hibernate();
-		
-		Session session = db.openSession();
-
-        HDevice theEvent = new HDevice();
-        theEvent.setName("test");
-        theEvent.setAdded(new Date());
-        session.save(theEvent);
-
-        HSetting theSettings = new HSetting();
-        theSettings.setKey("jonas");
-        theSettings.setValue("en kille");
-        session.save(theSettings);
-        
-        db.commitSession(session);
-        // *****************
-		
 		String version = getVersion();
 		
 		L.i("Homeki Core version " + version + " started.");
@@ -84,7 +58,6 @@ public class ThreadMaster {
 		modules = new ArrayList<Module>();
 		monitor = new Monitor();
 		api = new HttpApi(monitor);
-		dbf = new SqliteTableFactory("homeki.db");
 		
 		try {
 			file.load();
@@ -103,8 +76,7 @@ public class ThreadMaster {
 			return;
 		}
 		
-		dbf.ensureTables();
-		dbf.upgrade(version);
+		//dbf.upgrade(version);
 		
 		setupModules(file);
 		
@@ -120,7 +92,7 @@ public class ThreadMaster {
 			return;
 		}
 		
-		threads.add(new DetectorThread(detectors, monitor, dbf));
+		threads.add(new DetectorThread(detectors, monitor));
 		threads.add(new CollectorThread(monitor));
 		
 		for (Thread t : threads)

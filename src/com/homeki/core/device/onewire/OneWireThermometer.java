@@ -6,14 +6,10 @@ import java.util.List;
 
 import com.homeki.core.device.IntervalLoggable;
 import com.homeki.core.storage.DatumPoint;
-import com.homeki.core.storage.IHistoryTable;
-import com.homeki.core.storage.ITableFactory;
 
 public class OneWireThermometer extends OneWireDevice implements IntervalLoggable<Float> {
-	private IHistoryTable historyTable;
-	
-	public OneWireThermometer(String internalId, ITableFactory factory, String deviceDirPath) {
-		super(internalId, factory, deviceDirPath);
+	public OneWireThermometer(String internalId, String deviceDirPath) {
+		super(internalId, deviceDirPath);
 	}
 
 	@Override
@@ -24,12 +20,13 @@ public class OneWireThermometer extends OneWireDevice implements IntervalLoggabl
 	@Override
 	public void updateValue() {
 		float value = getFloatVar("Thermometer");
-		historyTable.putValue(new Date(), value);
+		//historyTable.putValue(new Date(), value);
 	}
 
 	@Override
 	public List<DatumPoint> getHistory(Date from, Date to) {
-		return historyTable.getValues(from, to);
+		return null;
+		//return historyTable.getValues(from, to);
 	}
 
 	@Override

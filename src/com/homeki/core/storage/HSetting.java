@@ -1,4 +1,4 @@
-package com.homeki.core.storage.hsqldb;
+package com.homeki.core.storage;
 
 public class HSetting {
 	private Long id;

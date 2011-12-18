@@ -11,20 +11,17 @@ import org.junit.Test;
 
 import com.homeki.core.device.Device;
 import com.homeki.core.device.mock.MockDimmer;
-import com.homeki.core.storage.ITableFactory;
 
 public class DeviceTest {
 	private static final String INTERNAL_ID = "mock1";
 	private static final String NAME = "My MockDevice #1";
 	private static Date testStart = new Date();
 	
-	private ITableFactory factory;
 	private Device device;
 	
 	@Before
 	public void setUp() throws Exception {
-		factory = TestUtil.getEmptySqliteTestTableFactory();
-		device = new MockDimmer(INTERNAL_ID, factory);
+		device = new MockDimmer(INTERNAL_ID);
 		device.setName(NAME);
 	}
 	
@@ -47,7 +44,7 @@ public class DeviceTest {
 	public void testEquals() {
 		assertTrue(device.equals(device));
 		assertTrue(((Device) device).equals(device));
-		Device notTheSame = new MockDimmer("notTheSame1", factory);
+		Device notTheSame = new MockDimmer("notTheSame1");
 		notTheSame.setName("NotTheSame");
 		assertFalse(device.equals(notTheSame));
 	}

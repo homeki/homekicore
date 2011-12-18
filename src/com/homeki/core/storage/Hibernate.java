@@ -1,4 +1,4 @@
-package com.homeki.core.storage.hsqldb;
+package com.homeki.core.storage;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -7,6 +7,10 @@ import org.hibernate.context.ManagedSessionContext;
 
 public class Hibernate {
     private static final SessionFactory sessionFactory = buildSessionFactory();
+    
+    private Hibernate() {
+    	
+    }
     
     private static SessionFactory buildSessionFactory() {
         try {
@@ -22,13 +26,13 @@ public class Hibernate {
         return sessionFactory;
     }
     
-    public Session openSession() {
+    public static Session openSession() {
     	Session session = getSessionFactory().openSession();
     	session.beginTransaction();
     	return session;
     }
     
-    public void commitSession(Session session) {
+    public static void commitSession(Session session) {
         ManagedSessionContext.unbind(getSessionFactory());
         session.flush();
         session.getTransaction().commit();

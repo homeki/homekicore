@@ -1,14 +1,15 @@
-package com.homeki.core.storage.sqlite.versions;
+package com.homeki.core.storage.versions;
 
-import com.homeki.core.storage.sqlite.SqliteDatabaseVersion;
+import com.homeki.core.storage.DatabaseVersion;
 
-public class To0_0_20 extends SqliteDatabaseVersion {
+public class To0_0_20 extends DatabaseVersion {
 	public To0_0_20(String databasePath) {
-		super("0.0.20", databasePath);
+		super("0.0.20");
 	}
 
 	@Override
 	public void run() {
+		/*
 		executeUpdate("CREATE TABLE t_devices(id INTEGER PRIMARY KEY AUTOINCREMENT, " +
 				  "internalid STRING, " +
 				  "type STRING, " +
@@ -26,5 +27,6 @@ public class To0_0_20 extends SqliteDatabaseVersion {
 				  "active BOOLEAN);");
 		executeUpdate("INSERT INTO devices SELECT id, internalid, type, name, '', added, active FROM t_devices; ");
 		executeUpdate("DROP TABLE t_devices;");
+		*/
 	}
 }

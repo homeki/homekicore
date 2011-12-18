@@ -5,13 +5,12 @@ import java.lang.reflect.Type;
 
 import com.homeki.core.device.Device;
 import com.homeki.core.log.L;
-import com.homeki.core.storage.ITableFactory;
 
 public class Camera extends Device {
 	private ExternalSnapshotApplication snapshooter;
 	
-	public Camera(String internalId, ITableFactory factory) {
-		super(internalId, factory);
+	public Camera(String internalId) {
+		super(internalId);
 		setName(internalId);
 		setActive(false);
 		snapshooter = new FireStormWebCam(internalId, makeTemporaryPath());

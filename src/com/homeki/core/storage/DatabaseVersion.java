@@ -1,13 +1,11 @@
-package com.homeki.core.storage.sqlite;
+package com.homeki.core.storage;
 
-public class SqliteDatabaseVersion extends SqliteTable implements Comparable<SqliteDatabaseVersion> {
+public class DatabaseVersion implements Comparable<DatabaseVersion> {
 	private int major;
 	private int minor;
 	private int micro;
 	
-	protected SqliteDatabaseVersion(String version, String databasePath) {
-		super(databasePath);
-		
+	protected DatabaseVersion(String version) {
 		String[] parts = version.split("\\.");
 		
 		major = Integer.parseInt(parts[0]);
@@ -21,7 +19,7 @@ public class SqliteDatabaseVersion extends SqliteTable implements Comparable<Sql
 	}
 
 	@Override
-	public int compareTo(SqliteDatabaseVersion o) {
+	public int compareTo(DatabaseVersion o) {
 		if (major == o.major) {
 			if (minor == o.minor) {
 				if (micro == o.micro) {

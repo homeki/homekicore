@@ -9,17 +9,16 @@ import com.homeki.core.device.Dimmable;
 import com.homeki.core.device.Queryable;
 import com.homeki.core.log.L;
 import com.homeki.core.storage.DatumPoint;
-import com.homeki.core.storage.ITableFactory;
 
 public class MockDimmer extends MockDevice implements Dimmable, Queryable<Integer> {
-	public MockDimmer(String internalId, ITableFactory factory) {
-		super(internalId, factory);
+	public MockDimmer(String internalId) {
+		super(internalId);
 		L.getLogger(Logs.CORE_MOCK).log("Created MockHistoryDimmerDevice.");
 	}
 
 	@Override
 	public void dim(int level) {
-		historyTable.putValue(new Date(), level);
+		//historyTable.putValue(new Date(), level);
 		L.getLogger(Logs.CORE_MOCK).log("MockHistoryDimmerDevice '" + getInternalId() + "' now has dim level " + level + ".");
 	}
 	
@@ -37,14 +36,15 @@ public class MockDimmer extends MockDevice implements Dimmable, Queryable<Intege
 	
 	@Override
 	public Integer getValue() {
-		if(historyTable == null) System.out.println("historyTable is null???");
-		Object k = historyTable.getLatestValue();
+		//Object k = historyTable.getLatestValue();
+		Object k = 0;
 		return (Integer)k;
 	}
 
 	@Override
 	public List<DatumPoint> getHistory(Date from, Date to) {
-		return historyTable.getValues(from, to);
+		//return historyTable.getValues(from, to);
+		return null;
 	}
 
 	@Override

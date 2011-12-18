@@ -9,17 +9,16 @@ import com.homeki.core.device.Dimmable;
 import com.homeki.core.device.Queryable;
 import com.homeki.core.device.Switchable;
 import com.homeki.core.storage.DatumPoint;
-import com.homeki.core.storage.ITableFactory;
 
 public class TellStickDimmer extends Device implements Dimmable, Switchable, Queryable<Integer> {
-	public TellStickDimmer(String internalId, ITableFactory factory) {
-		super(internalId, factory);
+	public TellStickDimmer(String internalId) {
+		super(internalId);
 	}
 
 	@Override
 	public void dim(int level) {
 		TellStickNative.dim(Integer.parseInt(getInternalId()), level);
-		historyTable.putValue(new Date(), level);
+		//historyTable.putValue(new Date(), level);
 	}
 
 	@Override
@@ -29,7 +28,8 @@ public class TellStickDimmer extends Device implements Dimmable, Switchable, Que
 
 	@Override
 	public Integer getValue() {
-		return (Integer)historyTable.getLatestValue();
+		return 0;
+		//return (Integer)historyTable.getLatestValue();
 	}
 	
 	@Override
@@ -39,7 +39,8 @@ public class TellStickDimmer extends Device implements Dimmable, Switchable, Que
 
 	@Override
 	public List<DatumPoint> getHistory(Date from, Date to) {
-		return historyTable.getValues(from, to);
+		//return historyTable.getValues(from, to);
+		return null;
 	}
 
 	@Override
