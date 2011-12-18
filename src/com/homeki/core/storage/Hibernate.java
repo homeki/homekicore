@@ -23,12 +23,21 @@ public class Hibernate {
     
     private static SessionFactory buildSessionFactory() {
     	SessionFactory factory = null;
+    	Configuration cfg = null;
     	
         try {
-        	factory = new Configuration().configure().buildSessionFactory();
+        	/*
+        	// generate create sql script
+        	SchemaExport exp = new SchemaExport(cfg);
+        	exp.setOutputFile("hej.sql");
+        	exp.create(false, true);
+        	*/
+        	
+        	cfg = new Configuration();
+        	factory = cfg.configure().buildSessionFactory();
         }
         catch (Exception ex) {
-        	L.e("Could not build session factory.", ex);
+        	L.e("Could not initialize database (probably mismatch between database schema and database).", ex);
         }
         
         return factory;
