@@ -23,7 +23,7 @@ import org.apache.http.protocol.HttpContext;
 import org.apache.http.protocol.HttpRequestHandler;
 import org.apache.http.util.EntityUtils;
 
-import com.homeki.core.log.L;
+import com.homeki.core.main.L;
 
 public abstract class HttpHandler implements HttpRequestHandler {
 	protected HttpApi api;
@@ -47,7 +47,7 @@ public abstract class HttpHandler implements HttpRequestHandler {
 		
 		File p = new File(path);
 		
-		L.d("Got " + method + " request for path " + p.getAbsolutePath() + ".");
+		L.i("Got " + method + " request for path " + p.getAbsolutePath() + ".");
 		
 		try {
 			URI uri = new URI(p.getAbsolutePath());

@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 import com.homeki.core.device.Detector;
 import com.homeki.core.device.DeviceInformation;
 import com.homeki.core.device.DeviceInformation.DeviceType;
-import com.homeki.core.log.L;
+import com.homeki.core.main.L;
 
 public class OneWireDetector extends Detector {
 	private String path;

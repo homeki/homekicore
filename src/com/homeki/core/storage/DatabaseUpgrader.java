@@ -3,7 +3,7 @@ package com.homeki.core.storage;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.homeki.core.log.L;
+import com.homeki.core.main.L;
 import com.homeki.core.storage.versions.To0_0_20;
 
 public class DatabaseUpgrader {

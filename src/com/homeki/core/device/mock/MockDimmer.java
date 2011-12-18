@@ -6,10 +6,9 @@ import java.util.List;
 
 import org.hibernate.Session;
 
-import com.homeki.core.Logs;
 import com.homeki.core.device.abilities.Dimmable;
 import com.homeki.core.device.abilities.Queryable;
-import com.homeki.core.log.L;
+import com.homeki.core.main.L;
 import com.homeki.core.storage.DatumPoint;
 import com.homeki.core.storage.Hibernate;
 import com.homeki.core.storage.entities.HDevice;
@@ -18,11 +17,11 @@ import com.homeki.core.storage.entities.HDimmerHistory;
 public class MockDimmer extends MockDevice implements Dimmable, Queryable<Integer> {
 	public MockDimmer(String internalId) {
 		super(internalId);
-		L.getLogger(Logs.CORE_MOCK).log("Created MockHistoryDimmerDevice.");
 	}
 
 	@Override
 	public void dim(int level) {
+		L.i("MockHistoryDimmerDevice '" + getInternalId() + "' now has dim level " + level + ".");
 		Session session = Hibernate.openSession();
 		HDevice dev = (HDevice)session.load(HDevice.class, id);
 		HDimmerHistory value = new HDimmerHistory();
@@ -31,19 +30,16 @@ public class MockDimmer extends MockDevice implements Dimmable, Queryable<Intege
 		value.setValue(level);
 		session.save(value);
 		Hibernate.closeSession(session);
-		L.getLogger(Logs.CORE_MOCK).log("MockHistoryDimmerDevice '" + getInternalId() + "' now has dim level " + level + ".");
 	}
 	
 	@Override
 	public void off() {
 		dim(0);
-		L.getLogger(Logs.CORE_MOCK).log("MockHistoryDimmerDevice '" + getInternalId() + "' is now OFF!");
 	}
 	
 	@Override
 	public void on() {
 		dim(255);
-		L.getLogger(Logs.CORE_MOCK).log("MockHistoryDimmerDevice '" + getInternalId() + "' is now ON!");
 	}
 	
 	@Override

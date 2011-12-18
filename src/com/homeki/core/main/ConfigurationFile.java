@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-import com.homeki.core.log.L;
 
 /*
  * Configuration file format (shows all possible settings):

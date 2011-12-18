@@ -1,6 +1,6 @@
 package com.homeki.core.threads;
 
-import com.homeki.core.log.L;
+import com.homeki.core.main.L;
 
 public abstract class ControlledThread extends Thread {
 	private boolean shutdown;

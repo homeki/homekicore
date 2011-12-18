@@ -6,10 +6,9 @@ import java.util.List;
 
 import org.hibernate.Session;
 
-import com.homeki.core.Logs;
 import com.homeki.core.device.abilities.Queryable;
 import com.homeki.core.device.abilities.Switchable;
-import com.homeki.core.log.L;
+import com.homeki.core.main.L;
 import com.homeki.core.storage.DatumPoint;
 import com.homeki.core.storage.Hibernate;
 import com.homeki.core.storage.entities.HDevice;
@@ -22,6 +21,7 @@ public class MockSwitch extends MockDevice implements Switchable, Queryable<Bool
 	
 	@Override
 	public void off() {
+		L.i("MockSwitchDevice '" + getInternalId() + "' is now OFF.");
 		Session session = Hibernate.openSession();
 		HDevice dev = (HDevice)session.load(HDevice.class, id);
 		HSwitchHistory value = new HSwitchHistory();
@@ -30,11 +30,11 @@ public class MockSwitch extends MockDevice implements Switchable, Queryable<Bool
 		value.setValue(false);
 		session.save(value);
 		Hibernate.closeSession(session);
-		L.getLogger(Logs.CORE_MOCK).log("MockSwitchDevice '" + getInternalId() + "' is now OFF.");
 	}
 	
 	@Override
 	public void on() {
+		L.i("MockSwitchDevice '" + getInternalId() + "' is now ON.");
 		Session session = Hibernate.openSession();
 		HDevice dev = (HDevice)session.load(HDevice.class, id);
 		HSwitchHistory value = new HSwitchHistory();
@@ -43,7 +43,6 @@ public class MockSwitch extends MockDevice implements Switchable, Queryable<Bool
 		value.setValue(true);
 		session.save(value);
 		Hibernate.closeSession(session);
-		L.getLogger(Logs.CORE_MOCK).log("MockSwitchDevice '" + getInternalId() + "' is now ON.");
 	}
 	
 	@Override

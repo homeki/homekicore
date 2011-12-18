@@ -7,7 +7,6 @@ import java.nio.CharBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 
-import com.homeki.core.log.L;
 
 public class Util {
 	public static String fromFile(String filePath) {

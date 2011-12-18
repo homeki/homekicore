@@ -11,7 +11,6 @@ import com.homeki.core.device.onewire.OneWireModule;
 import com.homeki.core.device.tellstick.TellStickModule;
 import com.homeki.core.http.HttpApi;
 import com.homeki.core.http.HttpListenerThread;
-import com.homeki.core.log.L;
 import com.homeki.core.threads.CollectorThread;
 import com.homeki.core.threads.ControlledThread;
 import com.homeki.core.threads.DetectorThread;
