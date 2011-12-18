@@ -3,7 +3,7 @@ package com.homeki.core.device.mock;
 import java.util.List;
 
 import com.homeki.core.device.Detector;
-import com.homeki.core.device.Module;
+import com.homeki.core.main.Module;
 
 public class MockModule implements Module {
 	

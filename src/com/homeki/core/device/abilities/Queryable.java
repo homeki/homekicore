@@ -1,4 +1,4 @@
-package com.homeki.core.device;
+package com.homeki.core.device.abilities;
 
 import java.util.Date;
 import java.util.List;

@@ -1,6 +1,6 @@
 package com.homeki.core.threads;
 
-import com.homeki.core.device.IntervalLoggable;
+import com.homeki.core.device.abilities.IntervalLoggable;
 import com.homeki.core.main.Monitor;
 
 public class CollectorThread extends ControlledThread {

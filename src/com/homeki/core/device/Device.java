@@ -5,8 +5,8 @@ import java.util.Date;
 
 import org.hibernate.Session;
 
-import com.homeki.core.storage.HDevice;
 import com.homeki.core.storage.Hibernate;
+import com.homeki.core.storage.entities.HDevice;
 
 public abstract class Device {
 	protected final int id;

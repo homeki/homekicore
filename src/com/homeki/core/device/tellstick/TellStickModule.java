@@ -3,7 +3,7 @@ package com.homeki.core.device.tellstick;
 import java.util.List;
 
 import com.homeki.core.device.Detector;
-import com.homeki.core.device.Module;
+import com.homeki.core.main.Module;
 
 public class TellStickModule implements Module {
 	@Override

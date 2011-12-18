@@ -4,7 +4,7 @@ import java.lang.reflect.Type;
 import java.util.Date;
 import java.util.List;
 
-import com.homeki.core.device.IntervalLoggable;
+import com.homeki.core.device.abilities.IntervalLoggable;
 import com.homeki.core.storage.DatumPoint;
 
 public class OneWireThermometer extends OneWireDevice implements IntervalLoggable<Float> {

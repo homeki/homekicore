@@ -1,4 +1,4 @@
-package com.homeki.core.storage;
+package com.homeki.core.storage.entities;
 
 public class HSetting {
 	private Integer id;

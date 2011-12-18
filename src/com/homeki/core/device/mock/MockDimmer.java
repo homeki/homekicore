@@ -5,8 +5,8 @@ import java.util.Date;
 import java.util.List;
 
 import com.homeki.core.Logs;
-import com.homeki.core.device.Dimmable;
-import com.homeki.core.device.Queryable;
+import com.homeki.core.device.abilities.Dimmable;
+import com.homeki.core.device.abilities.Queryable;
 import com.homeki.core.log.L;
 import com.homeki.core.storage.DatumPoint;
 

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.homeki.core.device.Detector;
-import com.homeki.core.device.Module;
 import com.homeki.core.device.camera.CameraModule;
 import com.homeki.core.device.mock.MockModule;
 import com.homeki.core.device.onewire.OneWireModule;

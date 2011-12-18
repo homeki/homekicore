@@ -1,4 +1,4 @@
-package com.homeki.core.storage;
+package com.homeki.core.storage.entities;
 
 import java.util.Date;
 

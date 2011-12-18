@@ -5,9 +5,9 @@ import java.util.Date;
 import java.util.List;
 
 import com.homeki.core.device.Device;
-import com.homeki.core.device.Dimmable;
-import com.homeki.core.device.Queryable;
-import com.homeki.core.device.Switchable;
+import com.homeki.core.device.abilities.Dimmable;
+import com.homeki.core.device.abilities.Queryable;
+import com.homeki.core.device.abilities.Switchable;
 import com.homeki.core.storage.DatumPoint;
 
 public class TellStickDimmer extends Device implements Dimmable, Switchable, Queryable<Integer> {
