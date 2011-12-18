@@ -13,31 +13,34 @@ public abstract class Device {
 	
 	public Device(String internalId) {
 		Session session = Hibernate.openSession();
-		Object deviceId = session.createQuery("from HDevice as dev where dev.internalId = ?").setString(0, internalId).uniqueResult();
+		HDevice device = (HDevice)session.createQuery("from HDevice as dev where dev.internalId = ?").setString(0, internalId).uniqueResult();
 		
-		// if a row doesn't exist for the device, create one. 
-		// else, just load the id for the row
-		if (deviceId == null) {
-			HDevice dev = new HDevice();
-			dev.setInternalId(internalId);
-			id = (Integer)session.save(dev);
+		if (device == null) {
+			device = new HDevice();
+			device.setInternalId(internalId);
+			device.setAdded(new Date());
+			id = (Integer)session.save(device);
 		}
 		else {
-			id = (Integer)deviceId;
+			id = device.getId();
 		}
 		
-		Hibernate.commitSession(session);
+		Hibernate.closeSession(session);
 	}
 	
 	public void setName(String name) {
 		Session session = Hibernate.openSession();
 		HDevice dev = (HDevice)session.load(HDevice.class, id);
 		dev.setName(name);
-		Hibernate.commitSession(session);
+		Hibernate.closeSession(session);
 	}
 	
 	public String getName() {
-		return "";
+		Session session = Hibernate.openSession();
+		HDevice dev = (HDevice)session.load(HDevice.class, id);
+		String name = dev.getName();
+		Hibernate.closeSession(session);
+		return name;
 	}
 	
 	public int getId() {
@@ -45,16 +48,24 @@ public abstract class Device {
 	}
 	
 	public Date getAdded() {
-		return null;
+		Session session = Hibernate.openSession();
+		HDevice dev = (HDevice)session.load(HDevice.class, id);
+		Date added = dev.getAdded();
+		Hibernate.closeSession(session);
+		return added;
 	}
 	
 	public String getInternalId() {
-		return "";
+		Session session = Hibernate.openSession();
+		HDevice dev = (HDevice)session.load(HDevice.class, id);
+		String internalId = dev.getInternalId();
+		Hibernate.closeSession(session);
+		return internalId;
 	}
 	
 	@Override
 	public int hashCode() {
-		return (int)(id % Integer.MAX_VALUE);
+		return id;
 	}
 	
 	@Override

@@ -32,7 +32,7 @@ public class Hibernate {
     	return session;
     }
     
-    public static void commitSession(Session session) {
+    public static void closeSession(Session session) {
         ManagedSessionContext.unbind(getSessionFactory());
         session.flush();
         session.getTransaction().commit();
