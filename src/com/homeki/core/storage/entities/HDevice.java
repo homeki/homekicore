@@ -6,7 +6,6 @@ public class HDevice {
 	private Integer id;
 	private String internalId;
 	private String name;
-	private String description;
 	private String type;
 	private Date added;
 	
@@ -20,14 +19,6 @@ public class HDevice {
 	
 	public void setInternalId(String internalId) {
 		this.internalId = internalId;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-	
-	public void setDescription(String description) {
-		this.description = description;
 	}
 
 	public String getName() {
