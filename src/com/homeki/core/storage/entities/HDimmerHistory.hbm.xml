@@ -3,15 +3,18 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated Dec 18, 2011 1:32:47 PM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="com.homeki.core.storage.entities.HSetting" table="HSETTING">
+    <class name="com.homeki.core.storage.entities.HDimmerHistory" table="HDIMMERHISTORY">
         <id name="id" type="java.lang.Integer" access="field">
             <column name="ID" />
             <generator class="native" />
         </id>
-        <property name="key" type="java.lang.String">
-            <column name="KEY" />
+        <many-to-one name="device" class="com.homeki.core.storage.entities.HDevice" fetch="join">
+            <column name="DEVICE" />
+        </many-to-one>
+        <property name="registered" type="java.util.Date">
+            <column name="REGISTERED" />
         </property>
-        <property name="value" type="java.lang.String">
+        <property name="value" type="java.lang.Integer">
             <column name="VALUE" />
         </property>
     </class>
