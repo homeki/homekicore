@@ -6,6 +6,7 @@ import com.homeki.core.device.mock.MockSwitch;
 import com.homeki.core.device.mock.MockThermometer;
 import com.homeki.core.device.onewire.OneWireThermometer;
 import com.homeki.core.device.tellstick.TellStickDimmer;
+import com.homeki.core.device.tellstick.TellStickFakeDimmer;
 import com.homeki.core.device.tellstick.TellStickSwitch;
 import com.homeki.core.log.L;
 import com.homeki.core.storage.ITableFactory;
@@ -23,6 +24,8 @@ public class DeviceFactory {
 			return new TellStickSwitch(di.getInternalId(), factory);
 		case TellStickDimmer:
 			return new TellStickDimmer(di.getInternalId(), factory);
+		case TellStickFakeDimmer:
+			return new TellStickFakeDimmer(di.getInternalId(), factory);
 		case OneWireThermometer:
 			String deviceDirPath = di.getAdditionalData("deviceDirPath");
 			return new OneWireThermometer(di.getInternalId(), factory, deviceDirPath);

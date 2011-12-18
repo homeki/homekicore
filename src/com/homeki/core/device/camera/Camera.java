@@ -8,7 +8,6 @@ import com.homeki.core.log.L;
 import com.homeki.core.storage.ITableFactory;
 
 public class Camera extends Device {
-	
 	private ExternalSnapshotApplication snapshooter;
 	
 	public Camera(String internalId, ITableFactory factory) {
@@ -16,7 +15,6 @@ public class Camera extends Device {
 		setName(internalId);
 		setActive(false);
 		snapshooter = new FireStormWebCam(internalId, makeTemporaryPath());
-		
 	}
 	
 	public synchronized String snapshot() {
@@ -56,5 +54,10 @@ public class Camera extends Device {
 	@Override
 	protected Type getTableValueType() {
 		return Boolean.class;
+	}
+
+	@Override
+	public String getType() {
+		return "camera";
 	}
 }

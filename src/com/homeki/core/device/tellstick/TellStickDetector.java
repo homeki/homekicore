@@ -15,13 +15,18 @@ public class TellStickDetector extends Detector {
 		
 		for (int i = 0; i < ids.length; i++) {
 			int id = ids[i];
+			DeviceInformation di = null;
 			String type = TellStickNative.getDeviceType(id);
 			
-			if (type.equals("dimmer")) {
-				devices.add(new DeviceInformation(String.valueOf(id), DeviceType.TellStickDimmer));
-			} else if (type.equals("switch")) {
-				devices.add(new DeviceInformation(String.valueOf(id), DeviceType.TellStickSwitch));
-			}
+			if (type.equals("dimmer"))
+				di = new DeviceInformation(String.valueOf(id), DeviceType.TellStickDimmer);
+			else if (type.equals("switch"))
+				di = new DeviceInformation(String.valueOf(id), DeviceType.TellStickSwitch);
+			else if (type.equals("fakedimmer"))
+				di = new DeviceInformation(String.valueOf(id), DeviceType.TellStickFakeDimmer);
+			
+			if (di != null)
+				devices.add(di);
 		}
 		
 		return devices;

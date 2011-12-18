@@ -41,4 +41,9 @@ public class TellStickSwitch extends Device implements Switchable, Queryable<Boo
 	protected Type getTableValueType() {
 		return Boolean.class;
 	}
+
+	@Override
+	public String getType() {
+		return "switch";
+	}
 }

@@ -12,7 +12,6 @@ import com.homeki.core.storage.DatumPoint;
 import com.homeki.core.storage.ITableFactory;
 
 public class MockDimmer extends MockDevice implements Dimmable, Queryable<Integer> {
-	
 	public MockDimmer(String internalId, ITableFactory factory) {
 		super(internalId, factory);
 		L.getLogger(Logs.CORE_MOCK).log("Created MockHistoryDimmerDevice.");
@@ -51,5 +50,10 @@ public class MockDimmer extends MockDevice implements Dimmable, Queryable<Intege
 	@Override
 	protected Type getTableValueType() {
 		return Integer.class;
+	}
+
+	@Override
+	public String getType() {
+		return "dimmer";
 	}
 }

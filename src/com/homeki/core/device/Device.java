@@ -66,10 +66,13 @@ public abstract class Device {
 		return id == ((Device) obj).id;
 	}
 	
+	public abstract String getType();
+	
 	protected void ensureHistoryTable(ITableFactory factory, String tableName){
 		historyTable = factory.getHistoryTable(tableName, getTableValueType());
 		historyTable.ensureTable();
 	}
 
 	protected abstract Type getTableValueType();
+	
 }

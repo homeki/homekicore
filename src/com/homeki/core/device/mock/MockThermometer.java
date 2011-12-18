@@ -47,4 +47,9 @@ public class MockThermometer extends MockDevice implements IntervalLoggable<Floa
 	protected Type getTableValueType() {
 		return Float.class;
 	}
+
+	@Override
+	public String getType() {
+		return "thermometer";
+	}
 }
