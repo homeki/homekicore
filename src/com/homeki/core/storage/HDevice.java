@@ -3,14 +3,14 @@ package com.homeki.core.storage;
 import java.util.Date;
 
 public class HDevice {
-	private Long id;
+	private Integer id;
 	private String internalId;
 	private String name;
 	private String description;
 	private String type;
 	private Date added;
 	
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 	

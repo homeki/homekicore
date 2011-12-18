@@ -9,22 +9,21 @@ import com.homeki.core.storage.HDevice;
 import com.homeki.core.storage.Hibernate;
 
 public abstract class Device {
-	protected final Long id;
+	protected final int id;
 	
 	public Device(String internalId) {
 		Session session = Hibernate.openSession();
-		Object deviceId = session.createQuery("from HDevice where HDevice.internalid = ?").setEntity(0, internalId).uniqueResult();
+		Object deviceId = session.createQuery("from HDevice as dev where dev.internalId = ?").setString(0, internalId).uniqueResult();
 		
 		// if a row doesn't exist for the device, create one. 
 		// else, just load the id for the row
 		if (deviceId == null) {
 			HDevice dev = new HDevice();
 			dev.setInternalId(internalId);
-			session.save(dev);
-			id = dev.getId();
+			id = (Integer)session.save(dev);
 		}
 		else {
-			id = (Long)deviceId;
+			id = (Integer)deviceId;
 		}
 		
 		Hibernate.commitSession(session);
@@ -37,12 +36,8 @@ public abstract class Device {
 		Hibernate.commitSession(session);
 	}
 	
-	public void setActive(boolean active) {
-		deviceTable.setActive(id, active);
-	}
-	
 	public String getName() {
-		return deviceTable.getName(id);
+		return "";
 	}
 	
 	public int getId() {
@@ -50,20 +45,16 @@ public abstract class Device {
 	}
 	
 	public Date getAdded() {
-		return deviceTable.getAdded(id);
-	}
-	
-	public boolean isActive() {
-		return deviceTable.isActive(id);
+		return null;
 	}
 	
 	public String getInternalId() {
-		return deviceTable.getInternalId(id);
+		return "";
 	}
 	
 	@Override
 	public int hashCode() {
-		return id;
+		return (int)(id % Integer.MAX_VALUE);
 	}
 	
 	@Override

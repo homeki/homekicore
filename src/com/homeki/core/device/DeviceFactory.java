@@ -9,7 +9,6 @@ import com.homeki.core.device.tellstick.TellStickDimmer;
 import com.homeki.core.device.tellstick.TellStickFakeDimmer;
 import com.homeki.core.device.tellstick.TellStickSwitch;
 import com.homeki.core.log.L;
-import com.homeki.core.storage.ITableFactory;
 
 public class DeviceFactory {
 	public static Device createDevice(DeviceInformation di) {

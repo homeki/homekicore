@@ -3,8 +3,8 @@
                                    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated Dec 13, 2011 9:37:35 PM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
- <class name="com.homeki.core.storage.hsqldb.HSetting" table="HSETTING">
-  <id access="field" name="id" type="java.lang.Long">
+ <class name="com.homeki.core.storage.HSetting" table="HSETTING">
+  <id access="field" name="id" type="java.lang.Integer">
    <column name="ID"/>
    <generator class="native"/>
   </id>

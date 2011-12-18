@@ -1,13 +1,16 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated Dec 13, 2011 9:25:22 PM by Hibernate Tools 3.4.0.CR1 -->
+<!-- Generated Dec 18, 2011 1:32:41 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="com.homeki.core.storage.hsqldb.HDevice" table="HDEVICE">
-        <id name="id" type="java.lang.Long" access="field">
+    <class name="com.homeki.core.storage.HDevice" table="HDEVICE">
+        <id name="id" type="java.lang.Integer" access="field">
             <column name="ID" />
             <generator class="native" />
         </id>
+        <property name="internalId" type="java.lang.String">
+            <column name="INTERNALID" />
+        </property>
         <property name="name" type="java.lang.String">
             <column name="NAME" />
         </property>

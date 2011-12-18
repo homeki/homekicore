@@ -12,7 +12,6 @@ public class Camera extends Device {
 	public Camera(String internalId) {
 		super(internalId);
 		setName(internalId);
-		setActive(false);
 		snapshooter = new FireStormWebCam(internalId, makeTemporaryPath());
 	}
 	
@@ -39,15 +38,6 @@ public class Camera extends Device {
 			return null;
 		}
 		
-	}
-	
-	@Override
-	public void setActive(boolean active) {
-		if (isActive()) {
-			
-		} else {
-			
-		}
 	}
 	
 	@Override

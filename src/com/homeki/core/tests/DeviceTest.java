@@ -26,11 +26,6 @@ public class DeviceTest {
 	}
 	
 	@Test
-	public void testHashCode() {
-		assertEquals("Hashcode must be equal to ID.", device.hashCode(), device.getId());
-	}
-	
-	@Test
 	public void testGetName() {
 		assertEquals("Name is not the assigned name.", NAME, device.getName());
 	}
@@ -55,13 +50,5 @@ public class DeviceTest {
 		Date now = new Date();
 		assertTrue(now.after(d));
 		assertTrue(testStart.before(d));
-	}
-	
-	@Test
-	public void testActive() {
-		device.setActive(true);
-		assertTrue(device.isActive());
-		device.setActive(false);
-		assertTrue(!device.isActive());
 	}
 }

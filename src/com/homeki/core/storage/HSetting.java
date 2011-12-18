@@ -1,9 +1,13 @@
 package com.homeki.core.storage;
 
 public class HSetting {
-	private Long id;
+	private Integer id;
 	private String key;
 	private String value;
+	
+	public Integer getId() {
+		return id;
+	}
 	
 	public String getValue() {
 		return value;

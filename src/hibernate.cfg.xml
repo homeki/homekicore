@@ -19,7 +19,7 @@
         <property name="hbm2ddl.auto">update</property>
 
 		<!--  Mapping files -->
-        <mapping resource="com/homeki/core/storage/hsqldb/HDevice.hbm.xml"/>
-        <mapping resource="com/homeki/core/storage/hsqldb/HSetting.hbm.xml"/>
+        <mapping resource="com/homeki/core/storage/HDevice.hbm.xml"/>
+        <mapping resource="com/homeki/core/storage/HSetting.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>
