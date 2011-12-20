@@ -11,14 +11,12 @@ public class JsonDevice {
 	public String name;
 	public String description;
 	public Date added;
-	public Boolean active;
 	
 	public JsonDevice(Device d) {
 		type = d.getType();
 		id = d.getId();
 		name = d.getName();
 		added = d.getAdded();
-		active = d.isActive();
 	}
 
 	public static JsonDevice[] convertList(List<Device> devices) {

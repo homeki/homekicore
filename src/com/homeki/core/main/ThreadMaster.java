@@ -5,16 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.homeki.core.device.Detector;
-import com.homeki.core.device.Module;
 import com.homeki.core.device.camera.CameraModule;
 import com.homeki.core.device.mock.MockModule;
 import com.homeki.core.device.onewire.OneWireModule;
 import com.homeki.core.device.tellstick.TellStickModule;
 import com.homeki.core.http.HttpApi;
 import com.homeki.core.http.HttpListenerThread;
-import com.homeki.core.log.L;
-import com.homeki.core.storage.ITableFactory;
-import com.homeki.core.storage.sqlite.SqliteTableFactory;
 import com.homeki.core.threads.CollectorThread;
 import com.homeki.core.threads.ControlledThread;
 import com.homeki.core.threads.DetectorThread;
@@ -24,7 +20,6 @@ public class ThreadMaster {
 	private List<ControlledThread> threads;
 	private List<Module> modules;
 	private HttpApi api;
-	private ITableFactory dbf;
 	private ConfigurationFile file;
 	
 	public ThreadMaster() {
@@ -61,7 +56,6 @@ public class ThreadMaster {
 		modules = new ArrayList<Module>();
 		monitor = new Monitor();
 		api = new HttpApi(monitor);
-		dbf = new SqliteTableFactory("homeki.db");
 		
 		try {
 			file.load();
@@ -80,8 +74,7 @@ public class ThreadMaster {
 			return;
 		}
 		
-		dbf.ensureTables();
-		dbf.upgrade(version);
+		//dbf.upgrade(version);
 		
 		setupModules(file);
 		
@@ -97,7 +90,7 @@ public class ThreadMaster {
 			return;
 		}
 		
-		threads.add(new DetectorThread(detectors, monitor, dbf));
+		threads.add(new DetectorThread(detectors, monitor));
 		threads.add(new CollectorThread(monitor));
 		
 		for (Thread t : threads)

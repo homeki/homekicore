@@ -7,16 +7,13 @@ import com.homeki.core.device.Device;
 import com.homeki.core.device.DeviceFactory;
 import com.homeki.core.device.DeviceInformation;
 import com.homeki.core.main.Monitor;
-import com.homeki.core.storage.ITableFactory;
 
 public class DetectorThread extends ControlledThread {
 	private List<Detector> detectors;
 	private Monitor monitor;
-	private ITableFactory dbf;
 	
-	public DetectorThread(List<Detector> detectors, Monitor monitor, ITableFactory dbf) {
+	public DetectorThread(List<Detector> detectors, Monitor monitor) {
 		super(10000);
-		this.dbf = dbf;
 		this.monitor = monitor;
 		this.detectors = detectors;
 	}
@@ -29,7 +26,7 @@ public class DetectorThread extends ControlledThread {
 			if (devs != null) {
 				for (DeviceInformation d : devs) {
 					if (!monitor.containsDevice(d.getInternalId())) {
-						Device dev = DeviceFactory.createDevice(dbf, d);
+						Device dev = DeviceFactory.createDevice(d);
 						if (dev != null)
 							monitor.addDevice(dev);
 					}

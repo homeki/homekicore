@@ -3,8 +3,8 @@ package com.homeki.core.device.onewire;
 import java.util.List;
 
 import com.homeki.core.device.Detector;
-import com.homeki.core.device.Module;
 import com.homeki.core.main.ConfigurationFile;
+import com.homeki.core.main.Module;
 
 public class OneWireModule implements Module {
 	private String owRootPath;

@@ -9,7 +9,7 @@ import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.protocol.HttpService;
 
-import com.homeki.core.log.L;
+import com.homeki.core.main.L;
 import com.homeki.core.threads.ControlledThread;
 
 public class HttpRequestResolverThread extends ControlledThread {

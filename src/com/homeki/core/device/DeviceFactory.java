@@ -8,29 +8,28 @@ import com.homeki.core.device.onewire.OneWireThermometer;
 import com.homeki.core.device.tellstick.TellStickDimmer;
 import com.homeki.core.device.tellstick.TellStickFakeDimmer;
 import com.homeki.core.device.tellstick.TellStickSwitch;
-import com.homeki.core.log.L;
-import com.homeki.core.storage.ITableFactory;
+import com.homeki.core.main.L;
 
 public class DeviceFactory {
-	public static Device createDevice(ITableFactory factory, DeviceInformation di) {
+	public static Device createDevice(DeviceInformation di) {
 		switch (di.getType()) {
 		case MockSwitch:
-			return new MockSwitch(di.getInternalId(), factory);
+			return new MockSwitch(di.getInternalId());
 		case MockDimmer:
-			return new MockDimmer(di.getInternalId(), factory);
+			return new MockDimmer(di.getInternalId());
 		case MockThermometer:
-			return new MockThermometer(di.getInternalId(), factory);
+			return new MockThermometer(di.getInternalId());
 		case TellStickSwitch:
-			return new TellStickSwitch(di.getInternalId(), factory);
+			return new TellStickSwitch(di.getInternalId());
 		case TellStickDimmer:
-			return new TellStickDimmer(di.getInternalId(), factory);
+			return new TellStickDimmer(di.getInternalId());
 		case TellStickFakeDimmer:
-			return new TellStickFakeDimmer(di.getInternalId(), factory);
+			return new TellStickFakeDimmer(di.getInternalId());
 		case OneWireThermometer:
 			String deviceDirPath = di.getAdditionalData("deviceDirPath");
-			return new OneWireThermometer(di.getInternalId(), factory, deviceDirPath);
+			return new OneWireThermometer(di.getInternalId(), deviceDirPath);
 		case Camera:
-			return new Camera(di.getInternalId(), factory);
+			return new Camera(di.getInternalId());
 		}
 		
 		L.e("Corresponding device class not found for DeviceInformation in DeviceFactory.");

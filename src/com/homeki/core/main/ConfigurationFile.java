@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-import com.homeki.core.log.L;
 
 /*
  * Configuration file format (shows all possible settings):
@@ -14,7 +13,6 @@ import com.homeki.core.log.L;
  * [modules]
  * module.mock.use = true
  * module.tellstick.use = true
- * module.tellstick.path = /etc/tellstick.conf
  * module.onewire.use = true
  * module.onewire.path = /mnt/1wire/uncached
  * module.camera.use = true

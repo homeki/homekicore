@@ -3,7 +3,7 @@ package com.homeki.core.device.camera;
 import java.io.File;
 import java.io.IOException;
 
-import com.homeki.core.log.L;
+import com.homeki.core.main.L;
 
 public class FireStormWebCam extends ExternalSnapshotApplication {
 	

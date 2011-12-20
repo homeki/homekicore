@@ -2,7 +2,7 @@ package com.homeki.core.http;
 
 import java.util.StringTokenizer;
 
-import com.homeki.core.log.L;
+import com.homeki.core.main.L;
 
 public class HttpSetHandler extends HttpHandler {
 	public enum Actions {

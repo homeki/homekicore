@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 import com.homeki.core.device.Device;
-import com.homeki.core.device.IntervalLoggable;
+import com.homeki.core.device.abilities.IntervalLoggable;
 
 public class Monitor {
 	private Map<Integer, Device> devices;

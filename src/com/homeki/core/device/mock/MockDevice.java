@@ -3,13 +3,12 @@ package com.homeki.core.device.mock;
 import java.util.Date;
 
 import com.homeki.core.device.Device;
-import com.homeki.core.storage.ITableFactory;
 
 public abstract class MockDevice extends Device {
 	private Date fakeAdded;
 
-	public MockDevice(String internalId, ITableFactory factory) {
-		super(internalId, factory);
+	public MockDevice(String internalId) {
+		super(internalId);
 	}
 	
 	public void setPretendAddedDate(Date date){

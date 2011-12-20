@@ -15,7 +15,6 @@ import com.homeki.core.device.mock.MockDimmer;
 import com.homeki.core.device.mock.MockSwitch;
 import com.homeki.core.http.HttpApi;
 import com.homeki.core.main.Monitor;
-import com.homeki.core.storage.ITableFactory;
 
 public class ApiTest {
 	private static final String GET_DEVICES_JSON = TestUtil.getStringFromTextFile("get_devices_json");
@@ -27,17 +26,13 @@ public class ApiTest {
 	private MockSwitch mock1;
 	private MockDimmer mock2;
 	
-	private ITableFactory dbf;
-	
 	@Before
 	public void setUp() throws Exception {
-		dbf = TestUtil.getEmptySqliteTestTableFactory();
-		
 		Monitor mon = new Monitor();
 		api = new HttpApi(mon);
 		
-		mock1 = new MockSwitch("switch1", dbf);
-		mock2 = new MockDimmer("dimmer1", dbf);
+		mock1 = new MockSwitch("switch1");
+		mock2 = new MockDimmer("dimmer1");
 		
 		setMockDate(mock1, mock2);
 		

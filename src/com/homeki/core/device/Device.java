@@ -3,41 +3,44 @@ package com.homeki.core.device;
 import java.lang.reflect.Type;
 import java.util.Date;
 
-import com.homeki.core.storage.IDeviceTable;
-import com.homeki.core.storage.IHistoryTable;
-import com.homeki.core.storage.ITableFactory;
+import org.hibernate.Session;
+
+import com.homeki.core.storage.Hibernate;
+import com.homeki.core.storage.entities.HDevice;
 
 public abstract class Device {
 	protected final int id;
 	
-	private IDeviceTable deviceTable;
-	protected IHistoryTable historyTable;
-	
-	public Device(String internalId, ITableFactory factory) {
-		deviceTable = factory.getDeviceTable();
+	public Device(String internalId) {
+		Session session = Hibernate.openSession();
+		HDevice device = (HDevice)session.createQuery("from HDevice as dev where dev.internalId = ?").setString(0, internalId).uniqueResult();
 		
-		// if a row doesn't exist for the device, create one. 
-		// else, just load the id for the row
-		if (!deviceTable.rowExists(internalId)) {
-			id = deviceTable.createRow(internalId, this.getClass().getSimpleName());
+		if (device == null) {
+			device = new HDevice();
+			device.setInternalId(internalId);
+			device.setAdded(new Date());
+			id = (Integer)session.save(device);
 		}
 		else {
-			id = deviceTable.getId(internalId);
+			id = device.getId();
 		}
 		
-		ensureHistoryTable(factory, ("D_" + this.getClass().getSimpleName() + "_" + id).toLowerCase());
+		Hibernate.closeSession(session);
 	}
 	
 	public void setName(String name) {
-		deviceTable.setName(id, name);
-	}
-	
-	public void setActive(boolean active) {
-		deviceTable.setActive(id, active);
+		Session session = Hibernate.openSession();
+		HDevice dev = (HDevice)session.load(HDevice.class, id);
+		dev.setName(name);
+		Hibernate.closeSession(session);
 	}
 	
 	public String getName() {
-		return deviceTable.getName(id);
+		Session session = Hibernate.openSession();
+		HDevice dev = (HDevice)session.load(HDevice.class, id);
+		String name = dev.getName();
+		Hibernate.closeSession(session);
+		return name;
 	}
 	
 	public int getId() {
@@ -45,15 +48,19 @@ public abstract class Device {
 	}
 	
 	public Date getAdded() {
-		return deviceTable.getAdded(id);
-	}
-	
-	public boolean isActive() {
-		return deviceTable.isActive(id);
+		Session session = Hibernate.openSession();
+		HDevice dev = (HDevice)session.load(HDevice.class, id);
+		Date added = dev.getAdded();
+		Hibernate.closeSession(session);
+		return added;
 	}
 	
 	public String getInternalId() {
-		return deviceTable.getInternalId(id);
+		Session session = Hibernate.openSession();
+		HDevice dev = (HDevice)session.load(HDevice.class, id);
+		String internalId = dev.getInternalId();
+		Hibernate.closeSession(session);
+		return internalId;
 	}
 	
 	@Override
@@ -67,12 +74,4 @@ public abstract class Device {
 	}
 	
 	public abstract String getType();
-	
-	protected void ensureHistoryTable(ITableFactory factory, String tableName){
-		historyTable = factory.getHistoryTable(tableName, getTableValueType());
-		historyTable.ensureTable();
-	}
-
-	protected abstract Type getTableValueType();
-	
 }

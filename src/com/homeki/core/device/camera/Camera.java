@@ -1,19 +1,16 @@
 package com.homeki.core.device.camera;
 
 import java.io.File;
-import java.lang.reflect.Type;
 
 import com.homeki.core.device.Device;
-import com.homeki.core.log.L;
-import com.homeki.core.storage.ITableFactory;
+import com.homeki.core.main.L;
 
 public class Camera extends Device {
 	private ExternalSnapshotApplication snapshooter;
 	
-	public Camera(String internalId, ITableFactory factory) {
-		super(internalId, factory);
+	public Camera(String internalId) {
+		super(internalId);
 		setName(internalId);
-		setActive(false);
 		snapshooter = new FireStormWebCam(internalId, makeTemporaryPath());
 	}
 	
@@ -42,20 +39,6 @@ public class Camera extends Device {
 		
 	}
 	
-	@Override
-	public void setActive(boolean active) {
-		if (isActive()) {
-			
-		} else {
-			
-		}
-	}
-	
-	@Override
-	protected Type getTableValueType() {
-		return Boolean.class;
-	}
-
 	@Override
 	public String getType() {
 		return "camera";

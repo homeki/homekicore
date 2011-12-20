@@ -5,13 +5,12 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 import com.homeki.core.device.Device;
-import com.homeki.core.storage.ITableFactory;
 
 public abstract class OneWireDevice extends Device {
 	private String deviceDirPath;
 	
-	public OneWireDevice(String internalId, ITableFactory factory, String deviceDirPath) {
-		super(internalId, factory);
+	public OneWireDevice(String internalId, String deviceDirPath) {
+		super(internalId);
 		this.deviceDirPath = deviceDirPath;
 	}
 	

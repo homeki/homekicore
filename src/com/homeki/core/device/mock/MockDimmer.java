@@ -1,55 +1,71 @@
 package com.homeki.core.device.mock;
 
-import java.lang.reflect.Type;
 import java.util.Date;
 import java.util.List;
 
-import com.homeki.core.Logs;
-import com.homeki.core.device.Dimmable;
-import com.homeki.core.device.Queryable;
-import com.homeki.core.log.L;
-import com.homeki.core.storage.DatumPoint;
-import com.homeki.core.storage.ITableFactory;
+import org.hibernate.Session;
+
+import com.homeki.core.device.abilities.Dimmable;
+import com.homeki.core.device.abilities.Queryable;
+import com.homeki.core.main.L;
+import com.homeki.core.storage.Hibernate;
+import com.homeki.core.storage.HistoryPoint;
+import com.homeki.core.storage.entities.HDevice;
+import com.homeki.core.storage.entities.HDimmerHistoryPoint;
 
 public class MockDimmer extends MockDevice implements Dimmable, Queryable<Integer> {
-	public MockDimmer(String internalId, ITableFactory factory) {
-		super(internalId, factory);
-		L.getLogger(Logs.CORE_MOCK).log("Created MockHistoryDimmerDevice.");
+	public MockDimmer(String internalId) {
+		super(internalId);
 	}
 
 	@Override
 	public void dim(int level) {
-		historyTable.putValue(new Date(), level);
-		L.getLogger(Logs.CORE_MOCK).log("MockHistoryDimmerDevice '" + getInternalId() + "' now has dim level " + level + ".");
+		L.i("MockHistoryDimmerDevice '" + getInternalId() + "' now has dim level " + level + ".");
+		Session session = Hibernate.openSession();
+		HDevice dev = (HDevice)session.load(HDevice.class, id);
+		HDimmerHistoryPoint value = new HDimmerHistoryPoint();
+		value.setRegistered(new Date());
+		value.setDevice(dev);
+		value.setValue(level);
+		session.save(value);
+		Hibernate.closeSession(session);
 	}
 	
 	@Override
 	public void off() {
 		dim(0);
-		L.getLogger(Logs.CORE_MOCK).log("MockHistoryDimmerDevice '" + getInternalId() + "' is now OFF!");
 	}
 	
 	@Override
 	public void on() {
 		dim(255);
-		L.getLogger(Logs.CORE_MOCK).log("MockHistoryDimmerDevice '" + getInternalId() + "' is now ON!");
 	}
 	
 	@Override
 	public Integer getValue() {
-		if(historyTable == null) System.out.println("historyTable is null???");
-		Object k = historyTable.getLatestValue();
-		return (Integer)k;
+		Session session = Hibernate.openSession();
+		Integer value = (Integer)session.createQuery("select value from HDimmerHistoryPoint as his where his.device = ? order by his.registered desc")
+				.setInteger(0, id)
+				.setMaxResults(1)
+				.uniqueResult();
+		Hibernate.closeSession(session);
+		
+		if (value == null)
+			value = 0;
+		
+		return value;
 	}
 
 	@Override
-	public List<DatumPoint> getHistory(Date from, Date to) {
-		return historyTable.getValues(from, to);
-	}
-
-	@Override
-	protected Type getTableValueType() {
-		return Integer.class;
+	public List<HistoryPoint> getHistory(Date from, Date to) {
+		Session session = Hibernate.openSession();
+		@SuppressWarnings("unchecked")
+		List<HistoryPoint> list = session.createQuery("from HDimmerHistoryPoint as p where p.registered between ? and ? order by p.registered asc")
+				.setDate(0, from)
+				.setDate(1, to)
+				.list();
+		Hibernate.closeSession(session);
+		return list;
 	}
 
 	@Override

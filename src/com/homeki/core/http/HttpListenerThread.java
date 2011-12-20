@@ -22,7 +22,7 @@ import org.apache.http.protocol.ResponseContent;
 import org.apache.http.protocol.ResponseDate;
 import org.apache.http.protocol.ResponseServer;
 
-import com.homeki.core.log.L;
+import com.homeki.core.main.L;
 import com.homeki.core.threads.ControlledThread;
 
 public class HttpListenerThread extends ControlledThread {
