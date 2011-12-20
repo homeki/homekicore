@@ -10,6 +10,11 @@ public class HDimmerHistoryPoint implements HistoryPoint {
 	private Date registered;
 	private Integer value;
 	
+	public HDimmerHistoryPoint(Integer value) {
+		this.registered = new Date();
+		this.value = value;
+	}
+	
 	public Integer getId() {
 		return id;
 	}
