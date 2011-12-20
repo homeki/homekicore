@@ -8,4 +8,7 @@ public class TellStickNative {
     public static native void turnOn(int id);
     public static native void turnOff(int id);
     public static native void dim(int id, int level);
+    public static native String getEvent();
+    // "" = inget nytt event
+    // "id(internalid)|värde"
 }
