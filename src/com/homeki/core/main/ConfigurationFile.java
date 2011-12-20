@@ -13,7 +13,6 @@ import java.util.Scanner;
  * [modules]
  * module.mock.use = true
  * module.tellstick.use = true
- * module.tellstick.path = /etc/tellstick.conf
  * module.onewire.use = true
  * module.onewire.path = /mnt/1wire/uncached
  * module.camera.use = true
