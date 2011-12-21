@@ -35,6 +35,13 @@ public class MockDimmer extends MockDevice implements Dimmable, Queryable<Intege
 	public Integer getValue() {
 		return Hibernate.getLatestDimmerHistoryPointValue(id);
 	}
+	
+	@Override
+	public void setValue(Integer value) {
+		if (!value.equals(getValue())) {
+			Hibernate.putHistoryValue(id, new HDimmerHistoryPoint(value));
+		}
+	}
 
 	@Override
 	public List<HistoryPoint> getHistory(Date from, Date to) {

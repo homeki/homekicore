@@ -19,7 +19,7 @@ public class TellStickDimmer extends Device implements Dimmable, Switchable, Que
 	@Override
 	public void dim(int level) {
 		TellStickNative.dim(Integer.parseInt(getInternalId()), level);
-		Hibernate.putHistoryValue(id, new HDimmerHistoryPoint(level));
+		setValue(level);
 	}
 
 	@Override
@@ -45,5 +45,12 @@ public class TellStickDimmer extends Device implements Dimmable, Switchable, Que
 	@Override
 	public String getType() {
 		return "dimmer";
+	}
+
+	@Override
+	public void setValue(Integer value) {
+		if (!value.equals(getValue())) {
+			Hibernate.putHistoryValue(id, new HDimmerHistoryPoint(value));
+		}
 	}
 }

@@ -33,5 +33,6 @@
 	<classpathentry kind="lib" path="libs/hibernate/jta-1.1.jar"/>
 	<classpathentry kind="lib" path="libs/hibernate/slf4j-api-1.6.1.jar"/>
 	<classpathentry kind="lib" path="libs/hibernate/slf4j-nop-1.6.1.jar"/>
+	<classpathentry kind="lib" path="libs/liquibase.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

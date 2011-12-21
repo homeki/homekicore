@@ -4,8 +4,28 @@
 	<path id="ant-deb.classpath">
         <fileset dir="../ant" includes="*.jar"/>
     </path>
+	
+	<path id="classpath">
+		<fileset dir="../libs" includes="*.jar"/>
+		<fileset dir="../libs/hibernate" includes="*.jar"/>
+	</path>
 
     <taskdef name="deb" classname="com.googlecode.ant_deb_task.Deb" classpathref="ant-deb.classpath"/>
+	
+	<target name="hibernate-update">
+	    <taskdef resource="liquibasetasks.properties">
+	        <classpath refid="classpath"/>
+	    </taskdef>
+	 
+	    <diffDatabaseToChangeLog driver="org.hsqldb.jdbcDriver"
+            url="jdbc:hsqldb:file:../db/homeki.db"
+            username="sa"
+            password=""
+            referenceUrl="hibernate:../src/hibernate.cfg.xml"
+            outputFile="../build/changelog-gen.xml"
+            classpathref="classpath"
+		/>
+	</target>
 
     <target name="clean">
         <delete dir="../build"/>

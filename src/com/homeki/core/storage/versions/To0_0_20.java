@@ -1,9 +1,9 @@
 package com.homeki.core.storage.versions;
 
-import com.homeki.core.storage.DatabaseVersion;
+import com.homeki.core.storage.SchemaVersion;
 import com.homeki.core.storage.Hibernate;
 
-public class To0_0_20 extends DatabaseVersion {
+public class To0_0_20 extends SchemaVersion {
 	public To0_0_20(String databasePath) {
 		super("0.0.20");
 	}

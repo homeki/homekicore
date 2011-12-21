@@ -5,10 +5,10 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.homeki.core.storage.DatabaseVersion;
+import com.homeki.core.storage.SchemaVersion;
 
 public class SqliteDatabaseVersionTest {
-	public class TestVersion extends DatabaseVersion {
+	public class TestVersion extends SchemaVersion {
 		protected TestVersion(String version) {
 			super(version);
 		}

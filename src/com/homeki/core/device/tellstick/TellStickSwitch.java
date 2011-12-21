@@ -18,13 +18,13 @@ public class TellStickSwitch extends Device implements Switchable, Queryable<Boo
 	@Override
 	public void off() {
 		TellStickNative.turnOff(Integer.parseInt(getInternalId()));
-		Hibernate.putHistoryValue(id, new HSwitchHistoryPoint(false));
+		setValue(false);
 	}
 	
 	@Override
 	public void on() {
 		TellStickNative.turnOn(Integer.parseInt(getInternalId()));
-		Hibernate.putHistoryValue(id, new HSwitchHistoryPoint(true));
+		setValue(true);
 	}
 	
 	@Override
@@ -40,5 +40,12 @@ public class TellStickSwitch extends Device implements Switchable, Queryable<Boo
 	@Override
 	public String getType() {
 		return "switch";
+	}
+
+	@Override
+	public void setValue(Boolean value) {
+		if (!value.equals(getValue())) {
+			Hibernate.putHistoryValue(id, new HSwitchHistoryPoint(value));
+		}
 	}
 }

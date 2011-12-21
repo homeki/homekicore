@@ -9,6 +9,6 @@ public class TellStickNative {
     public static native void turnOff(int id);
     public static native void dim(int id, int level);
     public static native String getEvent();
-    // "id(internalid)|värde"
+    // "id(internalid) värde"
     // värde kan vara numeriskt (om dimmer) eller true/false (om switch)
 }
