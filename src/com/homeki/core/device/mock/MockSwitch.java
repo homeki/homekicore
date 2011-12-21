@@ -18,13 +18,13 @@ public class MockSwitch extends MockDevice implements Switchable, Queryable<Bool
 	@Override
 	public void off() {
 		L.i("MockSwitchDevice '" + getInternalId() + "' is now OFF.");
-		Hibernate.putHistoryValue(id, new HSwitchHistoryPoint(false));
+		setValue(false);
 	}
 	
 	@Override
 	public void on() {
 		L.i("MockSwitchDevice '" + getInternalId() + "' is now ON.");
-		Hibernate.putHistoryValue(id, new HSwitchHistoryPoint(true));
+		setValue(true);
 	}
 	
 	@Override
@@ -36,9 +36,16 @@ public class MockSwitch extends MockDevice implements Switchable, Queryable<Bool
 	public List<HistoryPoint> getHistory(Date from, Date to) {
 		return Hibernate.getSwitchHistoryPoints(from, to);
 	}
-
+	
 	@Override
 	public String getType() {
 		return "switch";
+	}
+	
+	@Override
+	public void setValue(Boolean value) {
+		if (!value.equals(getValue())) {
+			Hibernate.putHistoryValue(id, new HSwitchHistoryPoint(value));
+		}
 	}
 }

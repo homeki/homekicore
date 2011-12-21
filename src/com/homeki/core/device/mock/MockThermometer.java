@@ -21,11 +21,16 @@ public class MockThermometer extends MockDevice implements IntervalLoggable<Floa
 	public Float getValue() {
 		return getRandomThermometerValue();
 	}
+	
+	@Override
+	public void setValue(Float value) {
+		Hibernate.putHistoryValue(id, new HTemperatureHistoryPoint(value));
+	}
 
 	@Override
 	public void updateValue() {
 		float temp = getRandomThermometerValue();
-		Hibernate.putHistoryValue(id, new HTemperatureHistoryPoint(temp));
+		setValue(temp);
 	}
 	
 	private Float getRandomThermometerValue() {

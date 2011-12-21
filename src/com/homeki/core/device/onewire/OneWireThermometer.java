@@ -20,8 +20,8 @@ public class OneWireThermometer extends OneWireDevice implements IntervalLoggabl
 
 	@Override
 	public void updateValue() {
-		float temp = getFloatVar("Thermometer");
-		Hibernate.putHistoryValue(id, new HTemperatureHistoryPoint(temp));
+		float value = getFloatVar("Thermometer");
+		setValue(value);
 	}
 
 	@Override
@@ -32,5 +32,10 @@ public class OneWireThermometer extends OneWireDevice implements IntervalLoggabl
 	@Override
 	public String getType() {
 		return "thermometer";
+	}
+
+	@Override
+	public void setValue(Float value) {
+		Hibernate.putHistoryValue(id, new HTemperatureHistoryPoint(value));
 	}
 }

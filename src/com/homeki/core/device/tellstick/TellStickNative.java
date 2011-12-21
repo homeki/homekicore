@@ -10,5 +10,6 @@ public class TellStickNative {
     public static native void dim(int id, int level);
     public static native String getEvent();
     // "" = inget nytt event
-    // "id(internalid)|värde"
+    // "id(internalid) värde"
+    //JAG ÄNDRADE KONVENTIONEN TILL ATT SEPARERA MED " " ISTÄLLET!!!!
 }
