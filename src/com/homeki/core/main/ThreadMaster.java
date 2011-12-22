@@ -77,7 +77,7 @@ public class ThreadMaster {
 		
 		//dbf.upgrade(version);
 		
-		setupModules(file);
+		setupModules(file, monitor);
 		
 		List<Detector> detectors = new ArrayList<Detector>();
 		
@@ -94,18 +94,15 @@ public class ThreadMaster {
 		threads.add(new DetectorThread(detectors, monitor));
 		threads.add(new CollectorThread(monitor));
 		
-		threads.add(new TellStickListener(monitor));
-		
-		
 		for (Thread t : threads)
 			t.start();
 	}
 	
-	private void setupModules(ConfigurationFile file) {
+	private void setupModules(ConfigurationFile file, Monitor monitor) {
 		if (file.getBool("module.mock.use"))
 			modules.add(new MockModule());
 		if (file.getBool("module.tellstick.use"))
-			modules.add(new TellStickModule());
+			modules.add(new TellStickModule(monitor));
 		if (file.getBool("module.onewire.use"))
 			modules.add(new OneWireModule(file));
 		if (file.getBool("module.camera.use"))
