@@ -8,6 +8,7 @@ import com.homeki.core.device.Detector;
 import com.homeki.core.device.camera.CameraModule;
 import com.homeki.core.device.mock.MockModule;
 import com.homeki.core.device.onewire.OneWireModule;
+import com.homeki.core.device.tellstick.TellStickListener;
 import com.homeki.core.device.tellstick.TellStickModule;
 import com.homeki.core.http.HttpApi;
 import com.homeki.core.http.HttpListenerThread;
@@ -92,6 +93,9 @@ public class ThreadMaster {
 		
 		threads.add(new DetectorThread(detectors, monitor));
 		threads.add(new CollectorThread(monitor));
+		
+		threads.add(new TellStickListener(monitor));
+		
 		
 		for (Thread t : threads)
 			t.start();
