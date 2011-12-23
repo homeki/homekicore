@@ -1,5 +1,5 @@
 <project>
-	<property name="version" value="0.0.30"/>
+	<property name="version" value="0.0.31"/>
 	
 	<path id="ant-deb.classpath">
         <fileset dir="../ant" includes="*.jar"/>
@@ -76,7 +76,6 @@
 			<tarfileset file="../ant/homeki.default.conf" prefix="/opt/homeki/" filemode="755"/>
 			<tarfileset file="../libs/libhomekijni.so" prefix="/opt/homeki/lib" filemode="755"/>
 			<tarfileset file="../db-changelog.xml" prefix="/opt/homeki/" filemode="755"/>
-			<tarfileset file="../src/hibernate.cfg.xml" prefix="/opt/homeki/" filemode="755"/>
 		</deb>
 	</target>
 </project>

@@ -4,14 +4,14 @@ set -e
 
 if [ "$1" = "install" ] ; then
 	mkdir -p /opt/homeki
-	rm -rf /opt/homeki/homeki.db
 	touch /opt/homeki/stdout.log
 	touch /opt/homeki/stderr.log
 fi
 
 if [ "$1" = "upgrade" ] ; then
 	/etc/init.d/homekid stop
-	echo "------------------- APT: STOPPED HOMEKI -------------------" >> /opt/homeki/stdout.log 
+	echo "------------------- APT: STOPPED HOMEKI -------------------" >> /opt/homeki/stdout.log
+	rm -rf /opt/homeki/homeki.db 
 fi
 
 exit 0
