@@ -20,6 +20,8 @@ public abstract class Device {
 			device = new HDevice();
 			device.setInternalId(internalId);
 			device.setAdded(new Date());
+			device.setType(getClass().getSimpleName());
+			device.setName("");
 			id = (Integer)session.save(device);
 		}
 		else {
