@@ -8,9 +8,9 @@ public class HTemperatureHistoryPoint implements HistoryPoint {
 	private Integer id;
 	private HDevice device;
 	private Date registered;
-	private Float value;
+	private Double value;
 	
-	public HTemperatureHistoryPoint(Float value) {
+	public HTemperatureHistoryPoint(Double value) {
 		this.registered = new Date();
 		this.value = value;
 	}
@@ -35,11 +35,11 @@ public class HTemperatureHistoryPoint implements HistoryPoint {
 		this.registered = registered;
 	}
 	
-	public Float getValue() {
+	public Double getValue() {
 		return value;
 	}
 	
-	public void setValue(Float value) {
+	public void setValue(Double value) {
 		this.value = value;
 	}
 }

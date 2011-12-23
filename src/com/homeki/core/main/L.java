@@ -16,28 +16,36 @@ public class L {
 	}
 	
 	public static void i(String msg) {
-		log(msg, INFO, System.out);
+		log(msg, INFO, System.out, true);
+	}
+	
+	public static void ii(String msg) {
+		log(msg, INFO, System.out, false);
 	}
 	
 	public static void w(String msg) {
-		log(msg, WARN, System.out);
+		log(msg, WARN, System.out, true);
 	}
 	
 	public static void e(String msg) {
-		log(msg, ERROR, System.err);
+		log(msg, ERROR, System.err, true);
 	}
 	
 	public static void e(String msg, Exception ex) {
 		msg += "\n               Exception: " + ex.getMessage();
-		log(msg, ERROR, System.err);
+		log(msg, ERROR, System.err, true);
 	}
 	
-	private static void log(String msg, int level, PrintStream ps) {
+	private static void log(String msg, int level, PrintStream ps, boolean newline) {
 		if (level < min)
 			return;
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		ps.println("[" + sdf.format(new Date()) + " | " + levelToString(level) + " | " + Thread.currentThread().getName() + "] " + msg);
+		String text = "[" + sdf.format(new Date()) + " | " + levelToString(level) + " | " + Thread.currentThread().getName() + "] " + msg;
+		if (newline)
+			ps.println(text);
+		else
+			ps.print(text);
 	}
 	
 	private static String levelToString(int level) {

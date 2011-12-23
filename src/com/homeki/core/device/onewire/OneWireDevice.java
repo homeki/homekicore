@@ -37,7 +37,7 @@ public abstract class OneWireDevice extends Device {
 		return getStringVar(deviceDirPath, var);
 	}
 	
-	protected float getFloatVar(String var) {
-		return Float.parseFloat(getStringVar(var));
+	protected double getDoubleVar(String var) {
+		return Double.parseDouble(getStringVar(var));
 	}
 }

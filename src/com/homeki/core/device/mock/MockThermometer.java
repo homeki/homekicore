@@ -9,7 +9,7 @@ import com.homeki.core.storage.Hibernate;
 import com.homeki.core.storage.HistoryPoint;
 import com.homeki.core.storage.entities.HTemperatureHistoryPoint;
 
-public class MockThermometer extends MockDevice implements IntervalLoggable<Float> {
+public class MockThermometer extends MockDevice implements IntervalLoggable<Double> {
 	private Random rnd;
 	
 	public MockThermometer(String internalId) {
@@ -18,29 +18,29 @@ public class MockThermometer extends MockDevice implements IntervalLoggable<Floa
 	}
 	
 	@Override
-	public Float getValue() {
+	public Double getValue() {
 		return getRandomThermometerValue();
 	}
 	
 	@Override
-	public void setValue(Float value) {
+	public void setValue(Double value) {
 		Hibernate.putHistoryValue(id, new HTemperatureHistoryPoint(value));
 	}
 
 	@Override
 	public void updateValue() {
-		float temp = getRandomThermometerValue();
+		double temp = getRandomThermometerValue();
 		setValue(temp);
 	}
 	
-	private Float getRandomThermometerValue() {
+	private Double getRandomThermometerValue() {
 		long sleepTime = 1000 + (rnd.nextInt(500) - 250);
 		
 		try {
 			Thread.sleep(sleepTime);
 		} catch (InterruptedException e) { }
 		
-		return (rnd.nextFloat() * 2 - 1) * 40;
+		return (rnd.nextDouble() * 2 - 1) * 40;
 	}
 
 	@Override

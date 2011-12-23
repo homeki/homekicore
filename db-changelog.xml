@@ -7,23 +7,56 @@
 
 	<changeSet id="1" author="jonas">
 		<createTable tableName="HDEVICE">
-			<column name="ID" type="INTEGER">
+			<column name="ID" type="INTEGER" autoIncrement="true">
 				<constraints primaryKey="true" nullable="false"/>
 			</column>
 			<column name="INTERNALID" type="VARCHAR(50)" defaultValue="" />
 			<column name="NAME" type="VARCHAR(1000)" defaultValue="" />
 			<column name="TYPE" type="VARCHAR(50)" defaultValue="" />
-			<column name="ADDED" type="DATE" />
+			<column name="ADDED" type="TIMESTAMP" defaultValueDate="NULL" />
 		</createTable>
 	</changeSet>
 	
 	<changeSet id="2" author="jonas">
 		<createTable tableName="HSETTING">
-			<column name="ID" type="INTEGER">
+			<column name="ID" type="INTEGER" autoIncrement="true">
 				<constraints primaryKey="true" nullable="false"/>
 			</column>
 			<column name="KEY" type="VARCHAR(256)" />
 			<column name="VALUE" type="VARCHAR(256)" />
+		</createTable>
+	</changeSet>
+		
+	<changeSet id="3" author="jonas">
+		<createTable tableName="HDIMMERHISTORYPOINT">
+			<column name="ID" type="INTEGER" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="DEVICE" type="INTEGER" />
+			<column name="REGISTERED" type="TIMESTAMP" />
+			<column name="VALUE" type="INTEGER" />
+		</createTable>
+	</changeSet>
+	
+	<changeSet id="4" author="jonas">
+		<createTable tableName="HSWITCHHISTORYPOINT">
+			<column name="ID" type="INTEGER" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="DEVICE" type="INTEGER" />
+			<column name="REGISTERED" type="TIMESTAMP" />
+			<column name="VALUE" type="BIT" />
+		</createTable>
+	</changeSet>
+	
+	<changeSet id="5" author="jonas">
+		<createTable tableName="HTEMPERATUREHISTORYPOINT">
+			<column name="ID" type="INTEGER" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="DEVICE" type="INTEGER" />
+			<column name="REGISTERED" type="TIMESTAMP" />
+			<column name="VALUE" type="DOUBLE" />
 		</createTable>
 	</changeSet>
 </databaseChangeLog>

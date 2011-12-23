@@ -15,28 +15,19 @@ import com.homeki.core.storage.entities.HSwitchHistoryPoint;
 import com.homeki.core.storage.entities.HTemperatureHistoryPoint;
 
 public class Hibernate {
-    private static final SessionFactory sessionFactory = buildSessionFactory();
+    private static SessionFactory sessionFactory = null;
     
     private Hibernate() {
     	
     }
     
-    private static SessionFactory buildSessionFactory() {
-    	SessionFactory factory = null;
-
-    	try {
-        	factory = new Configuration().configure().buildSessionFactory();
-        }
-        catch (Exception ex) {
-        	L.e("Could not initialize database (probably mismatch between database schema and database, make sure the changelog is correct and has been executed).", ex);
-        }
-        
-        return factory;
-    }
-
     private static SessionFactory getSessionFactory() {
         return sessionFactory;
     }
+    
+    public static void init() {
+    	sessionFactory = new Configuration().configure().buildSessionFactory();
+	}
     
     public static Session openSession() {
     	Session session = getSessionFactory().openSession();

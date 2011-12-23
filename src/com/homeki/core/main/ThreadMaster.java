@@ -12,6 +12,7 @@ import com.homeki.core.device.tellstick.TellStickModule;
 import com.homeki.core.http.HttpApi;
 import com.homeki.core.http.HttpListenerThread;
 import com.homeki.core.storage.DatabaseUpgrader;
+import com.homeki.core.storage.Hibernate;
 import com.homeki.core.threads.CollectorThread;
 import com.homeki.core.threads.ControlledThread;
 import com.homeki.core.threads.DetectorThread;
@@ -51,13 +52,15 @@ public class ThreadMaster {
 		String version = getVersion();
 		
 		L.i("Homeki Core version " + version + " started.");
-		
+
+		// instantiate
 		file = new ConfigurationFile();
 		threads = new ArrayList<ControlledThread>();
 		modules = new ArrayList<Module>();
 		monitor = new Monitor();
 		api = new HttpApi(monitor);
 		
+		// load and check configuration file
 		try {
 			file.load();
 		} catch (FileNotFoundException ex) {
@@ -66,21 +69,40 @@ public class ThreadMaster {
 		} catch (Exception ex) {
 			L.e("Exception when parsing configuration file.", ex);
 			return;
-		}		
+		}
+		L.i("Configuration file read.");
 		
+		// perform, if necessary, database upgrades
 		try {
 			new DatabaseUpgrader().upgrade();
 		}
-		catch (Exception ex) {
-			L.e("Database upgrade failed, killing Homeki.");
+		catch (ClassNotFoundException ex) {
+			L.e("Failed to load HSQLDB JDBC driver, killing Homeki.", ex);
 		}
+		catch (Exception ex) {
+			L.e("Database upgrade failed, killing Homeki.", ex);
+			return;
+		}
+		L.i("Database version up to date.");
 		
+		// load native JNI library
 		try {
 			System.loadLibrary("homekijni");
 		} catch (UnsatisfiedLinkError ex) {
 			L.e("Failed to load Homeki JNI library, killing Homeki.");
 			return;
 		}
+		L.i("Native JNI library loaded.");
+		
+		// init Hibernate functionality
+		try {
+			Hibernate.init();
+		}
+		catch (Exception ex) {
+			L.e("Something went wrong when verifying access to database through Hibernate, killing Homeki.", ex);
+			return;
+		}
+		L.i("Database access through Hibernate verified.");
 		
 		setupModules(file, monitor);
 		

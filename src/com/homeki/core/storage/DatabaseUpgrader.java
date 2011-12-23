@@ -1,6 +1,5 @@
 package com.homeki.core.storage;
 
-import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -15,57 +14,39 @@ import liquibase.resource.ResourceAccessor;
 import com.homeki.core.main.L;
 
 public class DatabaseUpgrader {
+	private static final String DATABASE_PATH = "jdbc:hsqldb:file:db/homeki.db";
+	private static final String DATABASE_USER = "sa";
+	private static final String DATABASE_PASSWORD = "";
+	private static final String CHANGELOG = "db-changelog.xml";
 	
 	public void upgrade() throws Exception {
 		LogFactory.setLoggingLevel("SEVERE");
 		
-		registerDriver();
-		Connection c = setupConnection();
+		Class.forName("org.hsqldb.jdbcDriver");
+		Connection c = DriverManager.getConnection(DATABASE_PATH, DATABASE_USER, DATABASE_PASSWORD);
 	
 		ResourceAccessor acc = new FileSystemResourceAccessor();
 		DatabaseConnection conn = new HsqlConnection(c);
-		Liquibase liq = new Liquibase("db-changelog.xml", acc, conn);
+		Liquibase liq = new Liquibase(CHANGELOG, acc, conn);
 		
 		if (liq.listUnrunChangeSets("").size() == 0) {
 			return;
 		}
 		
-		// log whats about to happen
+		L.i("Starting database upgrade...");
+		
+		// log what's about to happen
 		StringWriter swriter = new StringWriter();
 		liq.reportStatus(false, "", swriter);
-		L.i(swriter.toString());
+		L.ii(swriter.toString());
 		
-		L.i("Starting database upgrade...");
+		// execute the changelog
 		liq.validate();
+		L.i("Applying changesets...");
 		liq.update("");
-		L.i("Database upgrade completed.");
+		L.i("Changesets applied, database upgrade completed.");
 		
-		if (!conn.isClosed()) {
-			L.i("Nope");
+		if (!conn.isClosed())
 			conn.close();
-		}
-	}
-	
-	private void registerDriver() {
-		try {
-	        Class.forName("org.hsqldb.jdbcDriver");
-	    } catch (Exception ex) {
-	        L.e("Failed to load HSQLDB JDBC driver.", ex);
-	        throw new RuntimeException();
-	    }		
-	}
-	
-	private Connection setupConnection() {
-		Connection c;
-		
-		try {
-			c = DriverManager.getConnection("jdbc:hsqldb:file:db/homeki.db", "sa", "");
-		}
-		catch (Exception ex) {
-			L.e("Failed to connect to embedded HSQLDB.", ex);
-			throw new RuntimeException();
-		}
-		
-		return c;
 	}
 }
