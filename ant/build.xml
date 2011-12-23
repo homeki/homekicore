@@ -51,8 +51,9 @@
         <jar destfile="../build/jar/homekicore.jar" basedir="../build/classes">
         	<zipfileset file="../src/hibernate.cfg.xml"/>
         	<zipgroupfileset dir="../libs/" includes="*.jar"/>
-        	VAFAN INTE DÅ?
-        	<zipfileset dir="../src/com/homeki/core/storage/entities/" includes="com/homeki/core/storage/entities/*.hbm.xml" />
+        	<zipfileset dir="../src">
+        		<include name="**/*.hbm.xml" />
+        	</zipfileset>
             <manifest>
             	<attribute name="Implementation-Version" value="${version}"/> 
                 <attribute name="Main-Class" value="com.homeki.core.main.Main"/>

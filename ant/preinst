@@ -4,7 +4,7 @@ set -e
 
 if [ "$1" = "install" ] ; then
 	mkdir -p /opt/homeki
-	touch /opt/homeki/homeki.db
+	rm -rf /opt/homeki/homeki.db
 	touch /opt/homeki/stdout.log
 	touch /opt/homeki/stderr.log
 fi
