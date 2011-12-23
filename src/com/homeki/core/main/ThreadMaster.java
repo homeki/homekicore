@@ -8,10 +8,10 @@ import com.homeki.core.device.Detector;
 import com.homeki.core.device.camera.CameraModule;
 import com.homeki.core.device.mock.MockModule;
 import com.homeki.core.device.onewire.OneWireModule;
-import com.homeki.core.device.tellstick.TellStickListener;
 import com.homeki.core.device.tellstick.TellStickModule;
 import com.homeki.core.http.HttpApi;
 import com.homeki.core.http.HttpListenerThread;
+import com.homeki.core.storage.DatabaseUpgrader;
 import com.homeki.core.threads.CollectorThread;
 import com.homeki.core.threads.ControlledThread;
 import com.homeki.core.threads.DetectorThread;
@@ -66,6 +66,13 @@ public class ThreadMaster {
 		} catch (Exception ex) {
 			L.e("Exception when parsing configuration file.", ex);
 			return;
+		}		
+		
+		try {
+			new DatabaseUpgrader().upgrade();
+		}
+		catch (Exception ex) {
+			L.e("Database upgrade failed, killing Homeki.");
 		}
 		
 		try {
@@ -74,8 +81,6 @@ public class ThreadMaster {
 			L.e("Failed to load Homeki JNI library, killing Homeki.");
 			return;
 		}
-		
-		//dbf.upgrade(version);
 		
 		setupModules(file, monitor);
 		
