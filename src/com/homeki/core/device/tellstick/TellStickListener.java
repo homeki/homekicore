@@ -16,7 +16,6 @@ public class TellStickListener extends ControlledThread {
 	
 	@Override
 	protected void iteration() throws InterruptedException {
-		L.i("Sen denna!");
 		String s[] = TellStickNative.getEvent().split(" ");
 		
 		int id = Integer.parseInt(s[0]);

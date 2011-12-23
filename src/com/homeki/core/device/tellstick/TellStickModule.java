@@ -20,7 +20,6 @@ public class TellStickModule implements Module {
 	@Override
 	public void construct(List<Detector> detectors) {
 		TellStickNative.open();
-		L.i("Denna ska komma först!");
 		detectors.add(new TellStickDetector());
 		listenerThread = new TellStickListener(monitor);
 		listenerThread.start();
