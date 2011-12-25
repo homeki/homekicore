@@ -25,7 +25,7 @@ public class Monitor {
 		
 		for (Device d : devices.values()) {
 			if (d instanceof IntervalLoggable<?>) {
-				list.add((IntervalLoggable<?>)d);
+				list.add((IntervalLoggable<?>) d);
 			}
 		}
 		
@@ -39,20 +39,23 @@ public class Monitor {
 		throw new NoSuchElementException("No device with id " + id + ".");
 	}
 	
+	public synchronized Device getDevice(String internalId) {
+		for (Device d : devices.values()) {
+			if (d.getInternalId().equals(internalId)) {
+				return d;
+			}
+		}
+		return null;
+	}
+	
 	public synchronized List<Device> getDevices() {
 		return new ArrayList<Device>(devices.values());
 	}
-
+	
 	public synchronized boolean containsDevice(String internalId) {
-		for (Device d : devices.values()) {
-			if (d.getInternalId().equals(internalId)) {
-				return true;
-			}
-		}
-		
-		return false;
+		return getDevice(internalId) != null;
 	}
-
+	
 	public synchronized boolean hasDevice(int id) {
 		return devices.containsKey(id);
 	}

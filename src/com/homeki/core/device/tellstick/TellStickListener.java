@@ -18,8 +18,8 @@ public class TellStickListener extends ControlledThread {
 	protected void iteration() throws InterruptedException {
 		String s[] = TellStickNative.getEvent().split(" ");
 		
-		int id = Integer.parseInt(s[0]);
-		Device d = monitor.getDevice(id);
+		String internalId = s[0];
+		Device d = monitor.getDevice(internalId);
 		
 		if (d instanceof TellStickSwitch) {
 			boolean status = Boolean.parseBoolean(s[1]);
