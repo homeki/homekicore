@@ -8,6 +8,7 @@ import com.homeki.core.device.onewire.OneWireThermometer;
 import com.homeki.core.device.tellstick.TellStickDimmer;
 import com.homeki.core.device.tellstick.TellStickFakeDimmer;
 import com.homeki.core.device.tellstick.TellStickSwitch;
+import com.homeki.core.device.tellstick.TellstickThermometer;
 import com.homeki.core.main.L;
 
 public class DeviceFactory {
@@ -25,6 +26,8 @@ public class DeviceFactory {
 			return new TellStickDimmer(di.getInternalId());
 		case TellStickFakeDimmer:
 			return new TellStickFakeDimmer(di.getInternalId());
+		case TellStickThermometer:
+			return new TellstickThermometer(di.getInternalId());
 		case OneWireThermometer:
 			String deviceDirPath = di.getAdditionalData("deviceDirPath");
 			return new OneWireThermometer(di.getInternalId(), deviceDirPath);

@@ -11,6 +11,7 @@ public class DeviceInformation {
 		TellStickSwitch,
 		TellStickDimmer,
 		TellStickFakeDimmer,
+		TellStickThermometer,
 		OneWireThermometer,
 		Camera
 	}

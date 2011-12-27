@@ -16,18 +16,27 @@ public class TellStickListener extends ControlledThread {
 	
 	@Override
 	protected void iteration() throws InterruptedException {
-		String s[] = TellStickNative.getEvent().split(" ");
+		String raw = TellStickNative.getEvent();
+		String s[] = raw.split(" ");
 		
-		String internalId = s[0];
+		String type = s[0];
+		String 			internalId = s[1];
+
+		if (type.equals("sensor")) {
+			internalId = "s" + internalId;
+		}
+
 		Device d = monitor.getDevice(internalId);
 		
 		if (d instanceof TellStickSwitch) {
-			boolean status = Boolean.parseBoolean(s[1]);
+			boolean status = Boolean.parseBoolean(s[2]);
 			((TellStickSwitch) d).setValue(status);
 		} else if (d instanceof Dimmable) {
-			int level = Integer.parseInt(s[0]);
+			int level = Integer.parseInt(s[2]);
 			((TellStickDimmer) d).setValue(level);
+		} else if (d instanceof TellstickThermometer) {
+			double value = Double.parseDouble(s[2]);
+			((TellstickThermometer) d).setValue(value);
 		}
 	}
-	
 }

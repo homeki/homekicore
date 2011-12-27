@@ -75,6 +75,19 @@ public class Hibernate {
 		return list;
 	}
 	
+	public static double getLatestTemperatureHistoryPointValue(Integer id) {
+		Session session = Hibernate.openSession();
+		Double value = (Double)session.createQuery("select value from HTemperatureHistoryPoint as his where his.device = ? order by his.registered desc")
+				.setInteger(0, id)
+				.setMaxResults(1)
+				.uniqueResult();
+		Hibernate.closeSession(session);
+		
+		if (value == null)
+			value = 0.0;
+		
+		return value;
+	}	
 	public static Boolean getLatestSwitchHistoryPointValue(Integer id) {
 		Session session = Hibernate.openSession();
 		Boolean value = (Boolean)session.createQuery("select value from HSwitchHistoryPoint as his where his.device = ? order by his.registered desc")
