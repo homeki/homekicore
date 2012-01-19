@@ -13,6 +13,7 @@ import java.util.Scanner;
  * [modules]
  * module.mock.use = true
  * module.tellstick.use = true
+ * module.tellstick.allowedsensors = 12,145,543
  * module.onewire.use = true
  * module.onewire.path = /mnt/1wire/uncached
  * 
@@ -64,13 +65,15 @@ public class ConfigurationFile {
 	}
 	
 	public String getString(String key) {
-		String value;
+		String value = null;
 		
 		try {
 			value = values.get(key);
-		} catch (Exception ex) {
+		} catch (Exception ex) { }
+		
+		// check and set to empty here as values.get() can return null
+		if (value == null)
 			value = "";
-		}
 		
 		return value;
 	}
