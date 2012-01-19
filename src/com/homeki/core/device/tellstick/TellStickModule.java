@@ -1,7 +1,6 @@
 package com.homeki.core.device.tellstick;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 import com.homeki.core.main.ConfigurationFile;
