@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 import com.homeki.core.main.ControlledThread;
+import com.homeki.core.main.L;
 import com.homeki.core.main.Monitor;
 
 public class TellStickDetector extends ControlledThread {
@@ -35,18 +36,21 @@ public class TellStickDetector extends ControlledThread {
 			}
 		}
 		
-		File f = new File("sensors.list");
-		try {
-			Scanner sc = new Scanner(f);
-			while (sc.hasNext()) {
-				String internalId = "s" + String.valueOf(sc.nextInt());
-				
-				if (!monitor.containsDevice(internalId))
-					monitor.addDevice(new TellStickThermometer(internalId));
-			}
 		
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+		File f = new File("sensors.list");
+		if (f.exists()) {
+			try {
+				Scanner sc = new Scanner(f);
+				while (sc.hasNext()) {
+					String internalId = "s" + String.valueOf(sc.nextInt());
+					
+					if (!monitor.containsDevice(internalId))
+						monitor.addDevice(new TellStickThermometer(internalId));
+				}
+			
+			} catch (FileNotFoundException ex) {
+				L.e("Error when adding TellStick devices from sensors.list.", ex);
+			}
 		}
 	}
 }
