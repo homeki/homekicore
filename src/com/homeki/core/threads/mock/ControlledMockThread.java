@@ -1,6 +1,6 @@
 package com.homeki.core.threads.mock;
 
-import com.homeki.core.threads.ControlledThread;
+import com.homeki.core.main.ControlledThread;
 
 public class ControlledMockThread extends ControlledThread {
 

@@ -1,34 +1,34 @@
 package com.homeki.core.device.tellstick;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.homeki.core.main.ControlledThread;
+import com.homeki.core.main.Monitor;
 
-import com.homeki.core.device.Detector;
-import com.homeki.core.device.DeviceInformation;
-import com.homeki.core.device.DeviceInformation.DeviceType;
+public class TellStickDetector extends ControlledThread {
+	private Monitor monitor;
+	
+	public TellStickDetector(int interval, Monitor monitor) {
+		super(interval);
+		this.monitor = monitor;
+	}
 
-public class TellStickDetector extends Detector {
 	@Override
-	public List<DeviceInformation> findDevices() {
-		List<DeviceInformation> devices = new ArrayList<DeviceInformation>();
+	protected void iteration() throws InterruptedException {
 		int[] ids = TellStickNative.getDeviceIds();
 		
 		for (int i = 0; i < ids.length; i++) {
 			int id = ids[i];
-			DeviceInformation di = null;
-			String type = TellStickNative.getDeviceType(id);
+			String internalId = String.valueOf(id);
 			
-			if (type.equals("dimmer"))
-				di = new DeviceInformation(String.valueOf(id), DeviceType.TellStickDimmer);
-			else if (type.equals("switch"))
-				di = new DeviceInformation(String.valueOf(id), DeviceType.TellStickSwitch);
-			else if (type.equals("fakedimmer"))
-				di = new DeviceInformation(String.valueOf(id), DeviceType.TellStickFakeDimmer);
-			
-			if (di != null)
-				devices.add(di);
+			if (!monitor.containsDevice(internalId)) {
+				String type = TellStickNative.getDeviceType(id);
+				
+				if (type.equals("dimmer"))
+					monitor.addDevice(new TellStickDimmer(internalId));
+				else if (type.equals("switch"))
+					monitor.addDevice(new TellStickSwitch(internalId));
+				else if (type.equals("fakedimmer"))
+					monitor.addDevice(new TellStickFakeDimmer(internalId));
+			}
 		}
-		
-		return devices;
 	}
 }

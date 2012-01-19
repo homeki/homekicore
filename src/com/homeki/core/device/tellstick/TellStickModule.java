@@ -1,32 +1,33 @@
 package com.homeki.core.device.tellstick;
 
-import java.util.List;
-
-import com.homeki.core.device.Detector;
-import com.homeki.core.main.L;
+import com.homeki.core.main.ConfigurationFile;
+import com.homeki.core.main.ControlledThread;
 import com.homeki.core.main.Module;
 import com.homeki.core.main.Monitor;
-import com.homeki.core.threads.ControlledThread;
 
 public class TellStickModule implements Module {
 	private ControlledThread listenerThread;
-	private Monitor monitor;
+	private ControlledThread detectorThread;
 	
-	public TellStickModule(Monitor monitor) {
-		this.monitor = monitor;
+	public TellStickModule() {
+
 	}
 	
-	
 	@Override
-	public void construct(List<Detector> detectors) {
+	public void construct(Monitor monitor, ConfigurationFile file) {
 		TellStickNative.open();
-		detectors.add(new TellStickDetector());
+		
+		detectorThread = new TellStickDetector(10000, monitor);
+		detectorThread.start();
+		
 		listenerThread = new TellStickListener(monitor);
 		listenerThread.start();
 	}
 
 	@Override
 	public void destruct() {
+		listenerThread.shutdown();
+		detectorThread.shutdown();
 		TellStickNative.close();
 	}
 }

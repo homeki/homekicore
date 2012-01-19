@@ -20,18 +20,6 @@ public class Monitor {
 		devices.put(dev.getId(), dev);
 	}
 	
-	public synchronized List<IntervalLoggable<?>> getLoggableDevices() {
-		List<IntervalLoggable<?>> list = new ArrayList<IntervalLoggable<?>>();
-		
-		for (Device d : devices.values()) {
-			if (d instanceof IntervalLoggable<?>) {
-				list.add((IntervalLoggable<?>)d);
-			}
-		}
-		
-		return list;
-	}
-	
 	public synchronized Device getDevice(int id) {
 		if (devices.containsKey(id)) {
 			return devices.get(id);

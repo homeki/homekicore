@@ -6,16 +6,18 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.homeki.core.device.Detector;
-import com.homeki.core.device.DeviceInformation;
-import com.homeki.core.device.DeviceInformation.DeviceType;
+import com.homeki.core.main.ControlledThread;
 import com.homeki.core.main.L;
+import com.homeki.core.main.Monitor;
 
-public class OneWireDetector extends Detector {
+public class OneWireDetector extends ControlledThread {
 	private String path;
+	private Monitor monitor;
 	
-	public OneWireDetector(String path) {
+	public OneWireDetector(int interval, String path, Monitor monitor) {
+		super(interval);
 		this.path = path;
+		this.monitor = monitor;
 	}
 	
 	private List<String> findInternalIds() {
@@ -41,30 +43,27 @@ public class OneWireDetector extends Detector {
 		
 		return dirList;
 	}
-	
-	public List<DeviceInformation> findDevices() {
-		List<String> sensors = findInternalIds();
-		List<DeviceInformation> devices = new ArrayList<DeviceInformation>();
+
+	@Override
+	protected void iteration() throws InterruptedException {
+		List<String> ids = findInternalIds();
 		
-		if (sensors == null) {
-			return null;
-		}
+		if (ids == null)
+			return;
 		
-		for (String s : sensors) {
+		for (String s : ids) {
 			String deviceDirPath = path + "/" + s;
-			DeviceInformation di;
-			String type = OneWireDevice.getStringVar(deviceDirPath, "type");
 			
-			if (type.equals("DS18S20")) {
-				di = new DeviceInformation(s, DeviceType.OneWireThermometer);
-				di.addAdditionalData("deviceDirPath", deviceDirPath);
-				devices.add(di);
-			} else {
-				L.w("Found no corresponding device for 1-wire device type " + type + ".");
-				continue;
+			if (!monitor.containsDevice(s)) {
+				String type = OneWireDevice.getStringVar(deviceDirPath, "type");
+				
+				if (type.equals("DS18S20")) {
+					monitor.addDevice(new OneWireThermometer(s, deviceDirPath));
+				} else {
+					L.w("Found no corresponding device for 1-wire device type " + type + ".");
+					continue;
+				}
 			}
 		}
-		
-		return devices;
 	}
 }

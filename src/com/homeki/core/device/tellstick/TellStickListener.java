@@ -2,9 +2,8 @@ package com.homeki.core.device.tellstick;
 
 import com.homeki.core.device.Device;
 import com.homeki.core.device.abilities.Dimmable;
-import com.homeki.core.main.L;
+import com.homeki.core.main.ControlledThread;
 import com.homeki.core.main.Monitor;
-import com.homeki.core.threads.ControlledThread;
 
 public class TellStickListener extends ControlledThread {
 	private final Monitor monitor;

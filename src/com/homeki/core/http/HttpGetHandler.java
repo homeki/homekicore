@@ -1,10 +1,7 @@
 package com.homeki.core.http;
 
-import java.io.File;
 import java.util.Date;
 import java.util.StringTokenizer;
-
-import org.apache.http.entity.FileEntity;
 
 import com.homeki.core.main.L;
 
@@ -36,9 +33,6 @@ public class HttpGetHandler extends HttpHandler {
 			case STATUS:
 				resolveStatus();
 				break;
-			case IMAGE:
-				resolveImage();
-				break;
 			case HISTORY:
 				resolveHistory();
 				break;
@@ -52,12 +46,6 @@ public class HttpGetHandler extends HttpHandler {
 				sendString(405, "Something went wrong while processing the HTTP request.");
 			} catch (Exception ignore) {}
 		}
-	}
-	
-	private void resolveImage() {
-		int id = getIntParameter("id");
-		String path = api.getSnapshotPath(id);
-		response.setEntity(new FileEntity(new File(path), "image"));
 	}
 	
 	private void resolveDevices() {

@@ -15,7 +15,6 @@ import java.util.Scanner;
  * module.tellstick.use = true
  * module.onewire.use = true
  * module.onewire.path = /mnt/1wire/uncached
- * module.camera.use = true
  * 
  */
 

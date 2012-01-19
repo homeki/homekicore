@@ -4,8 +4,6 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.homeki.core.device.Detector;
-import com.homeki.core.device.camera.CameraModule;
 import com.homeki.core.device.mock.MockModule;
 import com.homeki.core.device.onewire.OneWireModule;
 import com.homeki.core.device.tellstick.TellStickModule;
@@ -13,13 +11,10 @@ import com.homeki.core.http.HttpApi;
 import com.homeki.core.http.HttpListenerThread;
 import com.homeki.core.storage.DatabaseUpgrader;
 import com.homeki.core.storage.Hibernate;
-import com.homeki.core.threads.CollectorThread;
-import com.homeki.core.threads.ControlledThread;
-import com.homeki.core.threads.DetectorThread;
 
 public class ThreadMaster {
 	private Monitor monitor;
-	private List<ControlledThread> threads;
+	private ControlledThread httpThread;
 	private List<Module> modules;
 	private HttpApi api;
 	private ConfigurationFile file;
@@ -49,13 +44,10 @@ public class ThreadMaster {
 	}
 	
 	public void launch() {
-		String version = getVersion();
-		
-		L.i("Homeki Core version " + version + " started.");
+		L.i("Homeki Core version " + getVersion() + " started.");
 
 		// instantiate
 		file = new ConfigurationFile();
-		threads = new ArrayList<ControlledThread>();
 		modules = new ArrayList<Module>();
 		monitor = new Monitor();
 		api = new HttpApi(monitor);
@@ -104,47 +96,33 @@ public class ThreadMaster {
 		}
 		L.i("Database access through Hibernate verified.");
 		
-		setupModules(file, monitor);
-		
-		List<Detector> detectors = new ArrayList<Detector>();
+		setupModules();
 		
 		for (Module module : modules)
-			module.construct(detectors);
+			module.construct(monitor, file);
 		
 		try {
-			threads.add(new HttpListenerThread(api));
+			httpThread = new HttpListenerThread(api);
+			httpThread.start();
 		} catch (Exception e) {
 			L.e("Could not bind socket for HttpListenerThread, killing Homeki.");
 			return;
 		}
-		
-		threads.add(new DetectorThread(detectors, monitor));
-		threads.add(new CollectorThread(monitor));
-		
-		for (Thread t : threads)
-			t.start();
 	}
 	
-	private void setupModules(ConfigurationFile file, Monitor monitor) {
+	private void setupModules() {
 		if (file.getBool("module.mock.use"))
 			modules.add(new MockModule());
 		if (file.getBool("module.tellstick.use"))
-			modules.add(new TellStickModule(monitor));
+			modules.add(new TellStickModule());
 		if (file.getBool("module.onewire.use"))
-			modules.add(new OneWireModule(file));
-		if (file.getBool("module.camera.use"))
-			modules.add(new CameraModule());
+			modules.add(new OneWireModule());
 		
 		if (modules.size() == 0)
 			L.w("No modules enabled, nothing will happen.");
 	}
 	
 	public void shutdown() {
-		L.i("Shutting down threads...");
-		for (ControlledThread t : threads)
-			t.shutdown();
-		L.i("All threads shutdown.");
-		
 		L.i("Destructing modules...");
 		for (Module m : modules)
 			m.destruct();
