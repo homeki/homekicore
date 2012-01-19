@@ -44,6 +44,8 @@ public class ThreadMaster {
 	}
 	
 	public void launch() {
+		Thread.currentThread().setName("Main");
+		
 		L.i("Homeki Core version " + getVersion() + " started.");
 
 		// instantiate
