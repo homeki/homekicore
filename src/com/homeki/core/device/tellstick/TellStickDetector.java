@@ -1,5 +1,9 @@
 package com.homeki.core.device.tellstick;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
 import com.homeki.core.main.ControlledThread;
 import com.homeki.core.main.Monitor;
 
@@ -29,6 +33,20 @@ public class TellStickDetector extends ControlledThread {
 				else if (type.equals("fakedimmer"))
 					monitor.addDevice(new TellStickFakeDimmer(internalId));
 			}
+		}
+		
+		File f = new File("sensors.list");
+		try {
+			Scanner sc = new Scanner(f);
+			while (sc.hasNext()) {
+				String internalId = "s" + String.valueOf(sc.nextInt());
+				
+				if (!monitor.containsDevice(internalId))
+					monitor.addDevice(new TellStickThermometer(internalId));
+			}
+		
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
 		}
 	}
 }
