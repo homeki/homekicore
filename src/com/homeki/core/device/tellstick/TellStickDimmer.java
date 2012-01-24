@@ -24,7 +24,8 @@ public class TellStickDimmer extends Device implements Dimmable, Switchable, Que
 
 	@Override
 	public void off() {
-		dim(0);
+		TellStickNative.turnOff(Integer.parseInt(getInternalId()));
+		setValue(0);
 	}
 
 	@Override
