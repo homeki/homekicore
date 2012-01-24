@@ -7,7 +7,7 @@ import com.homeki.core.main.L;
 
 public class HttpGetHandler extends HttpHandler {
 	public enum Actions {
-		TIME, DEVICES, STATUS, HISTORY, IMAGE, BAD_ACTION
+		TIME, DEVICES, STATUS, HISTORY, IMAGE, BAD_ACTION, TIMERS, TIMERDEVICE, DEVICETIMER
 	}
 	
 	public HttpGetHandler(HttpApi api) {
@@ -17,7 +17,6 @@ public class HttpGetHandler extends HttpHandler {
 	@Override
 	protected void handle(String method, StringTokenizer path) {
 		Actions action = Actions.BAD_ACTION;
-		
 		try {
 			action = Actions.valueOf(path.nextToken().toUpperCase());
 		} catch (Exception ex) {}
@@ -35,6 +34,9 @@ public class HttpGetHandler extends HttpHandler {
 				break;
 			case HISTORY:
 				resolveHistory();
+				break;
+			case TIMERS:
+				resolveTimers();
 				break;
 			default:
 				sendString(404, "No such action, " + action + ".");
@@ -54,6 +56,10 @@ public class HttpGetHandler extends HttpHandler {
 	
 	private void resolveTime() {
 		sendString(200, new Date().toString());
+	}
+	
+	private void resolveTimers() {
+		sendString(200, api.getTimers());
 	}
 	
 	private void resolveStatus() {
