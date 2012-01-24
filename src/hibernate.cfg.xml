@@ -23,5 +23,8 @@
         <mapping resource="com/homeki/core/storage/entities/HSwitchHistoryPoint.hbm.xml"/>
         <mapping resource="com/homeki/core/storage/entities/HDimmerHistoryPoint.hbm.xml"/>
         <mapping resource="com/homeki/core/storage/entities/HTemperatureHistoryPoint.hbm.xml"/>
+        <mapping resource="com/homeki/core/storage/entities/HCondition.hbm.xml"/>
+        <mapping resource="com/homeki/core/storage/entities/HTimerCondition.hbm.xml"/>
+        <mapping resource="com/homeki/core/storage/entities/HTrigger.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>

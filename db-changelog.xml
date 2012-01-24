@@ -59,4 +59,34 @@
 			<column name="VALUE" type="DOUBLE" />
 		</createTable>
 	</changeSet>
+	
+	<changeSet id="6" author="jonas">
+		<createTable tableName="HTRIGGER">
+			<column name="ID" type="INTEGER" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="NAME" type="VARCHAR(255)" />
+			<column name="VALUE" type="INTEGER" />
+			<column name="CONDITION" type="INTEGER" />
+		</createTable>
+	</changeSet>
+	
+	<changeSet id="7" author="jonas">
+		<createTable tableName="HTIMERCONDITION">
+			<column name="ID" type="INTEGER" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="TIME" type="INTEGER" />
+			<column name="REPEAT" type="INTEGER" />
+			<column name="DAY" type="INTEGER" />
+		</createTable>
+	</changeSet>
+	
+	<changeSet id="8" author="jonas">
+		<createTable tableName="HCONDITION">
+			<column name="ID" type="INTEGER" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+		</createTable>
+	</changeSet>
 </databaseChangeLog>
