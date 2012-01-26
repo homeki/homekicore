@@ -57,7 +57,7 @@ public class OneWireDetector extends ControlledThread {
 			if (!monitor.containsDevice(s)) {
 				String type = OneWireDevice.getStringVar(deviceDirPath, "type");
 				
-				if (type.equals("DS18S20")) {
+				if (type.equals("DS18S20") || type.equals("DS18B20")) {
 					monitor.addDevice(new OneWireThermometer(s, deviceDirPath));
 				} else {
 					L.w("Found no corresponding device for 1-wire device type " + type + ".");

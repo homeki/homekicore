@@ -14,7 +14,7 @@ public class OneWireModule implements Module {
 	
 	@Override
 	public void construct(Monitor monitor, ConfigurationFile file) {
-		String owRootPath = file.getString("modules.onewire.path");
+		String owRootPath = file.getString("module.onewire.path");
 
 		detectorThread = new OneWireDetector(10000, owRootPath, monitor);
 		detectorThread.start();
