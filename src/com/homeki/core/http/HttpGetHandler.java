@@ -3,11 +3,9 @@ package com.homeki.core.http;
 import java.util.Date;
 import java.util.StringTokenizer;
 
-import com.homeki.core.main.L;
-
 public class HttpGetHandler extends HttpHandler {
 	public enum Actions {
-		TIME, DEVICES, STATUS, HISTORY, IMAGE, BAD_ACTION, TIMERS, TIMERDEVICE, DEVICETIMER
+		TIME, DEVICES, STATUS, HISTORY, IMAGE, BAD_ACTION
 	}
 	
 	public HttpGetHandler(HttpApi api) {
@@ -16,37 +14,29 @@ public class HttpGetHandler extends HttpHandler {
 	
 	@Override
 	protected void handle(String method, StringTokenizer path) {
+		path.nextToken(); // dismiss "get"
+		
 		Actions action = Actions.BAD_ACTION;
 		try {
 			action = Actions.valueOf(path.nextToken().toUpperCase());
 		} catch (Exception ex) {}
 		
-		try {
-			switch (action) {
-			case DEVICES:
-				resolveDevices();
-				break;
-			case TIME:
-				resolveTime();
-				break;
-			case STATUS:
-				resolveStatus();
-				break;
-			case HISTORY:
-				resolveHistory();
-				break;
-			case TIMERS:
-				resolveTimers();
-				break;
-			default:
-				sendString(404, "No such action, " + action + ".");
-				break;
-			}
-		} catch (Exception ex) {
-			L.e("Unknown exception occured while processing HTTP request.", ex);
-			try {
-				sendString(405, "Something went wrong while processing the HTTP request.");
-			} catch (Exception ignore) {}
+		switch (action) {
+		case DEVICES:
+			resolveDevices();
+			break;
+		case TIME:
+			resolveTime();
+			break;
+		case STATUS:
+			resolveStatus();
+			break;
+		case HISTORY:
+			resolveHistory();
+			break;
+		default:
+			sendString(404, "No such action, " + action + ".");
+			break;
 		}
 	}
 	
@@ -56,10 +46,6 @@ public class HttpGetHandler extends HttpHandler {
 	
 	private void resolveTime() {
 		sendString(200, new Date().toString());
-	}
-	
-	private void resolveTimers() {
-		sendString(200, api.getTimers());
 	}
 	
 	private void resolveStatus() {

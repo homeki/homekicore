@@ -23,9 +23,14 @@ import org.apache.http.protocol.HttpContext;
 import org.apache.http.protocol.HttpRequestHandler;
 import org.apache.http.util.EntityUtils;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
 import com.homeki.core.main.L;
 
 public abstract class HttpHandler implements HttpRequestHandler {
+	protected static final Gson gson = new GsonBuilder().setPrettyPrinting().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+	
 	protected HttpApi api;
 	protected HttpRequest request;
 	protected HttpResponse response;
@@ -57,8 +62,19 @@ public abstract class HttpHandler implements HttpRequestHandler {
 		}
 		
 		StringTokenizer st = new StringTokenizer(p.getAbsolutePath(), "/?");
-		st.nextToken(); // dismiss the "set" or "get"
-		handle(method, st);
+		
+		try {
+			handle(method, st);
+		} catch (JsonSyntaxException ex) {
+			try {
+				sendString(405, "Couldn't parse JSON, make sure it is well formed.");
+			} catch (Exception ignore) {}
+		} catch (Exception ex) {
+			L.e("Unknown exception occured while processing HTTP request.", ex);
+			try {
+				sendString(405, "Something went wrong while processing the HTTP request.");
+			} catch (Exception ignore) {}
+		}
 	}
 	
 	protected void sendString(int statusCode, String content) {

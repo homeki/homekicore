@@ -38,5 +38,6 @@
 			<attribute name="javadoc_location" value="http://www.liquibase.org/api/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="libs/commons-logging-1.1.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

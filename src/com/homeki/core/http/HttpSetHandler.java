@@ -2,8 +2,6 @@ package com.homeki.core.http;
 
 import java.util.StringTokenizer;
 
-import com.homeki.core.main.L;
-
 public class HttpSetHandler extends HttpHandler {
 	public enum Actions {
 		ON, OFF, DIM, DEVICE, BAD_ACTION
@@ -15,35 +13,30 @@ public class HttpSetHandler extends HttpHandler {
 	
 	@Override
 	protected void handle(String method, StringTokenizer path) {
+		path.nextToken(); // dismiss "set"
+		
 		Actions action = Actions.BAD_ACTION;
 		
 		try {
 			action = Actions.valueOf(path.nextToken().toUpperCase());
 		} catch (Exception ex) {}
 		
-		try {
-			switch (action) {
-			case ON:
-				resolveOnOff(true);
-				break;
-			case OFF:
-				resolveOnOff(false);
-				break;
-			case DIM:
-				resolveDim();
-				break;
-			case DEVICE:
-				resolveDevice();
-				break;
-			default:
-				sendString(404, "No such action, " + action + ".");
-				break;
-			}
-		} catch (Exception ex) {
-			L.e("Unknown exception occured while processing HTTP request.", ex);
-			try {
-				sendString(500, "Something went wrong while processing the HTTP request.");
-			} catch (Exception ignore) {}
+		switch (action) {
+		case ON:
+			resolveOnOff(true);
+			break;
+		case OFF:
+			resolveOnOff(false);
+			break;
+		case DIM:
+			resolveDim();
+			break;
+		case DEVICE:
+			resolveDevice();
+			break;
+		default:
+			sendString(404, "No such action, " + action + ".");
+			break;
 		}
 	}
 	

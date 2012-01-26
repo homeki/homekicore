@@ -41,9 +41,11 @@ public class HttpListenerThread extends ControlledThread {
         this.params.setBooleanParameter(CoreConnectionPNames.TCP_NODELAY, true);
         this.params.setParameter(CoreProtocolPNames.ORIGIN_SERVER, "HttpComponents/1.1");
         
-        HttpRequestHandlerRegistry reqistry = new HttpRequestHandlerRegistry();
-        reqistry.register("/get/*", new HttpGetHandler(api));
-        reqistry.register("/set/*", new HttpSetHandler(api));
+        HttpRequestHandlerRegistry registry = new HttpRequestHandlerRegistry();
+        registry.register("/get/*", new HttpGetHandler(api));
+        registry.register("/set/*", new HttpSetHandler(api));
+        registry.register("/trigger/*", new HttpTriggerHandler(api));
+        registry.register("/trigger/timer/*", new HttpTimerTriggerHandler(api));
         
         HttpProcessor proc = new ImmutableHttpProcessor(new HttpResponseInterceptor[] {
                 new ResponseDate(),
@@ -52,7 +54,7 @@ public class HttpListenerThread extends ControlledThread {
                 new ResponseConnControl()
         });
         
-        this.service = new HttpService(proc, new DefaultConnectionReuseStrategy(), new DefaultHttpResponseFactory(), reqistry, this.params);
+        this.service = new HttpService(proc, new DefaultConnectionReuseStrategy(), new DefaultHttpResponseFactory(), registry, this.params);
 	}
 	
 	@Override
