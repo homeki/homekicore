@@ -3,6 +3,7 @@ package com.homeki.core.device.tellstick;
 import java.util.List;
 
 import com.homeki.core.main.ControlledThread;
+import com.homeki.core.main.L;
 import com.homeki.core.main.Monitor;
 
 public class TellStickDetector extends ControlledThread {
@@ -30,8 +31,8 @@ public class TellStickDetector extends ControlledThread {
 					monitor.addDevice(new TellStickDimmer(internalId));
 				else if (type.equals("switch"))
 					monitor.addDevice(new TellStickSwitch(internalId));
-				else if (type.equals("fakedimmer"))
-					monitor.addDevice(new TellStickFakeDimmer(internalId));
+				else
+					L.w("Found no corresponding device for TellStick device type " + type + ".");
 			}
 		}
 		
