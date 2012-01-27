@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jan 27, 2012 11:18:44 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <joined-subclass name="com.homeki.core.storage.entities.HTimerTrigger" extends="com.homeki.core.storage.entities.HTrigger" table="HTIMERTRIGGER" lazy="false">
+        <key>
+            <column name="ID" />
+        </key>
+        <property name="time" type="java.lang.Integer">
+            <column name="TIME" />
+        </property>
+        <property name="repeat" type="java.lang.Integer">
+            <column name="REPEAT" />
+        </property>
+        <property name="day" type="java.lang.Integer">
+            <column name="DAY" />
+        </property>
+    </joined-subclass>
+</hibernate-mapping>

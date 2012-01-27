@@ -67,6 +67,11 @@ public class HttpTimerTriggerHandler extends HttpHandler {
 		
 		HTimerTrigger trigger = (HTimerTrigger)session.get(HTimerTrigger.class, id);
 		
+		if (trigger == null) {
+			sendString(405, "No timer trigger with specified ID.");
+			return;
+		}
+		
 		JsonTriggerTimer restrigger = new JsonTriggerTimer();
 		restrigger.id = id;
 		restrigger.name = trigger.getName();
