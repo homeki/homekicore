@@ -1,6 +1,6 @@
 package com.homeki.core.storage.entities;
 
-public class HTimerCondition extends HCondition {
+public class HTimerTrigger extends HTrigger {
 	private Integer time;
 	private Integer repeat;
 	private Integer day;

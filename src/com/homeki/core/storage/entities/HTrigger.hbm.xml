@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated Jan 24, 2012 8:57:25 PM by Hibernate Tools 3.4.0.CR1 -->
+<!-- Generated Jan 27, 2012 11:18:44 PM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
     <class name="com.homeki.core.storage.entities.HTrigger" table="HTRIGGER">
         <id name="id" type="java.lang.Integer">
@@ -14,8 +14,5 @@
         <property name="value" type="java.lang.Integer">
             <column name="VALUE" />
         </property>
-        <many-to-one name="condition" class="com.homeki.core.storage.entities.HCondition" fetch="join">
-            <column name="CONDITION" />
-        </many-to-one>
     </class>
 </hibernate-mapping>

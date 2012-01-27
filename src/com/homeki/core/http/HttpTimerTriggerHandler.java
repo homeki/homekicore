@@ -6,8 +6,7 @@ import org.hibernate.Session;
 
 import com.homeki.core.http.json.JsonTriggerTimer;
 import com.homeki.core.storage.Hibernate;
-import com.homeki.core.storage.entities.HTimerCondition;
-import com.homeki.core.storage.entities.HTrigger;
+import com.homeki.core.storage.entities.HTimerTrigger;
 
 public class HttpTimerTriggerHandler extends HttpHandler {
 	public enum Actions {
@@ -47,16 +46,12 @@ public class HttpTimerTriggerHandler extends HttpHandler {
 		
 		Session session = Hibernate.openSession();
 		
-		HTimerCondition condition = new HTimerCondition();
-		condition.setDay(triggerTimer.days);
-		condition.setRepeat(triggerTimer.repeatType);
-		condition.setTime(triggerTimer.time);
-		session.save(condition);
-		
-		HTrigger trigger = new HTrigger();
+		HTimerTrigger trigger = new HTimerTrigger();
 		trigger.setName(triggerTimer.name);
 		trigger.setValue(triggerTimer.newValue);
-		trigger.setCondition(condition);
+		trigger.setDay(triggerTimer.days);
+		trigger.setRepeat(triggerTimer.repeatType);
+		trigger.setTime(triggerTimer.time);
 		session.save(trigger);
 		
 		session.close();
@@ -70,23 +65,18 @@ public class HttpTimerTriggerHandler extends HttpHandler {
 		
 		Session session = Hibernate.openSession();
 		
-		HTrigger trigger = (HTrigger)session.createQuery("from HTrigger as trig where trig.id = ?").setInteger(0, id)
-				.uniqueResult();
+		HTimerTrigger trigger = (HTimerTrigger)session.get(HTimerTrigger.class, id);
 		
 		JsonTriggerTimer restrigger = new JsonTriggerTimer();
 		restrigger.id = id;
 		restrigger.name = trigger.getName();
 		restrigger.newValue = trigger.getValue();
+		restrigger.days = trigger.getDay();
+		restrigger.repeatType = trigger.getRepeat();
+		restrigger.time = trigger.getTime();
 		
-		try {
-			HTimerCondition condition = (HTimerCondition)trigger.getCondition();
-			restrigger.days = condition.getDay();
-			restrigger.repeatType = condition.getRepeat();
-			restrigger.time = condition.getTime();
-			
-			sendString(200, gson.toJson(restrigger));
-		} catch (ClassCastException ex) {
-			sendString(405, "Tried to fetch other trigger as timer trigger.");
-		}
+		sendString(200, gson.toJson(restrigger));
+		
+		session.close();
 	}
 }
