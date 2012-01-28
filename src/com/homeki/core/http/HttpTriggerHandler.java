@@ -1,10 +1,17 @@
 package com.homeki.core.http;
 
+import java.util.List;
 import java.util.StringTokenizer;
+
+import org.hibernate.Session;
+
+import com.homeki.core.http.json.JsonTimerTrigger;
+import com.homeki.core.storage.Hibernate;
+import com.homeki.core.storage.entities.HTrigger;
 
 public class HttpTriggerHandler extends HttpHandler {
 	public enum Actions {
-		GET, LINK, UNLINK, DELETE, BAD_ACTION
+		LIST, LINK, UNLINK, DELETE, BAD_ACTION
 	}
 	
 	public HttpTriggerHandler(HttpApi api) {
@@ -21,16 +28,21 @@ public class HttpTriggerHandler extends HttpHandler {
 		} catch (Exception ex) {}
 		
 		switch (action) {
-		//case GET:
-		//	resolveGet();
-		//	break;
+		case LIST:
+			resolveList();
+			break;
 		default:
 			sendString(404, "No such action, " + action + ".");
 			break;
 		}
 	}
 	
-	//private void resolveGet() {
-	//	
-	//}
+	private void resolveList() {
+		Session session = Hibernate.openSession();
+		
+		@SuppressWarnings("unchecked")
+		List<HTrigger> list = session.createQuery("from HTrigger as t").list();
+		
+		sendString(200, gson.toJson(JsonTimerTrigger.convertList(list)));
+	}
 }

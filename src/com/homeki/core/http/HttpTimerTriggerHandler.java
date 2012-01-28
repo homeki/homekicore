@@ -4,7 +4,7 @@ import java.util.StringTokenizer;
 
 import org.hibernate.Session;
 
-import com.homeki.core.http.json.JsonTriggerTimer;
+import com.homeki.core.http.json.JsonTimerTrigger;
 import com.homeki.core.storage.Hibernate;
 import com.homeki.core.storage.entities.HTimerTrigger;
 
@@ -42,7 +42,7 @@ public class HttpTimerTriggerHandler extends HttpHandler {
 	
 	private void resolveAdd() {
 		String post = getPost();
-		JsonTriggerTimer triggerTimer = gson.fromJson(post, JsonTriggerTimer.class);
+		JsonTimerTrigger triggerTimer = gson.fromJson(post, JsonTimerTrigger.class);
 		
 		Session session = Hibernate.openSession();
 		
@@ -72,7 +72,7 @@ public class HttpTimerTriggerHandler extends HttpHandler {
 			return;
 		}
 		
-		JsonTriggerTimer restrigger = new JsonTriggerTimer();
+		JsonTimerTrigger restrigger = new JsonTimerTrigger();
 		restrigger.id = id;
 		restrigger.name = trigger.getName();
 		restrigger.newValue = trigger.getValue();
