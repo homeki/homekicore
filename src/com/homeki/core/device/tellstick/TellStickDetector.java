@@ -27,20 +27,20 @@ public class TellStickDetector extends ControlledThread {
 			if (!monitor.containsDevice(internalId)) {
 				String type = TellStickNative.getDeviceType(id);
 				
-				if (type.equals("dimmer"))
+				/*if (type.equals("dimmer"))
 					monitor.addDevice(new TellStickDimmer(internalId));
 				else if (type.equals("switch"))
 					monitor.addDevice(new TellStickSwitch(internalId));
 				else
-					L.w("Found no corresponding device for TellStick device type " + type + ".");
+					L.w("Found no corresponding device for TellStick device type " + type + ".");*/
 			}
 		}
 		
-		for (int id : allowedSensorIds) {
+		/*for (int id : allowedSensorIds) {
 			String internalId = "s" + String.valueOf(id);
 			
 			if (!monitor.containsDevice(internalId))
 				monitor.addDevice(new TellStickThermometer(internalId));
-		}
+		}*/
 	}
 }

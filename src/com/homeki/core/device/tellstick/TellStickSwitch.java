@@ -8,44 +8,33 @@ import com.homeki.core.device.abilities.Queryable;
 import com.homeki.core.device.abilities.Switchable;
 import com.homeki.core.storage.Hibernate;
 import com.homeki.core.storage.HistoryPoint;
-import com.homeki.core.storage.entities.HSwitchHistoryPoint;
+import com.homeki.core.storage.entities.SwitchHistoryPoint;
 
 public class TellStickSwitch extends Device implements Switchable, Queryable<Boolean> {
-	public TellStickSwitch(String internalId) {
-		super(internalId);
-	}
-	
 	@Override
 	public void off() {
 		TellStickNative.turnOff(Integer.parseInt(getInternalId()));
-		setValue(false);
+		//setValue(false);
 	}
 	
 	@Override
 	public void on() {
 		TellStickNative.turnOn(Integer.parseInt(getInternalId()));
-		setValue(true);
+		//setValue(true);
 	}
 	
 	@Override
 	public Boolean getValue() {
-		return Hibernate.getLatestSwitchHistoryPointValue(id);
+		return false;
 	}
 
 	@Override
 	public List<HistoryPoint> getHistory(Date from, Date to) {
-		return Hibernate.getSwitchHistoryPoints(from, to);
+		return null;
 	}
 
 	@Override
-	public String getType() {
+	public String getOuterType() {
 		return "switch";
-	}
-
-	@Override
-	public void setValue(Boolean value) {
-		if (!value.equals(getValue())) {
-			Hibernate.putHistoryValue(id, new HSwitchHistoryPoint(value));
-		}
 	}
 }

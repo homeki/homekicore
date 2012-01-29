@@ -6,12 +6,13 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.SettingsFactory;
 import org.hibernate.context.ManagedSessionContext;
 
 import com.homeki.core.storage.entities.HDevice;
-import com.homeki.core.storage.entities.HDimmerHistoryPoint;
-import com.homeki.core.storage.entities.HSwitchHistoryPoint;
-import com.homeki.core.storage.entities.HTemperatureHistoryPoint;
+import com.homeki.core.storage.entities.DimmerHistoryPoint;
+import com.homeki.core.storage.entities.SwitchHistoryPoint;
+import com.homeki.core.storage.entities.TemperatureHistoryPoint;
 
 public class Hibernate {
     private static SessionFactory sessionFactory = null;
@@ -115,18 +116,18 @@ public class Hibernate {
 		return value;
 	}
 	
-	public static void putHistoryValue(Integer id, Object point) {
+	/*public static void putHistoryValue(Integer id, Object point) {
 		Session session = Hibernate.openSession();
 		HDevice dev = (HDevice)session.load(HDevice.class, id);
 		
-		if (point instanceof HSwitchHistoryPoint)
-			((HSwitchHistoryPoint)point).setDevice(dev);
-		else if (point instanceof HDimmerHistoryPoint)
-			((HDimmerHistoryPoint)point).setDevice(dev);
-		else if (point instanceof HTemperatureHistoryPoint)
-			((HTemperatureHistoryPoint)point).setDevice(dev);
+		if (point instanceof SwitchHistoryPoint)
+			((SwitchHistoryPoint)point).setDevice(dev);
+		else if (point instanceof DimmerHistoryPoint)
+			((DimmerHistoryPoint)point).setDevice(dev);
+		else if (point instanceof TemperatureHistoryPoint)
+			((TemperatureHistoryPoint)point).setDevice(dev);
 		
 		session.save(point);
 		Hibernate.closeSession(session);
-	}
+	}*/
 }

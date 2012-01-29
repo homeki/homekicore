@@ -17,13 +17,7 @@
         <property name="show_sql">false</property>
         <property name="hbm2ddl.auto">validate</property>
 
-		<!--  Mapping files -->
-        <mapping resource="com/homeki/core/storage/entities/HDevice.hbm.xml"/>
-        <mapping resource="com/homeki/core/storage/entities/HSetting.hbm.xml"/>
-        <mapping resource="com/homeki/core/storage/entities/HSwitchHistoryPoint.hbm.xml"/>
-        <mapping resource="com/homeki/core/storage/entities/HDimmerHistoryPoint.hbm.xml"/>
-        <mapping resource="com/homeki/core/storage/entities/HTemperatureHistoryPoint.hbm.xml"/>
-        <mapping resource="com/homeki/core/storage/entities/HTrigger.hbm.xml"/>
-        <mapping resource="com/homeki/core/storage/entities/HTimerTrigger.hbm.xml"/>
+		<!--  Mapping classes -->
+        <mapping class="com.homeki.core.device.Device" />
     </session-factory>
 </hibernate-configuration>

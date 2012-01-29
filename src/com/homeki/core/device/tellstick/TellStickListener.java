@@ -29,13 +29,13 @@ public class TellStickListener extends ControlledThread {
 		
 		if (d instanceof TellStickSwitch) {
 			boolean status = Boolean.parseBoolean(s[2]);
-			((TellStickSwitch) d).setValue(status);
+			//((TellStickSwitch) d).setValue(status);
 		} else if (d instanceof Dimmable) {
 			int level = Integer.parseInt(s[2]);
-			((TellStickDimmer) d).setValue(level);
+			//((TellStickDimmer) d).setValue(level);
 		} else if (d instanceof TellStickThermometer) {
 			double value = Double.parseDouble(s[2]);
-			((TellStickThermometer) d).setValue(value);
+			//((TellStickThermometer) d).setValue(value);
 		}
 	}
 }

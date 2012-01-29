@@ -9,28 +9,24 @@ import com.homeki.core.device.abilities.Queryable;
 import com.homeki.core.device.abilities.Switchable;
 import com.homeki.core.storage.Hibernate;
 import com.homeki.core.storage.HistoryPoint;
-import com.homeki.core.storage.entities.HDimmerHistoryPoint;
+import com.homeki.core.storage.entities.DimmerHistoryPoint;
 
 public class TellStickDimmer extends Device implements Dimmable, Switchable, Queryable<Integer> {
-	public TellStickDimmer(String internalId) {
-		super(internalId);
-	}
-
 	@Override
 	public void dim(int level) {
 		TellStickNative.dim(Integer.parseInt(getInternalId()), level);
-		setValue(level);
+		//setValue(level);
 	}
 
 	@Override
 	public void off() {
 		TellStickNative.turnOff(Integer.parseInt(getInternalId()));
-		setValue(0);
+		//setValue(0);
 	}
 
 	@Override
 	public Integer getValue() {
-		return Hibernate.getLatestDimmerHistoryPointValue(id);
+		return -1;
 	}
 	
 	@Override
@@ -40,18 +36,11 @@ public class TellStickDimmer extends Device implements Dimmable, Switchable, Que
 
 	@Override
 	public List<HistoryPoint> getHistory(Date from, Date to) {
-		return Hibernate.getDimmerHistoryPoints(from, to);
+		return null;
 	}
 
 	@Override
-	public String getType() {
+	public String getOuterType() {
 		return "dimmer";
-	}
-
-	@Override
-	public void setValue(Integer value) {
-		if (!value.equals(getValue())) {
-			Hibernate.putHistoryValue(id, new HDimmerHistoryPoint(value));
-		}
 	}
 }

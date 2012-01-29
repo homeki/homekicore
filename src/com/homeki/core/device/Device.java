@@ -2,79 +2,63 @@ package com.homeki.core.device;
 
 import java.util.Date;
 
-import org.hibernate.Session;
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 
-import com.homeki.core.storage.Hibernate;
-import com.homeki.core.storage.entities.HDevice;
-
-public abstract class Device {
-	protected final int id;
+@Entity
+@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name="type", discriminatorType=DiscriminatorType.STRING)
+public class Device {
+	@Id
+	@GeneratedValue
+	private int id;
 	
-	public Device(String internalId) {
-		Session session = Hibernate.openSession();
-		HDevice device = (HDevice)session.createQuery("from HDevice as dev where dev.internalId = ?")
-				.setString(0, internalId)
-				.uniqueResult();
-		
-		if (device == null) {
-			device = new HDevice();
-			device.setInternalId(internalId);
-			device.setAdded(new Date());
-			device.setType(getClass().getSimpleName());
-			device.setName("");
-			id = (Integer)session.save(device);
-		}
-		else {
-			id = device.getId();
-		}
-		
-		Hibernate.closeSession(session);
-	}
+	@Column
+	private String internalId;
 	
-	public void setName(String name) {
-		Session session = Hibernate.openSession();
-		HDevice dev = (HDevice)session.load(HDevice.class, id);
-		dev.setName(name);
-		Hibernate.closeSession(session);
-	}
+	@Column
+	private String name;
 	
-	public String getName() {
-		Session session = Hibernate.openSession();
-		HDevice dev = (HDevice)session.load(HDevice.class, id);
-		String name = dev.getName();
-		Hibernate.closeSession(session);
-		return name;
-	}
+	@Column
+	private Date added;
+	
+	
 	
 	public int getId() {
 		return id;
 	}
-	
-	public Date getAdded() {
-		Session session = Hibernate.openSession();
-		HDevice dev = (HDevice)session.load(HDevice.class, id);
-		Date added = dev.getAdded();
-		Hibernate.closeSession(session);
-		return added;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 	public String getInternalId() {
-		Session session = Hibernate.openSession();
-		HDevice dev = (HDevice)session.load(HDevice.class, id);
-		String internalId = dev.getInternalId();
-		Hibernate.closeSession(session);
 		return internalId;
 	}
-	
-	@Override
-	public int hashCode() {
-		return id;
+
+	public void setInternalId(String internalId) {
+		this.internalId = internalId;
 	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		return id == ((Device) obj).id;
+
+	public Date getAdded() {
+		return added;
 	}
-	
-	public abstract String getType();
+
+	public void setAdded(Date added) {
+		this.added = added;
+	}
+
+	public String getOuterType() {
+		return "device";
+	}
 }

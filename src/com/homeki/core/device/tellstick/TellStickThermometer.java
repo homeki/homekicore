@@ -7,16 +7,12 @@ import com.homeki.core.device.Device;
 import com.homeki.core.device.abilities.IntervalLoggable;
 import com.homeki.core.storage.Hibernate;
 import com.homeki.core.storage.HistoryPoint;
-import com.homeki.core.storage.entities.HTemperatureHistoryPoint;
+import com.homeki.core.storage.entities.TemperatureHistoryPoint;
 
 public class TellStickThermometer extends Device implements IntervalLoggable<Double> {
-	public TellStickThermometer(String internalId) {
-		super(internalId);
-	}
-
 	@Override
 	public Double getValue() {
-		return Hibernate.getLatestTemperatureHistoryPointValue(id);
+		return null;
 	}
 
 	@Override
@@ -25,16 +21,11 @@ public class TellStickThermometer extends Device implements IntervalLoggable<Dou
 	}
 
 	@Override
-	public String getType() {
-		return "thermometer";
-	}
-
-	@Override
-	public void setValue(Double value) {
-		Hibernate.putHistoryValue(id, new HTemperatureHistoryPoint(value));
-	}
-
-	@Override
 	public void updateValue() {
+	}
+
+	@Override
+	public String getOuterType() {
+		return "thermometer";
 	}
 }

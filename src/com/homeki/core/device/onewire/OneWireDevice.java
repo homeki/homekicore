@@ -9,8 +9,7 @@ import com.homeki.core.device.Device;
 public abstract class OneWireDevice extends Device {
 	private String deviceDirPath;
 	
-	public OneWireDevice(String internalId, String deviceDirPath) {
-		super(internalId);
+	public OneWireDevice(String deviceDirPath) {
 		this.deviceDirPath = deviceDirPath;
 	}
 	

@@ -7,6 +7,5 @@ import com.homeki.core.storage.HistoryPoint;
 
 public interface Queryable<T> {
 	public T getValue();
-	public void setValue(T value);
 	List<HistoryPoint> getHistory(Date from, Date to);
 }
