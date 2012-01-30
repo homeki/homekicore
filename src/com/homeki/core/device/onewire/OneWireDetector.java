@@ -2,36 +2,32 @@ package com.homeki.core.device.onewire;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.hibernate.Session;
+
+import com.homeki.core.device.Device;
 import com.homeki.core.main.ControlledThread;
 import com.homeki.core.main.L;
-import com.homeki.core.main.Monitor;
+import com.homeki.core.storage.Hibernate;
 
 public class OneWireDetector extends ControlledThread {
-	private String path;
-	private Monitor monitor;
-	
-	public OneWireDetector(int interval, String path, Monitor monitor) {
+	public OneWireDetector(int interval) {
 		super(interval);
-		this.path = path;
-		this.monitor = monitor;
 	}
 	
 	private List<String> findInternalIds() {
 		List<String> dirList = new ArrayList<String>();
-		File root = new File(path);
+		File root = new File(OneWireDevice.rootPath);
 		
 		String[] items = root.list();
 
 		if (items == null) {
 			L.w("1-wire network not found. Detection of devices failed.");
-			return null;
-		}
-
-		if (items != null){
+		} else { 
 			for (String s : items) {
 				Pattern p = Pattern.compile("[0-9A-F]{2}\\.[0-9A-F]{12}");
 				Matcher m = p.matcher(s);
@@ -47,23 +43,27 @@ public class OneWireDetector extends ControlledThread {
 	@Override
 	protected void iteration() throws InterruptedException {
 		List<String> ids = findInternalIds();
-		
-		if (ids == null)
-			return;
+		Session session = Hibernate.openSession();
 		
 		for (String s : ids) {
-			String deviceDirPath = path + "/" + s;
+			String deviceDirPath = OneWireDevice.rootPath + "/" + s;
+			Device dev = Device.getByInternalId(session, s);
 			
-			if (!monitor.containsDevice(s)) {
+			if (dev == null) {
 				String type = OneWireDevice.getStringVar(deviceDirPath, "type");
 				
 				if (type.equals("DS18S20") || type.equals("DS18B20")) {
-					monitor.addDevice(new OneWireThermometer(s, deviceDirPath));
+					dev = new OneWireThermometer();
+					dev.setAdded(new Date());
+					dev.setInternalId(s);
+					session.save(dev);
 				} else {
 					L.w("Found no corresponding device for 1-wire device type " + type + ".");
 					continue;
 				}
 			}
 		}
+		
+		Hibernate.closeSession(session);
 	}
 }

@@ -118,7 +118,7 @@ public class ThreadMaster {
 		setupModules();
 		
 		for (Module module : modules)
-			module.construct(monitor, file);
+			module.construct(file);
 		
 		try {
 			httpThread = new HttpListenerThread(api);

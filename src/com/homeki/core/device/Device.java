@@ -35,7 +35,7 @@ public abstract class Device {
 	protected Set<HistoryPoint> historyPoints;
 	
 	@Column
-	private String internalId;
+	protected String internalId;
 	
 	@Column
 	private String name;

@@ -1,16 +1,14 @@
 package com.homeki.core.device.tellstick;
 
+import org.hibernate.Session;
+
 import com.homeki.core.device.Device;
-import com.homeki.core.device.abilities.Dimmable;
 import com.homeki.core.main.ControlledThread;
-import com.homeki.core.main.Monitor;
+import com.homeki.core.storage.Hibernate;
 
 public class TellStickListener extends ControlledThread {
-	private final Monitor monitor;
-	
-	public TellStickListener(Monitor monitor) {
+	public TellStickListener() {
 		super(0);
-		this.monitor = monitor;
 	}
 	
 	@Override
@@ -19,23 +17,30 @@ public class TellStickListener extends ControlledThread {
 		String s[] = raw.split(" ");
 		
 		String type = s[0];
-		String 			internalId = s[1];
+		String internalId = s[1];
 
 		if (type.equals("sensor")) {
 			internalId = "s" + internalId;
 		}
 
-		Device d = monitor.getDevice(internalId);
+		Session session = Hibernate.openSession();
+		Device d = Device.getByInternalId(session, internalId);
 		
-		if (d instanceof TellStickSwitch) {
-			boolean status = Boolean.parseBoolean(s[2]);
-			//((TellStickSwitch) d).setValue(status);
-		} else if (d instanceof Dimmable) {
-			int level = Integer.parseInt(s[2]);
-			//((TellStickDimmer) d).setValue(level);
-		} else if (d instanceof TellStickThermometer) {
-			double value = Double.parseDouble(s[2]);
-			//((TellStickThermometer) d).setValue(value);
+		if (d != null) {
+			if (d instanceof TellStickSwitch) {
+				boolean status = Boolean.parseBoolean(s[2]);
+				((TellStickSwitch)d).addHistoryValue(status);
+			} else if (d instanceof TellStickDimmer) {
+				int level = Integer.parseInt(s[2]);
+				((TellStickDimmer)d).addHistoryValue(level);
+			} else if (d instanceof TellStickThermometer) {
+				double value = Double.parseDouble(s[2]);
+				((TellStickThermometer)d).addHistoryValue(value);
+			}
+			
+			session.save(d);
 		}
+		
+		Hibernate.closeSession(session);
 	}
 }

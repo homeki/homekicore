@@ -1,16 +1,20 @@
 package com.homeki.core.device.onewire;
 
-import com.homeki.core.device.abilities.IntervalLoggable;
+import java.util.Date;
 
-public class OneWireThermometer extends OneWireDevice implements IntervalLoggable {
-	public OneWireThermometer(String internalId, String deviceDirPath) {
-		super(deviceDirPath);
-	}
+import com.homeki.core.storage.entities.TemperatureHistoryPoint;
 
+
+public class OneWireThermometer extends OneWireDevice implements OneWireIntervalLoggable {
 	@Override
 	public void updateValue() {
-		double value = getDoubleVar("Thermometer");
-		//setValue(value);
+		double value = getDoubleVar("temperature");
+		
+		TemperatureHistoryPoint thp = new TemperatureHistoryPoint();
+		thp.setDevice(this);
+		thp.setRegistered(new Date());
+		thp.setValue(value);
+		historyPoints.add(thp);
 	}
 
 	@Override

@@ -4,13 +4,16 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+import javax.persistence.Entity;
+
 import com.homeki.core.device.Device;
 
+@Entity
 public abstract class OneWireDevice extends Device {
-	private String deviceDirPath;
+	public static String rootPath;
 	
-	public OneWireDevice(String deviceDirPath) {
-		this.deviceDirPath = deviceDirPath;
+	public OneWireDevice() {
+		
 	}
 	
 	protected static String getStringVar(String deviceDirPath, String var) {
@@ -33,7 +36,7 @@ public abstract class OneWireDevice extends Device {
 	}
 	
 	protected String getStringVar(String var) {
-		return getStringVar(deviceDirPath, var);
+		return getStringVar(OneWireDevice.rootPath + "/" + internalId, var);
 	}
 	
 	protected double getDoubleVar(String var) {

@@ -7,11 +7,11 @@ import javax.persistence.Entity;
 import javax.persistence.Transient;
 
 import com.homeki.core.device.Device;
-import com.homeki.core.device.abilities.IntervalLoggable;
+import com.homeki.core.device.onewire.OneWireIntervalLoggable;
 import com.homeki.core.storage.entities.TemperatureHistoryPoint;
 
 @Entity
-public class MockThermometer extends Device implements IntervalLoggable {
+public class MockThermometer extends Device {
 	@Transient
 	private Random rnd;
 	
@@ -19,13 +19,14 @@ public class MockThermometer extends Device implements IntervalLoggable {
 		rnd = new Random();
 	}
 
-	@Override
-	public void updateValue() {
+	// TODO: log this using a thread or something, like in onewire
+	public void storeNewValue() {
 		double temp = getRandomThermometerValue();
 		TemperatureHistoryPoint thp = new TemperatureHistoryPoint();
 		thp.setDevice(this);
 		thp.setRegistered(new Date());
 		thp.setValue(temp);
+		historyPoints.add(thp);
 	}
 	
 	private Double getRandomThermometerValue() {

@@ -7,7 +7,6 @@ import com.homeki.core.main.ConfigurationFile;
 import com.homeki.core.main.ControlledThread;
 import com.homeki.core.main.L;
 import com.homeki.core.main.Module;
-import com.homeki.core.main.Monitor;
 
 public class TellStickModule implements Module {
 	private ControlledThread listenerThread;
@@ -18,13 +17,14 @@ public class TellStickModule implements Module {
 	}
 	
 	@Override
-	public void construct(Monitor monitor, ConfigurationFile file) {
+	public void construct(ConfigurationFile file) {
 		TellStickNative.open();
 		
 		String idString = file.getString("module.tellstick.allowedsensors");
 		ArrayList<Integer> idList = new ArrayList<Integer>();
 		Scanner sc = new Scanner(idString);
 		sc.useDelimiter(",");
+		
 		while (sc.hasNextInt()) {
 			try {
 				idList.add(sc.nextInt());
@@ -34,10 +34,10 @@ public class TellStickModule implements Module {
 			}
 		}
 		
-		detectorThread = new TellStickDetector(10000, monitor, idList);
+		detectorThread = new TellStickDetector(60000, idList);
 		detectorThread.start();
 		
-		listenerThread = new TellStickListener(monitor);
+		listenerThread = new TellStickListener();
 		listenerThread.start();
 	}
 

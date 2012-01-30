@@ -2,27 +2,25 @@ package com.homeki.core.device.onewire;
 
 import java.util.List;
 
-import com.homeki.core.device.Device;
-import com.homeki.core.device.abilities.IntervalLoggable;
+import org.hibernate.Session;
+
 import com.homeki.core.main.ControlledThread;
-import com.homeki.core.main.Monitor;
+import com.homeki.core.storage.Hibernate;
 
 public class OneWireCollector extends ControlledThread {
-	private Monitor monitor;
-	
-	public OneWireCollector(int interval, Monitor monitor) {
+	public OneWireCollector(int interval) {
 		super(interval);
-		this.monitor = monitor;
 	}
-
+	
 	@Override
 	protected void iteration() throws InterruptedException {
-		List<Device> devices = monitor.getDevices();
+		Session session = Hibernate.openSession();
 		
-		for (Device d : devices) {
-			//if (d instanceof OneWireThermometer && d instanceof IntervalLoggable<?>) {
-			//	((IntervalLoggable<?>)d).updateValue();
-			//}
+		@SuppressWarnings("unchecked")
+		List<OneWireIntervalLoggable> devices = session.createCriteria(OneWireIntervalLoggable.class).list();
+		
+		for (OneWireIntervalLoggable d : devices) {
+			d.updateValue();
 		}
 	}
 }
