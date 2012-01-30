@@ -1,6 +1,9 @@
-package com.homeki.core.http;
+package com.homeki.core.http.handlers;
 
 import java.util.StringTokenizer;
+
+import com.homeki.core.http.HttpApi;
+import com.homeki.core.http.HttpHandler;
 
 public class HttpSetHandler extends HttpHandler {
 	public enum Actions {

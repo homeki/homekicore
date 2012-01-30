@@ -1,10 +1,12 @@
-package com.homeki.core.http;
+package com.homeki.core.http.handlers;
 
 import java.util.List;
 import java.util.StringTokenizer;
 
 import org.hibernate.Session;
 
+import com.homeki.core.http.HttpApi;
+import com.homeki.core.http.HttpHandler;
 import com.homeki.core.http.json.JsonTimerTrigger;
 import com.homeki.core.storage.Hibernate;
 import com.homeki.core.storage.entities.HTrigger;

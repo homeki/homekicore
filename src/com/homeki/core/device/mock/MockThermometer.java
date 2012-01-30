@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.Transient;
 
 import com.homeki.core.device.Device;
-import com.homeki.core.device.onewire.OneWireIntervalLoggable;
 import com.homeki.core.storage.entities.TemperatureHistoryPoint;
 
 @Entity

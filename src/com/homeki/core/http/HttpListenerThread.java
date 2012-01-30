@@ -22,6 +22,10 @@ import org.apache.http.protocol.ResponseContent;
 import org.apache.http.protocol.ResponseDate;
 import org.apache.http.protocol.ResponseServer;
 
+import com.homeki.core.http.handlers.HttpGetHandler;
+import com.homeki.core.http.handlers.HttpSetHandler;
+import com.homeki.core.http.handlers.HttpTimerTriggerHandler;
+import com.homeki.core.http.handlers.HttpTriggerHandler;
 import com.homeki.core.main.ControlledThread;
 import com.homeki.core.main.L;
 
