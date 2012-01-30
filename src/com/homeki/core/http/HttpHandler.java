@@ -95,7 +95,7 @@ public abstract class HttpHandler implements HttpRequestHandler {
 			id = -1;
 			L.e("Could not parse '" + key + "' as an integer.");
 			sendString(405, "Could not parse '" + key + "' as an integer.");
-		}	catch (MissingKeyException ex) {
+		} catch (MissingKeyException ex) {
 			id = -1;
 			L.e(ex.getMessage());
 			sendString(405, ex.getMessage());
@@ -129,7 +129,8 @@ public abstract class HttpHandler implements HttpRequestHandler {
 				return pair.getValue();
 			}
 		}
-		throw new MissingKeyException(String.format("Missing parameter '%s'", key));
+		
+		throw new MissingKeyException(String.format("Missing parameter '%s'.", key));
 	}
 	
 	protected String getPost() {
