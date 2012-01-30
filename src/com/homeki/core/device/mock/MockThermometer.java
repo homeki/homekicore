@@ -1,31 +1,26 @@
 package com.homeki.core.device.mock;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Random;
 
 import com.homeki.core.device.Device;
 import com.homeki.core.device.abilities.IntervalLoggable;
-import com.homeki.core.storage.Hibernate;
-import com.homeki.core.storage.HistoryPoint;
 import com.homeki.core.storage.entities.TemperatureHistoryPoint;
 
-public class MockThermometer extends Device implements IntervalLoggable<Double> {
+public class MockThermometer extends Device implements IntervalLoggable {
 	private Random rnd;
 	
 	public MockThermometer() {
 		rnd = new Random();
 	}
-	
-	@Override
-	public Double getValue() {
-		return getRandomThermometerValue();
-	}
 
 	@Override
 	public void updateValue() {
 		double temp = getRandomThermometerValue();
-		//setValue(temp);
+		TemperatureHistoryPoint thp = new TemperatureHistoryPoint();
+		thp.setDevice(this);
+		thp.setRegistered(new Date());
+		thp.setValue(temp);
 	}
 	
 	private Double getRandomThermometerValue() {
@@ -39,12 +34,7 @@ public class MockThermometer extends Device implements IntervalLoggable<Double> 
 	}
 
 	@Override
-	public List<HistoryPoint> getHistory(Date from, Date to) {
-		return Hibernate.getTemperatureHistoryPoints(from, to);
-	}
-
-	@Override
-	public String getOuterType() {
+	public String getType() {
 		return "thermometer";
 	}
 }

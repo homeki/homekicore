@@ -20,9 +20,9 @@ public class OneWireCollector extends ControlledThread {
 		List<Device> devices = monitor.getDevices();
 		
 		for (Device d : devices) {
-			if (d instanceof OneWireThermometer && d instanceof IntervalLoggable<?>) {
-				((IntervalLoggable<?>)d).updateValue();
-			}
+			//if (d instanceof OneWireThermometer && d instanceof IntervalLoggable<?>) {
+			//	((IntervalLoggable<?>)d).updateValue();
+			//}
 		}
 	}
 }

@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.hibernate.Session;
 
-import com.homeki.core.device.Device;
+import com.homeki.core.device.mock.MockDimmer;
 import com.homeki.core.device.mock.MockModule;
 import com.homeki.core.device.onewire.OneWireModule;
 import com.homeki.core.device.tellstick.TellStickModule;
@@ -15,6 +15,7 @@ import com.homeki.core.http.HttpApi;
 import com.homeki.core.http.HttpListenerThread;
 import com.homeki.core.storage.DatabaseUpgrader;
 import com.homeki.core.storage.Hibernate;
+import com.homeki.core.storage.entities.DimmerHistoryPoint;
 
 public class ThreadMaster {
 	private Monitor monitor;
@@ -106,13 +107,22 @@ public class ThreadMaster {
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		
-		/*Session session = Hibernate.openSession();
+		Session session = Hibernate.openSession();
 		
-		Device d = (Device)session.load(Device.class, 0);
-		System.out.println("DeviceId: " + d.getId());
-		System.out.println("InternalId: " + d.getInternalId());
+		MockDimmer d = (MockDimmer)session.get(MockDimmer.class, 0);
 		
-		Hibernate.closeSession(session);*/
+		if (d == null) {
+			d = new MockDimmer();
+			d.setAdded(new Date());
+			d.setInternalId("intid");
+			d.setName("jonas");
+		}
+		
+		//System.out.println(d.getName());
+		//d.addHistoryPoint(12);
+		session.save(d);
+		
+		Hibernate.closeSession(session);
 		
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////////

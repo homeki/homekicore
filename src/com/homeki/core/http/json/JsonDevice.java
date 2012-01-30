@@ -13,7 +13,7 @@ public class JsonDevice {
 	public Date added;
 	
 	public JsonDevice(Device d) {
-		type = d.getOuterType();
+		type = d.getType();
 		id = d.getId();
 		name = d.getName();
 		added = d.getAdded();

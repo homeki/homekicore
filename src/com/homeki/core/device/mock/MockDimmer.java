@@ -1,22 +1,30 @@
 package com.homeki.core.device.mock;
 
 import java.util.Date;
-import java.util.List;
+
+import javax.persistence.Entity;
 
 import com.homeki.core.device.Device;
 import com.homeki.core.device.abilities.Dimmable;
-import com.homeki.core.device.abilities.Queryable;
 import com.homeki.core.device.abilities.Switchable;
 import com.homeki.core.main.L;
-import com.homeki.core.storage.Hibernate;
-import com.homeki.core.storage.HistoryPoint;
 import com.homeki.core.storage.entities.DimmerHistoryPoint;
 
-public class MockDimmer extends Device implements Switchable, Dimmable, Queryable<Integer> {
+@Entity
+public class MockDimmer extends Device implements Switchable, Dimmable {
+	public MockDimmer() {
+
+	}
+	
 	@Override
 	public void dim(int level) {
 		L.i("MockHistoryDimmerDevice '" + getInternalId() + "' now has dim level " + level + ".");
-		//Hibernate.putHistoryValue(getId(), new HDimmerHistoryPoint(level));
+		
+		DimmerHistoryPoint dhp = new DimmerHistoryPoint();
+		dhp.setDevice(this);
+		dhp.setRegistered(new Date());
+		dhp.setValue(level);
+		historyPoints.add(dhp);
 	}
 	
 	@Override
@@ -30,17 +38,7 @@ public class MockDimmer extends Device implements Switchable, Dimmable, Queryabl
 	}
 	
 	@Override
-	public Integer getValue() {
-		return -1;
-	}
-	
-	@Override
-	public List<HistoryPoint> getHistory(Date from, Date to) {
-		return null;
-	}
-
-	@Override
-	public String getOuterType() {
+	public String getType() {
 		return "dimmer";
 	}
 }

@@ -7,7 +7,7 @@
 
 	<changeSet id="1" author="jonas">
 		<createTable tableName="Device">
-			<column name="ID" type="INTEGER" autoIncrement="true">
+			<column name="id" type="INTEGER" autoIncrement="true">
 				<constraints primaryKey="true" nullable="false"/>
 			</column>
 			<column name="internalId" type="VARCHAR(50)" defaultValue="" />
@@ -15,6 +15,43 @@
 			<column name="type" type="VARCHAR(100)" defaultValue="" />
 			<column name="added" type="TIMESTAMP" defaultValueDate="NULL" />
 		</createTable>
+	</changeSet>
+		
+	<changeSet id="2" author="jonas">
+		<createTable tableName="DimmerHistoryPoint">
+			<column name="id" type="INTEGER" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="device_id" type="INTEGER" />
+			<column name="registered" type="TIMESTAMP" />
+			<column name="history_value" type="INTEGER" />
+		</createTable>
+	</changeSet>
+	
+	<changeSet id="3" author="jonas">
+		<createTable tableName="SwitchHistoryPoint">
+			<column name="id" type="INTEGER" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="device_id" type="INTEGER" />
+			<column name="registered" type="TIMESTAMP" />
+			<column name="history_value" type="BIT" />
+		</createTable>
+	</changeSet>
+	
+	<changeSet id="4" author="jonas">
+		<createTable tableName="TemperatureHistoryPoint">
+			<column name="id" type="INTEGER" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="device_id" type="INTEGER" />
+			<column name="registered" type="TIMESTAMP" />
+			<column name="history_value" type="DOUBLE" />
+		</createTable>
+	</changeSet>
+	
+	<changeSet id="5" author="jonas">
+		<createSequence sequenceName="hibernate_sequence"/>
 	</changeSet>
 	
 </databaseChangeLog>

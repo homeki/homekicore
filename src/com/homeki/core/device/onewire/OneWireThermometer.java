@@ -1,21 +1,10 @@
 package com.homeki.core.device.onewire;
 
-import java.util.Date;
-import java.util.List;
-
 import com.homeki.core.device.abilities.IntervalLoggable;
-import com.homeki.core.storage.Hibernate;
-import com.homeki.core.storage.HistoryPoint;
-import com.homeki.core.storage.entities.TemperatureHistoryPoint;
 
-public class OneWireThermometer extends OneWireDevice implements IntervalLoggable<Double> {
+public class OneWireThermometer extends OneWireDevice implements IntervalLoggable {
 	public OneWireThermometer(String internalId, String deviceDirPath) {
 		super(deviceDirPath);
-	}
-
-	@Override
-	public Double getValue() {
-		return getDoubleVar("Thermometer");
 	}
 
 	@Override
@@ -25,12 +14,7 @@ public class OneWireThermometer extends OneWireDevice implements IntervalLoggabl
 	}
 
 	@Override
-	public List<HistoryPoint> getHistory(Date from, Date to) {
-		return null;
-	}
-
-	@Override
-	public String getOuterType() {
+	public String getType() {
 		return "thermometer";
 	}
 }
