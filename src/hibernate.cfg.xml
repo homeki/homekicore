@@ -19,10 +19,12 @@
 
 		<!--  Mapping classes -->
         <mapping class="com.homeki.core.device.Device" />
-        <mapping class="com.homeki.core.device.mock.MockDimmer" />
         <mapping class="com.homeki.core.storage.HistoryPoint" />
         <mapping class="com.homeki.core.storage.entities.SwitchHistoryPoint" />
         <mapping class="com.homeki.core.storage.entities.DimmerHistoryPoint" />
         <mapping class="com.homeki.core.storage.entities.TemperatureHistoryPoint" />
+        <mapping class="com.homeki.core.device.mock.MockSwitch" />
+        <mapping class="com.homeki.core.device.mock.MockDimmer" />
+        <mapping class="com.homeki.core.device.mock.MockThermometer" />
     </session-factory>
 </hibernate-configuration>

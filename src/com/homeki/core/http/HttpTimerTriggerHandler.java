@@ -54,7 +54,7 @@ public class HttpTimerTriggerHandler extends HttpHandler {
 		trigger.setTime(triggerTimer.time);
 		session.save(trigger);
 		
-		session.close();
+		Hibernate.closeSession(session);
 	}
 	
 	private void resolveGet() {
@@ -82,6 +82,6 @@ public class HttpTimerTriggerHandler extends HttpHandler {
 		
 		sendString(200, gson.toJson(restrigger));
 		
-		session.close();
+		Hibernate.closeSession(session);
 	}
 }

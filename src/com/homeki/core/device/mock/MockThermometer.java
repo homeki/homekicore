@@ -3,11 +3,16 @@ package com.homeki.core.device.mock;
 import java.util.Date;
 import java.util.Random;
 
+import javax.persistence.Entity;
+import javax.persistence.Transient;
+
 import com.homeki.core.device.Device;
 import com.homeki.core.device.abilities.IntervalLoggable;
 import com.homeki.core.storage.entities.TemperatureHistoryPoint;
 
+@Entity
 public class MockThermometer extends Device implements IntervalLoggable {
+	@Transient
 	private Random rnd;
 	
 	public MockThermometer() {

@@ -44,5 +44,7 @@ public class HttpTriggerHandler extends HttpHandler {
 		List<HTrigger> list = session.createQuery("from HTrigger as t").list();
 		
 		sendString(200, gson.toJson(JsonTimerTrigger.convertList(list)));
+		
+		Hibernate.closeSession(session);
 	}
 }

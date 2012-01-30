@@ -2,12 +2,19 @@ package com.homeki.core.device.mock;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
+
 import com.homeki.core.device.Device;
 import com.homeki.core.device.abilities.Switchable;
 import com.homeki.core.main.L;
 import com.homeki.core.storage.entities.SwitchHistoryPoint;
 
+@Entity
 public class MockSwitch extends Device implements Switchable {
+	public MockSwitch() {
+		
+	}
+	
 	@Override
 	public void off() {
 		L.i("MockSwitchDevice '" + getInternalId() + "' is now OFF.");
