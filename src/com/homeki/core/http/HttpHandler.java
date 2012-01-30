@@ -95,6 +95,10 @@ public abstract class HttpHandler implements HttpRequestHandler {
 			id = -1;
 			L.e("Could not parse '" + key + "' as an integer.");
 			sendString(405, "Could not parse '" + key + "' as an integer.");
+		}	catch (MissingKeyException ex) {
+			id = -1;
+			L.e(ex.getMessage());
+			sendString(405, ex.getMessage());
 		}
 		
 		return id;
@@ -110,19 +114,22 @@ public abstract class HttpHandler implements HttpRequestHandler {
 			L.e("Could not parse '" + key + "' as a date.");
 			sendString(405, "Could not parse '" + key + "' as a date.");
 			d = null;
+		} catch (MissingKeyException ex) {
+			L.e(ex.getMessage());
+			sendString(405, ex.getMessage());
+			d = null;
 		}
 		
 		return d;
 	}
 	
-	protected String getParameter(String key) {
+	protected String getParameter(String key) throws MissingKeyException {
 		for (NameValuePair pair : queryString) {
 			if (pair.getName().toLowerCase().equals(key.toLowerCase())) {
 				return pair.getValue();
 			}
 		}
-		
-		return "";
+		throw new MissingKeyException(String.format("Missing parameter '%s'", key));
 	}
 	
 	protected String getPost() {
