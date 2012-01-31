@@ -54,4 +54,17 @@
 		<createSequence sequenceName="hibernate_sequence"/>
 	</changeSet>
 	
+	<changeSet id="6" author="jonas">
+		<createTable tableName="TimerTrigger">
+			<column name="id" type="INTEGER" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="name" type="VARCHAR(255)" />
+			<column name="newValue" type="INTEGER" />
+			<column name="secondsFromMidnight" type="INTEGER" />
+			<column name="repeatType" type="INTEGER" />
+			<column name="days" type="INTEGER" />
+		</createTable>
+	</changeSet>
+	
 </databaseChangeLog>

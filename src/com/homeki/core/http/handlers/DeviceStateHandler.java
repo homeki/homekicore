@@ -15,7 +15,7 @@ import com.homeki.core.http.json.JsonPair;
 import com.homeki.core.http.json.JsonState;
 import com.homeki.core.storage.Hibernate;
 
-public class StateHandler extends HttpHandler {
+public class DeviceStateHandler extends HttpHandler {
 	public enum Actions {
 		GET, SET, LIST, BAD_ACTION
 	}
@@ -46,7 +46,7 @@ public class StateHandler extends HttpHandler {
 	}
 	
 	private void resolveGet() {
-		int id = getIntParameter("id");
+		int id = getIntParameter("deviceid");
 		
 		if (id == -1)
 			return;
@@ -76,7 +76,7 @@ public class StateHandler extends HttpHandler {
 	}
 	
 	private void resolveSet() {
-		int id = getIntParameter("id");
+		int id = getIntParameter("deviceid");
 		String value = getStringParameter("value").toLowerCase();
 		
 		if (id == -1 || value.equals(""))
@@ -125,7 +125,7 @@ public class StateHandler extends HttpHandler {
 	}
 	
 	private void resolveList() {
-		int id = getIntParameter("id");
+		int id = getIntParameter("deviceid");
 		Date from = getDateParameter("from");
 		Date to = getDateParameter("to");
 		

@@ -1,31 +1,39 @@
 package com.homeki.core.device;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+
+@Entity
 public class TimerTrigger extends Trigger {
-	private Integer time;
-	private Integer repeat;
-	private Integer day;
+	private Integer secondsFromMidnight;
 	
-	public Integer getTime() {
-		return time;
+	@Column
+	private Integer repeatType;
+	
+	@Column
+	private Integer days;
+	
+	public Integer getSecondsFromMidnight() {
+		return secondsFromMidnight;
 	}
 	
-	public void setTime(Integer time) {
-		this.time = time;
+	public void setSecondsFromMidnight(Integer seconds) {
+		this.secondsFromMidnight = seconds;
 	}
 	
-	public Integer getRepeat() {
-		return repeat;
+	public Integer getRepeatType() {
+		return repeatType;
 	}
 	
-	public void setRepeat(Integer repeat) {
-		this.repeat = repeat;
+	public void setRepeatType(Integer repeatType) {
+		this.repeatType = repeatType;
 	}
 	
-	public Integer getDay() {
-		return day;
+	public Integer getDays() {
+		return days;
 	}
 	
-	public void setDay(Integer day) {
-		this.day = day;
+	public void setDays(Integer day) {
+		this.days = day;
 	}
 }

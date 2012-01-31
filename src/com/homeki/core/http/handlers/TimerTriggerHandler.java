@@ -46,9 +46,9 @@ public class TimerTriggerHandler extends HttpHandler {
 		TimerTrigger trigger = new TimerTrigger();
 		trigger.setName(triggerTimer.name);
 		trigger.setValue(triggerTimer.newValue);
-		trigger.setDay(triggerTimer.days);
-		trigger.setRepeat(triggerTimer.repeatType);
-		trigger.setTime(triggerTimer.time);
+		trigger.setDays(triggerTimer.days);
+		trigger.setRepeatType(triggerTimer.repeatType);
+		trigger.setSecondsFromMidnight(triggerTimer.time);
 		session.save(trigger);
 		
 		Hibernate.closeSession(session);
@@ -73,9 +73,9 @@ public class TimerTriggerHandler extends HttpHandler {
 		restrigger.id = id;
 		restrigger.name = trigger.getName();
 		restrigger.newValue = trigger.getValue();
-		restrigger.days = trigger.getDay();
-		restrigger.repeatType = trigger.getRepeat();
-		restrigger.time = trigger.getTime();
+		restrigger.days = trigger.getDays();
+		restrigger.repeatType = trigger.getRepeatType();
+		restrigger.time = trigger.getSecondsFromMidnight();
 		
 		sendString(200, gson.toJson(restrigger));
 		

@@ -38,7 +38,7 @@ public class DeviceHandler extends HttpHandler {
 	}
 	
 	private void resolveSet() {
-		int id = getIntParameter("id");
+		int id = getIntParameter("deviceid");
 		String post = getPost();
 		
 		if (id == -1 || post.equals(""))

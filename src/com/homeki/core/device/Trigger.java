@@ -1,16 +1,24 @@
 package com.homeki.core.device;
 
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+
+@MappedSuperclass
 public class Trigger {
+	@Id
+	@GeneratedValue
 	private Integer id;
+	
+	@Column
 	private String name;
-	private Integer value;
+
+	@Column
+	private Integer newValue;
 	
 	public Integer getId() {
 		return id;
-	}
-	
-	public void setId(Integer id) {
-		this.id = id;
 	}
 	
 	public String getName() {
@@ -22,10 +30,10 @@ public class Trigger {
 	}
 	
 	public Integer getValue() {
-		return value;
+		return newValue;
 	}
 	
 	public void setValue(Integer value) {
-		this.value = value;
+		this.newValue = value;
 	}
 }
