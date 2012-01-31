@@ -9,6 +9,14 @@ public class SwitchHistoryPoint extends HistoryPoint {
 	@Column(name="bool_value")
 	private Boolean value;
 	
+	public SwitchHistoryPoint() {
+		
+	}
+	
+	public SwitchHistoryPoint(Boolean value) {
+		this.value = value;
+	}
+	
 	public Boolean getValue() {
 		return value;
 	}

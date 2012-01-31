@@ -18,26 +18,11 @@ public class MockModule implements Module {
 	public void construct(ConfigurationFile file) {
 		Session session = Hibernate.openSession();
 		
-		SwitchHistoryPoint switch1hp = new SwitchHistoryPoint();
-		switch1hp.setValue(false);
-		
-		SwitchHistoryPoint switch2hp = new SwitchHistoryPoint();
-		switch2hp.setValue(false);
-		
-		DimmerHistoryPoint dimmer1hp = new DimmerHistoryPoint();
-		dimmer1hp.setValue(0);
-		
-		TemperatureHistoryPoint temp1hp = new TemperatureHistoryPoint();
-		temp1hp.setValue(0.0);
-		
-		TemperatureHistoryPoint temp2hp = new TemperatureHistoryPoint();
-		temp2hp.setValue(0.0);
-		
-		addMockDevice(session, "switch1", new MockSwitch(), switch1hp);
-		addMockDevice(session, "switch2", new MockSwitch(), switch2hp);
-		addMockDevice(session, "dimmer1", new MockDimmer(), dimmer1hp);
-		addMockDevice(session, "temp1", new MockThermometer(), temp1hp);
-		addMockDevice(session, "temp2", new MockThermometer(), temp2hp);
+		addMockDevice(session, "switch1", new MockSwitch(), new SwitchHistoryPoint(false));
+		addMockDevice(session, "switch2", new MockSwitch(), new SwitchHistoryPoint(false));
+		addMockDevice(session, "dimmer1", new MockDimmer(), new DimmerHistoryPoint(0));
+		addMockDevice(session, "temp1", new MockThermometer(), new TemperatureHistoryPoint(0.0));
+		addMockDevice(session, "temp2", new MockThermometer(), new TemperatureHistoryPoint(0.0));
 		
 		Hibernate.closeSession(session);
 	}
