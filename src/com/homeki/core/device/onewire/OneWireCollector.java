@@ -21,6 +21,9 @@ public class OneWireCollector extends ControlledThread {
 		
 		for (OneWireIntervalLoggable d : devices) {
 			d.updateValue();
+			session.save(d);
 		}
+		
+		Hibernate.closeSession(session);
 	}
 }
