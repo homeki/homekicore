@@ -22,6 +22,7 @@ public class DeviceStateHandler extends HttpHandler {
 	
 	@Override
 	protected void handle(String method, StringTokenizer path) {
+		path.nextToken(); // dismiss "device"
 		path.nextToken(); // dismiss "status"
 		
 		Actions action = Actions.BAD_ACTION;

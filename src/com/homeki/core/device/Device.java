@@ -44,6 +44,7 @@ public abstract class Device {
 	
 	public Device() {
 		this.historyPoints = new HashSet<HistoryPoint>(0);
+		this.name = "";
 	}
 	
 	public int getId() {
