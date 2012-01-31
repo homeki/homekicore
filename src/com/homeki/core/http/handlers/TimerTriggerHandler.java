@@ -11,7 +11,7 @@ import com.homeki.core.storage.Hibernate;
 
 public class TimerTriggerHandler extends HttpHandler {
 	public enum Actions {
-		ADD, GET, BAD_ACTION, DELETE
+		ADD, GET, BAD_ACTION
 	}
 	
 	@Override
@@ -31,33 +31,10 @@ public class TimerTriggerHandler extends HttpHandler {
 		case GET:
 			resolveGet();
 			break;
-		case DELETE:
-			resolveDelete();
-			break;
 		default:
 			sendString(404, "No such action, " + action + ".");
 			break;
 		}
-	}
-	
-	private void resolveDelete() {
-		int id = getIntParameter("triggerid");
-
-		if (id == -1)
-			return;
-		
-		Session session = Hibernate.openSession();
-		
-		TimerTrigger trigger = (TimerTrigger) session.get(TimerTrigger.class, id);
-		
-		if (trigger == null) {
-			sendString(405, "No timer trigger with specified ID.");
-			return;
-		}
-		
-		session.delete(trigger);
-		sendString(200, "bye bye");
-		Hibernate.closeSession(session);
 	}
 
 	private void resolveAdd() {

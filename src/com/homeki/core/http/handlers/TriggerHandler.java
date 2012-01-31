@@ -28,6 +28,9 @@ public class TriggerHandler extends HttpHandler {
 		case LIST:
 			resolveList();
 			break;
+		case DELETE:
+			resolveDelete();
+			break;
 		default:
 			sendString(404, "No such action, " + action + ".");
 			break;
@@ -41,6 +44,27 @@ public class TriggerHandler extends HttpHandler {
 		List<Trigger> list = session.createCriteria(Trigger.class).list();
 		
 		sendString(200, gson.toJson(JsonTimerTrigger.convertList(list)));
+		
+		Hibernate.closeSession(session);
+	}
+	
+	private void resolveDelete() {
+		int id = getIntParameter("triggerid");
+
+		if (id == -1)
+			return;
+		
+		Session session = Hibernate.openSession();
+		
+		Trigger trigger = (Trigger)session.get(Trigger.class, id);
+		
+		if (trigger == null) {
+			sendString(405, "No trigger with specified ID.");
+			return;
+		}
+		
+		session.delete(trigger);
+		sendString(200, "Trigger deleted.");
 		
 		Hibernate.closeSession(session);
 	}
