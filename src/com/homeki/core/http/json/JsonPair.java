@@ -3,7 +3,7 @@ package com.homeki.core.http.json;
 import java.util.Date;
 import java.util.List;
 
-import com.homeki.core.storage.HistoryPoint;
+import com.homeki.core.device.HistoryPoint;
 
 public class JsonPair {	
 	Date registered;

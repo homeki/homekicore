@@ -2,9 +2,11 @@ package com.homeki.core.device.onewire;
 
 import java.util.Date;
 
-import com.homeki.core.storage.entities.TemperatureHistoryPoint;
+import javax.persistence.Entity;
 
+import com.homeki.core.device.TemperatureHistoryPoint;
 
+@Entity
 public class OneWireThermometer extends OneWireDevice implements OneWireIntervalLoggable {
 	@Override
 	public void updateValue() {

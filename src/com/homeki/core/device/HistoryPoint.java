@@ -1,4 +1,4 @@
-package com.homeki.core.storage;
+package com.homeki.core.device;
 
 import java.util.Date;
 
@@ -13,7 +13,6 @@ import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
-import com.homeki.core.device.Device;
 
 @Entity
 @Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)

@@ -1,6 +1,6 @@
-package com.homeki.core.storage.entities;
+package com.homeki.core.device;
 
-public class HTimerTrigger extends HTrigger {
+public class TimerTrigger extends Trigger {
 	private Integer time;
 	private Integer repeat;
 	private Integer day;

@@ -2,9 +2,12 @@ package com.homeki.core.device.tellstick;
 
 import java.util.Date;
 
-import com.homeki.core.device.Device;
-import com.homeki.core.storage.entities.TemperatureHistoryPoint;
+import javax.persistence.Entity;
 
+import com.homeki.core.device.Device;
+import com.homeki.core.device.TemperatureHistoryPoint;
+
+@Entity
 public class TellStickThermometer extends Device {
 	@Override
 	public String getType() {

@@ -7,22 +7,17 @@ import java.util.StringTokenizer;
 import org.hibernate.Session;
 
 import com.homeki.core.device.Device;
+import com.homeki.core.device.HistoryPoint;
 import com.homeki.core.device.abilities.Dimmable;
 import com.homeki.core.device.abilities.Switchable;
-import com.homeki.core.http.HttpApi;
 import com.homeki.core.http.HttpHandler;
 import com.homeki.core.http.json.JsonPair;
 import com.homeki.core.http.json.JsonState;
 import com.homeki.core.storage.Hibernate;
-import com.homeki.core.storage.HistoryPoint;
 
 public class HttpStateHandler extends HttpHandler {
 	public enum Actions {
 		GET, SET, LIST, BAD_ACTION
-	}
-	
-	public HttpStateHandler(HttpApi api) {
-		super(api);
 	}
 	
 	@Override

@@ -6,7 +6,6 @@ import java.util.StringTokenizer;
 import org.hibernate.Session;
 
 import com.homeki.core.device.Device;
-import com.homeki.core.http.HttpApi;
 import com.homeki.core.http.HttpHandler;
 import com.homeki.core.http.json.JsonDevice;
 import com.homeki.core.storage.Hibernate;
@@ -14,10 +13,6 @@ import com.homeki.core.storage.Hibernate;
 public class HttpDeviceHandler extends HttpHandler {
 	public enum Actions {
 		LIST, SET, BAD_ACTION
-	}
-	
-	public HttpDeviceHandler(HttpApi api) {
-		super(api);
 	}
 	
 	@Override

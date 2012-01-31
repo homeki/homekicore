@@ -14,17 +14,22 @@
         <property name="dialect">org.hibernate.dialect.HSQLDialect</property>
         <property name="current_session_context_class">managed</property>
         <property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
-        <property name="show_sql">true</property>
+        <property name="show_sql">false</property>
         <property name="hbm2ddl.auto">validate</property>
 
 		<!--  Mapping classes -->
         <mapping class="com.homeki.core.device.Device" />
-        <mapping class="com.homeki.core.storage.HistoryPoint" />
-        <mapping class="com.homeki.core.storage.entities.SwitchHistoryPoint" />
-        <mapping class="com.homeki.core.storage.entities.DimmerHistoryPoint" />
-        <mapping class="com.homeki.core.storage.entities.TemperatureHistoryPoint" />
+        <mapping class="com.homeki.core.device.HistoryPoint" />
+        <mapping class="com.homeki.core.device.SwitchHistoryPoint" />
+        <mapping class="com.homeki.core.device.DimmerHistoryPoint" />
+        <mapping class="com.homeki.core.device.TemperatureHistoryPoint" />
         <mapping class="com.homeki.core.device.mock.MockSwitch" />
         <mapping class="com.homeki.core.device.mock.MockDimmer" />
         <mapping class="com.homeki.core.device.mock.MockThermometer" />
+        <mapping class="com.homeki.core.device.onewire.OneWireDevice" />
+        <mapping class="com.homeki.core.device.onewire.OneWireThermometer" />
+        <mapping class="com.homeki.core.device.tellstick.TellStickSwitch" />
+        <mapping class="com.homeki.core.device.tellstick.TellStickDimmer" />
+        <mapping class="com.homeki.core.device.tellstick.TellStickThermometer" />
     </session-factory>
 </hibernate-configuration>

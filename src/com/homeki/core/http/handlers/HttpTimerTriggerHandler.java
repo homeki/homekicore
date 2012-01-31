@@ -4,19 +4,14 @@ import java.util.StringTokenizer;
 
 import org.hibernate.Session;
 
-import com.homeki.core.http.HttpApi;
+import com.homeki.core.device.TimerTrigger;
 import com.homeki.core.http.HttpHandler;
 import com.homeki.core.http.json.JsonTimerTrigger;
 import com.homeki.core.storage.Hibernate;
-import com.homeki.core.storage.entities.HTimerTrigger;
 
 public class HttpTimerTriggerHandler extends HttpHandler {
 	public enum Actions {
 		ADD, GET, BAD_ACTION
-	}
-	
-	public HttpTimerTriggerHandler(HttpApi api) {
-		super(api);
 	}
 	
 	@Override
@@ -48,7 +43,7 @@ public class HttpTimerTriggerHandler extends HttpHandler {
 		
 		Session session = Hibernate.openSession();
 		
-		HTimerTrigger trigger = new HTimerTrigger();
+		TimerTrigger trigger = new TimerTrigger();
 		trigger.setName(triggerTimer.name);
 		trigger.setValue(triggerTimer.newValue);
 		trigger.setDay(triggerTimer.days);
@@ -67,7 +62,7 @@ public class HttpTimerTriggerHandler extends HttpHandler {
 		
 		Session session = Hibernate.openSession();
 		
-		HTimerTrigger trigger = (HTimerTrigger)session.get(HTimerTrigger.class, id);
+		TimerTrigger trigger = (TimerTrigger)session.get(TimerTrigger.class, id);
 		
 		if (trigger == null) {
 			sendString(405, "No timer trigger with specified ID.");

@@ -5,10 +5,10 @@ import java.util.Date;
 import javax.persistence.Entity;
 
 import com.homeki.core.device.Device;
+import com.homeki.core.device.DimmerHistoryPoint;
 import com.homeki.core.device.abilities.Dimmable;
 import com.homeki.core.device.abilities.Switchable;
 import com.homeki.core.main.L;
-import com.homeki.core.storage.entities.DimmerHistoryPoint;
 
 @Entity
 public class MockDimmer extends Device implements Switchable, Dimmable {

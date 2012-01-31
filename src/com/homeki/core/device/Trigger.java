@@ -1,6 +1,6 @@
-package com.homeki.core.storage.entities;
+package com.homeki.core.device;
 
-public class HTrigger {
+public class Trigger {
 	private Integer id;
 	private String name;
 	private Integer value;

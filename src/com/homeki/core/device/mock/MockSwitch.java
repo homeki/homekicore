@@ -5,9 +5,9 @@ import java.util.Date;
 import javax.persistence.Entity;
 
 import com.homeki.core.device.Device;
+import com.homeki.core.device.SwitchHistoryPoint;
 import com.homeki.core.device.abilities.Switchable;
 import com.homeki.core.main.L;
-import com.homeki.core.storage.entities.SwitchHistoryPoint;
 
 @Entity
 public class MockSwitch extends Device implements Switchable {

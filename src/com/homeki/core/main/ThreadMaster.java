@@ -2,27 +2,18 @@ package com.homeki.core.main;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import org.hibernate.Session;
-
-import com.homeki.core.device.mock.MockDimmer;
 import com.homeki.core.device.mock.MockModule;
-import com.homeki.core.device.mock.MockThermometer;
 import com.homeki.core.device.onewire.OneWireModule;
 import com.homeki.core.device.tellstick.TellStickModule;
-import com.homeki.core.http.HttpApi;
 import com.homeki.core.http.HttpListenerThread;
 import com.homeki.core.storage.DatabaseUpgrader;
 import com.homeki.core.storage.Hibernate;
-import com.homeki.core.storage.entities.DimmerHistoryPoint;
 
 public class ThreadMaster {
-	private Monitor monitor;
 	private ControlledThread httpThread;
 	private List<Module> modules;
-	private HttpApi api;
 	private ConfigurationFile file;
 	
 	public ThreadMaster() {
@@ -57,8 +48,6 @@ public class ThreadMaster {
 		// instantiate
 		file = new ConfigurationFile();
 		modules = new ArrayList<Module>();
-		monitor = new Monitor();
-		api = new HttpApi(monitor);
 		
 		// load and check configuration file
 		try {
@@ -104,25 +93,13 @@ public class ThreadMaster {
 		}
 		L.i("Database access through Hibernate verified.");
 		
-		///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		
-		//Session session = Hibernate.openSession();
-		
-		//Hibernate.closeSession(session);
-		
-		///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		
 		setupModules();
 		
 		for (Module module : modules)
 			module.construct(file);
 		
 		try {
-			httpThread = new HttpListenerThread(api);
+			httpThread = new HttpListenerThread();
 			httpThread.start();
 		} catch (Exception e) {
 			L.e("Could not bind socket for HttpListenerThread, killing Homeki.");

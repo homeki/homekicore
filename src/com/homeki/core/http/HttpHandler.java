@@ -31,15 +31,10 @@ import com.homeki.core.main.L;
 public abstract class HttpHandler implements HttpRequestHandler {
 	protected static final Gson gson = new GsonBuilder().setPrettyPrinting().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
 	
-	protected HttpApi api;
 	protected HttpRequest request;
 	protected HttpResponse response;
 	protected HttpContext context;
 	private List<NameValuePair> queryString;
-	
-	public HttpHandler(HttpApi api) {
-		this.api = api;
-	}
 	
 	@Override
 	public void handle(HttpRequest request, HttpResponse response, HttpContext context) throws HttpException, IOException {

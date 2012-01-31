@@ -5,19 +5,14 @@ import java.util.StringTokenizer;
 
 import org.hibernate.Session;
 
-import com.homeki.core.http.HttpApi;
+import com.homeki.core.device.Trigger;
 import com.homeki.core.http.HttpHandler;
 import com.homeki.core.http.json.JsonTimerTrigger;
 import com.homeki.core.storage.Hibernate;
-import com.homeki.core.storage.entities.HTrigger;
 
 public class HttpTriggerHandler extends HttpHandler {
 	public enum Actions {
 		LIST, LINK, UNLINK, DELETE, BAD_ACTION
-	}
-	
-	public HttpTriggerHandler(HttpApi api) {
-		super(api);
 	}
 	
 	@Override
@@ -43,7 +38,7 @@ public class HttpTriggerHandler extends HttpHandler {
 		Session session = Hibernate.openSession();
 		
 		@SuppressWarnings("unchecked")
-		List<HTrigger> list = session.createCriteria(HTrigger.class).list();
+		List<Trigger> list = session.createCriteria(Trigger.class).list();
 		
 		sendString(200, gson.toJson(JsonTimerTrigger.convertList(list)));
 		

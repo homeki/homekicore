@@ -1,9 +1,8 @@
-package com.homeki.core.storage.entities;
+package com.homeki.core.device;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
-import com.homeki.core.storage.HistoryPoint;
 
 @Entity
 public class SwitchHistoryPoint extends HistoryPoint {

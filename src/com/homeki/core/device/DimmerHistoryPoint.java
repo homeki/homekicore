@@ -1,4 +1,4 @@
-package com.homeki.core.storage.entities;
+package com.homeki.core.device;
 
 import java.util.Date;
 import java.util.List;
@@ -8,7 +8,6 @@ import javax.persistence.Entity;
 
 import org.hibernate.Session;
 
-import com.homeki.core.storage.HistoryPoint;
 
 @Entity
 public class DimmerHistoryPoint extends HistoryPoint {

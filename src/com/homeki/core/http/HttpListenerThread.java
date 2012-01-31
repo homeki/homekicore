@@ -23,8 +23,6 @@ import org.apache.http.protocol.ResponseDate;
 import org.apache.http.protocol.ResponseServer;
 
 import com.homeki.core.http.handlers.HttpDeviceHandler;
-import com.homeki.core.http.handlers.HttpGetHandler;
-import com.homeki.core.http.handlers.HttpSetHandler;
 import com.homeki.core.http.handlers.HttpStateHandler;
 import com.homeki.core.http.handlers.HttpTimerTriggerHandler;
 import com.homeki.core.http.handlers.HttpTriggerHandler;
@@ -36,7 +34,7 @@ public class HttpListenerThread extends ControlledThread {
 	private HttpService service;
 	private ServerSocket listenSocket;
 	
-	public HttpListenerThread(HttpApi api) throws IOException {
+	public HttpListenerThread() throws IOException {
 		super(0);
 		this.listenSocket = new ServerSocket(5000, 10, null);
 		
@@ -48,12 +46,10 @@ public class HttpListenerThread extends ControlledThread {
         this.params.setParameter(CoreProtocolPNames.ORIGIN_SERVER, "HttpComponents/1.1");
         
         HttpRequestHandlerRegistry registry = new HttpRequestHandlerRegistry();
-        registry.register("/get/*", new HttpGetHandler(api));
-        registry.register("/set/*", new HttpSetHandler(api));
-        registry.register("/trigger/*", new HttpTriggerHandler(api));
-        registry.register("/trigger/timer/*", new HttpTimerTriggerHandler(api));
-        registry.register("/device/*", new HttpDeviceHandler(api));
-        registry.register("/state/*", new HttpStateHandler(api));
+        registry.register("/trigger/*", new HttpTriggerHandler());
+        registry.register("/trigger/timer/*", new HttpTimerTriggerHandler());
+        registry.register("/device/*", new HttpDeviceHandler());
+        registry.register("/state/*", new HttpStateHandler());
         
         HttpProcessor proc = new ImmutableHttpProcessor(new HttpResponseInterceptor[] {
                 new ResponseDate(),

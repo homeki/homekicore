@@ -20,7 +20,6 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.criterion.Restrictions;
 
-import com.homeki.core.storage.HistoryPoint;
 
 @Entity
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)

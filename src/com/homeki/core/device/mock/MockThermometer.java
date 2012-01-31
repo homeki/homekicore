@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Transient;
 
 import com.homeki.core.device.Device;
-import com.homeki.core.storage.entities.TemperatureHistoryPoint;
+import com.homeki.core.device.TemperatureHistoryPoint;
 
 @Entity
 public class MockThermometer extends Device {
