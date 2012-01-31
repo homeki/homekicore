@@ -75,6 +75,10 @@ public abstract class Device {
 		this.added = added;
 	}
 	
+	public Set<HistoryPoint> getHistoryPoints() {
+		return this.historyPoints;
+	}
+	
 	public abstract String getType();
 	
 	public static Device getByInternalId(Session session, String internalId) {

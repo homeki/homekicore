@@ -8,7 +8,7 @@ import com.homeki.core.device.Device;
 import com.homeki.core.device.abilities.Dimmable;
 import com.homeki.core.device.abilities.Switchable;
 import com.homeki.core.http.json.JsonDevice;
-import com.homeki.core.http.json.JsonStatus;
+import com.homeki.core.http.json.JsonState;
 import com.homeki.core.main.Monitor;
 
 public class HttpApi {
@@ -53,7 +53,7 @@ public class HttpApi {
 	public String getStatus(int id) {
 		//Device d = monitor.getDevice(id);
 		//Queryable<?> q = (Queryable<?>) d;
-		JsonStatus status = new JsonStatus(null);
+		JsonState status = new JsonState(null);
 		return gson.toJson(status);
 	}
 	

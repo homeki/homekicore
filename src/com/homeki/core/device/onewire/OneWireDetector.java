@@ -2,7 +2,6 @@ package com.homeki.core.device.onewire;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -54,7 +53,6 @@ public class OneWireDetector extends ControlledThread {
 				
 				if (type.equals("DS18S20") || type.equals("DS18B20")) {
 					dev = new OneWireThermometer();
-					dev.setAdded(new Date());
 					dev.setInternalId(s);
 					session.save(dev);
 				} else {

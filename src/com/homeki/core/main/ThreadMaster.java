@@ -9,6 +9,7 @@ import org.hibernate.Session;
 
 import com.homeki.core.device.mock.MockDimmer;
 import com.homeki.core.device.mock.MockModule;
+import com.homeki.core.device.mock.MockThermometer;
 import com.homeki.core.device.onewire.OneWireModule;
 import com.homeki.core.device.tellstick.TellStickModule;
 import com.homeki.core.http.HttpApi;

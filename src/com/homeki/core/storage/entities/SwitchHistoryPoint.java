@@ -7,7 +7,7 @@ import com.homeki.core.storage.HistoryPoint;
 
 @Entity
 public class SwitchHistoryPoint extends HistoryPoint {
-	@Column(name="history_value")
+	@Column(name="bool_value")
 	private Boolean value;
 	
 	public Boolean getValue() {

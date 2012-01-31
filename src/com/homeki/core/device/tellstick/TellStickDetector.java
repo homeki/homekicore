@@ -1,6 +1,5 @@
 package com.homeki.core.device.tellstick;
 
-import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -40,7 +39,6 @@ public class TellStickDetector extends ControlledThread {
 					continue;
 				}
 				
-				dev.setAdded(new Date());
 				dev.setInternalId(internalId);
 				session.save(dev);
 			}
@@ -52,7 +50,6 @@ public class TellStickDetector extends ControlledThread {
 			
 			if (dev == null) {
 				dev = new TellStickThermometer();
-				dev.setAdded(new Date());
 				dev.setInternalId(internalId);
 				session.save(dev);
 			}

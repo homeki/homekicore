@@ -12,7 +12,7 @@ import com.homeki.core.storage.HistoryPoint;
 
 @Entity
 public class DimmerHistoryPoint extends HistoryPoint {
-	@Column(name="history_value")
+	@Column(name="int_value")
 	private Integer value;
 	
 	public Integer getValue() {

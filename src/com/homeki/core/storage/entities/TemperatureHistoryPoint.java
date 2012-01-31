@@ -7,7 +7,7 @@ import com.homeki.core.storage.HistoryPoint;
 
 @Entity
 public class TemperatureHistoryPoint extends HistoryPoint {
-	@Column(name="history_value")
+	@Column(name="double_value")
 	private Double value;
 	
 	public Double getValue() {

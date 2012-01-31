@@ -123,7 +123,20 @@ public abstract class HttpHandler implements HttpRequestHandler {
 		return d;
 	}
 	
-	protected String getParameter(String key) throws MissingKeyException {
+	protected String getStringParameter(String key) {
+		String value = "";
+		
+		try {
+			value = getParameter(key);
+		} catch (MissingKeyException ex) {
+			L.e(ex.getMessage());
+			sendString(405, ex.getMessage());
+		}
+		
+		return value;
+	}
+	
+	private String getParameter(String key) throws MissingKeyException {
 		for (NameValuePair pair : queryString) {
 			if (pair.getName().toLowerCase().equals(key.toLowerCase())) {
 				return pair.getValue();

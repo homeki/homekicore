@@ -24,7 +24,7 @@
 			</column>
 			<column name="device_id" type="INTEGER" />
 			<column name="registered" type="TIMESTAMP" />
-			<column name="history_value" type="INTEGER" />
+			<column name="int_value" type="INTEGER" />
 		</createTable>
 	</changeSet>
 	
@@ -35,7 +35,7 @@
 			</column>
 			<column name="device_id" type="INTEGER" />
 			<column name="registered" type="TIMESTAMP" />
-			<column name="history_value" type="BIT" />
+			<column name="bool_value" type="BIT" />
 		</createTable>
 	</changeSet>
 	
@@ -46,7 +46,7 @@
 			</column>
 			<column name="device_id" type="INTEGER" />
 			<column name="registered" type="TIMESTAMP" />
-			<column name="history_value" type="DOUBLE" />
+			<column name="double_value" type="DOUBLE" />
 		</createTable>
 	</changeSet>
 	

@@ -1,7 +1,5 @@
 package com.homeki.core.device.mock;
 
-import java.util.Date;
-
 import org.hibernate.Session;
 
 import com.homeki.core.device.Device;
@@ -28,7 +26,6 @@ public class MockModule implements Module {
 		
 		if (dev == null) {
 			newdev.setInternalId(internalId);
-			newdev.setAdded(new Date());
 			session.save(newdev);
 		}
 	}

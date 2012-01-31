@@ -22,8 +22,10 @@ import org.apache.http.protocol.ResponseContent;
 import org.apache.http.protocol.ResponseDate;
 import org.apache.http.protocol.ResponseServer;
 
+import com.homeki.core.http.handlers.HttpDeviceHandler;
 import com.homeki.core.http.handlers.HttpGetHandler;
 import com.homeki.core.http.handlers.HttpSetHandler;
+import com.homeki.core.http.handlers.HttpStateHandler;
 import com.homeki.core.http.handlers.HttpTimerTriggerHandler;
 import com.homeki.core.http.handlers.HttpTriggerHandler;
 import com.homeki.core.main.ControlledThread;
@@ -50,6 +52,8 @@ public class HttpListenerThread extends ControlledThread {
         registry.register("/set/*", new HttpSetHandler(api));
         registry.register("/trigger/*", new HttpTriggerHandler(api));
         registry.register("/trigger/timer/*", new HttpTimerTriggerHandler(api));
+        registry.register("/device/*", new HttpDeviceHandler(api));
+        registry.register("/state/*", new HttpStateHandler(api));
         
         HttpProcessor proc = new ImmutableHttpProcessor(new HttpResponseInterceptor[] {
                 new ResponseDate(),

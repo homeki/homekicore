@@ -43,7 +43,7 @@ public class HttpTriggerHandler extends HttpHandler {
 		Session session = Hibernate.openSession();
 		
 		@SuppressWarnings("unchecked")
-		List<HTrigger> list = session.createQuery("from HTrigger as t").list();
+		List<HTrigger> list = session.createCriteria(HTrigger.class).list();
 		
 		sendString(200, gson.toJson(JsonTimerTrigger.convertList(list)));
 		
