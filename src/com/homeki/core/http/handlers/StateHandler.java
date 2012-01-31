@@ -15,7 +15,7 @@ import com.homeki.core.http.json.JsonPair;
 import com.homeki.core.http.json.JsonState;
 import com.homeki.core.storage.Hibernate;
 
-public class HttpStateHandler extends HttpHandler {
+public class StateHandler extends HttpHandler {
 	public enum Actions {
 		GET, SET, LIST, BAD_ACTION
 	}

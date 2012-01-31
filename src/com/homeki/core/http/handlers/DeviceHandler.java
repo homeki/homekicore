@@ -10,7 +10,7 @@ import com.homeki.core.http.HttpHandler;
 import com.homeki.core.http.json.JsonDevice;
 import com.homeki.core.storage.Hibernate;
 
-public class HttpDeviceHandler extends HttpHandler {
+public class DeviceHandler extends HttpHandler {
 	public enum Actions {
 		LIST, SET, BAD_ACTION
 	}

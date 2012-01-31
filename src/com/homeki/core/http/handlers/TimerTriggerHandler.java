@@ -9,7 +9,7 @@ import com.homeki.core.http.HttpHandler;
 import com.homeki.core.http.json.JsonTimerTrigger;
 import com.homeki.core.storage.Hibernate;
 
-public class HttpTimerTriggerHandler extends HttpHandler {
+public class TimerTriggerHandler extends HttpHandler {
 	public enum Actions {
 		ADD, GET, BAD_ACTION
 	}
