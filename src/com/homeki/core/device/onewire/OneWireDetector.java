@@ -56,7 +56,7 @@ public class OneWireDetector extends ControlledThread {
 					dev.setInternalId(s);
 					((OneWireThermometer)dev).updateValue();
 					session.save(dev);
-				} else if (!type.equals("DS18S20")) {
+				} else if (!type.equals("DS1420")) {
 					L.w("Found no corresponding device for 1-wire device type " + type + ".");
 					continue;
 				}
