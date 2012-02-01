@@ -54,6 +54,8 @@ public class DeviceHandler extends HttpHandler {
 		
 		session.save(dev);
 		Hibernate.closeSession(session);
+		
+		sendString(200, "Device updated successfully.");
 	}
 	
 	private void resolveList() {

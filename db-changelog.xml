@@ -67,4 +67,11 @@
 		</createTable>
 	</changeSet>
 	
+	<changeSet id="7" author="jonas">
+		<createTable tableName="Device_Trigger">
+			<column name="device_id" type="INTEGER" />
+			<column name="trigger_id" type="INTEGER" />
+		</createTable>
+	</changeSet>
+	
 </databaseChangeLog>

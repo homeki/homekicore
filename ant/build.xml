@@ -1,20 +1,20 @@
 <project>
-	<property name="version" value="0.0.40"/>
-	
+	<property name="version" value="0.0.40" />
+
 	<path id="ant-deb.classpath">
-        <fileset dir="../ant" includes="*.jar"/>
-    </path>
-	
-	<path id="classpath">
-		<fileset dir="../libs" includes="*.jar"/>
+		<fileset dir="../ant" includes="*.jar" />
 	</path>
 
-	<taskdef name="deb" classname="com.googlecode.ant_deb_task.Deb" classpathref="ant-deb.classpath"/>
-	
-    <target name="clean">
-        <delete dir="../build"/>
-    </target>
-	
+	<path id="classpath">
+		<fileset dir="../libs" includes="*.jar" />
+	</path>
+
+	<taskdef name="deb" classname="com.googlecode.ant_deb_task.Deb" classpathref="ant-deb.classpath" />
+
+	<target name="clean">
+		<delete dir="../build" />
+	</target>
+
 	<target name="all">
 		<antcall target="clean" />
 		<antcall target="compile" />
@@ -22,57 +22,57 @@
 		<antcall target="dist" />
 	</target>
 
-    <target name="compile">
-        <mkdir dir="../build/classes"/>
-        <javac srcdir="../src" destdir="../build/classes">
+	<target name="compile">
+		<mkdir dir="../build/classes" />
+		<javac srcdir="../src" destdir="../build/classes">
 			<classpath>
-				<pathelement location="../libs/gson-1.7.1.jar"/>
-				<pathelement location="../libs/junit-4.8.2.jar"/>
-				<pathelement location="../libs/httpclient-4.1.2.jar"/>
-				<pathelement location="../libs/httpcore-4.1.3.jar"/>
-				<pathelement location="../libs/hsqldb.jar"/>
-				<pathelement location="../libs/liquibase.jar"/>
-				<pathelement location="../libs/hibernate3.jar"/>
-				<pathelement location="../libs/hibernate-jpa-2.0-api-1.0.1.Final.jar"/>
-				<pathelement location="../libs/antlr-2.7.6.jar"/>
-				<pathelement location="../libs/commons-collections-3.1.jar"/>
-				<pathelement location="../libs/dom4j-1.6.1.jar"/>
-				<pathelement location="../libs/javassist-3.12.0.GA.jar"/>
-				<pathelement location="../libs/jta-1.1.jar"/>
-				<pathelement location="../libs/slf4j-api-1.6.1.jar"/>
-				<pathelement location="../libs/slf4j-nop-1.6.1.jar"/>
-				<pathelement path="${java.class.path}/"/>
+				<pathelement location="../libs/gson-1.7.1.jar" />
+				<pathelement location="../libs/junit-4.8.2.jar" />
+				<pathelement location="../libs/httpclient-4.1.2.jar" />
+				<pathelement location="../libs/httpcore-4.1.3.jar" />
+				<pathelement location="../libs/hsqldb.jar" />
+				<pathelement location="../libs/liquibase.jar" />
+				<pathelement location="../libs/hibernate3.jar" />
+				<pathelement location="../libs/hibernate-jpa-2.0-api-1.0.1.Final.jar" />
+				<pathelement location="../libs/antlr-2.7.6.jar" />
+				<pathelement location="../libs/commons-collections-3.1.jar" />
+				<pathelement location="../libs/dom4j-1.6.1.jar" />
+				<pathelement location="../libs/javassist-3.12.0.GA.jar" />
+				<pathelement location="../libs/jta-1.1.jar" />
+				<pathelement location="../libs/slf4j-api-1.6.1.jar" />
+				<pathelement location="../libs/slf4j-nop-1.6.1.jar" />
+				<pathelement path="${java.class.path}/" />
 			</classpath>
-        </javac>
-    </target>
+		</javac>
+	</target>
 
-    <target name="jar">
-        <mkdir dir="../build/jar"/>
-        <jar destfile="../build/jar/homekicore.jar" basedir="../build/classes">
-        	<zipfileset file="../src/hibernate.cfg.xml"/>
-        	<zipgroupfileset dir="../libs/" includes="*.jar"/>
-            <manifest>
-            	<attribute name="Implementation-Version" value="${version}"/> 
-                <attribute name="Main-Class" value="com.homeki.core.main.Main"/>
-            </manifest>
-        </jar>
-        <chmod file="../build/jar/homekicore.jar" perm="a+x" />
-    </target>
-    
-    <target name="dist">
-		<mkdir dir="../build/dist"/>
+	<target name="jar">
+		<mkdir dir="../build/jar" />
+		<jar destfile="../build/jar/homekicore.jar" basedir="../build/classes">
+			<zipfileset file="../src/hibernate.cfg.xml" />
+			<zipgroupfileset dir="../libs/" includes="*.jar" />
+			<manifest>
+				<attribute name="Implementation-Version" value="${version}" />
+				<attribute name="Main-Class" value="com.homeki.core.main.Main" />
+			</manifest>
+		</jar>
+		<chmod file="../build/jar/homekicore.jar" perm="a+x" />
+	</target>
+
+	<target name="dist">
+		<mkdir dir="../build/dist" />
 		<deb todir="../build/dist" package="homeki" section="misc" depends="default-jdk" prerm="prerm" postinst="postinst" preinst="preinst">
-			<version upstream="${version}"/>
-			<maintainer name="Homeki Development Team" email="contact@homeki.com"/>
+			<version upstream="${version}" />
+			<maintainer name="Homeki Development Team" email="contact@homeki.com" />
 			<description synopsis="Unified interface for all your sensors and devices connected to your server.">
 				Provides a JSON HTTP API for accessing, logging, modifying and managing various devices and sensors connected to your server.
 			</description>
-			<tarfileset dir="../build/jar" prefix="opt/homeki/" filemode="755"/>
-			<tarfileset file="../ant/homekid" prefix="etc/init.d" filemode="755"/>
-			<tarfileset file="../ant/start.sh" prefix="/opt/homeki/" filemode="755"/>
-			<tarfileset file="../ant/homeki.default.conf" prefix="/opt/homeki/" filemode="755"/>
-			<tarfileset file="../libs/libhomekijni.so" prefix="/opt/homeki/lib" filemode="755"/>
-			<tarfileset file="../db-changelog.xml" prefix="/opt/homeki/" filemode="755"/>
+			<tarfileset dir="../build/jar" prefix="opt/homeki/" filemode="755" />
+			<tarfileset file="../ant/homekid" prefix="etc/init.d" filemode="755" />
+			<tarfileset file="../ant/start.sh" prefix="/opt/homeki/" filemode="755" />
+			<tarfileset file="../ant/homeki.default.conf" prefix="/opt/homeki/" filemode="755" />
+			<tarfileset file="../libs/libhomekijni.so" prefix="/opt/homeki/lib" filemode="755" />
+			<tarfileset file="../db-changelog.xml" prefix="/opt/homeki/" filemode="755" />
 		</deb>
 	</target>
 </project>
