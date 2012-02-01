@@ -31,8 +31,14 @@ public class TellStickListener extends ControlledThread {
 				boolean status = Boolean.parseBoolean(s[2]);
 				((TellStickSwitch)d).addHistoryValue(status);
 			} else if (d instanceof TellStickDimmer) {
-				int level = Integer.parseInt(s[2]);
-				((TellStickDimmer)d).addHistoryValue(level);
+				// TODO: fix this! very temporary solution!
+				try {
+					int level = Integer.parseInt(s[2]);
+					((TellStickDimmer)d).addHistoryValue(level);
+				} catch (NumberFormatException ex) {
+					((TellStickDimmer)d).addHistoryValue(0);
+				}
+
 			} else if (d instanceof TellStickThermometer) {
 				double value = Double.parseDouble(s[2]);
 				((TellStickThermometer)d).addHistoryValue(value);

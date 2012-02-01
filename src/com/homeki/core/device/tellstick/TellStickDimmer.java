@@ -13,14 +13,16 @@ import com.homeki.core.device.abilities.Switchable;
 public class TellStickDimmer extends Device implements Dimmable, Switchable {
 	@Override
 	public void dim(int level) {
-		TellStickNative.dim(Integer.parseInt(getInternalId()), level);
-		addHistoryValue(level);
+		if (level > 0) {
+			TellStickNative.dim(Integer.parseInt(getInternalId()), level);
+		} else if (level == 0) {
+			off();
+		}
 	}
 
 	@Override
 	public void off() {
 		TellStickNative.turnOff(Integer.parseInt(getInternalId()));
-		addHistoryValue(0);
 	}
 	
 	@Override
