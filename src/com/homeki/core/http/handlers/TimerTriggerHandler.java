@@ -11,7 +11,7 @@ import com.homeki.core.storage.Hibernate;
 
 public class TimerTriggerHandler extends HttpHandler {
 	public enum Actions {
-		ADD, GET, BAD_ACTION
+		ADD, GET, BAD_ACTION, SET
 	}
 	
 	@Override
@@ -28,6 +28,9 @@ public class TimerTriggerHandler extends HttpHandler {
 		case ADD:
 			resolveAdd();
 			break;
+		case SET:
+			resolveSet();
+			break;
 		case GET:
 			resolveGet();
 			break;
@@ -35,6 +38,28 @@ public class TimerTriggerHandler extends HttpHandler {
 			sendString(404, "No such action, " + action + ".");
 			break;
 		}
+	}
+
+	private void resolveSet() {
+		int id = getIntParameter("triggerid");
+		
+		if (id == -1)
+			return;
+		
+		String post = getPost();
+		JsonTimerTrigger triggerTimer = gson.fromJson(post, JsonTimerTrigger.class);
+		
+		Session session = Hibernate.openSession();
+		
+		TimerTrigger trigger = (TimerTrigger) session.get(TimerTrigger.class, id);
+		trigger.setName(triggerTimer.name);
+		trigger.setValue(triggerTimer.newValue);
+		trigger.setDays(triggerTimer.days);
+		trigger.setRepeatType(triggerTimer.repeatType);
+		trigger.setSecondsFromMidnight(triggerTimer.time);
+		session.save(trigger);
+		
+		Hibernate.closeSession(session);
 	}
 
 	private void resolveAdd() {
