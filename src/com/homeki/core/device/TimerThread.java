@@ -27,7 +27,7 @@ public class TimerThread extends ControlledThread {
 		Calendar c = Calendar.getInstance();
 		
 		int current_time = c.get(Calendar.HOUR) * 3600 + c.get(Calendar.MINUTE) * 60 + c.get(Calendar.SECOND);
-		System.out.println("Checking timers, current time is" + current_time);
+//		System.out.println("Checking timers, current time is" + current_time);
 		for (TimerTrigger t : list) {
 			if (Math.abs(current_time - t.getSecondsFromMidnight()) < 15)
 				switch (t.getRepeatType()) {
