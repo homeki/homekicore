@@ -14,6 +14,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.SequenceGenerator;
 
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -25,7 +26,8 @@ import com.homeki.core.device.abilities.Switchable;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class Trigger {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "trigger_sequence")
+	@SequenceGenerator(name = "trigger_sequence", sequenceName = "trigger_sequence")
 	private Integer id;
 	
 	@Column
@@ -36,7 +38,7 @@ public abstract class Trigger {
 	
 	@ManyToMany(cascade = CascadeType.ALL)
 	@LazyCollection(LazyCollectionOption.EXTRA)
-	@JoinTable(name = "Device_Trigger", joinColumns = { @JoinColumn(name = "trigger_id") }, inverseJoinColumns = { @JoinColumn(name = "device_id") })
+	@JoinTable(name = "device_trigger", joinColumns = { @JoinColumn(name = "trigger_id") }, inverseJoinColumns = { @JoinColumn(name = "device_id") })
 	private Set<Device> devices;
 	
 	public Trigger() {

@@ -6,11 +6,11 @@
     http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
 	<changeSet id="1" author="jonas">
-		<createTable tableName="Device">
+		<createTable tableName="device">
 			<column name="id" type="INTEGER" autoIncrement="true">
 				<constraints primaryKey="true" nullable="false"/>
 			</column>
-			<column name="internalId" type="VARCHAR(50)" defaultValue="" />
+			<column name="internal_id" type="VARCHAR(50)" defaultValue="" />
 			<column name="name" type="VARCHAR(255)" defaultValue="" />
 			<column name="type" type="VARCHAR(100)" defaultValue="" />
 			<column name="added" type="TIMESTAMP" defaultValueDate="NULL" />
@@ -18,7 +18,7 @@
 	</changeSet>
 		
 	<changeSet id="2" author="jonas">
-		<createTable tableName="DimmerHistoryPoint">
+		<createTable tableName="dimmer_history_point">
 			<column name="id" type="INTEGER" autoIncrement="true">
 				<constraints primaryKey="true" nullable="false"/>
 			</column>
@@ -29,7 +29,7 @@
 	</changeSet>
 	
 	<changeSet id="3" author="jonas">
-		<createTable tableName="SwitchHistoryPoint">
+		<createTable tableName="switch_history_point">
 			<column name="id" type="INTEGER" autoIncrement="true">
 				<constraints primaryKey="true" nullable="false"/>
 			</column>
@@ -40,7 +40,7 @@
 	</changeSet>
 	
 	<changeSet id="4" author="jonas">
-		<createTable tableName="TemperatureHistoryPoint">
+		<createTable tableName="temperature_history_point">
 			<column name="id" type="INTEGER" autoIncrement="true">
 				<constraints primaryKey="true" nullable="false"/>
 			</column>
@@ -51,27 +51,30 @@
 	</changeSet>
 	
 	<changeSet id="5" author="jonas">
-		<createSequence sequenceName="hibernate_sequence"/>
+		<createSequence sequenceName="history_point_sequence"/>
 	</changeSet>
 	
 	<changeSet id="6" author="jonas">
-		<createTable tableName="TimerTrigger">
+		<createTable tableName="timer_trigger">
 			<column name="id" type="INTEGER" autoIncrement="true">
 				<constraints primaryKey="true" nullable="false"/>
 			</column>
 			<column name="name" type="VARCHAR(255)" />
-			<column name="newValue" type="INTEGER" />
-			<column name="secondsFromMidnight" type="INTEGER" />
-			<column name="repeatType" type="INTEGER" />
+			<column name="new_value" type="INTEGER" />
+			<column name="seconds_from_midnight" type="INTEGER" />
+			<column name="repeat_type" type="INTEGER" />
 			<column name="days" type="INTEGER" />
 		</createTable>
 	</changeSet>
 	
 	<changeSet id="7" author="jonas">
-		<createTable tableName="Device_Trigger">
+		<createTable tableName="device_trigger">
 			<column name="device_id" type="INTEGER" />
 			<column name="trigger_id" type="INTEGER" />
 		</createTable>
 	</changeSet>
 	
+	<changeSet id="8" author="jonas">
+		<createSequence sequenceName="trigger_sequence"/>
+	</changeSet>
 </databaseChangeLog>

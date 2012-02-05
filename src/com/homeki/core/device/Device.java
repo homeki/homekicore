@@ -37,7 +37,7 @@ public abstract class Device {
 	
 	@ManyToMany(cascade = CascadeType.ALL)
 	@LazyCollection(LazyCollectionOption.EXTRA)
-	@JoinTable(name = "Device_Trigger", joinColumns = { @JoinColumn(name = "device_id") }, inverseJoinColumns = { @JoinColumn(name = "trigger_id") })
+	@JoinTable(name = "device_trigger", joinColumns = { @JoinColumn(name = "device_id") }, inverseJoinColumns = { @JoinColumn(name = "trigger_id") })
 	private Set<Trigger> triggers;
 	
 	@Column
@@ -93,6 +93,6 @@ public abstract class Device {
 	public abstract String getType();
 	
 	public static Device getByInternalId(Session session, String internalId) {
-		return (Device) session.createCriteria(Device.class).add(Restrictions.eq("internalId", internalId)).uniqueResult();
+		return (Device) session.createCriteria(Device.class).add(Restrictions.eq("internal_id", internalId)).uniqueResult();
 	}
 }
