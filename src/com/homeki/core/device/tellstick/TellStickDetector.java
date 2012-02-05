@@ -1,14 +1,10 @@
 package com.homeki.core.device.tellstick;
 
-import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Session;
 
 import com.homeki.core.device.Device;
-import com.homeki.core.device.DimmerHistoryPoint;
-import com.homeki.core.device.HistoryPoint;
-import com.homeki.core.device.SwitchHistoryPoint;
 import com.homeki.core.main.ControlledThread;
 import com.homeki.core.main.L;
 import com.homeki.core.storage.Hibernate;
@@ -32,23 +28,17 @@ public class TellStickDetector extends ControlledThread {
 			Device dev = Device.getByInternalId(session, internalId);
 			
 			if (dev == null) {
-				HistoryPoint hp;
 				String type = TellStickNative.getDeviceType(id);
 				
 				if (type.equals("dimmer")) {
-					dev = new TellStickDimmer();
-					hp = new DimmerHistoryPoint(0);
+					dev = new TellStickDimmer(0);
 				} else if (type.equals("switch")) {
-					dev = new TellStickSwitch();
-					hp = new SwitchHistoryPoint(false);
+					dev = new TellStickSwitch(false);
 				} else {
 					L.w("Found no corresponding device for TellStick device type " + type + ".");
 					continue;
 				}
 				
-				hp.setDevice(dev);
-				hp.setRegistered(new Date());
-				dev.getHistoryPoints().add(hp);
 				dev.setInternalId(internalId);
 				
 				session.save(dev);
@@ -60,7 +50,7 @@ public class TellStickDetector extends ControlledThread {
 			Device dev = Device.getByInternalId(session, internalId);
 			
 			if (dev == null) {
-				dev = new TellStickThermometer();
+				dev = new TellStickThermometer(0.0);
 				dev.setInternalId(internalId);
 				session.save(dev);
 			}

@@ -11,6 +11,14 @@ import com.homeki.core.device.abilities.Switchable;
 
 @Entity
 public class TellStickDimmer extends Device implements Dimmable, Switchable {
+	public TellStickDimmer() {
+		
+	}
+	
+	public TellStickDimmer(int defaultLevel) {
+		addHistoryPoint(defaultLevel);
+	}
+	
 	@Override
 	public void dim(int level) {
 		if (level > 0) {
@@ -35,7 +43,7 @@ public class TellStickDimmer extends Device implements Dimmable, Switchable {
 		return "dimmer";
 	}
 	
-	public void addHistoryValue(int value) {
+	public void addHistoryPoint(int value) {
 		DimmerHistoryPoint dhp = new DimmerHistoryPoint();
 		dhp.setDevice(this);
 		dhp.setRegistered(new Date());

@@ -15,6 +15,10 @@ public class MockSwitch extends Device implements Switchable {
 		
 	}
 	
+	public MockSwitch(boolean defaultValue) {
+		addHistoryPoint(defaultValue);
+	}
+	
 	@Override
 	public void off() {
 		L.i("MockSwitchDevice '" + getInternalId() + "' is now OFF.");
@@ -27,12 +31,12 @@ public class MockSwitch extends Device implements Switchable {
 		addHistoryPoint(true);
 	}
 	
-	private void addHistoryPoint(boolean value) {
-		SwitchHistoryPoint shp = new SwitchHistoryPoint();
-		shp.setDevice(this);
-		shp.setRegistered(new Date());
-		shp.setValue(value);
-		historyPoints.add(shp);
+	public void addHistoryPoint(boolean value) {
+		SwitchHistoryPoint dhp = new SwitchHistoryPoint();
+		dhp.setDevice(this);
+		dhp.setRegistered(new Date());
+		dhp.setValue(value);
+		historyPoints.add(dhp);
 	}
 	
 	@Override

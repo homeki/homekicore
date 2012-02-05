@@ -4,6 +4,7 @@ import org.hibernate.Session;
 
 import com.homeki.core.device.Device;
 import com.homeki.core.main.ControlledThread;
+import com.homeki.core.main.L;
 import com.homeki.core.storage.Hibernate;
 
 public class TellStickListener extends ControlledThread {
@@ -29,22 +30,27 @@ public class TellStickListener extends ControlledThread {
 		if (d != null) {
 			if (d instanceof TellStickSwitch) {
 				boolean status = Boolean.parseBoolean(s[2]);
-				((TellStickSwitch)d).addHistoryValue(status);
+				((TellStickSwitch)d).addHistoryPoint(status);
+				L.i("Received '" + status + "' from TellStickListener.");
 			} else if (d instanceof TellStickDimmer) {
 				// TODO: fix this! very temporary solution!
+				// the reason we catch this exception is that we get a boolean
+				// value of we do tdTurnOff() on a dimmer (and not a zero value)
+				// could probably be handled more... elegant
 				try {
 					int level = Integer.parseInt(s[2]);
-					((TellStickDimmer)d).addHistoryValue(level);
+					((TellStickDimmer)d).addHistoryPoint(level);
+					L.i("Received '" + level + "' from TellStickListener.");
 				} catch (NumberFormatException ex) {
-					((TellStickDimmer)d).addHistoryValue(0);
+					((TellStickDimmer)d).addHistoryPoint(0);
+					L.i("Received 'NumberFormatException' from TellStickListener.");
 				}
 
 			} else if (d instanceof TellStickThermometer) {
 				double value = Double.parseDouble(s[2]);
-				((TellStickThermometer)d).addHistoryValue(value);
+				((TellStickThermometer)d).addHistoryPoint(value);
+				L.i("Received '" + value + "'C from TellStickListener.");
 			}
-			
-			session.save(d);
 		}
 		
 		Hibernate.closeSession(session);

@@ -10,16 +10,24 @@ import com.homeki.core.device.abilities.Switchable;
 
 @Entity
 public class TellStickSwitch extends Device implements Switchable {
+	public TellStickSwitch() {
+		
+	}
+	
+	public TellStickSwitch(boolean defaultValue) {
+		addHistoryPoint(defaultValue);
+	}
+	
 	@Override
 	public void off() {
 		TellStickNative.turnOff(Integer.parseInt(getInternalId()));
-		addHistoryValue(false);
+		addHistoryPoint(false);
 	}
 	
 	@Override
 	public void on() {
 		TellStickNative.turnOn(Integer.parseInt(getInternalId()));
-		addHistoryValue(true);
+		addHistoryPoint(true);
 	}
 
 	@Override
@@ -27,7 +35,7 @@ public class TellStickSwitch extends Device implements Switchable {
 		return "switch";
 	}
 	
-	public void addHistoryValue(boolean value) {
+	public void addHistoryPoint(boolean value) {
 		SwitchHistoryPoint shp = new SwitchHistoryPoint();
 		shp.setDevice(this);
 		shp.setRegistered(new Date());

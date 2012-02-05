@@ -17,15 +17,16 @@ public class MockThermometer extends Device {
 	public MockThermometer() {
 		rnd = new Random();
 	}
+	
+	public MockThermometer(double defaultValue) {
+		this();
+		addHistoryPoint(defaultValue);
+	}
 
 	// TODO: log this using a thread or something, like in onewire
 	public void storeNewValue() {
 		double temp = getRandomThermometerValue();
-		TemperatureHistoryPoint thp = new TemperatureHistoryPoint();
-		thp.setDevice(this);
-		thp.setRegistered(new Date());
-		thp.setValue(temp);
-		historyPoints.add(thp);
+		addHistoryPoint(temp);
 	}
 	
 	private Double getRandomThermometerValue() {
@@ -37,7 +38,15 @@ public class MockThermometer extends Device {
 		
 		return (rnd.nextDouble() * 2 - 1) * 40;
 	}
-
+	
+	public void addHistoryPoint(double value) {
+		TemperatureHistoryPoint dhp = new TemperatureHistoryPoint();
+		dhp.setDevice(this);
+		dhp.setRegistered(new Date());
+		dhp.setValue(value);
+		historyPoints.add(dhp);
+	}
+	
 	@Override
 	public String getType() {
 		return "thermometer";

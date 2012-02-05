@@ -131,8 +131,11 @@ public class ThreadMaster {
 	
 	public void shutdown() {
 		L.i("Shutting down threads...");
-		httpThread.shutdown();
-		timerThread.shutdown();
+		if (httpThread != null)
+			httpThread.shutdown();
+		if (timerThread != null)	
+			timerThread.shutdown();
+		
 		L.i("Destructing modules...");
 		for (Module m : modules)
 			m.destruct();

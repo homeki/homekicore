@@ -13,18 +13,17 @@ import com.homeki.core.main.L;
 @Entity
 public class MockDimmer extends Device implements Switchable, Dimmable {
 	public MockDimmer() {
-
+		
+	}
+	
+	public MockDimmer(int defaultLevel) {
+		addHistoryPoint(defaultLevel);
 	}
 	
 	@Override
 	public void dim(int level) {
 		L.i("MockHistoryDimmerDevice '" + getInternalId() + "' now has dim level " + level + ".");
-		
-		DimmerHistoryPoint dhp = new DimmerHistoryPoint();
-		dhp.setDevice(this);
-		dhp.setRegistered(new Date());
-		dhp.setValue(level);
-		historyPoints.add(dhp);
+		addHistoryPoint(level);
 	}
 	
 	@Override
@@ -37,6 +36,14 @@ public class MockDimmer extends Device implements Switchable, Dimmable {
 		dim(255);
 	}
 	
+	public void addHistoryPoint(int level) {
+		DimmerHistoryPoint dhp = new DimmerHistoryPoint();
+		dhp.setDevice(this);
+		dhp.setRegistered(new Date());
+		dhp.setValue(level);
+		historyPoints.add(dhp);
+	}
+
 	@Override
 	public String getType() {
 		return "dimmer";

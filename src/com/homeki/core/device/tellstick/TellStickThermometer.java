@@ -9,12 +9,20 @@ import com.homeki.core.device.TemperatureHistoryPoint;
 
 @Entity
 public class TellStickThermometer extends Device {
+	public TellStickThermometer() {
+		
+	}
+	
+	public TellStickThermometer(double defaultValue) {
+		addHistoryPoint(defaultValue);
+	}
+	
 	@Override
 	public String getType() {
 		return "thermometer";
 	}
 	
-	public void addHistoryValue(double value) {
+	public void addHistoryPoint(double value) {
 		TemperatureHistoryPoint thp = new TemperatureHistoryPoint();
 		thp.setDevice(this);
 		thp.setRegistered(new Date());

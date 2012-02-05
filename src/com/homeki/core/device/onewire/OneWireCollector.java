@@ -19,10 +19,8 @@ public class OneWireCollector extends ControlledThread {
 		@SuppressWarnings("unchecked")
 		List<OneWireIntervalLoggable> devices = session.createCriteria(OneWireIntervalLoggable.class).list();
 		
-		for (OneWireIntervalLoggable d : devices) {
+		for (OneWireIntervalLoggable d : devices)
 			d.updateValue();
-			session.save(d);
-		}
 		
 		Hibernate.closeSession(session);
 	}

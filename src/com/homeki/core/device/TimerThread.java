@@ -6,15 +6,12 @@ import java.util.List;
 import org.hibernate.Session;
 
 import com.homeki.core.main.ControlledThread;
-import com.homeki.core.main.L;
 import com.homeki.core.storage.Hibernate;
 
 public class TimerThread extends ControlledThread {
-	// SortedSet<TimerTrigger> timers;
 	
 	public TimerThread(int interval) {
 		super(interval);
-		// timers = new TreeSet<TimerTrigger>();
 	}
 	
 	@Override
@@ -26,10 +23,10 @@ public class TimerThread extends ControlledThread {
 		
 		Calendar c = Calendar.getInstance();
 		
-		int current_time = c.get(Calendar.HOUR) * 3600 + c.get(Calendar.MINUTE) * 60 + c.get(Calendar.SECOND);
-//		System.out.println("Checking timers, current time is" + current_time);
+		int currentTime = c.get(Calendar.HOUR) * 3600 + c.get(Calendar.MINUTE) * 60 + c.get(Calendar.SECOND);
+		
 		for (TimerTrigger t : list) {
-			if (Math.abs(current_time - t.getSecondsFromMidnight()) < 15)
+			if (Math.abs(currentTime - t.getSecondsFromMidnight()) < 15)
 				switch (t.getRepeatType()) {
 				case 0:
 					fire(t);
