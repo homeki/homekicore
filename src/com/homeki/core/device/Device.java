@@ -93,6 +93,6 @@ public abstract class Device {
 	public abstract String getType();
 	
 	public static Device getByInternalId(Session session, String internalId) {
-		return (Device) session.createCriteria(Device.class).add(Restrictions.eq("internal_id", internalId)).uniqueResult();
+		return (Device) session.createCriteria(Device.class).add(Restrictions.eq("internalId", internalId)).uniqueResult();
 	}
 }
