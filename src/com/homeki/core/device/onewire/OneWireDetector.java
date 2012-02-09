@@ -2,7 +2,9 @@ package com.homeki.core.device.onewire;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,8 +17,13 @@ import com.homeki.core.main.L;
 import com.homeki.core.storage.Hibernate;
 
 public class OneWireDetector extends ControlledThread {
+	private final static String DETECTOR = "detector";
+	
+	private Set<String> loggedSet;
+	
 	public OneWireDetector() {
 		super(Configuration.ONEWIRE_DETECTOR_INTERVAL);
+		loggedSet = new HashSet<String>();
 	}
 	
 	private List<String> findInternalIds() {
@@ -25,8 +32,8 @@ public class OneWireDetector extends ControlledThread {
 		
 		String[] items = root.list();
 
-		if (items == null) {
-			L.w("1-wire network not found. Detection of devices failed.");
+		if (items == null && loggedSet.add(DETECTOR)) {
+			L.e("1-wire network not found. Detection of devices failed.");
 		} else { 
 			for (String s : items) {
 				Pattern p = Pattern.compile("[0-9A-F]{2}\\.[0-9A-F]{12}");
@@ -35,6 +42,9 @@ public class OneWireDetector extends ControlledThread {
 					dirList.add(m.group());
 				}
 			}
+		
+			if (loggedSet.remove(DETECTOR))
+				L.i("1-wire network found again. Detection of devices succeeded.");
 		}
 		
 		return dirList;
@@ -56,9 +66,8 @@ public class OneWireDetector extends ControlledThread {
 					dev = new OneWireThermometer(0.0);
 					dev.setInternalId(s);
 					session.save(dev);
-				} else if (!type.equals("DS1420")) {
-					L.w("Found no corresponding device for 1-wire device type " + type + ".");
-					continue;
+				} else if (loggedSet.add(s)) {
+					L.e("Found no corresponding device for 1-wire device with internal id " + s + " and type " + type + ".");
 				}
 			}
 		}
