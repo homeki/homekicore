@@ -34,12 +34,10 @@ public abstract class ControlledThread extends Thread {
 			}
 		} catch (InterruptedException ignore) { }
 		
-		if (!shutdown) {
+		if (!shutdown)
 			L.e("Thread exited without permission.");
-		} else {
-			if (!quiet)
-				L.i("Thread was shut down.");
-		}
+		else if (!quiet)
+			L.i("Thread was shut down.");
 	}
 
 	protected abstract void iteration() throws InterruptedException;
