@@ -1,8 +1,6 @@
 package com.homeki.core.device.onewire;
 
-import com.homeki.core.main.ConfigurationFile;
 import com.homeki.core.main.ControlledThread;
-import com.homeki.core.main.L;
 import com.homeki.core.main.Module;
 
 public class OneWireModule implements Module {
@@ -14,18 +12,11 @@ public class OneWireModule implements Module {
 	}
 	
 	@Override
-	public void construct(ConfigurationFile file) {
-		OneWireDevice.rootPath = file.getString("module.onewire.path");
-		
-		if (OneWireDevice.rootPath.equals("")) {
-			L.e("No 1-wire root path specified in configuration file. Skipped starting 1-wire threads.");
-			return;
-		}
-
-		detectorThread = new OneWireDetector(60000);
+	public void construct() {		
+		detectorThread = new OneWireDetector();
 		detectorThread.start();
 		
-		collectorThread = new OneWireCollector(60000);
+		collectorThread = new OneWireCollector();
 		collectorThread.start();
 	}
 	

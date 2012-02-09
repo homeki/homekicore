@@ -1,6 +1,5 @@
 package com.homeki.core.main;
 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +15,6 @@ public class ThreadMaster {
 	private ControlledThread httpThread;
 	private ControlledThread timerThread;
 	private List<Module> modules;
-	private ConfigurationFile file;
 	
 	public ThreadMaster() {
 		addShutdownHook();
@@ -48,20 +46,7 @@ public class ThreadMaster {
 		L.i("Homeki Core version " + getVersion() + " started.");
 
 		// instantiate
-		file = new ConfigurationFile();
 		modules = new ArrayList<Module>();
-		
-		// load and check configuration file
-		try {
-			file.load();
-		} catch (FileNotFoundException ex) {
-			L.e("Could not find configuration file, killing Homeki.");
-			return;
-		} catch (Exception ex) {
-			L.e("Exception when parsing configuration file.", ex);
-			return;
-		}
-		L.i("Configuration file read.");
 		
 		// perform, if necessary, database upgrades
 		try {
@@ -98,7 +83,7 @@ public class ThreadMaster {
 		setupModules();
 		
 		for (Module module : modules)
-			module.construct(file);
+			module.construct();
 		
 		try {
 			httpThread = new HttpListenerThread();
@@ -109,7 +94,7 @@ public class ThreadMaster {
 		}
 		
 		try {
-			timerThread = new TimerThread(10000);
+			timerThread = new TimerThread();
 			timerThread.start();
 		} catch (Exception e) {
 			L.e("Could not start TimerThread, killing Homeki.");
@@ -118,15 +103,13 @@ public class ThreadMaster {
 	}
 	
 	private void setupModules() {
-		if (file.getBool("module.mock.use"))
+		if (Configuration.MOCK_ENABLED) {
+			L.i("Mock module enabled.");
 			modules.add(new MockModule());
-		if (file.getBool("module.tellstick.use"))
-			modules.add(new TellStickModule());
-		if (file.getBool("module.onewire.use"))
-			modules.add(new OneWireModule());
-		
-		if (modules.size() == 0)
-			L.w("No modules enabled, nothing will happen.");
+		}
+			
+		modules.add(new TellStickModule());
+		modules.add(new OneWireModule());
 	}
 	
 	public void shutdown() {

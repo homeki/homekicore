@@ -9,18 +9,19 @@ import java.util.regex.Pattern;
 import org.hibernate.Session;
 
 import com.homeki.core.device.Device;
+import com.homeki.core.main.Configuration;
 import com.homeki.core.main.ControlledThread;
 import com.homeki.core.main.L;
 import com.homeki.core.storage.Hibernate;
 
 public class OneWireDetector extends ControlledThread {
-	public OneWireDetector(int interval) {
-		super(interval);
+	public OneWireDetector() {
+		super(Configuration.ONEWIRE_DETECTOR_INTERVAL);
 	}
 	
 	private List<String> findInternalIds() {
 		List<String> dirList = new ArrayList<String>();
-		File root = new File(OneWireDevice.rootPath);
+		File root = new File(Configuration.ONEWIRE_PATH);
 		
 		String[] items = root.list();
 
@@ -45,7 +46,7 @@ public class OneWireDetector extends ControlledThread {
 		Session session = Hibernate.openSession();
 		
 		for (String s : ids) {
-			String deviceDirPath = OneWireDevice.rootPath + "/" + s;
+			String deviceDirPath = Configuration.ONEWIRE_PATH + "/" + s;
 			Device dev = Device.getByInternalId(session, s);
 			
 			if (dev == null) {

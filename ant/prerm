@@ -10,7 +10,6 @@ if [ "$1" = "remove" ] ; then
 	rm -f /etc/rc2.d/S99homeki
 	mkdir -p /home/homeki
 	mv -f /opt/homeki/db /home/homeki/`date +%Y%m%d-%H%M%S`-db
-	mv -f /opt/homeki/homeki.conf /home/homeki/`date +%Y%m%d-%H%M%S`-homeki.conf
 fi
 
 exit 0

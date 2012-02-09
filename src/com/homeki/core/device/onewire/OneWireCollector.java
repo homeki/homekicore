@@ -4,12 +4,13 @@ import java.util.List;
 
 import org.hibernate.Session;
 
+import com.homeki.core.main.Configuration;
 import com.homeki.core.main.ControlledThread;
 import com.homeki.core.storage.Hibernate;
 
 public class OneWireCollector extends ControlledThread {
-	public OneWireCollector(int interval) {
-		super(interval);
+	public OneWireCollector() {
+		super(Configuration.ONEWIRE_COLLECTOR_INTERVAL);
 	}
 	
 	@Override

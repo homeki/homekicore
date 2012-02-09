@@ -1,11 +1,7 @@
 package com.homeki.core.device.tellstick;
 
-import java.util.ArrayList;
-import java.util.Scanner;
-
-import com.homeki.core.main.ConfigurationFile;
+import com.homeki.core.main.Configuration;
 import com.homeki.core.main.ControlledThread;
-import com.homeki.core.main.L;
 import com.homeki.core.main.Module;
 
 public class TellStickModule implements Module {
@@ -17,24 +13,10 @@ public class TellStickModule implements Module {
 	}
 	
 	@Override
-	public void construct(ConfigurationFile file) {
+	public void construct() {
 		TellStickNative.open();
 		
-		String idString = file.getString("module.tellstick.allowedsensors");
-		ArrayList<Integer> idList = new ArrayList<Integer>();
-		Scanner sc = new Scanner(idString);
-		sc.useDelimiter(",");
-		
-		while (sc.hasNextInt()) {
-			try {
-				idList.add(sc.nextInt());
-			} catch (Exception ex) {
-				L.e("Error parsing configuration file value module.tellstick.allowedsensors.", ex);
-				break;
-			}
-		}
-		
-		detectorThread = new TellStickDetector(60000, idList);
+		detectorThread = new TellStickDetector(Configuration.TELLSTICK_DETECTOR_INTERVAL);
 		detectorThread.start();
 		
 		listenerThread = new TellStickListener();

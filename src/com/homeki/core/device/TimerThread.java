@@ -5,13 +5,14 @@ import java.util.List;
 
 import org.hibernate.Session;
 
+import com.homeki.core.main.Configuration;
 import com.homeki.core.main.ControlledThread;
 import com.homeki.core.storage.Hibernate;
 
 public class TimerThread extends ControlledThread {
 	
-	public TimerThread(int interval) {
-		super(interval);
+	public TimerThread() {
+		super(Configuration.TIMER_THREAD_INTERVAL);
 	}
 	
 	@Override

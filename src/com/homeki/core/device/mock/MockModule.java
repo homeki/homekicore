@@ -3,13 +3,12 @@ package com.homeki.core.device.mock;
 import org.hibernate.Session;
 
 import com.homeki.core.device.Device;
-import com.homeki.core.main.ConfigurationFile;
 import com.homeki.core.main.Module;
 import com.homeki.core.storage.Hibernate;
 
 public class MockModule implements Module {
 	@Override
-	public void construct(ConfigurationFile file) {
+	public void construct() {
 		Session session = Hibernate.openSession();
 		
 		addMockDevice(session, "switch1", new MockSwitch(false));

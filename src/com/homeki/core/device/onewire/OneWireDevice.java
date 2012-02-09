@@ -7,11 +7,10 @@ import java.util.Scanner;
 import javax.persistence.Entity;
 
 import com.homeki.core.device.Device;
+import com.homeki.core.main.Configuration;
 
 @Entity
 public abstract class OneWireDevice extends Device {
-	public static String rootPath;
-	
 	public OneWireDevice() {
 		
 	}
@@ -36,7 +35,7 @@ public abstract class OneWireDevice extends Device {
 	}
 	
 	protected String getStringVar(String var) {
-		return getStringVar(OneWireDevice.rootPath + "/" + internalId, var);
+		return getStringVar(Configuration.ONEWIRE_PATH + "/" + internalId, var);
 	}
 	
 	protected double getDoubleVar(String var) {
