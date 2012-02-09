@@ -1,5 +1,5 @@
 <project>
-	<property name="version" value="0.0.48" />
+	<property name="version" value="0.0.49" />
 
 	<path id="ant-deb.classpath">
 		<fileset dir="../ant" includes="*.jar" />
