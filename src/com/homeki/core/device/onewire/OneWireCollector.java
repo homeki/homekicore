@@ -37,7 +37,7 @@ public class OneWireCollector extends ControlledThread {
 					L.i("Update value for device with internal id " + internalId + " succeeded again.");
 			} catch (Exception ex) {
 				if (loggedSet.add(internalId))
-					L.e("Could not update value for device with internal id " + internalId + ".", ex);
+					L.e("Could not update value for device with internal id " + internalId + ". Log message throttled until next success.", ex);
 			}
 		}
 		

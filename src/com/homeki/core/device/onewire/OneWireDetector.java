@@ -33,7 +33,7 @@ public class OneWireDetector extends ControlledThread {
 		String[] items = root.list();
 
 		if (items == null && loggedSet.add(DETECTOR)) {
-			L.e("1-wire network not found. Detection of devices failed.");
+			L.e("1-wire network not found. Detection of devices failed. Log message throttled until next success.");
 		} else { 
 			for (String s : items) {
 				Pattern p = Pattern.compile("[0-9A-F]{2}\\.[0-9A-F]{12}");
@@ -67,7 +67,7 @@ public class OneWireDetector extends ControlledThread {
 					dev.setInternalId(s);
 					session.save(dev);
 				} else if (loggedSet.add(s)) {
-					L.e("Found no corresponding device for 1-wire device with internal id " + s + " and type " + type + ".");
+					L.e("Found no corresponding device for 1-wire device with internal id " + s + " and type " + type + ". Log message throttled until application restart.");
 				}
 			}
 		}
