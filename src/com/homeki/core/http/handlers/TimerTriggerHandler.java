@@ -11,7 +11,7 @@ import com.homeki.core.storage.Hibernate;
 
 public class TimerTriggerHandler extends HttpHandler {
 	public enum Actions {
-		ADD, GET, BAD_ACTION, SET
+		ADD, GET, SET, BAD_ACTION
 	}
 	
 	@Override
