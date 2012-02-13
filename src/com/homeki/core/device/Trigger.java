@@ -43,6 +43,7 @@ public abstract class Trigger {
 	
 	public Trigger() {
 		this.devices = new HashSet<Device>(0);
+		this.name = "";
 	}
 	
 	public Integer getId() {

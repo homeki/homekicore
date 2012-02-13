@@ -77,4 +77,14 @@
 	<changeSet id="8" author="jonas">
 		<createSequence sequenceName="trigger_sequence"/>
 	</changeSet>
+	
+	<changeSet id="9" author="jonas">
+		<createTable tableName="setting">
+			<column name="id" type="INTEGER" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="setting_key" type="VARCHAR(100)" />
+			<column name="setting_value" type="VARCHAR(255)" />
+		</createTable>
+	</changeSet>
 </databaseChangeLog>
