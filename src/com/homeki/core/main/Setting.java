@@ -8,14 +8,14 @@ import javax.persistence.Id;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
-import com.homeki.core.device.Device;
-
 @Entity
 public class Setting {
+	@SuppressWarnings("unused")
 	@Id
 	@GeneratedValue
 	private int id;
 	
+	@SuppressWarnings("unused")
 	@Column(name="setting_key")
 	private String key;
 	

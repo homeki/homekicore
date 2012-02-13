@@ -9,13 +9,13 @@ import com.homeki.core.device.tellstick.TellStickDimmer;
 import com.homeki.core.device.tellstick.TellStickNative;
 import com.homeki.core.device.tellstick.TellStickSwitch;
 import com.homeki.core.http.HttpHandler;
-import com.homeki.core.main.L;
 import com.homeki.core.main.Setting;
 import com.homeki.core.storage.Hibernate;
 
 public class DeviceTellstickHandler extends HttpHandler {
 	private static String NEXT_HOUSE = "TELLSTICK_NEXT_HOUSE_VALUE";
-	private static int SEED = 3764;
+	private static int HOUSE_SEED = 3764;
+	private static int UNIT = 3;
 	
 	public enum Actions {
 		ADD, LEARN, BAD_ACTION
@@ -52,29 +52,18 @@ public class DeviceTellstickHandler extends HttpHandler {
 		int nextHouse = Setting.getInt(session, NEXT_HOUSE);
 		
 		if (nextHouse == -1)
-			nextHouse = SEED;
+			nextHouse = HOUSE_SEED;
 		
 		Device dev;
-		int result;
-		
+
 		if (type.equals("switch")) {
-			dev = new TellStickSwitch(false);
-			result = TellStickNative.addSwitch(nextHouse, 3);
+			dev = new TellStickSwitch(false, nextHouse, UNIT);
 		} else if (type.equals("dimmer")) {
-			dev = new TellStickDimmer(0);
-			result = TellStickNative.addDimmer(nextHouse, 3);
+			dev = new TellStickDimmer(0, nextHouse, UNIT);
 		} else {
 			sendString(405, "Did not recognize type '" + type + "' as a valid TellStick type.");
 			return;
 		}
-		
-		if (result < 0) {
-			sendString(405, "Failed to add new TellStick device, error returned from underlying TellStick API.");
-			L.e("Failed to add new TellStick device of type '" + type + "', error returned from Homeki JNI library was " + result + ".");
-			return;
-		}
-		
-		dev.setInternalId(String.valueOf(result));
 		
 		Setting.putInt(session, NEXT_HOUSE, nextHouse+1);
 		session.save(dev);

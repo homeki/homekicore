@@ -92,6 +92,10 @@ public abstract class Device {
 	
 	public abstract String getType();
 	
+	public void delete(Session session) {
+		session.delete(this);
+	}
+	
 	public static Device getByInternalId(Session session, String internalId) {
 		return (Device) session.createCriteria(Device.class).add(Restrictions.eq("internalId", internalId)).uniqueResult();
 	}
