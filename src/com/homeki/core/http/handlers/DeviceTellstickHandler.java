@@ -1,14 +1,18 @@
 package com.homeki.core.http.handlers;
 
+import java.util.List;
 import java.util.StringTokenizer;
 
 import org.hibernate.Session;
 
 import com.homeki.core.device.Device;
+import com.homeki.core.device.tellstick.TellStickDevice;
 import com.homeki.core.device.tellstick.TellStickDimmer;
-import com.homeki.core.device.tellstick.TellStickNative;
+import com.homeki.core.device.tellstick.TellStickLearnable;
 import com.homeki.core.device.tellstick.TellStickSwitch;
 import com.homeki.core.http.HttpHandler;
+import com.homeki.core.http.json.JsonDevice;
+import com.homeki.core.http.json.JsonTellStickDevice;
 import com.homeki.core.main.Setting;
 import com.homeki.core.storage.Hibernate;
 
@@ -18,7 +22,7 @@ public class DeviceTellstickHandler extends HttpHandler {
 	private static int UNIT = 3;
 	
 	public enum Actions {
-		ADD, LEARN, BAD_ACTION
+		ADD, LIST, LEARN, BAD_ACTION
 	}
 	
 	@Override
@@ -35,6 +39,9 @@ public class DeviceTellstickHandler extends HttpHandler {
 		case ADD:
 			resolveAdd();
 			break;
+		case LIST:
+			resolveList();
+			break;
 		case LEARN:
 			resolveLearn();
 			break;
@@ -45,32 +52,59 @@ public class DeviceTellstickHandler extends HttpHandler {
 	}
 	
 	private void resolveAdd() {
-		String type = getStringParameter("type");
+		String post = getPost();
+		JsonTellStickDevice jsonDevice = gson.fromJson(post, JsonTellStickDevice.class);
 		
 		Session session = Hibernate.openSession();
 		
-		int nextHouse = Setting.getInt(session, NEXT_HOUSE);
+		int house;
+		int unit;
 		
-		if (nextHouse == -1)
-			nextHouse = HOUSE_SEED;
+		if (jsonDevice.house == null) {
+			house = Setting.getInt(session, NEXT_HOUSE);
+			if (house == -1)
+				house = HOUSE_SEED;
+		} else {
+			house = jsonDevice.house;
+		}
+		if (jsonDevice.unit == null) {
+			unit = UNIT;
+		} else {
+			unit = jsonDevice.unit;
+		}
 		
 		Device dev;
 
-		if (type.equals("switch")) {
-			dev = new TellStickSwitch(false, nextHouse, UNIT);
-		} else if (type.equals("dimmer")) {
-			dev = new TellStickDimmer(0, nextHouse, UNIT);
+		if (jsonDevice.type.equals("switch")) {
+			dev = new TellStickSwitch(false, house, unit);
+		} else if (jsonDevice.type.equals("dimmer")) {
+			dev = new TellStickDimmer(0, house, unit);
 		} else {
-			sendString(405, "Did not recognize type '" + type + "' as a valid TellStick type.");
+			sendString(405, "Did not recognize type '" + jsonDevice.type + "' as a valid TellStick type.");
 			return;
 		}
 		
-		Setting.putInt(session, NEXT_HOUSE, nextHouse+1);
+		if (jsonDevice.house == null)
+			Setting.putInt(session, NEXT_HOUSE, house+1);
+		
 		session.save(dev);
 		
 		Hibernate.closeSession(session);
 		
-		sendString(200, "TellStick device added successfully.");
+		JsonDevice newid = new JsonDevice();
+		newid.id = dev.getId();
+		sendString(200, gson.toJson(newid));
+	}
+	
+	private void resolveList() {
+		Session session = Hibernate.openSession();
+		
+		@SuppressWarnings("unchecked")
+		List<Device> list = session.createCriteria(TellStickDevice.class).list();
+		
+		sendString(200, gson.toJson(JsonDevice.convertList(list)));
+		
+		Hibernate.closeSession(session);
 	}
 	
 	private void resolveLearn() {
@@ -81,19 +115,19 @@ public class DeviceTellstickHandler extends HttpHandler {
 		
 		Session session = Hibernate.openSession();
 		
-		Device dev = (Device)session.get(Device.class, id);
+		TellStickDevice dev = (TellStickDevice)session.get(TellStickDevice.class, id);
 		
 		if (dev == null) {
-			sendString(405, "No device with specified ID found.");
+			sendString(405, "No TellStick device with specified ID found.");
+			return;
+		}
+		if (!(dev instanceof TellStickLearnable)) {
+			sendString(405, "Specified TellStick device does not support learn.");
 			return;
 		}
 		
-		if (dev instanceof TellStickSwitch || dev instanceof TellStickDimmer) {
-			TellStickNative.learn(Integer.valueOf(dev.getInternalId()));
-			sendString(200, "Learn command sent successfully.");
-		} else {
-			sendString(405, "Device with specified ID does not support the learn command.");
-		}
+		((TellStickLearnable)dev).learn();
+		sendString(200, "Learn command sent successfully.");
 		
 		Hibernate.closeSession(session);
 	}

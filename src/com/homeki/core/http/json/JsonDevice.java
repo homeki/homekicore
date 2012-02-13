@@ -12,6 +12,10 @@ public class JsonDevice {
 	public String description;
 	public Date added;
 	
+	public JsonDevice() {
+		
+	}
+	
 	public JsonDevice(Device d) {
 		type = d.getType();
 		id = d.getId();
