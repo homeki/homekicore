@@ -60,6 +60,8 @@ public class TimerTriggerHandler extends HttpHandler {
 		session.save(trigger);
 		
 		Hibernate.closeSession(session);
+		
+		sendString(200, "Trigger was updated successfully.");
 	}
 
 	private void resolveAdd() {
@@ -77,6 +79,10 @@ public class TimerTriggerHandler extends HttpHandler {
 		session.save(trigger);
 		
 		Hibernate.closeSession(session);
+		
+		JsonTimerTrigger newid = new JsonTimerTrigger();
+		newid.id = trigger.getId();
+		sendString(200, gson.toJson(newid));
 	}
 	
 	private void resolveGet() {
