@@ -39,10 +39,12 @@ public class TellStickListener extends ControlledThread {
 				// could probably be handled more... elegant
 				try {
 					int level = Integer.parseInt(s[2]);
-					((TellStickDimmer)d).addHistoryPoint(level);
+					int value = 1;
+					((TellStickDimmer)d).addHistoryPoint(value, level);
 					L.i("Received '" + level + "' from TellStickListener.");
 				} catch (NumberFormatException ex) {
-					((TellStickDimmer)d).addHistoryPoint(0);
+					int value = 0;
+					((TellStickDimmer)d).addHistoryPoint(value, session);
 					L.i("Received 'NumberFormatException' from TellStickListener.");
 				}
 
@@ -51,6 +53,8 @@ public class TellStickListener extends ControlledThread {
 				((TellStickThermometer)d).addHistoryPoint(value);
 				L.i("Received '" + value + "'C from TellStickListener.");
 			}
+		} else if (type.equals("sensor")){
+			
 		}
 		
 		Hibernate.closeSession(session);

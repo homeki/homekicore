@@ -102,7 +102,7 @@ public class DeviceTellstickHandler extends HttpHandler {
 		@SuppressWarnings("unchecked")
 		List<Device> list = session.createCriteria(TellStickDevice.class).list();
 		
-		sendString(200, gson.toJson(JsonDevice.convertList(list)));
+		sendString(200, gson.toJson(JsonDevice.convertList(list, session)));
 		
 		Hibernate.closeSession(session);
 	}

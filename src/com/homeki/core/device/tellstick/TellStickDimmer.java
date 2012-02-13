@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 
+import org.hibernate.Session;
+
 import com.homeki.core.device.DimmerHistoryPoint;
 import com.homeki.core.device.abilities.Dimmable;
 import com.homeki.core.device.abilities.Switchable;
@@ -15,7 +17,8 @@ public class TellStickDimmer extends TellStickDevice implements Dimmable, Switch
 	}
 	
 	public TellStickDimmer(int defaultLevel) {
-		addHistoryPoint(defaultLevel);
+		int off = 0;
+		addHistoryPoint(off, defaultLevel);
 	}
 	
 	public TellStickDimmer(int defaultLevel, int house, int unit) {
@@ -29,10 +32,10 @@ public class TellStickDimmer extends TellStickDevice implements Dimmable, Switch
 	}
 	
 	@Override
-	public void dim(int level) {
-		if (level > 0) {
+	public void dim(int level, boolean on) {
+		if (on) {
 			TellStickNative.dim(Integer.parseInt(getInternalId()), level);
-		} else if (level == 0) {
+		} else {
 			off();
 		}
 	}
@@ -44,7 +47,7 @@ public class TellStickDimmer extends TellStickDevice implements Dimmable, Switch
 	
 	@Override
 	public void on() {
-		dim(255);
+		TellStickNative.turnOn(Integer.parseInt(getInternalId()));
 	}
 
 	@Override
@@ -52,11 +55,22 @@ public class TellStickDimmer extends TellStickDevice implements Dimmable, Switch
 		return "dimmer";
 	}
 	
-	public void addHistoryPoint(int value) {
+	public void addHistoryPoint(int value, Session session) {
 		DimmerHistoryPoint dhp = new DimmerHistoryPoint();
 		dhp.setDevice(this);
 		dhp.setRegistered(new Date());
 		dhp.setValue(value);
+		int level = ((DimmerHistoryPoint)getState(session)).getLevel();
+		dhp.setLevel(level);
+		historyPoints.add(dhp);
+	}
+	
+	public void addHistoryPoint(int value, int level) {
+		DimmerHistoryPoint dhp = new DimmerHistoryPoint();
+		dhp.setDevice(this);
+		dhp.setRegistered(new Date());
+		dhp.setValue(value);
+		dhp.setLevel(level);
 		historyPoints.add(dhp);
 	}
 

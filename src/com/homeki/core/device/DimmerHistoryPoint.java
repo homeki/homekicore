@@ -9,6 +9,9 @@ public class DimmerHistoryPoint extends HistoryPoint {
 	@Column(name="int_value")
 	private Integer value;
 	
+	@Column(name="level")
+	private Integer level;
+	
 	public DimmerHistoryPoint() {
 		
 	}
@@ -23,5 +26,13 @@ public class DimmerHistoryPoint extends HistoryPoint {
 	
 	public void setValue(Integer value) {
 		this.value = value;
+	}
+
+	public Integer getLevel() {
+		return level;
+	}
+
+	public void setLevel(Integer level) {
+		this.level = level;
 	}
 }

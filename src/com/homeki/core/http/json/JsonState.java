@@ -1,10 +1,16 @@
 package com.homeki.core.http.json;
 
+import com.homeki.core.device.DimmerHistoryPoint;
+import com.homeki.core.device.HistoryPoint;
+
 public class JsonState {
-	@SuppressWarnings("unused")
-	private Object status;
+	public Object value;
+	public Integer level;
 	
-	public JsonState(Object status) {
-		this.status = status;
+	public JsonState(HistoryPoint hp) {
+		value = hp.getValue();
+		if (hp instanceof DimmerHistoryPoint) {
+			level = ((DimmerHistoryPoint)hp).getLevel();
+		}
 	}
 }

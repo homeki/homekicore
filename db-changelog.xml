@@ -1,14 +1,12 @@
-<databaseChangeLog
-    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd
     http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
 	<changeSet id="1" author="jonas">
 		<createTable tableName="device">
 			<column name="id" type="INTEGER" autoIncrement="true">
-				<constraints primaryKey="true" nullable="false"/>
+				<constraints primaryKey="true" nullable="false" />
 			</column>
 			<column name="internal_id" type="VARCHAR(50)" defaultValue="" />
 			<column name="name" type="VARCHAR(255)" defaultValue="" />
@@ -16,48 +14,48 @@
 			<column name="added" type="TIMESTAMP" defaultValueDate="NULL" />
 		</createTable>
 	</changeSet>
-		
+
 	<changeSet id="2" author="jonas">
 		<createTable tableName="dimmer_history_point">
 			<column name="id" type="INTEGER" autoIncrement="true">
-				<constraints primaryKey="true" nullable="false"/>
+				<constraints primaryKey="true" nullable="false" />
 			</column>
 			<column name="device_id" type="INTEGER" />
 			<column name="registered" type="TIMESTAMP" />
 			<column name="int_value" type="INTEGER" />
 		</createTable>
 	</changeSet>
-	
+
 	<changeSet id="3" author="jonas">
 		<createTable tableName="switch_history_point">
 			<column name="id" type="INTEGER" autoIncrement="true">
-				<constraints primaryKey="true" nullable="false"/>
+				<constraints primaryKey="true" nullable="false" />
 			</column>
 			<column name="device_id" type="INTEGER" />
 			<column name="registered" type="TIMESTAMP" />
 			<column name="bool_value" type="BIT" />
 		</createTable>
 	</changeSet>
-	
+
 	<changeSet id="4" author="jonas">
 		<createTable tableName="temperature_history_point">
 			<column name="id" type="INTEGER" autoIncrement="true">
-				<constraints primaryKey="true" nullable="false"/>
+				<constraints primaryKey="true" nullable="false" />
 			</column>
 			<column name="device_id" type="INTEGER" />
 			<column name="registered" type="TIMESTAMP" />
 			<column name="double_value" type="DOUBLE" />
 		</createTable>
 	</changeSet>
-	
+
 	<changeSet id="5" author="jonas">
-		<createSequence sequenceName="history_point_sequence"/>
+		<createSequence sequenceName="history_point_sequence" />
 	</changeSet>
-	
+
 	<changeSet id="6" author="jonas">
 		<createTable tableName="timer_trigger">
 			<column name="id" type="INTEGER" autoIncrement="true">
-				<constraints primaryKey="true" nullable="false"/>
+				<constraints primaryKey="true" nullable="false" />
 			</column>
 			<column name="name" type="VARCHAR(255)" />
 			<column name="new_value" type="INTEGER" />
@@ -66,25 +64,42 @@
 			<column name="days" type="INTEGER" />
 		</createTable>
 	</changeSet>
-	
+
 	<changeSet id="7" author="jonas">
 		<createTable tableName="device_trigger">
 			<column name="device_id" type="INTEGER" />
 			<column name="trigger_id" type="INTEGER" />
 		</createTable>
 	</changeSet>
-	
+
 	<changeSet id="8" author="jonas">
-		<createSequence sequenceName="trigger_sequence"/>
+		<createSequence sequenceName="trigger_sequence" />
 	</changeSet>
-	
+
 	<changeSet id="9" author="jonas">
 		<createTable tableName="setting">
 			<column name="id" type="INTEGER" autoIncrement="true">
-				<constraints primaryKey="true" nullable="false"/>
+				<constraints primaryKey="true" nullable="false" />
 			</column>
 			<column name="setting_key" type="VARCHAR(100)" />
 			<column name="setting_value" type="VARCHAR(255)" />
 		</createTable>
 	</changeSet>
+
+	<changeSet id="10" author="linus">
+		<addColumn tableName="device">
+			<column name="active" type="BIT" defaultValueBoolean="true"/>
+		</addColumn>
+	</changeSet>
+
+	<changeSet id="11" author="linus">
+		<renameColumn tableName="dimmer_history_point" oldColumnName="int_value" newColumnName="level"/> 
+	</changeSet>
+
+	<changeSet id="12" author="linus">
+		<addColumn tableName="dimmer_history_point">
+			<column name="int_value" type="INTEGER" defaultValueNumeric="0"/>
+		</addColumn>
+	</changeSet>
+
 </databaseChangeLog>

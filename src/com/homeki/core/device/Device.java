@@ -49,6 +49,9 @@ public abstract class Device {
 	@Column
 	private Date added;
 	
+	@Column
+	private Boolean active;
+	
 	public Device() {
 		this.historyPoints = new HashSet<HistoryPoint>(0);
 		this.name = "";
@@ -101,4 +104,29 @@ public abstract class Device {
 	public static Device getByInternalId(Session session, String internalId) {
 		return (Device) session.createCriteria(Device.class).add(Restrictions.eq("internalId", internalId)).uniqueResult();
 	}
+	
+	public Boolean getActive() {
+		return active;
+	}
+	
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
+	
+	public HistoryPoint getState(Session session) {
+		Device dev = (Device) session.get(Device.class, id);
+		
+		if (dev == null) {
+			return null;
+		}
+		
+		HistoryPoint p = (HistoryPoint) session.createFilter(dev.getHistoryPoints(), "order by registered desc").setMaxResults(1).uniqueResult();
+		
+		if (p == null) {
+			return null;
+		}
+		
+		return p;
+	}
+	
 }

@@ -21,19 +21,19 @@ public class MockDimmer extends Device implements Switchable, Dimmable {
 	}
 	
 	@Override
-	public void dim(int level) {
+	public void dim(int level, boolean fuuuuuuuuuuuu) {
 		L.i("MockHistoryDimmerDevice '" + getInternalId() + "' now has dim level " + level + ".");
 		addHistoryPoint(level);
 	}
 	
 	@Override
 	public void off() {
-		dim(0);
+		dim(0, false);
 	}
 	
 	@Override
 	public void on() {
-		dim(255);
+		dim(255, true);
 	}
 	
 	public void addHistoryPoint(int level) {

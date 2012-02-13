@@ -12,12 +12,11 @@ import com.homeki.core.device.abilities.Dimmable;
 import com.homeki.core.device.abilities.Switchable;
 import com.homeki.core.http.HttpHandler;
 import com.homeki.core.http.json.JsonPair;
-import com.homeki.core.http.json.JsonState;
 import com.homeki.core.storage.Hibernate;
 
 public class DeviceStateHandler extends HttpHandler {
 	public enum Actions {
-		GET, SET, LIST, BAD_ACTION
+		SET, LIST, BAD_ACTION
 	}
 	
 	@Override
@@ -31,9 +30,6 @@ public class DeviceStateHandler extends HttpHandler {
 		} catch (Exception ex) {}
 		
 		switch (action) {
-		case GET:
-			resolveGet();
-			break;
 		case SET:
 			resolveSet();
 			break;
@@ -46,80 +42,54 @@ public class DeviceStateHandler extends HttpHandler {
 		}
 	}
 	
-	private void resolveGet() {
-		int id = getIntParameter("deviceid");
-		
-		if (id == -1)
-			return;
-		
-		Session session = Hibernate.openSession();
-		
-		Device dev = (Device)session.get(Device.class, id);
-		
-		if (dev == null) {
-			sendString(405, "Could not load device from device ID.");
-			return;
-		}
-		
-		HistoryPoint p = (HistoryPoint)session.createFilter(dev.getHistoryPoints(), "order by registered desc")
-				.setMaxResults(1)
-				.uniqueResult();
-		
-		if (p == null) {
-			sendString(200, "");
-			return;
-		}
-		
-		JsonState status = new JsonState(p.getValue());
-		sendString(200, gson.toJson(status));
-		
-		Hibernate.closeSession(session);
-	}
-	
 	private void resolveSet() {
 		int id = getIntParameter("deviceid");
-		String value = getStringParameter("value").toLowerCase();
-		
-		if (id == -1 || value.equals(""))
+		int value = getIntParameter("value");
+
+		if (id == -1 || value == -1)
 			return;
 		
 		Session session = Hibernate.openSession();
 		
-		Device dev = (Device)session.get(Device.class, id);
+		Device dev = (Device) session.get(Device.class, id);
 		
 		if (dev == null) {
 			sendString(405, "Could not load device from device ID.");
 			return;
 		}
 		
-		if (value.equals("on") || value.equals("off")) {
-			// turn on/turn off
-			boolean on = value.equals("on");
-
-			if (dev instanceof Switchable) {
-				Switchable sw = (Switchable)dev;
-				
-				if (on) 
-					sw.on();
-				else
-					sw.off();
-			} else {
-				sendString(405, "Device with specified ID is not a switch.");
-			}
-		} else {
-			// dim
-			Integer level;
-			
-			if (dev instanceof Dimmable) {
-				try {
-					level = Integer.parseInt(value);
-					((Dimmable)dev).dim(level);
-				} catch (NumberFormatException ex) {
-					sendString(405, "Failed to parse '" + value + "' as integer.");
+		boolean on = value == 1;
+		// dim
+		
+		if (dev instanceof Dimmable) {
+			try {
+				//TODO: FIX THIS (SHOULD BE PARSE OPTIONAL ETC..)
+				int level = getIntParameter("level");
+				if (level != -1) {
+					((Dimmable)dev).dim(level, on);
+				} else {
+					Switchable sw = (Switchable) dev;
+					
+					if (on) {
+						sw.on();
+					} else {
+						sw.off();
+					}
+					//hack för att ta bort sendstringen från missad parse tidigare
+					sendString(200, "");
 				}
-			} else {
-				sendString(405, "Device with specified ID is not a dimmer.");
+			} catch (NumberFormatException ex) {
+				sendString(405, "Failed to parse '" + value + "' as integer.");
 			}
+		} else if (dev instanceof Switchable) {
+			Switchable sw = (Switchable) dev;
+			
+			if (on)
+				sw.on();
+			else
+				sw.off();
+		} else {
+			sendString(405, "Device with specified ID is not a switch.");
 		}
 		
 		Hibernate.closeSession(session);
@@ -135,7 +105,7 @@ public class DeviceStateHandler extends HttpHandler {
 		
 		Session session = Hibernate.openSession();
 		
-		Device dev = (Device)session.get(Device.class, id);
+		Device dev = (Device) session.get(Device.class, id);
 		
 		if (dev == null) {
 			sendString(405, "Could not load device from device ID.");
@@ -143,10 +113,7 @@ public class DeviceStateHandler extends HttpHandler {
 		}
 		
 		@SuppressWarnings("unchecked")
-		List<HistoryPoint> l = session.createFilter(dev.getHistoryPoints(), "where registered between ? and ? order by registered desc")
-				.setDate(0, from)
-				.setDate(1, to)
-				.list();
+		List<HistoryPoint> l = session.createFilter(dev.getHistoryPoints(), "where registered between ? and ? order by registered desc").setDate(0, from).setDate(1, to).list();
 		
 		sendString(200, gson.toJson(JsonPair.convertList(l)));
 		

@@ -74,7 +74,7 @@ public abstract class Trigger {
 	public void trigger() {
 		for (Device d : devices) {
 			if (d instanceof Dimmable) {
-				((Dimmable) d).dim(newValue);
+				((Dimmable) d).dim(newValue, newValue !=0);
 			} else if (d instanceof Switchable) {
 				if (newValue != 0) {
 					((Switchable) d).on();

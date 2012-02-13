@@ -64,7 +64,7 @@ public class DeviceHandler extends HttpHandler {
 		@SuppressWarnings("unchecked")
 		List<Device> list = session.createCriteria(Device.class).list();
 		
-		sendString(200, gson.toJson(JsonDevice.convertList(list)));
+		sendString(200, gson.toJson(JsonDevice.convertList(list, session)));
 		
 		Hibernate.closeSession(session);
 	}
