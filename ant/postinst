@@ -3,9 +3,27 @@
 set -e
 
 if [ "$1" = "configure" ] ; then
+	echo -n "creating homeki user: "
+	if [ "X`grep "^homeki:" /etc/passwd`" == "X" ]; then
+		useradd --home-dir /home/homeki --create-home --groups admin,plugdev homeki
+		echo "done"
+	else
+		echo "not needed, already exists"
+	fi
+	
+	echo -n "changing owner of /mnt/1wire: "
+	if [ -f /mnt/1wire ]; then
+		chown -R homeki:homeki /mnt/1wire
+		echo "done"
+	else
+		echo "does not exist"
+	fi
+
+	echo -n "changing owner and permissions in /opt/homeki: "
 	chown -R homeki:homeki /opt/homeki
 	chmod a+w /opt/homeki/stdout.log
 	chmod a+w /opt/homeki/stderr.log
+	echo "done"
 	
 	ln -sf /etc/init.d/homekid /etc/rc2.d/S99homeki
 	echo "------------------- APT: STARTED HOMEKI -------------------" >> /opt/homeki/stdout.log

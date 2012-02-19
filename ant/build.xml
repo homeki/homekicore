@@ -1,5 +1,5 @@
 <project>
-	<property name="version" value="0.0.51" />
+	<property name="version" value="0.0.52" />
 
 	<path id="ant-deb.classpath">
 		<fileset dir="../ant" includes="*.jar" />
@@ -61,16 +61,28 @@
 
 	<target name="dist">
 		<mkdir dir="../build/dist" />
-		<deb todir="../build/dist" package="homeki" section="misc" depends="default-jdk" prerm="prerm" postinst="postinst" preinst="preinst">
+		<deb todir="../build/dist" package="homeki" section="misc" depends="openjdk-6-jre-headless telldus-core" prerm="prerm" postinst="postinst" preinst="preinst" architecture="amd64">
 			<version upstream="${version}" />
 			<maintainer name="Homeki Development Team" email="contact@homeki.com" />
-			<description synopsis="Unified interface for all your sensors and devices connected to your server.">
-				Provides a JSON HTTP API for accessing, logging, modifying and managing various devices and sensors connected to your server.
+			<description synopsis="Unified interface for all your sensors and devices connected to your computer.">
+				Provides a JSON HTTP API for accessing, logging, modifying and managing various devices and sensors connected to your computer.
 			</description>
-			<tarfileset dir="../build/jar" prefix="opt/homeki/" filemode="755" />
-			<tarfileset file="../ant/homekid" prefix="etc/init.d" filemode="755" />
+			<tarfileset dir="../build/jar" prefix="/opt/homeki/" filemode="755" />
+			<tarfileset file="../ant/homekid" prefix="/etc/init.d" filemode="755" />
 			<tarfileset file="../ant/start.sh" prefix="/opt/homeki/" filemode="755" />
-			<tarfileset file="../libs/libhomekijni.so" prefix="/opt/homeki/lib" filemode="755" />
+			<tarfileset file="../libs/libhomekijni-amd64.so" prefix="/opt/homeki/lib/libhomekijni.so" filemode="755" />
+			<tarfileset file="../db-changelog.xml" prefix="/opt/homeki/" filemode="755" />
+		</deb>
+		<deb todir="../build/dist" package="homeki" section="misc" depends="openjdk-6-jre-headless telldus-core" prerm="prerm" postinst="postinst" preinst="preinst" architecture="i386">
+			<version upstream="${version}" />
+			<maintainer name="Homeki Development Team" email="contact@homeki.com" />
+			<description synopsis="Unified interface for all your sensors and devices connected to your computer.">
+				Provides a JSON HTTP API for accessing, logging, modifying and managing various devices and sensors connected to your computer.
+			</description>
+			<tarfileset dir="../build/jar" prefix="/opt/homeki/" filemode="755" />
+			<tarfileset file="../ant/homekid" prefix="/etc/init.d" filemode="755" />
+			<tarfileset file="../ant/start.sh" prefix="/opt/homeki/" filemode="755" />
+			<tarfileset file="../libs/libhomekijni-i386.so" prefix="/opt/homeki/lib/libhomekijni.so" filemode="755" />
 			<tarfileset file="../db-changelog.xml" prefix="/opt/homeki/" filemode="755" />
 		</deb>
 	</target>

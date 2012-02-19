@@ -3,15 +3,16 @@
 set -e
 
 if [ "$1" = "install" ] ; then
+	echo -n "creating /opt/homeki and log files: "
 	mkdir -p /opt/homeki
 	touch /opt/homeki/stdout.log
 	touch /opt/homeki/stderr.log
+	echo "done"
 fi
 
 if [ "$1" = "upgrade" ] ; then
 	/etc/init.d/homekid stop
 	echo "------------------- APT: STOPPED HOMEKI -------------------" >> /opt/homeki/stdout.log
-	rm -rf /opt/homeki/homeki.db 
 fi
 
 exit 0
