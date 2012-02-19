@@ -12,7 +12,7 @@ if [ "$1" = "configure" ] ; then
 	fi
 	
 	echo -n "changing owner of /mnt/1wire: "
-	if [ -f /mnt/1wire ]; then
+	if [ -d /mnt/1wire ]; then
 		chown -R homeki:homeki /mnt/1wire
 		echo "done"
 	else
