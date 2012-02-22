@@ -88,17 +88,18 @@
 
 	<changeSet id="10" author="linus">
 		<addColumn tableName="device">
-			<column name="active" type="BIT" defaultValueBoolean="true"/>
+			<column name="active" type="BIT" defaultValueBoolean="true" />
 		</addColumn>
 	</changeSet>
 
 	<changeSet id="11" author="linus">
-		<renameColumn tableName="dimmer_history_point" oldColumnName="int_value" newColumnName="level"/> 
+		<renameColumn tableName="dimmer_history_point"
+			oldColumnName="int_value" newColumnName="level" />
 	</changeSet>
 
 	<changeSet id="12" author="linus">
 		<addColumn tableName="dimmer_history_point">
-			<column name="int_value" type="INTEGER" defaultValueNumeric="0"/>
+			<column name="int_value" type="INTEGER" defaultValueNumeric="0" />
 		</addColumn>
 	</changeSet>
 
@@ -106,5 +107,15 @@
 		<addColumn tableName="device">
 			<column name="description" type="VARCHAR(255)" defaultValue="" />
 		</addColumn>
+	</changeSet>
+
+	<changeSet id="14" author="linus">
+		<modifyDataType tableName="switch_history_point"
+			columnName="bool_value" newDataType="INTEGER" />
+	</changeSet>
+
+	<changeSet id="15" author="linus">
+		<renameColumn tableName="switch_history_point"
+			oldColumnName="bool_value" newColumnName="int_switch_value" />
 	</changeSet>
 </databaseChangeLog>

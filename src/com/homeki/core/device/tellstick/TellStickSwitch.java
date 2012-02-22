@@ -48,7 +48,7 @@ public class TellStickSwitch extends TellStickDevice implements Switchable, Tell
 		SwitchHistoryPoint shp = new SwitchHistoryPoint();
 		shp.setDevice(this);
 		shp.setRegistered(new Date());
-		shp.setValue(value);
+		shp.setValue(value ? 1 : 0);
 		historyPoints.add(shp);
 	}
 

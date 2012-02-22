@@ -35,7 +35,7 @@ public class MockSwitch extends Device implements Switchable {
 		SwitchHistoryPoint dhp = new SwitchHistoryPoint();
 		dhp.setDevice(this);
 		dhp.setRegistered(new Date());
-		dhp.setValue(value);
+		dhp.setValue(value ? 1 : 0);
 		historyPoints.add(dhp);
 	}
 	
