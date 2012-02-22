@@ -71,7 +71,7 @@
 			<tarfileset dir="../build/jar" prefix="/opt/homeki/" filemode="755" />
 			<tarfileset file="../ant/homekid" prefix="/etc/init.d" filemode="755" />
 			<tarfileset file="../ant/start.sh" prefix="/opt/homeki/" filemode="755" />
-			<tarfileset file="../libs/libhomekijni-${arch}.so" prefix="/opt/homeki/lib/libhomekijni.so" filemode="755" />
+			<tarfileset file="../libs/libhomekijni-${arch}.so" fullpath="/opt/homeki/lib/libhomekijni.so" filemode="755" />
 			<tarfileset file="../db-changelog.xml" prefix="/opt/homeki/" filemode="755" />
 		</deb>
 	</target>
