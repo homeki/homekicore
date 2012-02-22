@@ -19,6 +19,7 @@ public class JsonDevice {
 	public JsonDevice() {
 		
 	}
+	
 	public JsonDevice(Device d, Session session) {
 		type = d.getType();
 		id = d.getId();
@@ -26,6 +27,7 @@ public class JsonDevice {
 		added = d.getAdded();
 		state = new JsonState(d.getState(session));
 		active = d.getActive();
+		description = d.getDescription();
 	}
 
 	public static JsonDevice[] convertList(List<Device> devices, Session session) {

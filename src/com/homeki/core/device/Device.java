@@ -52,11 +52,15 @@ public abstract class Device {
 	@Column
 	private Boolean active;
 	
+	@Column
+	private String description;
+	
 	public Device() {
 		this.historyPoints = new HashSet<HistoryPoint>(0);
 		this.name = "";
 		this.internalId = "";
 		this.added = new Date();
+		this.description = "";
 	}
 	
 	public int getId() {
@@ -111,6 +115,14 @@ public abstract class Device {
 	
 	public void setActive(Boolean active) {
 		this.active = active;
+	}
+	
+	public String getDescription() {
+		return description;
+	}
+	
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
 	public HistoryPoint getState(Session session) {

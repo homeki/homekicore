@@ -51,6 +51,8 @@ public class DeviceHandler extends HttpHandler {
 		
 		if (jdev.name != null)
 			dev.setName(jdev.name);
+		if (jdev.description != null)
+			dev.setDescription(jdev.description);
 		
 		session.save(dev);
 		Hibernate.closeSession(session);
