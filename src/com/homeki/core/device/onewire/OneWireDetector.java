@@ -56,6 +56,7 @@ public class OneWireDetector extends ControlledThread {
 		List<String> ids = findInternalIds();
 		Session session = Hibernate.openSession();
 		
+		// loop through 1-wire network; if device in homeki db is not found, create it
 		for (String s : ids) {
 			String deviceDirPath = Configuration.ONEWIRE_PATH + "/" + s;
 			Device dev = Device.getByInternalId(session, s);
@@ -73,6 +74,31 @@ public class OneWireDetector extends ControlledThread {
 			}
 		}
 		
+		@SuppressWarnings("unchecked")
+		List<OneWireDevice> devices = session.createCriteria(OneWireDevice.class).list();
+		
+		// loop through homeki onewire devices; if not found on 1-wire network, set homeki onewire device as inactive
+		for (OneWireDevice d : devices) {
+			boolean found = existsInArray(ids, d.getInternalId());
+			
+			if (!found && d.getActive()) {
+				d.setActive(false);
+				L.w("OneWireDevice with ID '" + d.getId() + "' and internal ID '" + d.getInternalId() + "' was not found any longer on the 1-wire network. Log message throttled until device is found again. Device inactivated.");
+			} else if (found && !d.getActive()) {
+				d.setActive(true);
+				L.w("Previously inactivated OneWireDevice with ID '" + d.getId() + "' and internal ID '" + d.getInternalId() + "' was found again on 1-wire network. Device reactivated.");
+			}
+		}
+		
 		Hibernate.closeSession(session);
+	}
+	
+	private boolean existsInArray(List<String> strings, String value) {
+		for (String s : strings) {
+			if (s.equals(value))
+				return true;
+		}
+		
+		return false;
 	}
 }

@@ -61,6 +61,7 @@ public abstract class Device {
 		this.internalId = "";
 		this.added = new Date();
 		this.description = "";
+		this.active = true;
 	}
 	
 	public int getId() {

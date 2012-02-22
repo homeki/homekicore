@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 
 import com.homeki.core.device.Device;
 import com.homeki.core.main.Configuration;
@@ -25,7 +26,9 @@ public class OneWireCollector extends ControlledThread {
 		Session session = Hibernate.openSession();
 		
 		@SuppressWarnings("unchecked")
-		List<OneWireIntervalLoggable> devices = session.createCriteria(OneWireIntervalLoggable.class).list();
+		List<OneWireIntervalLoggable> devices = session.createCriteria(OneWireIntervalLoggable.class)
+			.add(Restrictions.eq("active", true))
+			.list();
 		
 		for (OneWireIntervalLoggable d : devices) {
 			String internalId = ((Device)d).getInternalId();
