@@ -6,22 +6,22 @@ import javax.persistence.Entity;
 
 @Entity
 public class SwitchHistoryPoint extends HistoryPoint {
-	@Column(name="bool_value")
-	private Boolean value;
+	@Column(name="int_switch_value")
+	private Integer value;
 	
 	public SwitchHistoryPoint() {
 		
 	}
 	
-	public SwitchHistoryPoint(Boolean value) {
+	public SwitchHistoryPoint(Integer value) {
 		this.value = value;
 	}
 	
-	public Boolean getValue() {
+	public Integer getValue() {
 		return value;
 	}
 	
-	public void setValue(Boolean value) {
+	public void setValue(Integer value) {
 		this.value = value;
 	}
 }
