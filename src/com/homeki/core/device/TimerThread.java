@@ -23,9 +23,7 @@ public class TimerThread extends ControlledThread {
 		List<TimerTrigger> list = session.createCriteria(TimerTrigger.class).list();
 		
 		Calendar c = Calendar.getInstance();
-		
-		int currentTime = c.get(Calendar.HOUR) * 3600 + c.get(Calendar.MINUTE) * 60 + c.get(Calendar.SECOND);
-		
+		int currentTime = c.get(Calendar.HOUR_OF_DAY) * 3600 + c.get(Calendar.MINUTE) * 60 + c.get(Calendar.SECOND);
 		for (TimerTrigger t : list) {
 			try {
 				if (Math.abs(currentTime - t.getSecondsFromMidnight()) < 15)
