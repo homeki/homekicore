@@ -11,12 +11,12 @@ import org.apache.http.protocol.HttpService;
 
 import com.homeki.core.main.L;
 
-public class HttpRequestResolverThread extends Thread {
+public class HttpRequestResolverRunnable implements Runnable {
 	private HttpService httpservice;
     private HttpServerConnection conn;
     private HttpContext context;
 	
-    public HttpRequestResolverThread(HttpService httpservice, HttpServerConnection conn) {
+    public HttpRequestResolverRunnable(HttpService httpservice, HttpServerConnection conn) {
 		this.context = new BasicHttpContext(null);
         this.httpservice = httpservice;
         this.conn = conn;
