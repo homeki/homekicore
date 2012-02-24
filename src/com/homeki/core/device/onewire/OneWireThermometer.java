@@ -1,5 +1,6 @@
 package com.homeki.core.device.onewire;
 
+import java.io.FileNotFoundException;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -17,7 +18,7 @@ public class OneWireThermometer extends OneWireDevice implements OneWireInterval
 	}
 	
 	@Override
-	public void updateValue() {
+	public void updateValue() throws FileNotFoundException {
 		double value = getDoubleVar("temperature");
 		addHistoryPoint(value);
 	}

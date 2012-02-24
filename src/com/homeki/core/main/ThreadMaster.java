@@ -61,15 +61,6 @@ public class ThreadMaster {
 		}
 		L.i("Database version up to date.");
 		
-		// load native JNI library
-		try {
-			System.loadLibrary("homekijni");
-		} catch (UnsatisfiedLinkError ex) {
-			L.e("Failed to load Homeki JNI library, killing Homeki.");
-			return;
-		}
-		L.i("Native JNI library loaded.");
-		
 		// init Hibernate functionality
 		try {
 			Hibernate.init();
@@ -80,19 +71,36 @@ public class ThreadMaster {
 		}
 		L.i("Database access through Hibernate verified.");
 		
+		// load native JNI library
+		try {
+			System.loadLibrary("homekijni");
+		} catch (UnsatisfiedLinkError ex) {
+			L.e("Failed to load Homeki JNI library, killing Homeki.");
+			return;
+		}
+		L.i("Native JNI library loaded.");
+		
+		// setup and construct modules
 		setupModules();
 		
-		for (Module module : modules)
-			module.construct();
-		
+		for (Module module : modules) {
+			try { 
+				module.construct();
+			} catch (Exception ex) {
+				L.e("Failed to construct " + module.getClass().getSimpleName() + ".", ex);
+			}
+		}
+
+		// start HTTP listener socket
 		try {
 			httpThread = new HttpListenerThread();
 			httpThread.start();
-		} catch (Exception e) {
+		} catch (Exception ex) {
 			L.e("Could not bind socket for HttpListenerThread, killing Homeki.");
 			return;
 		}
 		
+		// start timer thread
 		try {
 			timerThread = new TimerThread();
 			timerThread.start();

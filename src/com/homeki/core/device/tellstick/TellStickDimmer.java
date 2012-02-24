@@ -23,10 +23,8 @@ public class TellStickDimmer extends TellStickDevice implements Dimmable, Switch
 	
 	public TellStickDimmer(int defaultLevel, int house, int unit) {
 		this(defaultLevel);
-		int result = TellStickNative.addDimmer(house, unit);
 		
-		if (result < 0)
-			throw new RuntimeException("Failed to add new TellStick dimmer device, error returned from Homeki JNI library was " + result + ".");
+		int result = TellStickNative.addDimmer(house, unit);
 		
 		this.internalId = String.valueOf(result);
 	}

@@ -17,7 +17,9 @@ import com.homeki.core.main.L;
 import com.homeki.core.storage.Hibernate;
 
 public class OneWireDetector extends ControlledThread {
-	private final static String DETECTOR = "detector";
+	private final static String DETECTOR_LOG_DIFF = "detector";
+	private final static String TYPE_LOG_DIFF = "type/";
+	private final static String NOCORR_LOG_DIFF = "nocorr/";
 	
 	private Set<String> loggedSet;
 	
@@ -33,8 +35,8 @@ public class OneWireDetector extends ControlledThread {
 		String[] items = root.list();
 
 		if (items == null) {
-			if (loggedSet.add(DETECTOR))
-				L.e("1-wire network not found. Detection of devices failed. Log message throttled until next success.");
+			if (loggedSet.add(DETECTOR_LOG_DIFF))
+				L.e("1-wire mount point " + Configuration.ONEWIRE_PATH + " not found. Detection of devices failed. Log message throttled until next success.");
 		} else { 
 			for (String s : items) {
 				Pattern p = Pattern.compile("[0-9A-F]{2}\\.[0-9A-F]{12}");
@@ -44,7 +46,7 @@ public class OneWireDetector extends ControlledThread {
 				}
 			}
 		
-			if (loggedSet.remove(DETECTOR))
+			if (loggedSet.remove(DETECTOR_LOG_DIFF))
 				L.i("1-wire network found again. Detection of devices succeeded.");
 		}
 		
@@ -56,20 +58,30 @@ public class OneWireDetector extends ControlledThread {
 		List<String> ids = findInternalIds();
 		Session session = Hibernate.openSession();
 		
-		// loop through 1-wire network; if device in homeki db is not found, create it
+		// loop through 1-wire network; if Homeki OneWireDevice is not found, create it
 		for (String s : ids) {
 			String deviceDirPath = Configuration.ONEWIRE_PATH + "/" + s;
 			Device dev = Device.getByInternalId(session, s);
 			
 			if (dev == null) {
-				String type = OneWireDevice.getStringVar(deviceDirPath, "type");
+				String type = "";
+				
+				try {
+					type = OneWireDevice.getStringVar(deviceDirPath, "type");
+					if (loggedSet.remove(TYPE_LOG_DIFF + s))
+						L.i("Succeeded retrieving device type for 1-wire device, had earlier failed.");
+				} catch (Exception ex) {
+					if (loggedSet.add(TYPE_LOG_DIFF + s))
+						L.e("Exception occured when determining type of/creating OneWireDevice. Log message throttled until next success.", ex);
+					continue;
+				}
 				
 				if (type.equals("DS18S20") || type.equals("DS18B20")) {
 					dev = new OneWireThermometer(0.0);
 					dev.setInternalId(s);
 					session.save(dev);
-				} else if (loggedSet.add(s)) {
-					L.e("Found no corresponding device for 1-wire device with internal id " + s + " and type " + type + ". Log message throttled until application restart.");
+				} else if (loggedSet.add(NOCORR_LOG_DIFF + s)) {
+					L.e("Found no corresponding device for 1-wire device with internal ID " + s + " and type " + type + ". Log message throttled until application restart.");
 				}
 			}
 		}
@@ -77,7 +89,7 @@ public class OneWireDetector extends ControlledThread {
 		@SuppressWarnings("unchecked")
 		List<OneWireDevice> devices = session.createCriteria(OneWireDevice.class).list();
 		
-		// loop through homeki onewire devices; if not found on 1-wire network, set homeki onewire device as inactive
+		// loop through Homeki OneWireDevices; if not found on 1-wire network, set Homeki OneWireDevice as inactive
 		for (OneWireDevice d : devices) {
 			boolean found = existsInArray(ids, d.getInternalId());
 			

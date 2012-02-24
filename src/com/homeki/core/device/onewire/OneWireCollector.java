@@ -7,7 +7,6 @@ import java.util.Set;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
-import com.homeki.core.device.Device;
 import com.homeki.core.main.Configuration;
 import com.homeki.core.main.ControlledThread;
 import com.homeki.core.main.L;
@@ -31,16 +30,16 @@ public class OneWireCollector extends ControlledThread {
 			.list();
 		
 		for (OneWireIntervalLoggable d : devices) {
-			String internalId = ((Device)d).getInternalId();
+			String internalId = d.getInternalId();
 			
 			try {
 				d.updateValue();
 				
 				if (loggedSet.remove(internalId))
-					L.i("Update value for device with internal id " + internalId + " succeeded again.");
+					L.i("Update value for device with internal ID " + internalId + " succeeded again.");
 			} catch (Exception ex) {
 				if (loggedSet.add(internalId))
-					L.e("Could not update value for device with internal id " + internalId + ". Log message throttled until next success.", ex);
+					L.e("Could not update value for device with internal ID " + internalId + ". Log message throttled until next success.", ex);
 			}
 		}
 		

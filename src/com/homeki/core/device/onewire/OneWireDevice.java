@@ -15,7 +15,7 @@ public abstract class OneWireDevice extends Device {
 		
 	}
 	
-	protected static String getStringVar(String deviceDirPath, String var) {
+	protected static String getStringVar(String deviceDirPath, String var) throws FileNotFoundException {
 		String varFilePath = deviceDirPath + "/" + var;
 		File varFile = new File(varFilePath);
 		Scanner varScanner = null;
@@ -23,22 +23,18 @@ public abstract class OneWireDevice extends Device {
 		try {
 			varScanner = new Scanner(varFile);
 			return varScanner.next();
-		} catch (FileNotFoundException ex) {
-			System.err.println("OneWireDevice should have found var file, didn't.");
-			return null;
-		}
-		finally {
+		} finally {
 			if (var != null) {
 				varScanner.close();
 			}
 		}
 	}
 	
-	protected String getStringVar(String var) {
+	protected String getStringVar(String var) throws FileNotFoundException {
 		return getStringVar(Configuration.ONEWIRE_PATH + "/" + internalId, var);
 	}
 	
-	protected double getDoubleVar(String var) {
+	protected double getDoubleVar(String var) throws FileNotFoundException {
 		return Double.parseDouble(getStringVar(var));
 	}
 }

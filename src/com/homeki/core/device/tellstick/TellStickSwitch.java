@@ -19,10 +19,8 @@ public class TellStickSwitch extends TellStickDevice implements Switchable, Tell
 	
 	public TellStickSwitch(boolean defaultValue, int house, int unit) {
 		this(defaultValue);
-		int result = TellStickNative.addSwitch(house, unit);
 		
-		if (result < 0)
-			throw new RuntimeException("Failed to add new TellStick switch device, error returned from Homeki JNI library was " + result + ".");
+		int result = TellStickNative.addSwitch(house, unit);
 		
 		this.internalId = String.valueOf(result);
 	}
