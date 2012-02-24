@@ -1,5 +1,7 @@
 package com.homeki.core.main;
 
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -108,6 +110,39 @@ public class ThreadMaster {
 			L.e("Could not start TimerThread, killing Homeki.");
 			return;
 		}
+		
+		new Thread() {
+		    public void run() {
+		 
+		        try {
+		            int port = 53005;
+		            DatagramSocket dsocket = new DatagramSocket(port);
+		            byte[] buffer = new byte[2048];
+		 
+		            DatagramPacket packet = new DatagramPacket(buffer,
+		                buffer.length);
+		            while (true) {
+		                System.out.println("Receiving...");
+		                dsocket.receive(packet);
+		                String msg = new String(buffer, 0, packet.getLength());
+		                System.out.println(packet.getAddress().getHostName()
+		                        + ": " + msg);
+		                packet.setLength(buffer.length);
+		                
+		                DatagramSocket replySocket = new DatagramSocket(1337);
+		                byte[] data = "sup".getBytes();
+		                DatagramPacket p = new DatagramPacket(data, data.length, packet.getAddress(), 1337);
+		                replySocket.send(p);
+		                replySocket.close();
+		            }
+		        } catch (Exception e) {
+		            e.printStackTrace();
+		        }
+		    }
+		}.start();
+		
+		
+		
 	}
 	
 	private void setupModules() {
