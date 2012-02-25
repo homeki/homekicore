@@ -110,12 +110,10 @@
 	</changeSet>
 
 	<changeSet id="14" author="linus">
-		<modifyDataType tableName="switch_history_point"
-			columnName="bool_value" newDataType="INTEGER" />
+		<modifyDataType tableName="switch_history_point" columnName="bool_value" newDataType="INTEGER" />
 	</changeSet>
 
 	<changeSet id="15" author="linus">
-		<renameColumn tableName="switch_history_point"
-			oldColumnName="bool_value" newColumnName="int_switch_value" />
+		<renameColumn tableName="switch_history_point" oldColumnName="bool_value" newColumnName="int_switch_value" />
 	</changeSet>
 </databaseChangeLog>

@@ -52,20 +52,20 @@ public abstract class HttpHandler implements HttpRequestHandler {
 		try {
 			URI uri = new URI(p.getAbsolutePath());
 			this.queryString = URLEncodedUtils.parse(uri, "UTF-8");
-		} catch (Exception ex) {
-			L.e("Exception parsing query string.", ex);
+		} catch (Exception e) {
+			L.e("Exception parsing query string.", e);
 		}
 		
 		StringTokenizer st = new StringTokenizer(p.getAbsolutePath(), "/?");
 		
 		try {
 			handle(method, st);
-		} catch (JsonSyntaxException ex) {
+		} catch (JsonSyntaxException e) {
 			try {
 				sendString(405, "Couldn't parse JSON, make sure it is well formed.");
 			} catch (Exception ignore) {}
-		} catch (Exception ex) {
-			L.e("Unknown exception occured while processing HTTP request.", ex);
+		} catch (Exception e) {
+			L.e("Unknown exception occured while processing HTTP request.", e);
 			try {
 				sendString(405, "Something went wrong while processing the HTTP request.");
 			} catch (Exception ignore) {}
@@ -76,7 +76,7 @@ public abstract class HttpHandler implements HttpRequestHandler {
 		try {
 			response.setStatusCode(statusCode);
 			response.setEntity(new StringEntity(content));
-		} catch (UnsupportedEncodingException ex) {
+		} catch (UnsupportedEncodingException e) {
 			L.e("Unsupported encoding when adding StringEntity to response.");
 		}
 	}
@@ -86,14 +86,14 @@ public abstract class HttpHandler implements HttpRequestHandler {
 		
 		try {
 			id = Integer.parseInt(getParameter(key));
-		} catch (NumberFormatException ex) {
+		} catch (NumberFormatException e) {
 			id = -1;
 			L.e("Could not parse '" + key + "' as an integer.");
 			sendString(405, "Could not parse '" + key + "' as an integer.");
-		} catch (MissingKeyException ex) {
+		} catch (MissingKeyException e) {
 			id = -1;
-			L.e(ex.getMessage());
-			sendString(405, ex.getMessage());
+			L.e(e.getMessage());
+			sendString(405, e.getMessage());
 		}
 		
 		return id;
@@ -114,9 +114,9 @@ public abstract class HttpHandler implements HttpRequestHandler {
 			L.e("Could not parse '" + key + "' as a date.");
 			sendString(405, "Could not parse '" + key + "' as a date.");
 			d = null;
-		} catch (MissingKeyException ex) {
-			L.e(ex.getMessage());
-			sendString(405, ex.getMessage());
+		} catch (MissingKeyException e) {
+			L.e(e.getMessage());
+			sendString(405, e.getMessage());
 			d = null;
 		}
 		
@@ -128,9 +128,9 @@ public abstract class HttpHandler implements HttpRequestHandler {
 		
 		try {
 			value = getParameter(key);
-		} catch (MissingKeyException ex) {
-			L.e(ex.getMessage());
-			sendString(405, ex.getMessage());
+		} catch (MissingKeyException e) {
+			L.e(e.getMessage());
+			sendString(405, e.getMessage());
 		}
 		
 		return value;
@@ -165,8 +165,8 @@ public abstract class HttpHandler implements HttpRequestHandler {
 		
 		try {
 			s = EntityUtils.toString(entity);
-		} catch (Exception ex) {
-			L.e("Could not parse POST data.", ex);
+		} catch (Exception e) {
+			L.e("Could not parse POST data.", e);
 			sendString(405, "Could not parse POST data.");
 		}
 		

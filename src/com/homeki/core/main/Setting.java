@@ -36,7 +36,7 @@ public class Setting {
 		
 		try {
 			tmp = Integer.valueOf(value);
-		} catch (NumberFormatException ex) {
+		} catch (NumberFormatException e) {
 			tmp = -1;
 		}
 		

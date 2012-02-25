@@ -32,15 +32,18 @@ public abstract class ControlledThread extends Thread {
 				if (interval > 0)
 					Thread.sleep(interval);
 			}
-		} catch (InterruptedException ignore) { }
+		} catch (InterruptedException ignore) { 
+		} catch (Exception e) {
+			L.e("Unhandled exception occured.", e);
+		}
 		
 		if (!shutdown)
-			L.e("Thread exited without permission.");
+			L.e("Thread was shut down due to exception.");
 		else if (!quiet)
-			L.i("Thread was shut down.");
+			L.i("Thread was shut down normally.");
 	}
 
-	protected abstract void iteration() throws InterruptedException;
+	protected abstract void iteration() throws Exception;
 	
 	public void shutdown() {
 		shutdown = true;

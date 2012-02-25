@@ -27,7 +27,7 @@ public class DeviceStateHandler extends HttpHandler {
 		Actions action = Actions.BAD_ACTION;
 		try {
 			action = Actions.valueOf(path.nextToken().toUpperCase());
-		} catch (Exception ex) {}
+		} catch (Exception e) {}
 		
 		switch (action) {
 		case SET:
@@ -78,7 +78,7 @@ public class DeviceStateHandler extends HttpHandler {
 					//hack för att ta bort sendstringen från missad parse tidigare
 					sendString(200, "");
 				}
-			} catch (NumberFormatException ex) {
+			} catch (NumberFormatException e) {
 				sendString(405, "Failed to parse '" + value + "' as integer.");
 			}
 		} else if (dev instanceof Switchable) {

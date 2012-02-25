@@ -19,10 +19,23 @@ public class TellStickModule implements Module {
 	
 	@Override
 	public void construct() {
-		TellStickNative.open();
-		synchronizeWithNativeDevices();
+		Session session = Hibernate.openSession();
+		try {
+			@SuppressWarnings("unchecked")
+			List<TellStickDevice> devices = session.createCriteria(TellStickDevice.class).list();
+			
+			for (TellStickDevice d : devices)
+				d.setActive(false);
+			
+			TellStickNative.open();
+			int[] nativeIds = TellStickNative.getDeviceIds();
+			
+			syncWithDb(session, nativeIds, devices);
+		} finally {
+			Hibernate.closeSession(session);
+		}
 		
-		listenerThread = new TellStickListener();
+		listenerThread = new TellStickListenerThread();
 		listenerThread.start();
 	}
 
@@ -32,66 +45,38 @@ public class TellStickModule implements Module {
 		TellStickNative.close();
 	}
 	
-	private void synchronizeWithNativeDevices() {
-		int[] ids = TellStickNative.getDeviceIds(); // returns NULL if no devices are found
-		Session session = Hibernate.openSession();
-		
-		if (ids != null) {
-			// loop through tellsticknative devices; if device in homeki db is not found, create it
-			for (int id : ids) {
-				String sid = String.valueOf(id);
-				String type = TellStickNative.getDeviceType(id);
-				
-				Device dev = Device.getByInternalId(session, sid);
-				
-				if (dev == null) {
-					if (type.equals("switch"))
-						dev = new TellStickSwitch(false);
-					else if (type.equals("dimmer"))
-						dev = new TellStickDimmer(0);
-					dev.setInternalId(sid);
-					session.save(dev);
-				} else {
-					dev.setActive(true);
-				}
-			}
-		}
-		
-		@SuppressWarnings("unchecked")
-		List<TellStickDevice> devices = session.createCriteria(TellStickDevice.class).list();
-		
-		// loop through homeki tellstick devices; if device in tellsticknative not found, set homeki tellstick device as inactive
-		for (TellStickDevice dev : devices) {
-			int id = -1;
+	private void syncWithDb(Session session, int[] nativeIds, List<TellStickDevice> devices) {
+		if (nativeIds == null)
+			return;
+	
+		for (int id : nativeIds) {
+			String sid = String.valueOf(id);
+			String type = TellStickNative.getDeviceType(id);
 			
-			try {
-				id = Integer.valueOf(dev.getInternalId());
-				boolean found = existsInArray(ids, id);
-				
-				if (!found) {
-					dev.setActive(false);
-					L.w("Found TellStickDevice with ID '" + dev.getId() + "' and internal ID '" + dev.getInternalId() + "' which didn't exist as a native device in Telldus API. Device inactivated.");
-				} else if (found && !dev.getActive()) {
-					dev.setActive(true);
-					L.i("Previously inactivated TellStickDevice with ID '" + dev.getId() + "' and internal ID '" + dev.getInternalId() + "' was once again found as a native device in Telldus API. Device reactivated.");
+			Device dev = existsInList(devices, sid);
+			
+			if (dev == null) {
+				if (type.equals("switch")) {
+					dev = new TellStickSwitch(false);
+				} else if (type.equals("dimmer")) {
+					dev = new TellStickDimmer(0);
+				} else {
+					L.e("Found no corresponding device for TellStick device with internal ID '" + sid + "' and type '" + type + "'.");
+					continue;
 				}
-			} catch (NumberFormatException ex) {
-				L.e("Failed to convert internal ID '" + dev.getInternalId() + "' of a TellStickDevice to an integer. This should always be possible to do, as the native Telldus API returns only numeric IDs. Something is amiss.");
+				dev.setInternalId(sid);
+				session.save(dev);
 			}
+			
+			dev.setActive(true);
 		}
-		
-		Hibernate.closeSession(session);
 	}
 	
-	private boolean existsInArray(int[] array, int value) {
-		if (array == null)
-			return false;
-		
-		for (int i : array) {
-			if (i == value) 
-				return true;
+	private TellStickDevice existsInList(List<TellStickDevice> devices, String internalId) {
+		for (TellStickDevice d : devices) {
+			if (d.getInternalId().equals(internalId))
+				return d;
 		}
-		
-		return false;
+		return null;
 	}
 }

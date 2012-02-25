@@ -13,10 +13,10 @@ public class OneWireModule implements Module {
 	
 	@Override
 	public void construct() {		
-		detectorThread = new OneWireDetector();
+		detectorThread = new OneWireDetectorThread();
 		detectorThread.start();
 		
-		collectorThread = new OneWireCollector();
+		collectorThread = new OneWireCollectorThread();
 		collectorThread.start();
 	}
 	

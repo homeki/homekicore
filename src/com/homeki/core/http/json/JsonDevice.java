@@ -26,7 +26,7 @@ public class JsonDevice {
 		name = d.getName();
 		added = d.getAdded();
 		state = new JsonState(d.getState(session));
-		active = d.getActive();
+		active = d.isActive();
 		description = d.getDescription();
 	}
 

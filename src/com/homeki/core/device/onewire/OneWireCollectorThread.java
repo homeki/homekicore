@@ -12,10 +12,10 @@ import com.homeki.core.main.ControlledThread;
 import com.homeki.core.main.L;
 import com.homeki.core.storage.Hibernate;
 
-public class OneWireCollector extends ControlledThread {
+public class OneWireCollectorThread extends ControlledThread {
 	private Set<String> loggedSet;
 	
-	public OneWireCollector() {
+	public OneWireCollectorThread() {
 		super(Configuration.ONEWIRE_COLLECTOR_INTERVAL);
 		loggedSet = new HashSet<String>();
 	}
@@ -37,9 +37,9 @@ public class OneWireCollector extends ControlledThread {
 				
 				if (loggedSet.remove(internalId))
 					L.i("Update value for device with internal ID " + internalId + " succeeded again.");
-			} catch (Exception ex) {
+			} catch (Exception e) {
 				if (loggedSet.add(internalId))
-					L.e("Could not update value for device with internal ID " + internalId + ". Log message throttled until next success.", ex);
+					L.e("Could not update value for device with internal ID " + internalId + ". Log message throttled until next success.", e);
 			}
 		}
 		

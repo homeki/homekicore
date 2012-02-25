@@ -7,8 +7,8 @@ import com.homeki.core.main.ControlledThread;
 import com.homeki.core.main.L;
 import com.homeki.core.storage.Hibernate;
 
-public class TellStickListener extends ControlledThread {
-	public TellStickListener() {
+public class TellStickListenerThread extends ControlledThread {
+	public TellStickListenerThread() {
 		super(0);
 	}
 	
@@ -42,7 +42,7 @@ public class TellStickListener extends ControlledThread {
 					int value = 1;
 					((TellStickDimmer)d).addHistoryPoint(value, level);
 					L.i("Received '" + level + "' from TellStickListener.");
-				} catch (NumberFormatException ex) {
+				} catch (NumberFormatException e) {
 					int value = 0;
 					((TellStickDimmer)d).addHistoryPoint(value, session);
 					L.i("Received 'NumberFormatException' from TellStickListener.");

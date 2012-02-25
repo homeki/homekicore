@@ -17,7 +17,7 @@ public class InfoHandler extends HttpHandler {
 		Actions action = Actions.BAD_ACTION;
 		try {
 			action = Actions.valueOf(path.nextToken().toUpperCase());
-		} catch (Exception ex) {}
+		} catch (Exception e) {}
 		
 		switch (action) {
 		case INFO:

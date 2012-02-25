@@ -45,8 +45,8 @@ public class TimerThread extends ControlledThread {
 					default:
 						break;
 					}
-			} catch (Exception ex) {
-				L.e("Failed to trigger timer trigger with id " + t.getId() + " and name [" + t.getName() + "].", ex);
+			} catch (Exception e) {
+				L.e("Failed to trigger timer trigger with ID '" + t.getId() + "' and name '" + t.getName() + "'.", e);
 			}
 		}
 		

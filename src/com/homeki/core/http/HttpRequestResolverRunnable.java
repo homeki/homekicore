@@ -30,8 +30,8 @@ public class HttpRequestResolverRunnable implements Runnable {
             }
         } catch (ConnectionClosedException ignore) {
         } catch (IOException ignore) {
-        } catch (HttpException ex) {
-            L.e("Unrecoverable HTTP protocol violation.", ex);
+        } catch (HttpException e) {
+            L.e("Unrecoverable HTTP protocol violation.", e);
         } finally {
             try {
                 this.conn.shutdown();

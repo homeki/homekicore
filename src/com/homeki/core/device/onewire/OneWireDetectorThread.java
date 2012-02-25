@@ -16,14 +16,14 @@ import com.homeki.core.main.ControlledThread;
 import com.homeki.core.main.L;
 import com.homeki.core.storage.Hibernate;
 
-public class OneWireDetector extends ControlledThread {
+public class OneWireDetectorThread extends ControlledThread {
 	private final static String DETECTOR_LOG_DIFF = "detector";
 	private final static String TYPE_LOG_DIFF = "type/";
 	private final static String NOCORR_LOG_DIFF = "nocorr/";
 	
 	private Set<String> loggedSet;
 	
-	public OneWireDetector() {
+	public OneWireDetectorThread() {
 		super(Configuration.ONEWIRE_DETECTOR_INTERVAL);
 		loggedSet = new HashSet<String>();
 	}
@@ -47,7 +47,7 @@ public class OneWireDetector extends ControlledThread {
 			}
 		
 			if (loggedSet.remove(DETECTOR_LOG_DIFF))
-				L.i("1-wire network found again. Detection of devices succeeded.");
+				L.i("1-wire mount point found again. Detection of devices succeeded.");
 		}
 		
 		return dirList;
@@ -70,9 +70,9 @@ public class OneWireDetector extends ControlledThread {
 					type = OneWireDevice.getStringVar(deviceDirPath, "type");
 					if (loggedSet.remove(TYPE_LOG_DIFF + s))
 						L.i("Succeeded retrieving device type for 1-wire device, had earlier failed.");
-				} catch (Exception ex) {
+				} catch (Exception e) {
 					if (loggedSet.add(TYPE_LOG_DIFF + s))
-						L.e("Exception occured when determining type of/creating OneWireDevice. Log message throttled until next success.", ex);
+						L.e("Exception occured when determining type of OneWireDevice. Log message throttled until next success.", e);
 					continue;
 				}
 				
@@ -93,10 +93,10 @@ public class OneWireDetector extends ControlledThread {
 		for (OneWireDevice d : devices) {
 			boolean found = existsInArray(ids, d.getInternalId());
 			
-			if (!found && d.getActive()) {
+			if (!found && d.isActive()) {
 				d.setActive(false);
 				L.w("OneWireDevice with ID '" + d.getId() + "' and internal ID '" + d.getInternalId() + "' was not found any longer on the 1-wire network. Log message throttled until device is found again. Device inactivated.");
-			} else if (found && !d.getActive()) {
+			} else if (found && !d.isActive()) {
 				d.setActive(true);
 				L.w("Previously inactivated OneWireDevice with ID '" + d.getId() + "' and internal ID '" + d.getInternalId() + "' was found again on 1-wire network. Device reactivated.");
 			}
@@ -110,7 +110,6 @@ public class OneWireDetector extends ControlledThread {
 			if (s.equals(value))
 				return true;
 		}
-		
 		return false;
 	}
 }

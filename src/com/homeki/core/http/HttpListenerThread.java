@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.apache.http.HttpResponseInterceptor;
 import org.apache.http.impl.DefaultConnectionReuseStrategy;
@@ -29,11 +31,9 @@ import com.homeki.core.http.handlers.InfoHandler;
 import com.homeki.core.http.handlers.TimerTriggerHandler;
 import com.homeki.core.http.handlers.TriggerDeviceHandler;
 import com.homeki.core.http.handlers.TriggerHandler;
+import com.homeki.core.main.Configuration;
 import com.homeki.core.main.ControlledThread;
 import com.homeki.core.main.L;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class HttpListenerThread extends ControlledThread {
 	private HttpParams params;
@@ -65,9 +65,7 @@ public class HttpListenerThread extends ControlledThread {
 		
 		this.service = new HttpService(proc, new DefaultConnectionReuseStrategy(), new DefaultHttpResponseFactory(), registry, this.params);
 
-		pool = Executors.newFixedThreadPool(20);
-	
-	
+		pool = Executors.newFixedThreadPool(Configuration.HTTP_THREAD_POOL_SIZE);
 	}
 	
 	@Override

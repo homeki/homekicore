@@ -1,7 +1,5 @@
 package com.homeki.core.main;
 
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,19 +14,21 @@ import com.homeki.core.storage.Hibernate;
 public class ThreadMaster {
 	private ControlledThread httpThread;
 	private ControlledThread timerThread;
+	private ControlledThread broadcastThread;
 	private List<Module> modules;
 	
 	public ThreadMaster() {
+		modules = new ArrayList<Module>();
 		addShutdownHook();
 	}
 	
 	private void addShutdownHook() {
 		Runtime rt = Runtime.getRuntime();
-		rt.addShutdownHook(new Thread() { 
-			public void run() { 
-				shutdown(); 
-				L.i("Homekey version " + getVersion() + " exited.");
-			}; 
+		rt.addShutdownHook(new Thread() {
+			public void run() {
+				shutdown();
+				L.i("Homeki Core version " + getVersion() + " exited.");
+			};
 		});
 	}
 	
@@ -46,39 +46,33 @@ public class ThreadMaster {
 		Thread.currentThread().setName("Main");
 		
 		L.i("Homeki Core version " + getVersion() + " started.");
-
-		// instantiate
-		modules = new ArrayList<Module>();
 		
 		// perform, if necessary, database upgrades
 		try {
 			new DatabaseUpgrader().upgrade();
-		}
-		catch (ClassNotFoundException ex) {
-			L.e("Failed to load HSQLDB JDBC driver, killing Homeki.", ex);
-		}
-		catch (Exception ex) {
-			L.e("Database upgrade failed, killing Homeki.", ex);
-			return;
+		} catch (ClassNotFoundException e) {
+			L.e("Failed to load HSQLDB JDBC driver, killing Homeki.", e);
+		} catch (Exception e) {
+			L.e("Database upgrade failed, killing Homeki.", e);
+			System.exit(-1);
 		}
 		L.i("Database version up to date.");
 		
 		// init Hibernate functionality
 		try {
 			Hibernate.init();
-		}
-		catch (Exception ex) {
-			L.e("Something went wrong when verifying access to database through Hibernate, killing Homeki.", ex);
-			return;
+		} catch (Exception e) {
+			L.e("Something went wrong when verifying access to database through Hibernate, killing Homeki.", e);
+			System.exit(-1);
 		}
 		L.i("Database access through Hibernate verified.");
 		
 		// load native JNI library
 		try {
 			System.loadLibrary("homekijni");
-		} catch (UnsatisfiedLinkError ex) {
+		} catch (UnsatisfiedLinkError e) {
 			L.e("Failed to load Homeki JNI library, killing Homeki.");
-			return;
+			System.exit(-1);
 		}
 		L.i("Native JNI library loaded.");
 		
@@ -86,20 +80,21 @@ public class ThreadMaster {
 		setupModules();
 		
 		for (Module module : modules) {
-			try { 
+			try {
 				module.construct();
-			} catch (Exception ex) {
-				L.e("Failed to construct " + module.getClass().getSimpleName() + ".", ex);
+			} catch (Exception e) {
+				L.e("Failed to construct " + module.getClass().getSimpleName() + ".", e);
 			}
 		}
-
+		L.i("Modules constructed.");
+		
 		// start HTTP listener socket
 		try {
 			httpThread = new HttpListenerThread();
 			httpThread.start();
-		} catch (Exception ex) {
+		} catch (Exception e) {
 			L.e("Could not bind socket for HttpListenerThread, killing Homeki.");
-			return;
+			System.exit(-1);
 		}
 		
 		// start timer thread
@@ -107,42 +102,16 @@ public class ThreadMaster {
 			timerThread = new TimerThread();
 			timerThread.start();
 		} catch (Exception e) {
-			L.e("Could not start TimerThread, killing Homeki.");
-			return;
+			L.e("Could not start TimerThread.", e);
 		}
 		
-		new Thread() {
-		    public void run() {
-		 
-		        try {
-		            int port = 53005;
-		            DatagramSocket dsocket = new DatagramSocket(port);
-		            byte[] buffer = new byte[2048];
-		 
-		            DatagramPacket packet = new DatagramPacket(buffer,
-		                buffer.length);
-		            while (true) {
-		                System.out.println("Receiving...");
-		                dsocket.receive(packet);
-		                String msg = new String(buffer, 0, packet.getLength());
-		                System.out.println(packet.getAddress().getHostName()
-		                        + ": " + msg);
-		                packet.setLength(buffer.length);
-		                
-		                DatagramSocket replySocket = new DatagramSocket(1337);
-		                byte[] data = "sup".getBytes();
-		                DatagramPacket p = new DatagramPacket(data, data.length, packet.getAddress(), 1337);
-		                replySocket.send(p);
-		                replySocket.close();
-		            }
-		        } catch (Exception e) {
-		            e.printStackTrace();
-		        }
-		    }
-		}.start();
-		
-		
-		
+		// start broadcast listener thread
+		try {
+			broadcastThread = new BroadcastListenerThread();
+			broadcastThread.start();
+		} catch (Exception e) {
+			L.e("Could not start BroadcastListenerThread.", e);
+		}
 	}
 	
 	private void setupModules() {
@@ -150,7 +119,7 @@ public class ThreadMaster {
 			L.i("Mock module enabled.");
 			modules.add(new MockModule());
 		}
-			
+		
 		modules.add(new TellStickModule());
 		modules.add(new OneWireModule());
 	}
@@ -159,8 +128,10 @@ public class ThreadMaster {
 		L.i("Shutting down threads...");
 		if (httpThread != null)
 			httpThread.shutdown();
-		if (timerThread != null)	
+		if (timerThread != null)
 			timerThread.shutdown();
+		if (broadcastThread != null)
+			broadcastThread.shutdown();
 		
 		L.i("Destructing modules...");
 		for (Module m : modules)

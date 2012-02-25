@@ -110,7 +110,7 @@ public abstract class Device {
 		return (Device) session.createCriteria(Device.class).add(Restrictions.eq("internalId", internalId)).uniqueResult();
 	}
 	
-	public Boolean getActive() {
+	public Boolean isActive() {
 		return active;
 	}
 	
@@ -129,15 +129,13 @@ public abstract class Device {
 	public HistoryPoint getState(Session session) {
 		Device dev = (Device) session.get(Device.class, id);
 		
-		if (dev == null) {
+		if (dev == null)
 			return null;
-		}
 		
 		HistoryPoint p = (HistoryPoint) session.createFilter(dev.getHistoryPoints(), "order by registered desc").setMaxResults(1).uniqueResult();
 		
-		if (p == null) {
+		if (p == null)
 			return null;
-		}
 		
 		return p;
 	}

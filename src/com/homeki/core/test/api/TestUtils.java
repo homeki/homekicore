@@ -45,7 +45,7 @@ public class TestUtils {
 		String s;
 		try {
 			s = EntityUtils.toString(he);
-		} catch (Exception ex) {
+		} catch (Exception e) {
 			s = "";
 		}
 		he.consumeContent();

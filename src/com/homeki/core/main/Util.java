@@ -20,14 +20,14 @@ public class Util {
 			ByteBuffer bbuf = fc.map(FileChannel.MapMode.READ_ONLY, 0, (int) fc.size());
 			CharBuffer cbuf = Charset.forName("8859_1").newDecoder().decode(bbuf);
 			result = cbuf.toString();
-		} catch (Exception ex) {
-			L.e("Problem reading file.", ex);
+		} catch (Exception e) {
+			L.e("Problem reading file.", e);
 		} finally {
 			if (fis != null) {
 				try {
 					fis.close();
-				} catch (IOException ex) {
-					L.e("Problem closing file.", ex);
+				} catch (IOException e) {
+					L.e("Problem closing file.", e);
 				}
 			}
 		}
