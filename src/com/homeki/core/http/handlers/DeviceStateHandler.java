@@ -113,7 +113,10 @@ public class DeviceStateHandler extends HttpHandler {
 		}
 		
 		@SuppressWarnings("unchecked")
-		List<HistoryPoint> l = session.createFilter(dev.getHistoryPoints(), "where registered between ? and ? order by registered desc").setDate(0, from).setDate(1, to).list();
+		List<HistoryPoint> l = session.createFilter(dev.getHistoryPoints(), "where registered between ? and ? order by registered desc")
+				.setTimestamp(0, from)
+				.setTimestamp(1, to)
+				.list();
 		
 		sendString(200, gson.toJson(JsonPair.convertList(l)));
 		

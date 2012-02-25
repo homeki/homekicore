@@ -101,12 +101,13 @@ public abstract class HttpHandler implements HttpRequestHandler {
 	
 	protected Date getDateParameter(String key) {
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-		DateFormat dft = new SimpleDateFormat("yyyy-MM-dd hh:ss:mm");
+		DateFormat dft = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date d;
 		
 		try {
 			try {
 				d = dft.parse(getParameter(key));
+				
 			} catch (ParseException ex) {
 				d = df.parse(getParameter(key));
 			}
