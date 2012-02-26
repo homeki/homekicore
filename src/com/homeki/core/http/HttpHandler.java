@@ -4,9 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -27,6 +25,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.homeki.core.main.L;
+import com.homeki.core.main.Util;
 
 public abstract class HttpHandler implements HttpRequestHandler {
 	protected static final Gson gson = new GsonBuilder().setPrettyPrinting().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
@@ -100,16 +99,13 @@ public abstract class HttpHandler implements HttpRequestHandler {
 	}
 	
 	protected Date getDateParameter(String key) {
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-		DateFormat dft = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date d;
 		
 		try {
 			try {
-				d = dft.parse(getParameter(key));
-				
+				d = Util.getDateTimeFormat().parse(getParameter(key));
 			} catch (ParseException ex) {
-				d = df.parse(getParameter(key));
+				d = Util.getDateFormat().parse(getParameter(key));
 			}
 		} catch (ParseException ex) {
 			L.e("Could not parse '" + key + "' as a date.");

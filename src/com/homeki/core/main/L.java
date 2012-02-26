@@ -1,7 +1,6 @@
 package com.homeki.core.main;
 
 import java.io.PrintStream;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class L {
@@ -40,8 +39,7 @@ public class L {
 		if (level < min)
 			return;
 		
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		String text = "[" + sdf.format(new Date()) + " | " + levelToString(level) + " | " + Thread.currentThread().getName() + "] " + msg;
+		String text = "[" + Util.getDateTimeFormat().format(new Date()) + " | " + levelToString(level) + " | " + Thread.currentThread().getName() + "] " + msg;
 		if (newline)
 			ps.println(text);
 		else

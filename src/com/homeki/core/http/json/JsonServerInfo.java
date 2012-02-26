@@ -1,21 +1,21 @@
 package com.homeki.core.http.json;
 
 import java.lang.management.ManagementFactory;
-import java.lang.management.RuntimeMXBean;
+import java.util.Date;
+
+import com.homeki.core.main.Util;
 
 
 public class JsonServerInfo {
-	Long uptime;
-	Long time;
+	Long uptimeMs;
+	Long timeMs;
+	String time;
 	String version;
 	
 	public JsonServerInfo() {
-		time = System.currentTimeMillis();
-		Package p = getClass().getPackage();
-		version = p.getImplementationVersion();
-		if (version == null)
-			version = "(DEV)";
-	    RuntimeMXBean mx = ManagementFactory.getRuntimeMXBean();
-	    uptime = mx.getUptime();
+		time = Util.getDateTimeFormat().format(new Date());
+		version = Util.getVersion();
+		timeMs = System.currentTimeMillis();
+	    uptimeMs = ManagementFactory.getRuntimeMXBean().getUptime();
 	}
 }
