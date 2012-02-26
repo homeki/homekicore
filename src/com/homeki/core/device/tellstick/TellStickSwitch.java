@@ -28,13 +28,11 @@ public class TellStickSwitch extends TellStickDevice implements Switchable, Tell
 	@Override
 	public void off() {
 		TellStickNative.turnOff(Integer.parseInt(getInternalId()));
-		addHistoryPoint(false);
 	}
 	
 	@Override
 	public void on() {
 		TellStickNative.turnOn(Integer.parseInt(getInternalId()));
-		addHistoryPoint(true);
 	}
 
 	@Override
