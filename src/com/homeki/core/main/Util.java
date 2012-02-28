@@ -6,6 +6,7 @@ import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
 
 
 public class Util {
@@ -34,6 +35,25 @@ public class Util {
 		
 		return result;
 	}
+	
+	public static SimpleDateFormat getDateFormat() {
+		return new SimpleDateFormat("yyyy-MM-dd");
+	}
+	
+	public static SimpleDateFormat getDateTimeFormat() {
+		return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	}
+	
+	public static String getVersion() {
+		Package p = new Util().getClass().getPackage();
+		String version = p.getImplementationVersion();
+		
+		if (version == null)
+			version = "(DEV)";
+		
+		return version;
+	}
+	
 	
 	public static void sleep(int ms){
 		try {

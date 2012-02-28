@@ -5,9 +5,9 @@ import java.util.StringTokenizer;
 import com.homeki.core.http.HttpHandler;
 import com.homeki.core.http.json.JsonServerInfo;
 
-public class InfoHandler extends HttpHandler {
+public class ServerHandler extends HttpHandler {
 	public enum Actions {
-		INFO, BAD_ACTION
+		GET, BAD_ACTION
 	}
 	
 	@Override
@@ -20,8 +20,8 @@ public class InfoHandler extends HttpHandler {
 		} catch (Exception e) {}
 		
 		switch (action) {
-		case INFO:
-			resolveInfo();
+		case GET:
+			resolveGet();
 			break;
 		default:
 			sendString(404, "No such action, " + action + ".");
@@ -29,7 +29,7 @@ public class InfoHandler extends HttpHandler {
 		}
 	}
 	
-	private void resolveInfo() {
+	private void resolveGet() {
 		sendString(200, gson.toJson(new JsonServerInfo()));
 	}
 }

@@ -26,26 +26,17 @@ public class ThreadMaster {
 		Runtime rt = Runtime.getRuntime();
 		rt.addShutdownHook(new Thread() {
 			public void run() {
+				Thread.currentThread().setName("Main");
 				shutdown();
-				L.i("Homeki Core version " + getVersion() + " exited.");
+				L.i("Homeki version " + Util.getVersion() + " exited.");
 			};
 		});
-	}
-	
-	private String getVersion() {
-		Package p = getClass().getPackage();
-		String version = p.getImplementationVersion();
-		
-		if (version == null)
-			version = "(DEV)";
-		
-		return version;
 	}
 	
 	public void launch() {
 		Thread.currentThread().setName("Main");
 		
-		L.i("Homeki Core version " + getVersion() + " started.");
+		L.i("Homeki version " + Util.getVersion() + " started.");
 		
 		// perform, if necessary, database upgrades
 		try {

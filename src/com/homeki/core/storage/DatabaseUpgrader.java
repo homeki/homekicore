@@ -14,7 +14,7 @@ import liquibase.resource.ResourceAccessor;
 import com.homeki.core.main.L;
 
 public class DatabaseUpgrader {
-	private static final String DATABASE_PATH = "jdbc:hsqldb:file:db/homeki.db";
+	private static final String DATABASE_PATH = "jdbc:hsqldb:file:db/homeki.db;hsqldb.default_table_type=cached";
 	private static final String DATABASE_USER = "sa";
 	private static final String DATABASE_PASSWORD = "";
 	private static final String CHANGELOG = "db-changelog.xml";
@@ -29,9 +29,8 @@ public class DatabaseUpgrader {
 		DatabaseConnection conn = new HsqlConnection(c);
 		Liquibase liq = new Liquibase(CHANGELOG, acc, conn);
 		
-		if (liq.listUnrunChangeSets("").size() == 0) {
+		if (liq.listUnrunChangeSets("").size() == 0)
 			return;
-		}
 		
 		L.i("Starting database upgrade...");
 		
