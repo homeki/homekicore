@@ -7,7 +7,7 @@ import com.homeki.core.device.HistoryPoint;
 
 public class JsonPair {	
 	Date registered;
-	Object value;
+	JsonState state;
 	
 	public JsonPair() {
 		
@@ -19,7 +19,7 @@ public class JsonPair {
 		for (int i = 0; i < pairs.length; i++) {
 			JsonPair jp = new JsonPair();
 			jp.registered = points.get(i).getRegistered();
-			jp.value = points.get(i).getValue();
+			jp.state = new JsonState(points.get(i));
 			pairs[i] = jp;
 		}
 		
