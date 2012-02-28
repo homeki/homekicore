@@ -62,7 +62,7 @@ public class ThreadMaster {
 		try {
 			System.loadLibrary("homekijni");
 		} catch (UnsatisfiedLinkError e) {
-			L.e("Failed to load Homeki JNI library, killing Homeki.");
+			L.e("Failed to load Homeki JNI library, killing Homeki: " + e);
 			System.exit(-1);
 		}
 		L.i("Native JNI library loaded.");

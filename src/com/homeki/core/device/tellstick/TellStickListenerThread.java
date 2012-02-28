@@ -47,16 +47,17 @@ public class TellStickListenerThread extends ControlledThread {
 					((TellStickDimmer)d).addHistoryPoint(value, session);
 					L.i("Received 'NumberFormatException' from TellStickListener.");
 				}
-
 			} else if (d instanceof TellStickThermometer) {
 				double value = Double.parseDouble(s[2]);
 				((TellStickThermometer)d).addHistoryPoint(value);
 				L.i("Received '" + value + "'C from TellStickListener.");
 			}
 		} else if (type.equals("sensor")){
-			
+			L.i("Register sensor " + internalId);
+			d = new TellStickThermometer(Double.parseDouble(s[2]));
+			d.setInternalId(internalId);
+			session.save(d);
 		}
-		
 		Hibernate.closeSession(session);
 	}
 }

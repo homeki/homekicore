@@ -16,7 +16,7 @@ public class BroadcastListenerThread extends ControlledThread {
 		try {
 			byte[] buffer = new byte[2048];
 			DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
-			
+			L.i("Listinging for broadcasts!");
 			socket.receive(packet);
 			String msg = new String(buffer, 0, packet.getLength());
 			L.i("Received broadcast: " + packet.getAddress().getHostName() + ", msg: " + msg);
