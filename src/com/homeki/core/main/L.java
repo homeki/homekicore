@@ -30,8 +30,8 @@ public class L {
 		log(msg, ERROR, System.err, true);
 	}
 	
-	public static void e(String msg, Exception ex) {
-		msg += "\n               Exception: " + ex.getMessage();
+	public static void e(String msg, Throwable e) {
+		msg += "\n               Exception: " + e.getMessage();
 		log(msg, ERROR, System.err, true);
 	}
 	
