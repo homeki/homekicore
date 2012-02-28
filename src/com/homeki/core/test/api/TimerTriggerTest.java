@@ -14,21 +14,21 @@ public class TimerTriggerTest {
 	}
 	
 	@Test
-	public void testAdd() {
+	public void testAdd() throws Exception {
 		JsonTriggerTimer tmr = new JsonTriggerTimer();
 		tmr.name = "name with spaces";
 		tmr.newValue = 55;
 		tmr.time = 12122;
 		tmr.repeatType = 1;
 		tmr.days = 4;
-		assertEquals(200, TestUtils.sendPost("/trigger/timer/add", tmr));
+		assertEquals(200, TestUtil.sendPost("/trigger/timer/add", tmr).statusCode);
 		
 		tmr.name = "another name with spaces";
 		tmr.newValue = 200;
 		tmr.time = 99;
 		tmr.repeatType = 2;
 		tmr.days = 3;
-		assertEquals(200, TestUtils.sendPost("/trigger/timer/add", tmr));
+		assertEquals(200, TestUtil.sendPost("/trigger/timer/add", tmr).statusCode);
 	}
 	
 	@Test

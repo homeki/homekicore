@@ -7,15 +7,17 @@ import com.homeki.core.main.Util;
 
 
 public class JsonServerInfo {
-	Long uptimeMs;
-	Long timeMs;
-	String time;
-	String version;
+	public Long uptimeMs;
+	public Long timeMs;
+	public String time;
+	public String version;
+	public String name;
 	
-	public JsonServerInfo() {
-		time = Util.getDateTimeFormat().format(new Date());
-		version = Util.getVersion();
-		timeMs = System.currentTimeMillis();
-	    uptimeMs = ManagementFactory.getRuntimeMXBean().getUptime();
+	public JsonServerInfo(String name) {
+		this.name = name;
+		this.time = Util.getDateTimeFormat().format(new Date());
+		this.version = Util.getVersion();
+		this.timeMs = System.currentTimeMillis();
+		this.uptimeMs = ManagementFactory.getRuntimeMXBean().getUptime();
 	}
 }

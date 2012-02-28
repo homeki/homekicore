@@ -17,9 +17,9 @@ import com.homeki.core.main.Setting;
 import com.homeki.core.storage.Hibernate;
 
 public class DeviceTellstickHandler extends HttpHandler {
-	private static String NEXT_HOUSE = "TELLSTICK_NEXT_HOUSE_VALUE";
-	private static int HOUSE_SEED = 3764;
-	private static int UNIT = 3;
+	private static final String NEXT_HOUSE_KEY = "TELLSTICK_NEXT_HOUSE_VALUE";
+	private static final int HOUSE_SEED = 3764;
+	private static final int UNIT = 3;
 	
 	public enum Actions {
 		ADD, LIST, LEARN, BAD_ACTION
@@ -61,7 +61,7 @@ public class DeviceTellstickHandler extends HttpHandler {
 		int unit;
 		
 		if (jsonDevice.house == null) {
-			house = Setting.getInt(session, NEXT_HOUSE);
+			house = Setting.getInt(session, NEXT_HOUSE_KEY);
 			if (house == -1)
 				house = HOUSE_SEED;
 		} else {
@@ -85,7 +85,7 @@ public class DeviceTellstickHandler extends HttpHandler {
 		}
 		
 		if (jsonDevice.house == null)
-			Setting.putInt(session, NEXT_HOUSE, house+1);
+			Setting.putInt(session, NEXT_HOUSE_KEY, house+1);
 		
 		session.save(dev);
 		

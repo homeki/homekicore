@@ -46,7 +46,6 @@ public class TriggerDeviceHandler extends HttpHandler {
 		
 		Session session = Hibernate.openSession();
 		
-		
 		@SuppressWarnings("unchecked")
 		List<Device> list = session.createCriteria(Device.class).list();
 		
@@ -56,13 +55,13 @@ public class TriggerDeviceHandler extends HttpHandler {
 			sendString(405, "No timer trigger with specified ID.");
 			return;
 		}
+		
 		Set<Device> linkedDevices = trigger.getDevices();
 
 		JsonDeviceLink[] jsonDevices = JsonDeviceLink.convertList(list);
 		
-		for (int i = 0; i < jsonDevices.length; i++) {
+		for (int i = 0; i < jsonDevices.length; i++)
 			jsonDevices[i].setLinked(linkedDevices.contains(list.get(i)));
-		}
 		
 		sendString(200, gson.toJson(jsonDevices));
 		

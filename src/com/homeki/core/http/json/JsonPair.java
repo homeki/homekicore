@@ -6,8 +6,8 @@ import java.util.List;
 import com.homeki.core.device.HistoryPoint;
 
 public class JsonPair {	
-	Date registered;
-	JsonState state;
+	public Date registered;
+	public JsonState state;
 	
 	public JsonPair() {
 		

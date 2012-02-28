@@ -18,18 +18,18 @@ public class TellStickDeviceTest {
 	}
 	
 	@Test
-	public void testAdd() {
+	public void testAdd() throws Exception {
 		JsonTellStickDevice dev = new JsonTellStickDevice();
 		dev.name = "tellstick switch 1";
 		dev.description = "switch description";
 		dev.type = "switch";
-		assertEquals(200, TestUtils.sendPost("/device/tellstick/add", dev));
+		assertEquals(200, TestUtil.sendPost("/device/tellstick/add", dev).statusCode);
 		
 		dev = new JsonTellStickDevice();
 		dev.name = "tellstick dimmer 1";
 		dev.description = "dimmer description";
 		dev.type = "dimmer";
-		assertEquals(200, TestUtils.sendPost("/device/tellstick/add", dev));
+		assertEquals(200, TestUtil.sendPost("/device/tellstick/add", dev).statusCode);
 		
 		dev = new JsonTellStickDevice();
 		dev.name = "tellstick dimmer 2";
@@ -37,6 +37,6 @@ public class TellStickDeviceTest {
 		dev.type = "dimmer";
 		dev.house = 12000;
 		dev.unit = 5;
-		assertEquals(200, TestUtils.sendPost("/device/tellstick/add", dev));
+		assertEquals(200, TestUtil.sendPost("/device/tellstick/add", dev).statusCode);
 	}
 }
