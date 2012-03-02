@@ -26,9 +26,9 @@ public class HttpRequestResolverRunnable implements Runnable {
 	public void run() {
 		Thread.currentThread().setName("HttpRequestResolverWorker");
         try {
-            //while (!Thread.interrupted() && this.conn.isOpen()) {
+            while (!Thread.interrupted() && this.conn.isOpen()) {
                 this.httpservice.handleRequest(this.conn, context);
-            //}
+            }
             this.conn.close();
         } catch (ConnectionClosedException ignore) {
         } catch (IOException ignore) {
