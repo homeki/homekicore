@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
 
+import org.apache.http.HttpRequest;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.hibernate.Session;
 
 import com.homeki.core.device.Device;
@@ -18,7 +21,7 @@ public class TriggerDeviceHandler extends HttpHandler {
 	}
 	
 	@Override
-	protected void handle(String method, StringTokenizer path) {
+	protected void handle(HttpRequest request, HttpResponse response, List<NameValuePair> queryString, String method, StringTokenizer path) {
 		path.nextToken(); // dismiss "trigger"
 		path.nextToken(); // dismiss "timer"
 		
@@ -29,17 +32,17 @@ public class TriggerDeviceHandler extends HttpHandler {
 		
 		switch (action) {
 		case LIST:
-			resolveList();
+			resolveList(response, queryString);
 			break;
 		default:
-			sendString(404, "No such action, " + action + ".");
+			sendString(response, 404, "No such action, " + action + ".");
 			break;
 		}
 	}
 
 	//TODO: Kan göras snyggare, men det här funkar
-	private void resolveList() {
-		int id = getIntParameter("triggerid");
+	private void resolveList(HttpResponse response, List<NameValuePair> queryString) {
+		int id = getIntParameter(response, queryString, "triggerid");
 		
 		if (id == -1)
 			return;
@@ -52,7 +55,7 @@ public class TriggerDeviceHandler extends HttpHandler {
 		TimerTrigger trigger = (TimerTrigger) session.get(TimerTrigger.class, id);
 
 		if (trigger == null) {
-			sendString(405, "No timer trigger with specified ID.");
+			sendString(response, 405, "No timer trigger with specified ID.");
 			return;
 		}
 		
@@ -63,7 +66,7 @@ public class TriggerDeviceHandler extends HttpHandler {
 		for (int i = 0; i < jsonDevices.length; i++)
 			jsonDevices[i].setLinked(linkedDevices.contains(list.get(i)));
 		
-		sendString(200, gson.toJson(jsonDevices));
+		sendString(response, 200, gson.toJson(jsonDevices));
 		
 		Hibernate.closeSession(session);
 	}

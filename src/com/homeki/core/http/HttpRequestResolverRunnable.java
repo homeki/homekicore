@@ -26,17 +26,15 @@ public class HttpRequestResolverRunnable implements Runnable {
 	public void run() {
 		Thread.currentThread().setName("HttpRequestResolverWorker");
         try {
-            while (!Thread.interrupted() && this.conn.isOpen()) {
-                this.httpservice.handleRequest(this.conn, context);
-            }
-            this.conn.close();
+        	httpservice.handleRequest(conn, context);
+            conn.close();
         } catch (ConnectionClosedException ignore) {
         } catch (IOException ignore) {
         } catch (HttpException e) {
             L.e("Unrecoverable HTTP protocol violation.", e);
         } finally {
             try {
-                this.conn.shutdown();
+                conn.shutdown();
             } catch (IOException ignore) {}
         }
 	}

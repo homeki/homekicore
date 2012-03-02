@@ -1,16 +1,37 @@
 package com.homeki.core.test.api;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
 public class TimerTriggerTest {
+	public abstract class StoppableThread extends Thread {
+		private boolean shutdown;
+
+		@Override
+		public void run() {
+			while (!shutdown)
+				iteration();
+		}
+		
+		public void shutdown() {
+			shutdown = true;
+		}
+		
+		protected abstract void iteration();
+	}
+	
 	public class JsonTriggerTimer {
 		public String name;
 		public Integer newValue;
 		public Integer time;
 		public Integer repeatType;
 		public Integer days;
+		
+		public String toString() {
+			return name;
+		}
 	}
 	
 	@Test
@@ -32,7 +53,39 @@ public class TimerTriggerTest {
 	}
 	
 	@Test
-	public void testGet() {
-		assertTrue(true);
+	public void testTwoThreadsGet() throws Exception {
+		StoppableThread t1 = new StoppableThread() {
+			@Override
+			public void iteration() {
+				try {
+					TestUtil.sendAndParseAsJson("/trigger/timer/get?triggerid=2", JsonTriggerTimer.class);
+					Thread.yield();
+				} catch (Exception e) {
+					fail("Exception parsing JSON.");
+				}
+			}
+		};
+		
+		StoppableThread t2 = new StoppableThread() {
+			@Override
+			public void iteration() {
+				try {
+					TestUtil.sendAndParseAsJson("/trigger/timer/get?triggerid=1", JsonTriggerTimer.class);
+					Thread.yield();
+				} catch (Exception e) {
+					fail("Exception parsing JSON.");
+				}
+			}
+		};
+
+		t1.start();
+		t2.start();
+		
+		Thread.sleep(5000);
+		
+		t1.shutdown();
+		t2.shutdown();
+		t1.join();
+		t2.join();
 	}
 }

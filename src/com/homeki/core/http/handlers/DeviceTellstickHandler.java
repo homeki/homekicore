@@ -3,6 +3,9 @@ package com.homeki.core.http.handlers;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.apache.http.HttpRequest;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.hibernate.Session;
 
 import com.homeki.core.device.Device;
@@ -26,7 +29,7 @@ public class DeviceTellstickHandler extends HttpHandler {
 	}
 	
 	@Override
-	protected void handle(String method, StringTokenizer path) {
+	protected void handle(HttpRequest request, HttpResponse response, List<NameValuePair> queryString, String method, StringTokenizer path) {
 		path.nextToken(); // dismiss "device"
 		path.nextToken(); // dismiss "tellstick"
 		
@@ -37,22 +40,22 @@ public class DeviceTellstickHandler extends HttpHandler {
 		
 		switch (action) {
 		case ADD:
-			resolveAdd();
+			resolveAdd(request, response);
 			break;
 		case LIST:
-			resolveList();
+			resolveList(response);
 			break;
 		case LEARN:
-			resolveLearn();
+			resolveLearn(response, queryString);
 			break;
 		default:
-			sendString(404, "No such action, " + action + ".");
+			sendString(response, 404, "No such action, " + action + ".");
 			break;
 		}
 	}
 	
-	private void resolveAdd() {
-		String post = getPost();
+	private void resolveAdd(HttpRequest request, HttpResponse response) {
+		String post = getPost(request, response);
 		JsonTellStickDevice jsonDevice = gson.fromJson(post, JsonTellStickDevice.class);
 		
 		Session session = Hibernate.openSession();
@@ -80,7 +83,7 @@ public class DeviceTellstickHandler extends HttpHandler {
 		} else if (jsonDevice.type.equals("dimmer")) {
 			dev = new TellStickDimmer(0, house, unit);
 		} else {
-			sendString(405, "Did not recognize type '" + jsonDevice.type + "' as a valid TellStick type.");
+			sendString(response, 405, "Did not recognize type '" + jsonDevice.type + "' as a valid TellStick type.");
 			return;
 		}
 		
@@ -93,22 +96,22 @@ public class DeviceTellstickHandler extends HttpHandler {
 		
 		JsonDevice newid = new JsonDevice();
 		newid.id = dev.getId();
-		sendString(200, gson.toJson(newid));
+		sendString(response, 200, gson.toJson(newid));
 	}
 	
-	private void resolveList() {
+	private void resolveList(HttpResponse response) {
 		Session session = Hibernate.openSession();
 		
 		@SuppressWarnings("unchecked")
 		List<Device> list = session.createCriteria(TellStickDevice.class).list();
 		
-		sendString(200, gson.toJson(JsonDevice.convertList(list, session)));
+		sendString(response, 200, gson.toJson(JsonDevice.convertList(list, session)));
 		
 		Hibernate.closeSession(session);
 	}
 	
-	private void resolveLearn() {
-		int id = getIntParameter("deviceid");
+	private void resolveLearn(HttpResponse response, List<NameValuePair> queryString) {
+		int id = getIntParameter(response, queryString, "deviceid");
 		
 		if (id == -1)
 			return;
@@ -118,16 +121,16 @@ public class DeviceTellstickHandler extends HttpHandler {
 		TellStickDevice dev = (TellStickDevice)session.get(TellStickDevice.class, id);
 		
 		if (dev == null) {
-			sendString(405, "No TellStick device with specified ID found.");
+			sendString(response, 405, "No TellStick device with specified ID found.");
 			return;
 		}
 		if (!(dev instanceof TellStickLearnable)) {
-			sendString(405, "Specified TellStick device does not support learn.");
+			sendString(response, 405, "Specified TellStick device does not support learn.");
 			return;
 		}
 		
 		((TellStickLearnable)dev).learn();
-		sendString(200, "Learn command sent successfully.");
+		sendString(response, 200, "Learn command sent successfully.");
 		
 		Hibernate.closeSession(session);
 	}

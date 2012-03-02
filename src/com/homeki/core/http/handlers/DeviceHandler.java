@@ -3,6 +3,9 @@ package com.homeki.core.http.handlers;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.apache.http.HttpRequest;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.hibernate.Session;
 
 import com.homeki.core.device.Device;
@@ -16,7 +19,7 @@ public class DeviceHandler extends HttpHandler {
 	}
 	
 	@Override
-	protected void handle(String method, StringTokenizer path) {
+	protected void handle(HttpRequest request, HttpResponse response, List<NameValuePair> queryString, String method, StringTokenizer path) {
 		path.nextToken(); // dismiss "device"
 		
 		Actions action = Actions.BAD_ACTION;
@@ -26,20 +29,20 @@ public class DeviceHandler extends HttpHandler {
 		
 		switch (action) {
 		case LIST:
-			resolveList();
+			resolveList(response);
 			break;
 		case SET:
-			resolveSet();
+			resolveSet(request, response, queryString);
 			break;
 		default:
-			sendString(404, "No such action, " + action + ".");
+			sendString(response, 404, "No such action, " + action + ".");
 			break;
 		}
 	}
 	
-	private void resolveSet() {
-		int id = getIntParameter("deviceid");
-		String post = getPost();
+	private void resolveSet(HttpRequest request, HttpResponse response, List<NameValuePair> queryString) {
+		int id = getIntParameter(response, queryString, "deviceid");
+		String post = getPost(request, response);
 		
 		if (id == -1 || post.equals(""))
 			return;
@@ -57,16 +60,16 @@ public class DeviceHandler extends HttpHandler {
 		session.save(dev);
 		Hibernate.closeSession(session);
 		
-		sendString(200, "Device updated successfully.");
+		sendString(response, 200, "Device updated successfully.");
 	}
 	
-	private void resolveList() {
+	private void resolveList(HttpResponse response) {
 		Session session = Hibernate.openSession();
 		
 		@SuppressWarnings("unchecked")
 		List<Device> list = session.createCriteria(Device.class).list();
 		
-		sendString(200, gson.toJson(JsonDevice.convertList(list, session)));
+		sendString(response, 200, gson.toJson(JsonDevice.convertList(list, session)));
 		
 		Hibernate.closeSession(session);
 	}

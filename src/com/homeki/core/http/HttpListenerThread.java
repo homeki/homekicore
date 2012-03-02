@@ -8,9 +8,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import org.apache.http.HttpResponseInterceptor;
-import org.apache.http.impl.DefaultConnectionReuseStrategy;
 import org.apache.http.impl.DefaultHttpResponseFactory;
 import org.apache.http.impl.DefaultHttpServerConnection;
+import org.apache.http.impl.NoConnectionReuseStrategy;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.params.HttpParams;
@@ -63,8 +63,8 @@ public class HttpListenerThread extends ControlledThread {
 		
 		HttpProcessor proc = new ImmutableHttpProcessor(new HttpResponseInterceptor[] { new ResponseDate(), new ResponseServer(), new ResponseContent(), new ResponseConnControl() });
 		
-		this.service = new HttpService(proc, new DefaultConnectionReuseStrategy(), new DefaultHttpResponseFactory(), registry, this.params);
-
+		this.service = new HttpService(proc, new NoConnectionReuseStrategy(), new DefaultHttpResponseFactory(), registry, this.params);
+		
 		pool = Executors.newFixedThreadPool(Configuration.HTTP_THREAD_POOL_SIZE);
 	}
 	
@@ -73,9 +73,9 @@ public class HttpListenerThread extends ControlledThread {
 		try {
 			Socket socket = listenSocket.accept();
 			DefaultHttpServerConnection conn = new DefaultHttpServerConnection();
-			conn.bind(socket, this.params);
+			conn.bind(socket, params);
 			
-			pool.submit(new HttpRequestResolverRunnable(this.service, conn));
+			pool.submit(new HttpRequestResolverRunnable(service, conn));
 		} catch (SocketException e) {
 			L.i("Closed listener socket.");
 		} catch (IOException e) {
@@ -88,6 +88,6 @@ public class HttpListenerThread extends ControlledThread {
 		super.shutdown();
 		try {
 			listenSocket.close();
-		} catch (IOException e) {}
+		} catch (IOException ignore) {}
 	}
 }

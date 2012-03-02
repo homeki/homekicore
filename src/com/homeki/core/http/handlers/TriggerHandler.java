@@ -3,6 +3,9 @@ package com.homeki.core.http.handlers;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.apache.http.HttpRequest;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.hibernate.Session;
 
 import com.homeki.core.device.Device;
@@ -17,7 +20,7 @@ public class TriggerHandler extends HttpHandler {
 	}
 	
 	@Override
-	protected void handle(String method, StringTokenizer path) {
+	protected void handle(HttpRequest request, HttpResponse response, List<NameValuePair> queryString, String method, StringTokenizer path) {
 		path.nextToken(); // dismiss "trigger"
 		
 		Actions action = Actions.BAD_ACTION;
@@ -27,36 +30,36 @@ public class TriggerHandler extends HttpHandler {
 		
 		switch (action) {
 		case LIST:
-			resolveList();
+			resolveList(response);
 			break;
 		case DELETE:
-			resolveDelete();
+			resolveDelete(response, queryString);
 			break;
 		case LINK:
-			resolveLink();
+			resolveLink(response, queryString);
 			break;
 		case UNLINK:
-			resolveUnlink();
+			resolveUnlink(response, queryString);
 			break;
 		default:
-			sendString(404, "No such action, " + action + ".");
+			sendString(response, 404, "No such action, " + action + ".");
 			break;
 		}
 	}
 	
-	private void resolveList() {
+	private void resolveList(HttpResponse response) {
 		Session session = Hibernate.openSession();
 		
 		@SuppressWarnings("unchecked")
 		List<Trigger> list = session.createCriteria(Trigger.class).list();
 		
-		sendString(200, gson.toJson(JsonTimerTrigger.convertList(list)));
+		sendString(response, 200, gson.toJson(JsonTimerTrigger.convertList(list)));
 		
 		Hibernate.closeSession(session);
 	}
 	
-	private void resolveDelete() {
-		int id = getIntParameter("triggerid");
+	private void resolveDelete(HttpResponse response, List<NameValuePair> queryString) {
+		int id = getIntParameter(response, queryString, "triggerid");
 
 		if (id == -1)
 			return;
@@ -66,18 +69,18 @@ public class TriggerHandler extends HttpHandler {
 		Trigger trigger = (Trigger)session.get(Trigger.class, id);
 		
 		if (trigger == null) {
-			sendString(405, "No trigger with specified ID.");
+			sendString(response, 405, "No trigger with specified ID.");
 		} else { 
 			session.delete(trigger);
-			sendString(200, "Trigger deleted.");
+			sendString(response, 200, "Trigger deleted.");
 		}
 		
 		Hibernate.closeSession(session);
 	}
 	
-	private void resolveLink() {
-		int deviceid = getIntParameter("deviceid");
-		int triggerid = getIntParameter("triggerid");
+	private void resolveLink(HttpResponse response, List<NameValuePair> queryString) {
+		int deviceid = getIntParameter(response, queryString, "deviceid");
+		int triggerid = getIntParameter(response, queryString, "triggerid");
 		
 		if (deviceid == -1 || triggerid == -1)
 			return;
@@ -88,24 +91,24 @@ public class TriggerHandler extends HttpHandler {
 		Trigger tri = (Trigger)session.get(Trigger.class, triggerid);
 		
 		if (dev == null) {
-			sendString(405, "No device with specified ID found.");
+			sendString(response, 405, "No device with specified ID found.");
 		} else if (tri == null) {
-			sendString(405, "No trigger with specified ID found.");
+			sendString(response, 405, "No trigger with specified ID found.");
 		} else if (dev.getTriggers().contains(tri)) {
-			sendString(405, "The specified device and the specified trigger are already linked.");
+			sendString(response, 405, "The specified device and the specified trigger are already linked.");
 		}
 		else {
 			dev.getTriggers().add(tri);
 			session.save(dev);
-			sendString(200, "Specified device and specified trigger successfully linked.");
+			sendString(response, 200, "Specified device and specified trigger successfully linked.");
 		}
 		
 		Hibernate.closeSession(session);
 	}
 	
-	private void resolveUnlink() {
-		int deviceid = getIntParameter("deviceid");
-		int triggerid = getIntParameter("triggerid");
+	private void resolveUnlink(HttpResponse response, List<NameValuePair> queryString) {
+		int deviceid = getIntParameter(response, queryString, "deviceid");
+		int triggerid = getIntParameter(response, queryString, "triggerid");
 		
 		if (deviceid == -1 || triggerid == -1)
 			return;
@@ -116,15 +119,15 @@ public class TriggerHandler extends HttpHandler {
 		Trigger tri = (Trigger)session.get(Trigger.class, triggerid);
 		
 		if (dev == null) {
-			sendString(405, "No device with specified ID found.");
+			sendString(response, 405, "No device with specified ID found.");
 		} else if (tri == null) {
-			sendString(405, "No trigger with specified ID found.");
+			sendString(response, 405, "No trigger with specified ID found.");
 		} else if (!dev.getTriggers().contains(tri)) {
-			sendString(405, "Specified device does not contain the specified trigger.");
+			sendString(response, 405, "Specified device does not contain the specified trigger.");
 		} else {
 			dev.getTriggers().remove(tri);
 			session.save(dev);
-			sendString(200, "Link between specified device and specified trigger successfully removed.");
+			sendString(response, 200, "Link between specified device and specified trigger successfully removed.");
 		}
 		
 		Hibernate.closeSession(session);

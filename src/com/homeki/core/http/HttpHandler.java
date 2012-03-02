@@ -30,17 +30,9 @@ import com.homeki.core.main.Util;
 public abstract class HttpHandler implements HttpRequestHandler {
 	protected static final Gson gson = new GsonBuilder().setPrettyPrinting().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
 	
-	protected HttpRequest request;
-	protected HttpResponse response;
-	protected HttpContext context;
-	private List<NameValuePair> queryString;
-	
 	@Override
 	public void handle(HttpRequest request, HttpResponse response, HttpContext context) throws HttpException, IOException {
-		this.request = request;
-		this.response = response;
-		this.context = context;
-
+		List<NameValuePair> queryString = null;
 		String path = request.getRequestLine().getUri();
 		String method = request.getRequestLine().getMethod();
 		
@@ -50,7 +42,7 @@ public abstract class HttpHandler implements HttpRequestHandler {
 		
 		try {
 			URI uri = new URI(p.getAbsolutePath());
-			this.queryString = URLEncodedUtils.parse(uri, "UTF-8");
+			queryString = URLEncodedUtils.parse(uri, "UTF-8");
 		} catch (Exception e) {
 			L.e("Exception parsing query string.", e);
 		}
@@ -58,20 +50,20 @@ public abstract class HttpHandler implements HttpRequestHandler {
 		StringTokenizer st = new StringTokenizer(p.getAbsolutePath(), "/?");
 		
 		try {
-			handle(method, st);
+			handle(request, response, queryString, method, st);
 		} catch (JsonSyntaxException e) {
 			try {
-				sendString(405, "Couldn't parse JSON, make sure it is well formed.");
+				sendString(response, 405, "Couldn't parse JSON, make sure it is well formed.");
 			} catch (Exception ignore) {}
 		} catch (Exception e) {
 			L.e("Unknown exception occured while processing HTTP request.", e);
 			try {
-				sendString(405, "Something went wrong while processing the HTTP request.");
+				sendString(response, 405, "Something went wrong while processing the HTTP request.");
 			} catch (Exception ignore) {}
 		}
 	}
 	
-	protected void sendString(int statusCode, String content) {
+	protected void sendString(HttpResponse response, int statusCode, String content) {
 		try {
 			response.setStatusCode(statusCode);
 			response.setEntity(new StringEntity(content));
@@ -80,60 +72,60 @@ public abstract class HttpHandler implements HttpRequestHandler {
 		}
 	}
 	
-	protected int getIntParameter(String key) {
+	protected int getIntParameter(HttpResponse response, List<NameValuePair> queryString, String key) {
 		int id;
 		
 		try {
-			id = Integer.parseInt(getParameter(key));
+			id = Integer.parseInt(getParameter(queryString, key));
 		} catch (NumberFormatException e) {
 			id = -1;
 			L.e("Could not parse '" + key + "' as an integer.");
-			sendString(405, "Could not parse '" + key + "' as an integer.");
+			sendString(response, 405, "Could not parse '" + key + "' as an integer.");
 		} catch (MissingKeyException e) {
 			id = -1;
 			L.e(e.getMessage());
-			sendString(405, e.getMessage());
+			sendString(response, 405, e.getMessage());
 		}
 		
 		return id;
 	}
 	
-	protected Date getDateParameter(String key) {
+	protected Date getDateParameter(HttpResponse response, List<NameValuePair> queryString, String key) {
 		Date d;
 		
 		try {
 			try {
-				d = Util.getDateTimeFormat().parse(getParameter(key));
+				d = Util.getDateTimeFormat().parse(getParameter(queryString, key));
 			} catch (ParseException ex) {
-				d = Util.getDateFormat().parse(getParameter(key));
+				d = Util.getDateFormat().parse(getParameter(queryString, key));
 			}
 		} catch (ParseException ex) {
 			L.e("Could not parse '" + key + "' as a date.");
-			sendString(405, "Could not parse '" + key + "' as a date.");
+			sendString(response, 405, "Could not parse '" + key + "' as a date.");
 			d = null;
 		} catch (MissingKeyException e) {
 			L.e(e.getMessage());
-			sendString(405, e.getMessage());
+			sendString(response, 405, e.getMessage());
 			d = null;
 		}
 		
 		return d;
 	}
 	
-	protected String getStringParameter(String key) {
+	protected String getStringParameter(HttpResponse response, List<NameValuePair> queryString, String key) {
 		String value = "";
 		
 		try {
-			value = getParameter(key);
+			value = getParameter(queryString, key);
 		} catch (MissingKeyException e) {
 			L.e(e.getMessage());
-			sendString(405, e.getMessage());
+			sendString(response, 405, e.getMessage());
 		}
 		
 		return value;
 	}
 	
-	private String getParameter(String key) throws MissingKeyException {
+	private String getParameter(List<NameValuePair> queryString, String key) throws MissingKeyException {
 		for (NameValuePair pair : queryString) {
 			if (pair.getName().toLowerCase().equals(key.toLowerCase())) {
 				return pair.getValue();
@@ -143,18 +135,18 @@ public abstract class HttpHandler implements HttpRequestHandler {
 		throw new MissingKeyException(String.format("Missing parameter '%s'.", key));
 	}
 	
-	protected String getPost() {
+	protected String getPost(HttpRequest request, HttpResponse response) {
 		String s = "";
 		
 		if (!request.getRequestLine().getMethod().toUpperCase().equals("POST")) {
 			L.e("Expected POST HTTP, but received something else.");
-			sendString(405, "HTTP method not POST.");
+			sendString(response, 405, "HTTP method not POST.");
 			return "";
 		}
 		
 		if (!(request instanceof HttpEntityEnclosingRequest)) {
 			L.e("Missing POST HTTP data.");
-			sendString(405, "POST data not provided.");
+			sendString(response, 405, "POST data not provided.");
 			return "";
 		}
 		
@@ -164,11 +156,11 @@ public abstract class HttpHandler implements HttpRequestHandler {
 			s = EntityUtils.toString(entity);
 		} catch (Exception e) {
 			L.e("Could not parse POST data.", e);
-			sendString(405, "Could not parse POST data.");
+			sendString(response, 405, "Could not parse POST data.");
 		}
 		
 		return s;
 	}
 	
-	protected abstract void handle(String method, StringTokenizer path);
+	protected abstract void handle(HttpRequest request, HttpResponse response, List<NameValuePair> queryString, String method, StringTokenizer path);
 }

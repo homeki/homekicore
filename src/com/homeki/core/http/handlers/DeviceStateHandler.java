@@ -4,6 +4,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.apache.http.HttpRequest;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.hibernate.Session;
 
 import com.homeki.core.device.Device;
@@ -20,7 +23,7 @@ public class DeviceStateHandler extends HttpHandler {
 	}
 	
 	@Override
-	protected void handle(String method, StringTokenizer path) {
+	protected void handle(HttpRequest request, HttpResponse response, List<NameValuePair> queryString, String method, StringTokenizer path) {
 		path.nextToken(); // dismiss "device"
 		path.nextToken(); // dismiss "state"
 		
@@ -31,20 +34,20 @@ public class DeviceStateHandler extends HttpHandler {
 		
 		switch (action) {
 		case SET:
-			resolveSet();
+			resolveSet(response, queryString);
 			break;
 		case LIST:
-			resolveList();
+			resolveList(response, queryString);
 			break;
 		default:
-			sendString(404, "No such action, " + action + ".");
+			sendString(response, 404, "No such action, " + action + ".");
 			break;
 		}
 	}
 	
-	private void resolveSet() {
-		int id = getIntParameter("deviceid");
-		int value = getIntParameter("value");
+	private void resolveSet(HttpResponse response, List<NameValuePair> queryString) {
+		int id = getIntParameter(response, queryString, "deviceid");
+		int value = getIntParameter(response, queryString, "value");
 
 		if (id == -1 || value == -1)
 			return;
@@ -54,7 +57,7 @@ public class DeviceStateHandler extends HttpHandler {
 		Device dev = (Device) session.get(Device.class, id);
 		
 		if (dev == null) {
-			sendString(405, "Could not load device from device ID.");
+			sendString(response, 405, "Could not load device from device ID.");
 			return;
 		}
 		
@@ -64,7 +67,7 @@ public class DeviceStateHandler extends HttpHandler {
 		if (dev instanceof Dimmable) {
 			try {
 				//TODO: FIX THIS (SHOULD BE PARSE OPTIONAL ETC..)
-				int level = getIntParameter("level");
+				int level = getIntParameter(response, queryString, "level");
 				if (level != -1) {
 					((Dimmable)dev).dim(level, on);
 				} else {
@@ -76,10 +79,10 @@ public class DeviceStateHandler extends HttpHandler {
 						sw.off();
 					}
 					//hack för att ta bort sendstringen från missad parse tidigare
-					sendString(200, "");
+					sendString(response, 200, "");
 				}
 			} catch (NumberFormatException e) {
-				sendString(405, "Failed to parse '" + value + "' as integer.");
+				sendString(response, 405, "Failed to parse '" + value + "' as integer.");
 			}
 		} else if (dev instanceof Switchable) {
 			Switchable sw = (Switchable) dev;
@@ -89,16 +92,16 @@ public class DeviceStateHandler extends HttpHandler {
 			else
 				sw.off();
 		} else {
-			sendString(405, "Device with specified ID is not a switch.");
+			sendString(response, 405, "Device with specified ID is not a switch.");
 		}
 		
 		Hibernate.closeSession(session);
 	}
 	
-	private void resolveList() {
-		int id = getIntParameter("deviceid");
-		Date from = getDateParameter("from");
-		Date to = getDateParameter("to");
+	private void resolveList(HttpResponse response, List<NameValuePair> queryString) {
+		int id = getIntParameter(response, queryString, "deviceid");
+		Date from = getDateParameter(response, queryString, "from");
+		Date to = getDateParameter(response, queryString, "to");
 		
 		if (id == -1 || from == null || to == null)
 			return;
@@ -108,7 +111,7 @@ public class DeviceStateHandler extends HttpHandler {
 		Device dev = (Device) session.get(Device.class, id);
 		
 		if (dev == null) {
-			sendString(405, "Could not load device from device ID.");
+			sendString(response, 405, "Could not load device from device ID.");
 			return;
 		}
 		
@@ -118,7 +121,7 @@ public class DeviceStateHandler extends HttpHandler {
 				.setTimestamp(1, to)
 				.list();
 		
-		sendString(200, gson.toJson(JsonPair.convertList(l)));
+		sendString(response, 200, gson.toJson(JsonPair.convertList(l)));
 		
 		Hibernate.closeSession(session);
 	}

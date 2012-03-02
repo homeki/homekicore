@@ -1,7 +1,11 @@
 package com.homeki.core.http.handlers;
 
+import java.util.List;
 import java.util.StringTokenizer;
 
+import org.apache.http.HttpRequest;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.hibernate.Session;
 
 import com.homeki.core.http.HttpHandler;
@@ -18,7 +22,7 @@ public class ServerHandler extends HttpHandler {
 	}
 	
 	@Override
-	protected void handle(String method, StringTokenizer path) {
+	protected void handle(HttpRequest request, HttpResponse response, List<NameValuePair> queryString, String method, StringTokenizer path) {
 		path.nextToken(); // dismiss "server"
 		
 		Actions action = Actions.BAD_ACTION;
@@ -28,18 +32,18 @@ public class ServerHandler extends HttpHandler {
 		
 		switch (action) {
 		case GET:
-			resolveGet();
+			resolveGet(response);
 			break;
 		case SET:
-			resolveSet();
+			resolveSet(request, response);
 			break;
 		default:
-			sendString(404, "No such action, " + action + ".");
+			sendString(response, 404, "No such action, " + action + ".");
 			break;
 		}
 	}
 	
-	private void resolveGet() {
+	private void resolveGet(HttpResponse response) {
 		Session session = Hibernate.openSession();
 		
 		String name = Setting.getString(session, SERVER_NAME_KEY);
@@ -49,11 +53,11 @@ public class ServerHandler extends HttpHandler {
 		
 		Hibernate.closeSession(session);
 		
-		sendString(200, gson.toJson(new JsonServerInfo(name)));
+		sendString(response, 200, gson.toJson(new JsonServerInfo(name)));
 	}
 	
-	private void resolveSet() {
-		String post = getPost();
+	private void resolveSet(HttpRequest request, HttpResponse response) {
+		String post = getPost(request, response);
 		
 		if (post.equals(""))
 			return;
@@ -61,7 +65,7 @@ public class ServerHandler extends HttpHandler {
 		JsonServerInfo jinfo = gson.fromJson(post, JsonServerInfo.class);
 		
 		if (jinfo.name == null || jinfo.name.length() == 0) {
-			sendString(405, "Server name cannot be empty.");
+			sendString(response, 405, "Server name cannot be empty.");
 			return;
 		}
 		
@@ -69,6 +73,6 @@ public class ServerHandler extends HttpHandler {
 		Setting.putString(session, SERVER_NAME_KEY, jinfo.name);
 		Hibernate.closeSession(session);
 		
-		sendString(200, "Server information updated successfully.");
+		sendString(response, 200, "Server information updated successfully.");
 	}
 }
