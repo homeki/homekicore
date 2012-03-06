@@ -1,5 +1,5 @@
 <project>
-	<property name="version" value="0.0.60" />
+	<property name="version" value="0.0.62" />
 
 	<path id="ant.classpath">
 		<fileset dir="." includes="*.jar" />
