@@ -2,20 +2,15 @@ package com.homeki.core.http.handlers;
 
 import java.util.Date;
 import java.util.List;
-import java.util.StringTokenizer;
-
-import org.apache.http.HttpRequest;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.hibernate.Session;
 
 import com.homeki.core.device.Device;
 import com.homeki.core.device.HistoryPoint;
 import com.homeki.core.device.abilities.Dimmable;
 import com.homeki.core.device.abilities.Switchable;
+import com.homeki.core.http.ApiException;
+import com.homeki.core.http.Container;
 import com.homeki.core.http.HttpHandler;
 import com.homeki.core.http.json.JsonPair;
-import com.homeki.core.storage.Hibernate;
 
 public class DeviceStateHandler extends HttpHandler {
 	public enum Actions {
@@ -23,66 +18,50 @@ public class DeviceStateHandler extends HttpHandler {
 	}
 	
 	@Override
-	protected void handle(HttpRequest request, HttpResponse response, List<NameValuePair> queryString, String method, StringTokenizer path) {
-		path.nextToken(); // dismiss "device"
-		path.nextToken(); // dismiss "state"
+	protected void handle(Container c) {
+		c.path.nextToken(); // dismiss "device"
+		c.path.nextToken(); // dismiss "state"
 		
 		Actions action = Actions.BAD_ACTION;
 		try {
-			action = Actions.valueOf(path.nextToken().toUpperCase());
-		} catch (Exception e) {}
+			action = Actions.valueOf(c.path.nextToken().toUpperCase());
+		} catch (Exception ignore) {}
 		
 		switch (action) {
 		case SET:
-			resolveSet(response, queryString);
+			resolveSet(c);
 			break;
 		case LIST:
-			resolveList(response, queryString);
+			resolveList(c);
 			break;
 		default:
-			sendString(response, 404, "No such action, " + action + ".");
-			break;
+			throw new ApiException("No such URL/action: '" + action + "'.");
 		}
 	}
 	
-	private void resolveSet(HttpResponse response, List<NameValuePair> queryString) {
-		int id = getIntParameter(response, queryString, "deviceid");
-		int value = getIntParameter(response, queryString, "value");
+	private void resolveSet(Container c) {
+		int id = getIntParameter(c, "deviceid");
+		int value = getIntParameter(c, "value");
 
-		if (id == -1 || value == -1)
-			return;
+		Device dev = (Device)c.ses.get(Device.class, id);
 		
-		Session session = Hibernate.openSession();
-		
-		Device dev = (Device) session.get(Device.class, id);
-		
-		if (dev == null) {
-			sendString(response, 405, "Could not load device from device ID.");
-			return;
-		}
+		if (dev == null)
+			throw new ApiException("Could not load device from device ID.");
 		
 		boolean on = value == 1;
-		// dim
 		
 		if (dev instanceof Dimmable) {
-			try {
-				//TODO: FIX THIS (SHOULD BE PARSE OPTIONAL ETC..)
-				int level = getIntParameter(response, queryString, "level");
-				if (level != -1) {
-					((Dimmable)dev).dim(level, on);
-				} else {
-					Switchable sw = (Switchable) dev;
-					
-					if (on) {
-						sw.on();
-					} else {
-						sw.off();
-					}
-					//hack för att ta bort sendstringen från missad parse tidigare
-					sendString(response, 200, "");
-				}
-			} catch (NumberFormatException e) {
-				sendString(response, 405, "Failed to parse '" + value + "' as integer.");
+			int level = getOptionalIntParameter(c, "level");
+			
+			if (level != -1) {
+				((Dimmable)dev).dim(level, on);
+			} else {
+				Switchable sw = (Switchable) dev;
+				
+				if (on)
+					sw.on();
+				else
+					sw.off();
 			}
 		} else if (dev instanceof Switchable) {
 			Switchable sw = (Switchable) dev;
@@ -92,37 +71,26 @@ public class DeviceStateHandler extends HttpHandler {
 			else
 				sw.off();
 		} else {
-			sendString(response, 405, "Device with specified ID is not a switch.");
+			throw new ApiException("Device with specified ID is not a switch/dimmer.");
 		}
-		
-		Hibernate.closeSession(session);
 	}
 	
-	private void resolveList(HttpResponse response, List<NameValuePair> queryString) {
-		int id = getIntParameter(response, queryString, "deviceid");
-		Date from = getDateParameter(response, queryString, "from");
-		Date to = getDateParameter(response, queryString, "to");
+	private void resolveList(Container c) {
+		int id = getIntParameter(c, "deviceid");
+		Date from = getDateParameter(c, "from");
+		Date to = getDateParameter(c, "to");
 		
-		if (id == -1 || from == null || to == null)
-			return;
+		Device dev = (Device)c.ses.get(Device.class, id);
 		
-		Session session = Hibernate.openSession();
-		
-		Device dev = (Device) session.get(Device.class, id);
-		
-		if (dev == null) {
-			sendString(response, 405, "Could not load device from device ID.");
-			return;
-		}
+		if (dev == null)
+			throw new ApiException("Could not load device from device ID.");
 		
 		@SuppressWarnings("unchecked")
-		List<HistoryPoint> l = session.createFilter(dev.getHistoryPoints(), "where registered between ? and ? order by registered desc")
+		List<HistoryPoint> l = c.ses.createFilter(dev.getHistoryPoints(), "where registered between ? and ? order by registered desc")
 				.setTimestamp(0, from)
 				.setTimestamp(1, to)
 				.list();
 		
-		sendString(response, 200, gson.toJson(JsonPair.convertList(l)));
-		
-		Hibernate.closeSession(session);
+		set200Response(c, gson.toJson(JsonPair.convertList(l)));
 	}
 }

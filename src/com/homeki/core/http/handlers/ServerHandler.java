@@ -1,17 +1,10 @@
 package com.homeki.core.http.handlers;
 
-import java.util.List;
-import java.util.StringTokenizer;
-
-import org.apache.http.HttpRequest;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.hibernate.Session;
-
+import com.homeki.core.http.ApiException;
+import com.homeki.core.http.Container;
 import com.homeki.core.http.HttpHandler;
 import com.homeki.core.http.json.JsonServerInfo;
 import com.homeki.core.main.Setting;
-import com.homeki.core.storage.Hibernate;
 
 public class ServerHandler extends HttpHandler {
 	private static final String SERVER_NAME_KEY = "SERVER_NAME";
@@ -22,57 +15,45 @@ public class ServerHandler extends HttpHandler {
 	}
 	
 	@Override
-	protected void handle(HttpRequest request, HttpResponse response, List<NameValuePair> queryString, String method, StringTokenizer path) {
-		path.nextToken(); // dismiss "server"
+	protected void handle(Container c) {
+		c.path.nextToken(); // dismiss "server"
 		
 		Actions action = Actions.BAD_ACTION;
 		try {
-			action = Actions.valueOf(path.nextToken().toUpperCase());
+			action = Actions.valueOf(c.path.nextToken().toUpperCase());
 		} catch (Exception e) {}
 		
 		switch (action) {
 		case GET:
-			resolveGet(response);
+			resolveGet(c);
 			break;
 		case SET:
-			resolveSet(request, response);
+			resolveSet(c);
 			break;
 		default:
-			sendString(response, 404, "No such action, " + action + ".");
-			break;
+			throw new ApiException("No such URL/action: '" + action + "'.");
 		}
 	}
 	
-	private void resolveGet(HttpResponse response) {
-		Session session = Hibernate.openSession();
-		
-		String name = Setting.getString(session, SERVER_NAME_KEY);
+	private void resolveGet(Container c) {
+		String name = Setting.getString(c.ses, SERVER_NAME_KEY);
 		
 		if (name.length() == 0)
 			name = DEFAULT_SERVER_NAME;
 		
-		Hibernate.closeSession(session);
-		
-		sendString(response, 200, gson.toJson(new JsonServerInfo(name)));
+		set200Response(c, gson.toJson(new JsonServerInfo(name)));
 	}
 	
-	private void resolveSet(HttpRequest request, HttpResponse response) {
-		String post = getPost(request, response);
-		
-		if (post.equals(""))
-			return;
+	private void resolveSet(Container c) {
+		String post = getPost(c);
 		
 		JsonServerInfo jinfo = gson.fromJson(post, JsonServerInfo.class);
 		
-		if (jinfo.name == null || jinfo.name.length() == 0) {
-			sendString(response, 405, "Server name cannot be empty.");
-			return;
-		}
+		if (jinfo.name == null || jinfo.name.length() == 0)
+			throw new ApiException("Server name cannot be empty.");
 		
-		Session session = Hibernate.openSession();
-		Setting.putString(session, SERVER_NAME_KEY, jinfo.name);
-		Hibernate.closeSession(session);
+		Setting.putString(c.ses, SERVER_NAME_KEY, jinfo.name);
 		
-		sendString(response, 200, "Server information updated successfully.");
+		set200Response(c, "Server information updated successfully.");
 	}
 }

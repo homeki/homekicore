@@ -1,17 +1,10 @@
 package com.homeki.core.http.handlers;
 
-import java.util.List;
-import java.util.StringTokenizer;
-
-import org.apache.http.HttpRequest;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.hibernate.Session;
-
 import com.homeki.core.device.TimerTrigger;
+import com.homeki.core.http.ApiException;
+import com.homeki.core.http.Container;
 import com.homeki.core.http.HttpHandler;
 import com.homeki.core.http.json.JsonTimerTrigger;
-import com.homeki.core.storage.Hibernate;
 
 public class TimerTriggerHandler extends HttpHandler {
 	public enum Actions {
@@ -19,60 +12,50 @@ public class TimerTriggerHandler extends HttpHandler {
 	}
 	
 	@Override
-	protected void handle(HttpRequest request, HttpResponse response, List<NameValuePair> queryString, String method, StringTokenizer path) {
-		path.nextToken(); // dismiss "trigger"
-		path.nextToken(); // dismiss "timer"
+	protected void handle(Container c) {
+		c.path.nextToken(); // dismiss "trigger"
+		c.path.nextToken(); // dismiss "timer"
 		
 		Actions action = Actions.BAD_ACTION;
 		try {
-			action = Actions.valueOf(path.nextToken().toUpperCase());
+			action = Actions.valueOf(c.path.nextToken().toUpperCase());
 		} catch (Exception e) {}
 		
 		switch (action) {
 		case ADD:
-			resolveAdd(request, response);
+			resolveAdd(c);
 			break;
 		case SET:
-			resolveSet(request, response, queryString);
+			resolveSet(c);
 			break;
 		case GET:
-			resolveGet(response, queryString);
+			resolveGet(c);
 			break;
 		default:
-			sendString(response, 404, "No such action, " + action + ".");
-			break;
+			throw new ApiException("No such URL/action: '" + action + "'.");
 		}
 	}
 
-	private void resolveSet(HttpRequest request, HttpResponse response, List<NameValuePair> queryString) {
-		int id = getIntParameter(response, queryString, "triggerid");
+	private void resolveSet(Container c) {
+		int id = getIntParameter(c, "triggerid");
 		
-		if (id == -1)
-			return;
-		
-		String post = getPost(request, response);
+		String post = getPost(c);
 		JsonTimerTrigger triggerTimer = gson.fromJson(post, JsonTimerTrigger.class);
 		
-		Session session = Hibernate.openSession();
-		
-		TimerTrigger trigger = (TimerTrigger) session.get(TimerTrigger.class, id);
+		TimerTrigger trigger = (TimerTrigger)c.ses.get(TimerTrigger.class, id);
 		trigger.setName(triggerTimer.name);
 		trigger.setValue(triggerTimer.newValue);
 		trigger.setDays(triggerTimer.days);
 		trigger.setRepeatType(triggerTimer.repeatType);
 		trigger.setSecondsFromMidnight(triggerTimer.time);
-		session.save(trigger);
+		c.ses.save(trigger);
 		
-		Hibernate.closeSession(session);
-		
-		sendString(response, 200, "Trigger was updated successfully.");
+		set200Response(c, "Trigger was updated successfully.");
 	}
 
-	private void resolveAdd(HttpRequest request, HttpResponse response) {
-		String post = getPost(request, response);
+	private void resolveAdd(Container c) {
+		String post = getPost(c);
 		JsonTimerTrigger triggerTimer = gson.fromJson(post, JsonTimerTrigger.class);
-		
-		Session session = Hibernate.openSession();
 		
 		TimerTrigger trigger = new TimerTrigger();
 		trigger.setName(triggerTimer.name);
@@ -80,29 +63,21 @@ public class TimerTriggerHandler extends HttpHandler {
 		trigger.setDays(triggerTimer.days);
 		trigger.setRepeatType(triggerTimer.repeatType);
 		trigger.setSecondsFromMidnight(triggerTimer.time);
-		session.save(trigger);
-		
-		Hibernate.closeSession(session);
+		c.ses.save(trigger);
 		
 		JsonTimerTrigger newid = new JsonTimerTrigger();
 		newid.id = trigger.getId();
-		sendString(response, 200, gson.toJson(newid));
+		
+		set200Response(c, gson.toJson(newid));
 	}
 	
-	private void resolveGet(HttpResponse response, List<NameValuePair> queryString) {
-		int id = getIntParameter(response, queryString, "triggerid");
+	private void resolveGet(Container c) {
+		int id = getIntParameter(c, "triggerid");
 		
-		if (id == -1)
-			return;
+		TimerTrigger trigger = (TimerTrigger)c.ses.get(TimerTrigger.class, id);
 		
-		Session session = Hibernate.openSession();
-		
-		TimerTrigger trigger = (TimerTrigger) session.get(TimerTrigger.class, id);
-		
-		if (trigger == null) {
-			sendString(response, 405, "No timer trigger with specified ID.");
-			return;
-		}
+		if (trigger == null)
+			throw new ApiException("No timer trigger with specified ID.");
 		
 		JsonTimerTrigger restrigger = new JsonTimerTrigger();
 		restrigger.id = id;
@@ -112,8 +87,6 @@ public class TimerTriggerHandler extends HttpHandler {
 		restrigger.repeatType = trigger.getRepeatType();
 		restrigger.time = trigger.getSecondsFromMidnight();
 		
-		sendString(response, 200, gson.toJson(restrigger));
-		
-		Hibernate.closeSession(session);
+		set200Response(c, gson.toJson(restrigger));
 	}
 }

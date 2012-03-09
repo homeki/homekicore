@@ -1,23 +1,18 @@
 package com.homeki.core.http.handlers;
 
 import java.util.List;
-import java.util.StringTokenizer;
-
-import org.apache.http.HttpRequest;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.hibernate.Session;
 
 import com.homeki.core.device.Device;
 import com.homeki.core.device.tellstick.TellStickDevice;
 import com.homeki.core.device.tellstick.TellStickDimmer;
 import com.homeki.core.device.tellstick.TellStickLearnable;
 import com.homeki.core.device.tellstick.TellStickSwitch;
+import com.homeki.core.http.ApiException;
+import com.homeki.core.http.Container;
 import com.homeki.core.http.HttpHandler;
 import com.homeki.core.http.json.JsonDevice;
 import com.homeki.core.http.json.JsonTellStickDevice;
 import com.homeki.core.main.Setting;
-import com.homeki.core.storage.Hibernate;
 
 public class DeviceTellstickHandler extends HttpHandler {
 	private static final String NEXT_HOUSE_KEY = "TELLSTICK_NEXT_HOUSE_VALUE";
@@ -29,109 +24,89 @@ public class DeviceTellstickHandler extends HttpHandler {
 	}
 	
 	@Override
-	protected void handle(HttpRequest request, HttpResponse response, List<NameValuePair> queryString, String method, StringTokenizer path) {
-		path.nextToken(); // dismiss "device"
-		path.nextToken(); // dismiss "tellstick"
+	protected void handle(Container c) {
+		c.path.nextToken(); // dismiss "device"
+		c.path.nextToken(); // dismiss "tellstick"
 		
 		Actions action = Actions.BAD_ACTION;
 		try {
-			action = Actions.valueOf(path.nextToken().toUpperCase());
+			action = Actions.valueOf(c.path.nextToken().toUpperCase());
 		} catch (Exception e) {}
 		
 		switch (action) {
 		case ADD:
-			resolveAdd(request, response);
+			resolveAdd(c);
 			break;
 		case LIST:
-			resolveList(response);
+			resolveList(c);
 			break;
 		case LEARN:
-			resolveLearn(response, queryString);
+			resolveLearn(c);
 			break;
 		default:
-			sendString(response, 404, "No such action, " + action + ".");
-			break;
+			throw new ApiException("No such URL/action: '" + action + "'.");
 		}
 	}
 	
-	private void resolveAdd(HttpRequest request, HttpResponse response) {
-		String post = getPost(request, response);
+	private void resolveAdd(Container c) {
+		String post = getPost(c);
 		JsonTellStickDevice jsonDevice = gson.fromJson(post, JsonTellStickDevice.class);
-		
-		Session session = Hibernate.openSession();
 		
 		int house;
 		int unit;
 		
 		if (jsonDevice.house == null) {
-			house = Setting.getInt(session, NEXT_HOUSE_KEY);
+			house = Setting.getInt(c.ses, NEXT_HOUSE_KEY);
 			if (house == -1)
 				house = HOUSE_SEED;
 		} else {
 			house = jsonDevice.house;
 		}
-		if (jsonDevice.unit == null) {
+		
+		if (jsonDevice.unit == null)
 			unit = UNIT;
-		} else {
+		else
 			unit = jsonDevice.unit;
-		}
 		
 		Device dev;
 
-		if (jsonDevice.type.equals("switch")) {
+		if (jsonDevice.type.equals("switch"))
 			dev = new TellStickSwitch(false, house, unit);
-		} else if (jsonDevice.type.equals("dimmer")) {
+		else if (jsonDevice.type.equals("dimmer"))
 			dev = new TellStickDimmer(0, house, unit);
-		} else {
-			sendString(response, 405, "Did not recognize type '" + jsonDevice.type + "' as a valid TellStick type.");
-			return;
-		}
+		else
+			throw new ApiException("Did not recognize type '" + jsonDevice.type + "' as a valid TellStick type.");
 		
 		if (jsonDevice.house == null)
-			Setting.putInt(session, NEXT_HOUSE_KEY, house+1);
+			Setting.putInt(c.ses, NEXT_HOUSE_KEY, house+1);
 		
-		session.save(dev);
-		
-		Hibernate.closeSession(session);
+		c.ses.save(dev);
 		
 		JsonDevice newid = new JsonDevice();
 		newid.id = dev.getId();
-		sendString(response, 200, gson.toJson(newid));
+		
+		set200Response(c, gson.toJson(newid));
 	}
 	
-	private void resolveList(HttpResponse response) {
-		Session session = Hibernate.openSession();
-		
+	private void resolveList(Container c) {
 		@SuppressWarnings("unchecked")
-		List<Device> list = session.createCriteria(TellStickDevice.class).list();
-		
-		sendString(response, 200, gson.toJson(JsonDevice.convertList(list, session)));
-		
-		Hibernate.closeSession(session);
+		List<Device> list = c.ses.createCriteria(TellStickDevice.class).list();
+		set200Response(c, gson.toJson(JsonDevice.convertList(list, c.ses)));
 	}
 	
-	private void resolveLearn(HttpResponse response, List<NameValuePair> queryString) {
-		int id = getIntParameter(response, queryString, "deviceid");
+	private void resolveLearn(Container c) {
+		int id = getIntParameter(c, "deviceid");
 		
-		if (id == -1)
-			return;
+		TellStickDevice dev = (TellStickDevice)c.ses.get(TellStickDevice.class, id);
 		
-		Session session = Hibernate.openSession();
+		if (dev == null)
+			throw new ApiException("No TellStick device with specified ID found.");
 		
-		TellStickDevice dev = (TellStickDevice)session.get(TellStickDevice.class, id);
-		
-		if (dev == null) {
-			sendString(response, 405, "No TellStick device with specified ID found.");
-			return;
-		}
-		if (!(dev instanceof TellStickLearnable)) {
-			sendString(response, 405, "Specified TellStick device does not support learn.");
-			return;
-		}
+		if (!(dev instanceof TellStickLearnable))
+			throw new ApiException("Specified TellStick device does not support learn.");
 		
 		((TellStickLearnable)dev).learn();
-		sendString(response, 200, "Learn command sent successfully.");
 		
-		Hibernate.closeSession(session);
+		set200Response(c, "Learn command sent successfully.");
 	}
 }

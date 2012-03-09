@@ -2,18 +2,13 @@ package com.homeki.core.http.handlers;
 
 import java.util.List;
 import java.util.Set;
-import java.util.StringTokenizer;
-
-import org.apache.http.HttpRequest;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.hibernate.Session;
 
 import com.homeki.core.device.Device;
 import com.homeki.core.device.TimerTrigger;
+import com.homeki.core.http.ApiException;
+import com.homeki.core.http.Container;
 import com.homeki.core.http.HttpHandler;
 import com.homeki.core.http.json.JsonDeviceLink;
-import com.homeki.core.storage.Hibernate;
 
 public class TriggerDeviceHandler extends HttpHandler {
 	public enum Actions {
@@ -21,43 +16,35 @@ public class TriggerDeviceHandler extends HttpHandler {
 	}
 	
 	@Override
-	protected void handle(HttpRequest request, HttpResponse response, List<NameValuePair> queryString, String method, StringTokenizer path) {
-		path.nextToken(); // dismiss "trigger"
-		path.nextToken(); // dismiss "timer"
+	protected void handle(Container c) {
+		c.path.nextToken(); // dismiss "trigger"
+		c.path.nextToken(); // dismiss "timer"
 		
 		Actions action = Actions.BAD_ACTION;
 		try {
-			action = Actions.valueOf(path.nextToken().toUpperCase());
+			action = Actions.valueOf(c.path.nextToken().toUpperCase());
 		} catch (Exception e) {}
 		
 		switch (action) {
 		case LIST:
-			resolveList(response, queryString);
+			resolveList(c);
 			break;
 		default:
-			sendString(response, 404, "No such action, " + action + ".");
-			break;
+			throw new ApiException("No such URL/action: '" + action + "'.");
 		}
 	}
 
 	//TODO: Kan göras snyggare, men det här funkar
-	private void resolveList(HttpResponse response, List<NameValuePair> queryString) {
-		int id = getIntParameter(response, queryString, "triggerid");
-		
-		if (id == -1)
-			return;
-		
-		Session session = Hibernate.openSession();
+	private void resolveList(Container c) {
+		int id = getIntParameter(c, "triggerid");
 		
 		@SuppressWarnings("unchecked")
-		List<Device> list = session.createCriteria(Device.class).list();
+		List<Device> list = c.ses.createCriteria(Device.class).list();
 		
-		TimerTrigger trigger = (TimerTrigger) session.get(TimerTrigger.class, id);
+		TimerTrigger trigger = (TimerTrigger)c.ses.get(TimerTrigger.class, id);
 
-		if (trigger == null) {
-			sendString(response, 405, "No timer trigger with specified ID.");
-			return;
-		}
+		if (trigger == null)
+			throw new ApiException("No timer trigger with specified ID.");
 		
 		Set<Device> linkedDevices = trigger.getDevices();
 
@@ -66,8 +53,6 @@ public class TriggerDeviceHandler extends HttpHandler {
 		for (int i = 0; i < jsonDevices.length; i++)
 			jsonDevices[i].setLinked(linkedDevices.contains(list.get(i)));
 		
-		sendString(response, 200, gson.toJson(jsonDevices));
-		
-		Hibernate.closeSession(session);
+		set200Response(c, gson.toJson(jsonDevices));
 	}
 }

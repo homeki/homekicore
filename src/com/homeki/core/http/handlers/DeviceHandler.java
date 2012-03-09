@@ -1,17 +1,12 @@
 package com.homeki.core.http.handlers;
 
 import java.util.List;
-import java.util.StringTokenizer;
-
-import org.apache.http.HttpRequest;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.hibernate.Session;
 
 import com.homeki.core.device.Device;
+import com.homeki.core.http.ApiException;
+import com.homeki.core.http.Container;
 import com.homeki.core.http.HttpHandler;
 import com.homeki.core.http.json.JsonDevice;
-import com.homeki.core.storage.Hibernate;
 
 public class DeviceHandler extends HttpHandler {
 	public enum Actions {
@@ -19,58 +14,47 @@ public class DeviceHandler extends HttpHandler {
 	}
 	
 	@Override
-	protected void handle(HttpRequest request, HttpResponse response, List<NameValuePair> queryString, String method, StringTokenizer path) {
-		path.nextToken(); // dismiss "device"
+	protected void handle(Container c) {
+		c.path.nextToken(); // dismiss "device"
 		
 		Actions action = Actions.BAD_ACTION;
 		try {
-			action = Actions.valueOf(path.nextToken().toUpperCase());
-		} catch (Exception e) {}
+			action = Actions.valueOf(c.path.nextToken().toUpperCase());
+		} catch (Exception ignore) {}
 		
 		switch (action) {
 		case LIST:
-			resolveList(response);
+			resolveList(c);
 			break;
 		case SET:
-			resolveSet(request, response, queryString);
+			resolveSet(c);
 			break;
 		default:
-			sendString(response, 404, "No such action, " + action + ".");
-			break;
+			throw new ApiException("No such URL/action: '" + action + "'.");
 		}
 	}
 	
-	private void resolveSet(HttpRequest request, HttpResponse response, List<NameValuePair> queryString) {
-		int id = getIntParameter(response, queryString, "deviceid");
-		String post = getPost(request, response);
-		
-		if (id == -1 || post.equals(""))
-			return;
+	private void resolveSet(Container c) {
+		int id = getIntParameter(c, "deviceid");
+		String post = getPost(c);
 		
 		JsonDevice jdev = gson.fromJson(post, JsonDevice.class);
 		
-		Session session = Hibernate.openSession();
-		Device dev = (Device)session.get(Device.class, id);
+		Device dev = (Device)c.ses.get(Device.class, id);
 		
 		if (jdev.name != null)
 			dev.setName(jdev.name);
 		if (jdev.description != null)
 			dev.setDescription(jdev.description);
 		
-		session.save(dev);
-		Hibernate.closeSession(session);
+		c.ses.save(dev);
 		
-		sendString(response, 200, "Device updated successfully.");
+		set200Response(c, "Device updated successfully.");
 	}
 	
-	private void resolveList(HttpResponse response) {
-		Session session = Hibernate.openSession();
-		
+	private void resolveList(Container c) {
 		@SuppressWarnings("unchecked")
-		List<Device> list = session.createCriteria(Device.class).list();
-		
-		sendString(response, 200, gson.toJson(JsonDevice.convertList(list, session)));
-		
-		Hibernate.closeSession(session);
+		List<Device> list = c.ses.createCriteria(Device.class).list();
+		set200Response(c, gson.toJson(JsonDevice.convertList(list, c.ses)));
 	}
 }

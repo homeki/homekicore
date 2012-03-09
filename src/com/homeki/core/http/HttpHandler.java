@@ -20,147 +20,133 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.protocol.HttpRequestHandler;
 import org.apache.http.util.EntityUtils;
+import org.hibernate.Session;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.homeki.core.main.L;
 import com.homeki.core.main.Util;
+import com.homeki.core.storage.Hibernate;
 
 public abstract class HttpHandler implements HttpRequestHandler {
-	protected static final Gson gson = new GsonBuilder().setPrettyPrinting().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+	protected static final Gson gson = new GsonBuilder().setPrettyPrinting().setDateFormat(Util.getDateTimeFormat().toPattern()).create();
 	
 	@Override
 	public void handle(HttpRequest request, HttpResponse response, HttpContext context) throws HttpException, IOException {
-		List<NameValuePair> queryString = null;
-		String path = request.getRequestLine().getUri();
-		String method = request.getRequestLine().getMethod();
+		Session session = null;
+		Container c = new Container();
 		
-		File p = new File(path);
-		
-		L.i("Got " + method + " request for path " + p.getAbsolutePath() + ".");
+		c.res = response;
+		c.req = request;
 		
 		try {
+			List<NameValuePair> queryString = null;
+			String path = request.getRequestLine().getUri();
+			String method = request.getRequestLine().getMethod();
+			
+			File p = new File(path);
+			
+			L.i("Got " + method + " request for path " + p.getAbsolutePath() + ".");
+			
+			StringTokenizer st = new StringTokenizer(p.getAbsolutePath(), "/?");
 			URI uri = new URI(p.getAbsolutePath());
 			queryString = URLEncodedUtils.parse(uri, "UTF-8");
-		} catch (Exception e) {
-			L.e("Exception parsing query string.", e);
-		}
-		
-		StringTokenizer st = new StringTokenizer(p.getAbsolutePath(), "/?");
-		
-		try {
-			handle(request, response, queryString, method, st);
+			
+			session = Hibernate.openSession();
+			
+			c.ses = session;
+			c.path = st;
+			c.qs = queryString;
+			
+			handle(c);
 		} catch (JsonSyntaxException e) {
-			try {
-				sendString(response, 405, "Couldn't parse JSON, make sure it is well formed.");
-			} catch (Exception ignore) {}
+			set405Response(c, "Could not parse JSON, make sure it is well formed.");
+		} catch (ApiException e) {
+			set405Response(c, e.getMessage());
 		} catch (Exception e) {
 			L.e("Unknown exception occured while processing HTTP request.", e);
-			try {
-				sendString(response, 405, "Something went wrong while processing the HTTP request.");
-			} catch (Exception ignore) {}
+			set405Response(c, "Something went wrong while processing the HTTP request.");
+		} finally {
+			if (session != null && session.isOpen())
+				Hibernate.closeSession(session);
 		}
 	}
 	
-	protected void sendString(HttpResponse response, int statusCode, String content) {
+	private void setStringResponse(Container c, int statusCode, String content) {
 		try {
-			response.setStatusCode(statusCode);
-			response.setEntity(new StringEntity(content));
+			c.res.setStatusCode(statusCode);
+			c.res.setEntity(new StringEntity(content));
 		} catch (UnsupportedEncodingException e) {
 			L.e("Unsupported encoding when adding StringEntity to response.");
+			throw new ApiException("Unsupported encoding when adding StringEntity to response.");
 		}
 	}
 	
-	protected int getIntParameter(HttpResponse response, List<NameValuePair> queryString, String key) {
-		int id;
-		
+	protected void set200Response(Container c, String content) {
+		setStringResponse(c, 200, content);
+	}
+	
+	protected void set405Response(Container c, String content) {
+		setStringResponse(c, 405, content);
+	}
+	
+	protected int getIntParameter(Container c, String key) {
 		try {
-			id = Integer.parseInt(getParameter(queryString, key));
+			return Integer.parseInt(getStringParameter(c, key));
 		} catch (NumberFormatException e) {
-			id = -1;
-			L.e("Could not parse '" + key + "' as an integer.");
-			sendString(response, 405, "Could not parse '" + key + "' as an integer.");
-		} catch (MissingKeyException e) {
-			id = -1;
-			L.e(e.getMessage());
-			sendString(response, 405, e.getMessage());
+			throw new ApiException("Could not parse '" + key + "' as integer.");
 		}
-		
-		return id;
 	}
 	
-	protected Date getDateParameter(HttpResponse response, List<NameValuePair> queryString, String key) {
-		Date d;
-		
+	protected int getOptionalIntParameter(Container c, String key) {
+		try {
+			return Integer.parseInt(getStringParameter(c, key));
+		} catch (NumberFormatException e) {
+			return -1;
+		}
+	}
+	
+	protected Date getDateParameter(Container c, String key) {
 		try {
 			try {
-				d = Util.getDateTimeFormat().parse(getParameter(queryString, key));
+				return Util.getDateTimeFormat().parse(getStringParameter(c, key));
 			} catch (ParseException ex) {
-				d = Util.getDateFormat().parse(getParameter(queryString, key));
+				return Util.getDateFormat().parse(getStringParameter(c, key));
 			}
-		} catch (ParseException ex) {
-			L.e("Could not parse '" + key + "' as a date.");
-			sendString(response, 405, "Could not parse '" + key + "' as a date.");
-			d = null;
-		} catch (MissingKeyException e) {
-			L.e(e.getMessage());
-			sendString(response, 405, e.getMessage());
-			d = null;
+		} catch (ParseException e) {
+			throw new ApiException("Could not parse '" + key + "' as a date.");
 		}
-		
-		return d;
 	}
 	
-	protected String getStringParameter(HttpResponse response, List<NameValuePair> queryString, String key) {
-		String value = "";
-		
-		try {
-			value = getParameter(queryString, key);
-		} catch (MissingKeyException e) {
-			L.e(e.getMessage());
-			sendString(response, 405, e.getMessage());
-		}
-		
-		return value;
-	}
-	
-	private String getParameter(List<NameValuePair> queryString, String key) throws MissingKeyException {
-		for (NameValuePair pair : queryString) {
-			if (pair.getName().toLowerCase().equals(key.toLowerCase())) {
+	private String getStringParameter(Container c, String key) {
+		for (NameValuePair pair : c.qs) {
+			if (pair.getName().toLowerCase().equals(key.toLowerCase()))
 				return pair.getValue();
-			}
 		}
 		
-		throw new MissingKeyException(String.format("Missing parameter '%s'.", key));
+		throw new ApiException("Missing parameter '" +  key  + "'.");
 	}
 	
-	protected String getPost(HttpRequest request, HttpResponse response) {
+	protected String getPost(Container c) {
 		String s = "";
 		
-		if (!request.getRequestLine().getMethod().toUpperCase().equals("POST")) {
-			L.e("Expected POST HTTP, but received something else.");
-			sendString(response, 405, "HTTP method not POST.");
-			return "";
-		}
+		if (!c.req.getRequestLine().getMethod().toUpperCase().equals("POST"))
+			throw new ApiException("Expected POST HTTP, but received something else.");
 		
-		if (!(request instanceof HttpEntityEnclosingRequest)) {
-			L.e("Missing POST HTTP data.");
-			sendString(response, 405, "POST data not provided.");
-			return "";
-		}
+		if (!(c.req instanceof HttpEntityEnclosingRequest))
+			throw new ApiException("POST data not provided.");
 		
-		HttpEntity entity = ((HttpEntityEnclosingRequest)request).getEntity();
+		HttpEntity entity = ((HttpEntityEnclosingRequest)c.req).getEntity();
 		
 		try {
 			s = EntityUtils.toString(entity);
 		} catch (Exception e) {
-			L.e("Could not parse POST data.", e);
-			sendString(response, 405, "Could not parse POST data.");
+			throw new ApiException("Could not parse POST data.");
 		}
 		
 		return s;
 	}
 	
-	protected abstract void handle(HttpRequest request, HttpResponse response, List<NameValuePair> queryString, String method, StringTokenizer path);
+	protected abstract void handle(Container c) throws Exception;
 }
