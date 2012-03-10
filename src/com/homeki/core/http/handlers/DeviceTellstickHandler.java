@@ -16,7 +16,6 @@ import com.homeki.core.main.Setting;
 
 public class DeviceTellstickHandler extends HttpHandler {
 	private static final String NEXT_HOUSE_KEY = "TELLSTICK_NEXT_HOUSE_VALUE";
-	private static final int HOUSE_SEED = 3764;
 	private static final int UNIT = 3;
 	
 	public enum Actions {
@@ -55,13 +54,10 @@ public class DeviceTellstickHandler extends HttpHandler {
 		int house;
 		int unit;
 		
-		if (jsonDevice.house == null) {
+		if (jsonDevice.house == null)
 			house = Setting.getInt(c.ses, NEXT_HOUSE_KEY);
-			if (house == -1)
-				house = HOUSE_SEED;
-		} else {
+		else
 			house = jsonDevice.house;
-		}
 		
 		if (jsonDevice.unit == null)
 			unit = UNIT;

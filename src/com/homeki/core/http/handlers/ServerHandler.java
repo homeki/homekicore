@@ -8,8 +8,7 @@ import com.homeki.core.main.Setting;
 
 public class ServerHandler extends HttpHandler {
 	private static final String SERVER_NAME_KEY = "SERVER_NAME";
-	private static final String DEFAULT_SERVER_NAME = "Homeki";
-	
+
 	public enum Actions {
 		GET, SET, BAD_ACTION
 	}
@@ -37,10 +36,6 @@ public class ServerHandler extends HttpHandler {
 	
 	private void resolveGet(Container c) {
 		String name = Setting.getString(c.ses, SERVER_NAME_KEY);
-		
-		if (name.length() == 0)
-			name = DEFAULT_SERVER_NAME;
-		
 		set200Response(c, gson.toJson(new JsonServerInfo(name)));
 	}
 	
