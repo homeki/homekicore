@@ -125,7 +125,7 @@
 	<changeSet id="17" author="jonas">
 		<insert tableName="setting">
 			<column name="setting_key" value="TELLSTICK_NEXT_HOUSE_VALUE" />
-			<column name="setting_value" value="3764" />
+			<column name="setting_value" value="4763" />
 		</insert>
 		<insert tableName="setting">
 			<column name="setting_key" value="SERVER_NAME" />
