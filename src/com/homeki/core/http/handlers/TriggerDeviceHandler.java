@@ -34,7 +34,6 @@ public class TriggerDeviceHandler extends HttpHandler {
 		}
 	}
 
-	//TODO: Kan göras snyggare, men det här funkar
 	private void resolveList(Container c) {
 		int id = getIntParameter(c, "triggerid");
 		

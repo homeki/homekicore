@@ -73,6 +73,8 @@ public class DeviceStateHandler extends HttpHandler {
 		} else {
 			throw new ApiException("Device with specified ID is not a switch/dimmer.");
 		}
+		
+		set200Response(c, "Device state successfully changed.");
 	}
 	
 	private void resolveList(Container c) {

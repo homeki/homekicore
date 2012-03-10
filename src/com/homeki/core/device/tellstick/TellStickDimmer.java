@@ -76,4 +76,9 @@ public class TellStickDimmer extends TellStickDevice implements Dimmable, Switch
 	public void learn() {
 		TellStickNative.learn(Integer.valueOf(internalId));
 	}
+	
+	@Override
+	public void preDelete() {
+		TellStickNative.removeDevice(Integer.valueOf(internalId));
+	}
 }

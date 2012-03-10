@@ -102,8 +102,8 @@ public abstract class Device {
 	
 	public abstract String getType();
 	
-	public void delete(Session session) {
-		session.delete(this);
+	public void preDelete() {
+		
 	}
 	
 	public static Device getByInternalId(Session session, String internalId) {
@@ -139,5 +139,4 @@ public abstract class Device {
 		
 		return p;
 	}
-	
 }

@@ -66,7 +66,7 @@ public abstract class HttpHandler implements HttpRequestHandler {
 			set405Response(c, e.getMessage());
 		} catch (Exception e) {
 			L.e("Unknown exception occured while processing HTTP request.", e);
-			set405Response(c, "Something went wrong while processing the HTTP request.");
+			set405Response(c, "Unhandled exception occured while processing HTTP request. The exception message was: " + e.getMessage());
 		} finally {
 			if (session != null && session.isOpen())
 				Hibernate.closeSession(session);

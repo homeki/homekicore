@@ -54,8 +54,8 @@ public class TriggerHandler extends HttpHandler {
 		
 		if (trigger == null)
 			throw new ApiException("No trigger with specified ID.");
-		else 
-			c.ses.delete(trigger);
+		
+		c.ses.delete(trigger);
 	}
 	
 	private void resolveLink(Container c) {
@@ -65,18 +65,16 @@ public class TriggerHandler extends HttpHandler {
 		Device dev = (Device)c.ses.get(Device.class, deviceid);
 		Trigger tri = (Trigger)c.ses.get(Trigger.class, triggerid);
 		
-		if (dev == null) {
+		if (dev == null)
 			throw new ApiException("No device with specified ID found.");
-		} else if (tri == null) {
+		else if (tri == null)
 			throw new ApiException("No trigger with specified ID found.");
-		} else if (dev.getTriggers().contains(tri)) {
+		else if (dev.getTriggers().contains(tri))
 			throw new ApiException("The specified device and the specified trigger are already linked.");
-		}
-		else {
-			dev.getTriggers().add(tri);
-			c.ses.save(dev);
-			set200Response(c, "Specified device and specified trigger successfully linked.");
-		}
+
+		dev.getTriggers().add(tri);
+		c.ses.save(dev);
+		set200Response(c, "Specified device and specified trigger successfully linked.");
 	}
 	
 	private void resolveUnlink(Container c) {
@@ -86,16 +84,15 @@ public class TriggerHandler extends HttpHandler {
 		Device dev = (Device)c.ses.get(Device.class, deviceid);
 		Trigger tri = (Trigger)c.ses.get(Trigger.class, triggerid);
 		
-		if (dev == null) {
+		if (dev == null)
 			throw new ApiException("No device with specified ID found.");
-		} else if (tri == null) {
+		else if (tri == null)
 			throw new ApiException("No trigger with specified ID found.");
-		} else if (!dev.getTriggers().contains(tri)) {
+		else if (!dev.getTriggers().contains(tri))
 			throw new ApiException("Specified device does not contain the specified trigger.");
-		} else {
-			dev.getTriggers().remove(tri);
-			c.ses.save(dev);
-			set200Response(c, "Link between specified device and specified trigger successfully removed.");
-		}
+			
+		dev.getTriggers().remove(tri);
+		c.ses.save(dev);
+		set200Response(c, "Link between specified device and specified trigger successfully removed.");
 	}
 }

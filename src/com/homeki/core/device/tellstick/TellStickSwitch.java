@@ -52,4 +52,9 @@ public class TellStickSwitch extends TellStickDevice implements Switchable, Tell
 	public void learn() {
 		TellStickNative.learn(Integer.valueOf(internalId));
 	}
+	
+	@Override
+	public void preDelete() {
+		TellStickNative.removeDevice(Integer.valueOf(internalId));
+	}
 }

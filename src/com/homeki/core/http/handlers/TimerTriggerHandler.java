@@ -50,7 +50,7 @@ public class TimerTriggerHandler extends HttpHandler {
 		trigger.setSecondsFromMidnight(triggerTimer.time);
 		c.ses.save(trigger);
 		
-		set200Response(c, "Trigger was updated successfully.");
+		set200Response(c, "Trigger updated successfully.");
 	}
 
 	private void resolveAdd(Container c) {
