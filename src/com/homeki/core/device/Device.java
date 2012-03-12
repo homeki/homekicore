@@ -23,6 +23,9 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.criterion.Restrictions;
 
+import com.homeki.core.device.tellstick.TellStickDimmer;
+import com.homeki.core.storage.Hibernate;
+
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
@@ -126,16 +129,13 @@ public abstract class Device {
 		this.description = description;
 	}
 	
-	public HistoryPoint getState(Session session) {
-		Device dev = (Device) session.get(Device.class, id);
+	public HistoryPoint getLatestHistoryPoint(int channel) {
+		Session ses = Hibernate.currentSession();
 		
-		if (dev == null)
-			return null;
-		
-		HistoryPoint p = (HistoryPoint) session.createFilter(dev.getHistoryPoints(), "order by registered desc").setMaxResults(1).uniqueResult();
-		
-		if (p == null)
-			return null;
+		HistoryPoint p = (HistoryPoint)ses.createFilter(historyPoints, "where channel = ? order by registered desc")
+				.setInteger(0, channel)
+				.setMaxResults(1)
+				.uniqueResult();
 		
 		return p;
 	}

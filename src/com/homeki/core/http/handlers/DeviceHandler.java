@@ -65,7 +65,7 @@ public class DeviceHandler extends HttpHandler {
 	private void resolveList(Container c) {
 		@SuppressWarnings("unchecked")
 		List<Device> list = c.ses.createCriteria(Device.class).list();
-		set200Response(c, gson.toJson(JsonDevice.convertList(list, c.ses)));
+		set200Response(c, gson.toJson(JsonDevice.convertList(list)));
 	}
 	
 	private void resolveMerge(Container c) {

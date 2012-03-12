@@ -21,8 +21,13 @@ public class Hibernate {
     	sessionFactory = new Configuration().setNamingStrategy(new ImprovedNamingStrategy()).configure().buildSessionFactory();
 	}
     
+    public static Session currentSession() {
+    	return getSessionFactory().getCurrentSession();
+    }
+    
     public static Session openSession() {
     	Session session = getSessionFactory().openSession();
+    	ManagedSessionContext.bind((org.hibernate.classic.Session)session);
     	session.beginTransaction();
     	return session;
     }

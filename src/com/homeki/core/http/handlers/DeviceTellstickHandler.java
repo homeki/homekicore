@@ -87,7 +87,7 @@ public class DeviceTellstickHandler extends HttpHandler {
 	private void resolveList(Container c) {
 		@SuppressWarnings("unchecked")
 		List<Device> list = c.ses.createCriteria(TellStickDevice.class).list();
-		set200Response(c, gson.toJson(JsonDevice.convertList(list, c.ses)));
+		set200Response(c, gson.toJson(JsonDevice.convertList(list)));
 	}
 	
 	private void resolveLearn(Container c) {
