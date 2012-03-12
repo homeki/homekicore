@@ -69,7 +69,7 @@ public class DeviceTellstickHandler extends HttpHandler {
 		if (jsonDevice.type.equals("switch"))
 			dev = new TellStickSwitch(false, house, unit);
 		else if (jsonDevice.type.equals("dimmer"))
-			dev = new TellStickDimmer(0, house, unit);
+			dev = new TellStickDimmer(255, house, unit);
 		else
 			throw new ApiException("Did not recognize type '" + jsonDevice.type + "' as a valid TellStick type.");
 		

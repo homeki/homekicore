@@ -4,13 +4,10 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 
-import org.hibernate.Session;
-
 import com.homeki.core.device.IntegerHistoryPoint;
 import com.homeki.core.device.abilities.Settable;
 import com.homeki.core.device.abilities.Triggable;
 import com.homeki.core.main.L;
-import com.homeki.core.storage.Hibernate;
 
 @Entity
 public class TellStickDimmer extends TellStickDevice implements Settable, Triggable, TellStickLearnable {
@@ -47,13 +44,8 @@ public class TellStickDimmer extends TellStickDevice implements Settable, Trigga
 
 	@Override
 	public void set(int channel, int value) {
-		Session ses = Hibernate.currentSession();
-		IntegerHistoryPoint level = (IntegerHistoryPoint)ses.createFilter(historyPoints, "where channel = ? order by registered desc")
-				.setInteger(0, TellStickDimmer.TELLSTICKDIMMER_LEVEL_CHANNEL)
-				.setMaxResults(1)
-				.uniqueResult();
-		
 		int internalId = Integer.parseInt(getInternalId());
+		IntegerHistoryPoint level = (IntegerHistoryPoint)getLatestHistoryPoint(TELLSTICKDIMMER_LEVEL_CHANNEL);
 		
 		if (channel == TELLSTICKDIMMER_ONOFF_CHANNEL) {
 			boolean on = value > 0;
@@ -61,7 +53,8 @@ public class TellStickDimmer extends TellStickDevice implements Settable, Trigga
 				TellStickNative.dim(internalId, level.getValue());
 				addOnOffHistoryPoint(true);
 			} else if (on) {
-				TellStickNative.turnOn(internalId);
+				L.e("Level is null. Level being null when setting TellStickDimmer should not occur more than once, and only after recent upgrade. If this message haven't been seen in a while, remove the check for null in code. Added a history point for this device now.");
+				TellStickNative.dim(internalId, 255);
 			} else {
 				TellStickNative.turnOff(internalId);
 			}

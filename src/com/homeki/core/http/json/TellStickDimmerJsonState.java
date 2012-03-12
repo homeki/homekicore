@@ -2,6 +2,7 @@ package com.homeki.core.http.json;
 
 import com.homeki.core.device.IntegerHistoryPoint;
 import com.homeki.core.device.tellstick.TellStickDimmer;
+import com.homeki.core.main.L;
 
 public class TellStickDimmerJsonState extends JsonState {
 	public Integer value;
@@ -10,7 +11,19 @@ public class TellStickDimmerJsonState extends JsonState {
 	public TellStickDimmerJsonState(TellStickDimmer d) {
 		IntegerHistoryPoint onoff = (IntegerHistoryPoint)d.getLatestHistoryPoint(TellStickDimmer.TELLSTICKDIMMER_ONOFF_CHANNEL);
 		IntegerHistoryPoint level = (IntegerHistoryPoint)d.getLatestHistoryPoint(TellStickDimmer.TELLSTICKDIMMER_LEVEL_CHANNEL);
-		this.value = onoff.getValue();
-		this.level = level.getValue();
+		
+		if (onoff != null) {
+			this.value = onoff.getValue();
+		} else {
+			L.e("Received null value in TellStickDimmerJsonState for device with ID " + d.getId() + " and name '" + d.getName() + "'. Should only happen after an upgrade, and if this has not been seen in any log for a while, the if-statements can be removed.");
+			this.value = 0;
+		}
+		
+		if (level != null) {
+			this.level = level.getValue();
+		} else {
+			L.e("Received null level in TellStickDimmerJsonState for device with ID " + d.getId() + " and name '" + d.getName() + "'. Should only happen after an upgrade, and if this has not been seen in any log for a while, the if-statements can be removed.");
+			this.level = 0;
+		}
 	}
 }
