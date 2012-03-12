@@ -23,7 +23,6 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.criterion.Restrictions;
 
-import com.homeki.core.device.tellstick.TellStickDimmer;
 import com.homeki.core.storage.Hibernate;
 
 @Entity
