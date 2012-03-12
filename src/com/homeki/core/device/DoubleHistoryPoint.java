@@ -4,19 +4,20 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 
-@Entity
-public class TemperatureHistoryPoint extends HistoryPoint {
+@Entity(name="double_history_point")
+public class DoubleHistoryPoint extends HistoryPoint {
 	@Column(name="double_value")
 	private Double value;
 	
-	public TemperatureHistoryPoint() {
-		
+	public DoubleHistoryPoint() {
+		super(0);
 	}
 	
-	public TemperatureHistoryPoint(Double value) {
+	public DoubleHistoryPoint(Double value) {
+		super(0);
 		this.value = value;
 	}
-	
+
 	public Double getValue() {
 		return value;
 	}

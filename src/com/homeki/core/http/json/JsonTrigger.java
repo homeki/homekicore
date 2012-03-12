@@ -16,7 +16,7 @@ public class JsonTrigger {
 			JsonTrigger jt = new JsonTrigger();
 			jt.id = list.get(i).getId();
 			jt.name = list.get(i).getName();
-			jt.newValue = list.get(i).getValue();
+			jt.newValue = list.get(i).getNewValue();
 			array[i] = jt;
 		}
 		

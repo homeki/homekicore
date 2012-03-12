@@ -14,30 +14,22 @@ public class TellStickListenerThread extends ControlledThread {
 	
 	@Override
 	protected void iteration() throws InterruptedException {
-		L.i("Before getevent");
 		String raw = TellStickNative.getEvent();
-		L.i("After getevent. raw: " + raw);
 		String s[] = raw.split(" ");
 		
 		String type = s[0];
 		String internalId = s[1];
 
-		if (type.equals("sensor")) {
+		if (type.equals("sensor"))
 			internalId = "s" + internalId;
-		}
 
-		L.i("Opening session");
 		Session session = Hibernate.openSession();
-		L.i("session open!");
 		Device d = Device.getByInternalId(session, internalId);
-		L.i("got device! " + d);
 		
 		if (d != null) {
-			L.i("d is not null!");
 			if (d instanceof TellStickSwitch) {
 				boolean status = Boolean.parseBoolean(s[2]);
-				L.i("adding history point (switch)");
-				((TellStickSwitch)d).addHistoryPoint(status);
+				((TellStickSwitch)d).addOnOffHistoryPoint(status);
 				L.i("Received '" + status + "' from TellStickListener.");
 			} else if (d instanceof TellStickDimmer) {
 				// TODO: fix this! very temporary solution!
@@ -46,29 +38,25 @@ public class TellStickListenerThread extends ControlledThread {
 				// could probably be handled more... elegant
 				try {
 					int level = Integer.parseInt(s[2]);
-					int value = 1;
-					L.i("adding history point (dimmer)");
-					((TellStickDimmer)d).addHistoryPoint(value, level);
+					((TellStickDimmer)d).addOnOffHistoryPoint(true);
+					((TellStickDimmer)d).addLevelHistoryPoint(level);
 					L.i("Received '" + level + "' from TellStickListener.");
 				} catch (NumberFormatException e) {
-					int value = 0;
-					((TellStickDimmer)d).addHistoryPoint(value, session);
+					((TellStickDimmer)d).addOnOffHistoryPoint(false);
 					L.i("Received 'NumberFormatException' from TellStickListener.");
 				}
 			} else if (d instanceof TellStickThermometer) {
 				double value = Double.parseDouble(s[2]);
-				L.i("adding history point (termo)");
 				((TellStickThermometer)d).addHistoryPoint(value);
 				L.i("Received '" + value + "'C from TellStickListener.");
 			}
 		} else if (type.equals("sensor")){
-			L.i("Register sensor " + internalId);
+			L.i("Register sensor value from " + internalId + ".");
 			d = new TellStickThermometer(Double.parseDouble(s[2]));
 			d.setInternalId(internalId);
 			session.save(d);
 		}
-		L.i("before close");
+		
 		Hibernate.closeSession(session);
-		L.i("after close");
 	}
 }

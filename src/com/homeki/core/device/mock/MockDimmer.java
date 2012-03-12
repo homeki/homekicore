@@ -5,41 +5,63 @@ import java.util.Date;
 import javax.persistence.Entity;
 
 import com.homeki.core.device.Device;
-import com.homeki.core.device.DimmerHistoryPoint;
-import com.homeki.core.device.abilities.Dimmable;
-import com.homeki.core.device.abilities.Switchable;
+import com.homeki.core.device.IntegerHistoryPoint;
+import com.homeki.core.device.abilities.Settable;
+import com.homeki.core.device.abilities.Triggable;
 import com.homeki.core.main.L;
 
 @Entity
-public class MockDimmer extends Device implements Switchable, Dimmable {
+public class MockDimmer extends Device implements Settable, Triggable {
+	public static final int MOCKDIMMER_ONOFF_CHANNEL = 0;
+	public static final int MOCKDIMMER_LEVEL_CHANNEL = 1;
+	
 	public MockDimmer() {
 		
 	}
 	
 	public MockDimmer(int defaultLevel) {
-		addHistoryPoint(defaultLevel);
+		addOnOffHistoryPoint(false);
+		addLevelHistoryPoint(defaultLevel);
 	}
-	
+
 	@Override
-	public void dim(int level, boolean fuuuuuuuuuuuu) {
-		L.i("MockHistoryDimmerDevice '" + getInternalId() + "' now has dim level " + level + ".");
-		addHistoryPoint(level);
+	public void trigger(int newValue) {
+		L.i("MockDimmer with internal ID '" + getInternalId() + "' triggered with newValue " + newValue + ".");
+
+		if (newValue > 0) {
+			set(MOCKDIMMER_ONOFF_CHANNEL, 1);
+			set(MOCKDIMMER_LEVEL_CHANNEL, newValue);
+		} else {
+			set(MOCKDIMMER_ONOFF_CHANNEL, 0);
+		}
 	}
-	
+
 	@Override
-	public void off() {
-		dim(0, false);
+	public void set(int channel, int value) {
+		L.i("MockDimmer with internal ID '" + getInternalId() + "' changed channel " + channel + " to " + value + ".");
+		
+		if (channel == MOCKDIMMER_ONOFF_CHANNEL)
+			addOnOffHistoryPoint(value == 1);
+		else if (channel == MOCKDIMMER_LEVEL_CHANNEL)
+			addLevelHistoryPoint(value);
+		else
+			throw new RuntimeException("Tried to set invalid channel " + channel + " on MockDimmer with internal ID '" + getInternalId() + "'.");
 	}
 	
-	@Override
-	public void on() {
-		dim(255, true);
-	}
-	
-	public void addHistoryPoint(int level) {
-		DimmerHistoryPoint dhp = new DimmerHistoryPoint();
+	public void addOnOffHistoryPoint(boolean on) {
+		IntegerHistoryPoint dhp = new IntegerHistoryPoint();
 		dhp.setDevice(this);
 		dhp.setRegistered(new Date());
+		dhp.setChannel(MOCKDIMMER_ONOFF_CHANNEL);
+		dhp.setValue(on ? 1 : 0);
+		historyPoints.add(dhp);
+	}
+	
+	public void addLevelHistoryPoint(int level) {
+		IntegerHistoryPoint dhp = new IntegerHistoryPoint();
+		dhp.setDevice(this);
+		dhp.setRegistered(new Date());
+		dhp.setChannel(MOCKDIMMER_LEVEL_CHANNEL);
 		dhp.setValue(level);
 		historyPoints.add(dhp);
 	}

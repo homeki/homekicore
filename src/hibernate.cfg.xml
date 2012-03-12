@@ -23,9 +23,8 @@
         <mapping class="com.homeki.core.device.Trigger" />
         <mapping class="com.homeki.core.device.TimerTrigger" />
         <mapping class="com.homeki.core.device.HistoryPoint" />
-        <mapping class="com.homeki.core.device.SwitchHistoryPoint" />
-        <mapping class="com.homeki.core.device.DimmerHistoryPoint" />
-        <mapping class="com.homeki.core.device.TemperatureHistoryPoint" />
+        <mapping class="com.homeki.core.device.IntegerHistoryPoint" />
+        <mapping class="com.homeki.core.device.DoubleHistoryPoint" />
         <mapping class="com.homeki.core.device.mock.MockSwitch" />
         <mapping class="com.homeki.core.device.mock.MockDimmer" />
         <mapping class="com.homeki.core.device.mock.MockThermometer" />

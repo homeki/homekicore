@@ -4,17 +4,21 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 
-import com.homeki.core.device.SwitchHistoryPoint;
-import com.homeki.core.device.abilities.Switchable;
+import com.homeki.core.device.IntegerHistoryPoint;
+import com.homeki.core.device.abilities.Settable;
+import com.homeki.core.device.abilities.Triggable;
+import com.homeki.core.main.L;
 
 @Entity
-public class TellStickSwitch extends TellStickDevice implements Switchable, TellStickLearnable {
+public class TellStickSwitch extends TellStickDevice implements Settable, Triggable, TellStickLearnable {
+	private static final int TELLSTICKSWITCH_ONOFF_CHANNEL = 0;
+	
 	public TellStickSwitch() {
 		
 	}
 	
 	public TellStickSwitch(boolean defaultValue) {
-		addHistoryPoint(defaultValue);
+		addOnOffHistoryPoint(defaultValue);
 	}
 	
 	public TellStickSwitch(boolean defaultValue, int house, int unit) {
@@ -26,13 +30,15 @@ public class TellStickSwitch extends TellStickDevice implements Switchable, Tell
 	}
 	
 	@Override
-	public void off() {
-		TellStickNative.turnOff(Integer.parseInt(getInternalId()));
+	public void set(int channel, int value) {
+		if (channel == TELLSTICKSWITCH_ONOFF_CHANNEL)
+			throw new RuntimeException("Tried to set invalid channel " + channel + " on TellStickSwitch '" + getInternalId() + "'.");
 	}
-	
+
 	@Override
-	public void on() {
-		TellStickNative.turnOn(Integer.parseInt(getInternalId()));
+	public void trigger(int newValue) {
+		L.i("TellStickDimmer with internal ID'" + getInternalId() + "' triggered with newValue " + newValue + ".");
+		set(TELLSTICKSWITCH_ONOFF_CHANNEL, newValue);
 	}
 
 	@Override
@@ -40,11 +46,11 @@ public class TellStickSwitch extends TellStickDevice implements Switchable, Tell
 		return "switch";
 	}
 	
-	public void addHistoryPoint(boolean value) {
-		SwitchHistoryPoint shp = new SwitchHistoryPoint();
+	public void addOnOffHistoryPoint(boolean on) {
+		IntegerHistoryPoint shp = new IntegerHistoryPoint();
 		shp.setDevice(this);
 		shp.setRegistered(new Date());
-		shp.setValue(value ? 1 : 0);
+		shp.setValue(on ? 1 : 0);
 		historyPoints.add(shp);
 	}
 

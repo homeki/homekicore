@@ -19,8 +19,8 @@ import javax.persistence.SequenceGenerator;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
-import com.homeki.core.device.abilities.Dimmable;
-import com.homeki.core.device.abilities.Switchable;
+import com.homeki.core.device.abilities.Triggable;
+import com.homeki.core.main.L;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -58,30 +58,24 @@ public abstract class Trigger {
 		this.name = name;
 	}
 	
-	public Integer getValue() {
+	public Integer getNewValue() {
 		return newValue;
 	}
 	
-	public void setValue(Integer value) {
-		this.newValue = value;
+	public void setNewValue(Integer newValue) {
+		this.newValue = newValue;
 	}
 	
 	public Set<Device> getDevices() {
 		return devices;
 	}
 	
-	// TODO: FULT MED INSTANCEOF
 	public void trigger() {
 		for (Device d : devices) {
-			if (d instanceof Dimmable) {
-				((Dimmable) d).dim(newValue, newValue !=0);
-			} else if (d instanceof Switchable) {
-				if (newValue != 0) {
-					((Switchable) d).on();
-				} else {
-					((Switchable) d).off();
-				}
-			}
+			if (d instanceof Triggable)
+				((Triggable)d).trigger(newValue);
+			else
+				L.w("Tried to trigger non-triggable device with internal ID '" + d.getInternalId() + "'.");
 		}
 	}
 }

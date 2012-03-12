@@ -20,12 +20,12 @@ public class JsonDevice {
 		
 	}
 	
-	public JsonDevice(Device d, Session session) {
+	public JsonDevice(Session session, Device d) {
 		type = d.getType();
 		id = d.getId();
 		name = d.getName();
 		added = d.getAdded();
-		state = new JsonState(d.getState(session));
+		state = JsonState.create(session, d);
 		active = d.isActive();
 		description = d.getDescription();
 	}
@@ -34,7 +34,7 @@ public class JsonDevice {
 		JsonDevice[] jsonDevices = new JsonDevice[devices.size()];
 		
 		for (int i = 0; i < jsonDevices.length; i++)
-			jsonDevices[i] = new JsonDevice(devices.get(i), session);
+			jsonDevices[i] = new JsonDevice(session, devices.get(i));
 		
 		return jsonDevices;
 	}

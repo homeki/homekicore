@@ -9,6 +9,6 @@ public class JsonTellStickDevice extends JsonDevice {
 	public Integer unit;
 	
 	public JsonTellStickDevice(Device d, Session session) {
-		super(d, session);
+		super(session, d);
 	}
 }

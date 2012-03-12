@@ -4,21 +4,23 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 
-import org.hibernate.Session;
-
-import com.homeki.core.device.DimmerHistoryPoint;
-import com.homeki.core.device.abilities.Dimmable;
-import com.homeki.core.device.abilities.Switchable;
+import com.homeki.core.device.IntegerHistoryPoint;
+import com.homeki.core.device.abilities.Settable;
+import com.homeki.core.device.abilities.Triggable;
+import com.homeki.core.main.L;
 
 @Entity
-public class TellStickDimmer extends TellStickDevice implements Dimmable, Switchable, TellStickLearnable {
+public class TellStickDimmer extends TellStickDevice implements Settable, Triggable, TellStickLearnable {
+	public static final int TELLSTICKDIMMER_ONOFF_CHANNEL = 0;
+	public static final int TELLSTICKDIMMER_LEVEL_CHANNEL = 1;
+	
 	public TellStickDimmer() {
 		
 	}
 	
 	public TellStickDimmer(int defaultLevel) {
-		int off = 0;
-		addHistoryPoint(off, defaultLevel);
+		addOnOffHistoryPoint(false);
+		addLevelHistoryPoint(defaultLevel);
 	}
 	
 	public TellStickDimmer(int defaultLevel, int house, int unit) {
@@ -30,22 +32,34 @@ public class TellStickDimmer extends TellStickDevice implements Dimmable, Switch
 	}
 	
 	@Override
-	public void dim(int level, boolean on) {
-		if (on) {
-			TellStickNative.dim(Integer.parseInt(getInternalId()), level);
+	public void trigger(int newValue) {
+		L.i("TellStickDimmer with internal ID'" + getInternalId() + "' triggered with newValue " + newValue + ".");
+
+		if (newValue > 0) {
+			addOnOffHistoryPoint(true);
+			set(TELLSTICKDIMMER_LEVEL_CHANNEL, newValue);
 		} else {
-			off();
+			set(TELLSTICKDIMMER_ONOFF_CHANNEL, 0);
 		}
 	}
 
 	@Override
-	public void off() {
-		TellStickNative.turnOff(Integer.parseInt(getInternalId()));
-	}
-	
-	@Override
-	public void on() {
-		TellStickNative.turnOn(Integer.parseInt(getInternalId()));
+	public void set(int channel, int value) {
+		int internalId = Integer.parseInt(getInternalId());
+		
+		if (channel == TELLSTICKDIMMER_ONOFF_CHANNEL) {
+			boolean on = value > 0;
+			if (on)
+				TellStickNative.turnOn(internalId);
+			else
+				TellStickNative.turnOff(internalId);
+			addOnOffHistoryPoint(on);
+		} else if (channel == TELLSTICKDIMMER_LEVEL_CHANNEL) {
+			TellStickNative.dim(internalId, value);
+			addLevelHistoryPoint(value);
+		} else {
+			throw new RuntimeException("Tried to set invalid channel " + channel + " on TellStickDimmer '" + getInternalId() + "'.");
+		}
 	}
 
 	@Override
@@ -53,22 +67,21 @@ public class TellStickDimmer extends TellStickDevice implements Dimmable, Switch
 		return "dimmer";
 	}
 	
-	public void addHistoryPoint(int value, Session session) {
-		DimmerHistoryPoint dhp = new DimmerHistoryPoint();
+	public void addOnOffHistoryPoint(boolean on) {
+		IntegerHistoryPoint dhp = new IntegerHistoryPoint();
 		dhp.setDevice(this);
 		dhp.setRegistered(new Date());
-		dhp.setValue(value);
-		int level = ((DimmerHistoryPoint)getState(session)).getLevel();
-		dhp.setLevel(level);
+		dhp.setChannel(TELLSTICKDIMMER_ONOFF_CHANNEL);
+		dhp.setValue(on ? 1 : 0);
 		historyPoints.add(dhp);
 	}
 	
-	public void addHistoryPoint(int value, int level) {
-		DimmerHistoryPoint dhp = new DimmerHistoryPoint();
+	public void addLevelHistoryPoint(int level) {
+		IntegerHistoryPoint dhp = new IntegerHistoryPoint();
 		dhp.setDevice(this);
 		dhp.setRegistered(new Date());
-		dhp.setValue(value);
-		dhp.setLevel(level);
+		dhp.setChannel(TELLSTICKDIMMER_LEVEL_CHANNEL);
+		dhp.setValue(level);
 		historyPoints.add(dhp);
 	}
 

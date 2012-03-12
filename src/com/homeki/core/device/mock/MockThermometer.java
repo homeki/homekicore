@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Transient;
 
 import com.homeki.core.device.Device;
-import com.homeki.core.device.TemperatureHistoryPoint;
+import com.homeki.core.device.DoubleHistoryPoint;
 
 @Entity
 public class MockThermometer extends Device {
@@ -40,7 +40,7 @@ public class MockThermometer extends Device {
 	}
 	
 	public void addHistoryPoint(double value) {
-		TemperatureHistoryPoint dhp = new TemperatureHistoryPoint();
+		DoubleHistoryPoint dhp = new DoubleHistoryPoint();
 		dhp.setDevice(this);
 		dhp.setRegistered(new Date());
 		dhp.setValue(value);

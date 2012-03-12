@@ -5,7 +5,7 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 
-import com.homeki.core.device.TemperatureHistoryPoint;
+import com.homeki.core.device.DoubleHistoryPoint;
 
 @Entity
 public class OneWireThermometer extends OneWireDevice implements OneWireIntervalLoggable {
@@ -24,7 +24,7 @@ public class OneWireThermometer extends OneWireDevice implements OneWireInterval
 	}
 	
 	public void addHistoryPoint(double value) {
-		TemperatureHistoryPoint dhp = new TemperatureHistoryPoint();
+		DoubleHistoryPoint dhp = new DoubleHistoryPoint();
 		dhp.setDevice(this);
 		dhp.setRegistered(new Date());
 		dhp.setValue(value);

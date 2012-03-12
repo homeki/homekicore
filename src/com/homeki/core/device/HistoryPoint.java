@@ -29,6 +29,13 @@ public abstract class HistoryPoint {
 	@Column
 	private Date registered;
 	
+	@Column
+	private int channel;
+	
+	public HistoryPoint(int channel) {
+		this.channel = channel;
+	}
+	
 	public Device getDevice() {
 		return device;
 	}
@@ -43,6 +50,14 @@ public abstract class HistoryPoint {
 	
 	public void setRegistered(Date registered) {
 		this.registered = registered;
+	}
+	
+	public int getChannel() {
+		return channel;
+	}
+	
+	public void setChannel(int channel) {
+		this.channel = channel;
 	}
 	
 	public int getId() {

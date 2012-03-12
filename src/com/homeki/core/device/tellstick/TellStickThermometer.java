@@ -5,7 +5,7 @@ import java.util.Date;
 import javax.persistence.Entity;
 
 import com.homeki.core.device.Device;
-import com.homeki.core.device.TemperatureHistoryPoint;
+import com.homeki.core.device.DoubleHistoryPoint;
 
 @Entity
 public class TellStickThermometer extends Device {
@@ -23,7 +23,7 @@ public class TellStickThermometer extends Device {
 	}
 	
 	public void addHistoryPoint(double value) {
-		TemperatureHistoryPoint thp = new TemperatureHistoryPoint();
+		DoubleHistoryPoint thp = new DoubleHistoryPoint();
 		thp.setDevice(this);
 		thp.setRegistered(new Date());
 		thp.setValue(value);

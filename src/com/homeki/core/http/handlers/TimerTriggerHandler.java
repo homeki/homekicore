@@ -44,7 +44,7 @@ public class TimerTriggerHandler extends HttpHandler {
 		
 		TimerTrigger trigger = (TimerTrigger)c.ses.get(TimerTrigger.class, id);
 		trigger.setName(triggerTimer.name);
-		trigger.setValue(triggerTimer.newValue);
+		trigger.setNewValue(triggerTimer.newValue);
 		trigger.setDays(triggerTimer.days);
 		trigger.setRepeatType(triggerTimer.repeatType);
 		trigger.setSecondsFromMidnight(triggerTimer.time);
@@ -59,7 +59,7 @@ public class TimerTriggerHandler extends HttpHandler {
 		
 		TimerTrigger trigger = new TimerTrigger();
 		trigger.setName(triggerTimer.name);
-		trigger.setValue(triggerTimer.newValue);
+		trigger.setNewValue(triggerTimer.newValue);
 		trigger.setDays(triggerTimer.days);
 		trigger.setRepeatType(triggerTimer.repeatType);
 		trigger.setSecondsFromMidnight(triggerTimer.time);
@@ -82,7 +82,7 @@ public class TimerTriggerHandler extends HttpHandler {
 		JsonTimerTrigger restrigger = new JsonTimerTrigger();
 		restrigger.id = id;
 		restrigger.name = trigger.getName();
-		restrigger.newValue = trigger.getValue();
+		restrigger.newValue = trigger.getNewValue();
 		restrigger.days = trigger.getDays();
 		restrigger.repeatType = trigger.getRepeatType();
 		restrigger.time = trigger.getSecondsFromMidnight();

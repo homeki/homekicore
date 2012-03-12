@@ -1,16 +1,15 @@
 package com.homeki.core.http.json;
 
-import com.homeki.core.device.DimmerHistoryPoint;
-import com.homeki.core.device.HistoryPoint;
+import org.hibernate.Session;
+
+import com.homeki.core.device.Device;
+import com.homeki.core.device.tellstick.TellStickDimmer;
 
 public class JsonState {
-	public Object value;
-	public Integer level;
-	
-	public JsonState(HistoryPoint hp) {
-		value = hp.getValue();
-		if (hp instanceof DimmerHistoryPoint) {
-			level = ((DimmerHistoryPoint)hp).getLevel();
-		}
+	public static JsonState create(Session ses, Device d) {
+		if (d instanceof TellStickDimmer)
+			return new TellStickDimmerJsonState(ses, (TellStickDimmer)d);
+		else
+			return new ObjectJsonState(ses, d);
 	}
 }

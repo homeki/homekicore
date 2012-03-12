@@ -5,12 +5,15 @@ import java.util.Date;
 import javax.persistence.Entity;
 
 import com.homeki.core.device.Device;
-import com.homeki.core.device.SwitchHistoryPoint;
-import com.homeki.core.device.abilities.Switchable;
+import com.homeki.core.device.IntegerHistoryPoint;
+import com.homeki.core.device.abilities.Settable;
+import com.homeki.core.device.abilities.Triggable;
 import com.homeki.core.main.L;
 
 @Entity
-public class MockSwitch extends Device implements Switchable {
+public class MockSwitch extends Device implements Settable, Triggable {
+	private static final int MOCKSWITCH_ONOFF_CHANNEL = 0;
+	
 	public MockSwitch() {
 		
 	}
@@ -20,22 +23,25 @@ public class MockSwitch extends Device implements Switchable {
 	}
 	
 	@Override
-	public void off() {
-		L.i("MockSwitchDevice '" + getInternalId() + "' is now OFF.");
-		addHistoryPoint(false);
+	public void trigger(int newValue) {
+		L.i("MockDimmerDevice '" + getInternalId() + "' triggered with newValue " + newValue + ".");
+		set(0, newValue);
 	}
-	
+
 	@Override
-	public void on() {
-		L.i("MockSwitchDevice '" + getInternalId() + "' is now ON.");
-		addHistoryPoint(true);
+	public void set(int channel, int value) {
+		if (channel != MOCKSWITCH_ONOFF_CHANNEL)
+			throw new RuntimeException("Tried to set invalid channel " + channel + " on MockSwitch '" + getInternalId() + "'.");
+		
+		addHistoryPoint(value > 0);
 	}
 	
 	public void addHistoryPoint(boolean value) {
-		SwitchHistoryPoint dhp = new SwitchHistoryPoint();
+		IntegerHistoryPoint dhp = new IntegerHistoryPoint();
 		dhp.setDevice(this);
 		dhp.setRegistered(new Date());
 		dhp.setValue(value ? 1 : 0);
+		dhp.setChannel(MOCKSWITCH_ONOFF_CHANNEL);
 		historyPoints.add(dhp);
 	}
 	
