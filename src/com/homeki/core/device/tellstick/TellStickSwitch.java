@@ -31,8 +31,16 @@ public class TellStickSwitch extends TellStickDevice implements Settable, Trigga
 	
 	@Override
 	public void set(int channel, int value) {
-		if (channel == TELLSTICKSWITCH_ONOFF_CHANNEL)
+		if (channel != TELLSTICKSWITCH_ONOFF_CHANNEL)
 			throw new RuntimeException("Tried to set invalid channel " + channel + " on TellStickSwitch '" + getInternalId() + "'.");
+		
+		boolean on = value > 0;
+		int internalId = Integer.parseInt(getInternalId());
+		
+		if (on)
+			TellStickNative.turnOn(internalId);
+		else
+			TellStickNative.turnOff(internalId);
 	}
 
 	@Override
