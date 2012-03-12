@@ -102,7 +102,7 @@ public abstract class HttpHandler implements HttpRequestHandler {
 	protected int getOptionalIntParameter(Container c, String key) {
 		try {
 			return Integer.parseInt(getStringParameter(c, key));
-		} catch (NumberFormatException e) {
+		} catch (Exception e) {
 			return -1;
 		}
 	}

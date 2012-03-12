@@ -36,7 +36,6 @@ public class TellStickDimmer extends TellStickDevice implements Settable, Trigga
 		L.i("TellStickDimmer with internal ID'" + getInternalId() + "' triggered with newValue " + newValue + ".");
 
 		if (newValue > 0) {
-			addOnOffHistoryPoint(true);
 			set(TELLSTICKDIMMER_LEVEL_CHANNEL, newValue);
 		} else {
 			set(TELLSTICKDIMMER_ONOFF_CHANNEL, 0);
@@ -53,10 +52,8 @@ public class TellStickDimmer extends TellStickDevice implements Settable, Trigga
 				TellStickNative.turnOn(internalId);
 			else
 				TellStickNative.turnOff(internalId);
-			addOnOffHistoryPoint(on);
 		} else if (channel == TELLSTICKDIMMER_LEVEL_CHANNEL) {
 			TellStickNative.dim(internalId, value);
-			addLevelHistoryPoint(value);
 		} else {
 			throw new RuntimeException("Tried to set invalid channel " + channel + " on TellStickDimmer '" + getInternalId() + "'.");
 		}
