@@ -36,4 +36,14 @@ public class TimerTrigger extends Trigger {
 	public void setDays(Integer day) {
 		this.days = day;
 	}
+
+	@Override
+	public String getMeta() {
+		return String.format("%02d:%02d", secondsFromMidnight / 3600, secondsFromMidnight % 3600 / 60);
+	}
+
+	@Override
+	public String getType() {
+		return "timer";
+	}
 }

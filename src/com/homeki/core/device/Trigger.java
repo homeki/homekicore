@@ -78,4 +78,9 @@ public abstract class Trigger {
 				L.w("Tried to trigger non-triggable device with internal ID '" + d.getInternalId() + "'.");
 		}
 	}
+	
+	
+	public abstract String getMeta();
+
+	public abstract String getType();
 }
