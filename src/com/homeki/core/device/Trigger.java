@@ -84,4 +84,9 @@ public abstract class Trigger {
 			}
 		}
 	}
+	
+	
+	public abstract String getMeta();
+
+	public abstract String getType();
 }
