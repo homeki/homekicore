@@ -36,7 +36,9 @@ public class TellStickDimmer extends TellStickDevice implements Settable, Trigga
 		L.i("TellStickDimmer with internal ID'" + getInternalId() + "' triggered with newValue " + newValue + ".");
 
 		if (newValue > 0) {
-			set(TELLSTICKDIMMER_LEVEL_CHANNEL, newValue);
+			// don't use the set() method here, or the dimmer won't turn on if it is off
+			// when setting it through a trigger
+			TellStickNative.dim(Integer.parseInt(getInternalId()), newValue);
 		} else {
 			set(TELLSTICKDIMMER_ONOFF_CHANNEL, 0);
 		}
@@ -46,6 +48,7 @@ public class TellStickDimmer extends TellStickDevice implements Settable, Trigga
 	public void set(int channel, int value) {
 		int internalId = Integer.parseInt(getInternalId());
 		IntegerHistoryPoint level = (IntegerHistoryPoint)getLatestHistoryPoint(TELLSTICKDIMMER_LEVEL_CHANNEL);
+		IntegerHistoryPoint onoff = (IntegerHistoryPoint)getLatestHistoryPoint(TELLSTICKDIMMER_ONOFF_CHANNEL);
 		
 		if (channel == TELLSTICKDIMMER_ONOFF_CHANNEL) {
 			boolean on = value > 0;
@@ -59,7 +62,16 @@ public class TellStickDimmer extends TellStickDevice implements Settable, Trigga
 				TellStickNative.turnOff(internalId);
 			}
 		} else if (channel == TELLSTICKDIMMER_LEVEL_CHANNEL) {
-			TellStickNative.dim(internalId, value);
+			if (onoff == null) {
+				L.e("Onoff is null. Onoff being null when setting TellStickDimmer should not occur more than once, and only after recent upgrade. If this message haven't been seen in a while, remove the check for null in code. Added a history point for this device now.");
+				addOnOffHistoryPoint(false);
+				
+			} else {
+				if (onoff.getValue() > 0)
+					TellStickNative.dim(internalId, value);
+				else
+					addLevelHistoryPoint(value);
+			}
 		} else {
 			throw new RuntimeException("Tried to set invalid channel " + channel + " on TellStickDimmer '" + getInternalId() + "'.");
 		}
