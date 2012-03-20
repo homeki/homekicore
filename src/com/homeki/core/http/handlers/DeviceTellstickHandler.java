@@ -73,6 +73,11 @@ public class DeviceTellstickHandler extends HttpHandler {
 		else
 			throw new ApiException("Did not recognize type '" + jsonDevice.type + "' as a valid TellStick type.");
 		
+		if (jsonDevice.name != null)
+			dev.setName(jsonDevice.name);
+		if (jsonDevice.description != null)
+			dev.setDescription(jsonDevice.description);
+		
 		if (jsonDevice.house == null)
 			Setting.putInt(c.ses, NEXT_HOUSE_KEY, house+1);
 		
