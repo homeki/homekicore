@@ -42,13 +42,13 @@ public class TimerTriggerHandler extends HttpHandler {
 		String post = getPost(c);
 		JsonTimerTrigger triggerTimer = gson.fromJson(post, JsonTimerTrigger.class);
 		
-		TimerTrigger trigger = (TimerTrigger)c.ses.get(TimerTrigger.class, id);
+		TimerTrigger trigger = (TimerTrigger)c.session.get(TimerTrigger.class, id);
 		trigger.setName(triggerTimer.name);
 		trigger.setNewValue(triggerTimer.newValue);
 		trigger.setDays(triggerTimer.days);
 		trigger.setRepeatType(triggerTimer.repeatType);
 		trigger.setSecondsFromMidnight(triggerTimer.time);
-		c.ses.save(trigger);
+		c.session.save(trigger);
 		
 		set200Response(c, "Trigger updated successfully.");
 	}
@@ -63,7 +63,7 @@ public class TimerTriggerHandler extends HttpHandler {
 		trigger.setDays(triggerTimer.days);
 		trigger.setRepeatType(triggerTimer.repeatType);
 		trigger.setSecondsFromMidnight(triggerTimer.time);
-		c.ses.save(trigger);
+		c.session.save(trigger);
 		
 		JsonTimerTrigger newid = new JsonTimerTrigger();
 		newid.id = trigger.getId();
@@ -74,7 +74,7 @@ public class TimerTriggerHandler extends HttpHandler {
 	private void resolveGet(Container c) {
 		int id = getIntParameter(c, "triggerid");
 		
-		TimerTrigger trigger = (TimerTrigger)c.ses.get(TimerTrigger.class, id);
+		TimerTrigger trigger = (TimerTrigger)c.session.get(TimerTrigger.class, id);
 		
 		if (trigger == null)
 			throw new ApiException("No timer trigger with specified ID.");

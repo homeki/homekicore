@@ -47,7 +47,7 @@ public class DeviceHandler extends HttpHandler {
 		
 		JsonDevice jdev = gson.fromJson(post, JsonDevice.class);
 		
-		Device dev = (Device)c.ses.get(Device.class, id);
+		Device dev = (Device)c.session.get(Device.class, id);
 		
 		if (dev == null)
 			throw new ApiException("No device with specified ID.");
@@ -57,14 +57,14 @@ public class DeviceHandler extends HttpHandler {
 		if (jdev.description != null)
 			dev.setDescription(jdev.description);
 		
-		c.ses.save(dev);
+		c.session.save(dev);
 		
 		set200Response(c, "Device updated successfully.");
 	}
 	
 	private void resolveList(Container c) {
 		@SuppressWarnings("unchecked")
-		List<Device> list = c.ses.createCriteria(Device.class).list();
+		List<Device> list = c.session.createCriteria(Device.class).list();
 		set200Response(c, gson.toJson(JsonDevice.convertList(list)));
 	}
 	
@@ -72,8 +72,8 @@ public class DeviceHandler extends HttpHandler {
 		int targetDeviceId = getIntParameter(c, "targetdeviceid");
 		int sourceDeviceId = getIntParameter(c, "sourcedeviceid");
 		
-		Device targetDev = (Device)c.ses.get(Device.class, targetDeviceId);
-		Device sourceDev = (Device)c.ses.get(Device.class, sourceDeviceId);
+		Device targetDev = (Device)c.session.get(Device.class, targetDeviceId);
+		Device sourceDev = (Device)c.session.get(Device.class, sourceDeviceId);
 		
 		if (targetDev == null)
 			throw new ApiException("No target device with specified ID.");
@@ -93,7 +93,7 @@ public class DeviceHandler extends HttpHandler {
 		}
 		sourceDev.getHistoryPoints().clear();
 		
-		c.ses.delete(sourceDev);
+		c.session.delete(sourceDev);
 		
 		set200Response(c, "Source device successfully merged into target device.");
 	}
@@ -101,13 +101,13 @@ public class DeviceHandler extends HttpHandler {
 	private void resolveDelete(Container c) {
 		int id = getIntParameter(c, "deviceid");
 		
-		Device dev = (Device)c.ses.get(Device.class, id);
+		Device dev = (Device)c.session.get(Device.class, id);
 		
 		if (dev == null)
 			throw new ApiException("No device with specified ID.");
 		
 		dev.preDelete();
-		c.ses.delete(dev);
+		c.session.delete(dev);
 		
 		set200Response(c, "Device successfully deleted.");
 	}

@@ -35,7 +35,7 @@ public class ServerHandler extends HttpHandler {
 	}
 	
 	private void resolveGet(Container c) {
-		String name = Setting.getString(c.ses, SERVER_NAME_KEY);
+		String name = Setting.getString(c.session, SERVER_NAME_KEY);
 		set200Response(c, gson.toJson(new JsonServerInfo(name)));
 	}
 	
@@ -47,7 +47,7 @@ public class ServerHandler extends HttpHandler {
 		if (jinfo.name == null || jinfo.name.length() == 0)
 			throw new ApiException("Server name cannot be empty.");
 		
-		Setting.putString(c.ses, SERVER_NAME_KEY, jinfo.name);
+		Setting.putString(c.session, SERVER_NAME_KEY, jinfo.name);
 		
 		set200Response(c, "Server information updated successfully.");
 	}

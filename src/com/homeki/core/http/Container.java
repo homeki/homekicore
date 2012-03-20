@@ -11,7 +11,7 @@ import org.hibernate.Session;
 public class Container {
 	public HttpRequest req;
 	public HttpResponse res;
-	public Session ses;
+	public Session session;
 	public List<NameValuePair> qs;
 	public StringTokenizer path;
 }

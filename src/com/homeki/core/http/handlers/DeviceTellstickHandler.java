@@ -55,7 +55,7 @@ public class DeviceTellstickHandler extends HttpHandler {
 		int unit;
 		
 		if (jsonDevice.house == null)
-			house = Setting.getInt(c.ses, NEXT_HOUSE_KEY);
+			house = Setting.getInt(c.session, NEXT_HOUSE_KEY);
 		else
 			house = jsonDevice.house;
 		
@@ -79,9 +79,9 @@ public class DeviceTellstickHandler extends HttpHandler {
 			dev.setDescription(jsonDevice.description);
 		
 		if (jsonDevice.house == null)
-			Setting.putInt(c.ses, NEXT_HOUSE_KEY, house+1);
+			Setting.putInt(c.session, NEXT_HOUSE_KEY, house+1);
 		
-		c.ses.save(dev);
+		c.session.save(dev);
 		
 		JsonDevice newid = new JsonDevice();
 		newid.id = dev.getId();
@@ -91,14 +91,14 @@ public class DeviceTellstickHandler extends HttpHandler {
 	
 	private void resolveList(Container c) {
 		@SuppressWarnings("unchecked")
-		List<Device> list = c.ses.createCriteria(TellStickDevice.class).list();
+		List<Device> list = c.session.createCriteria(TellStickDevice.class).list();
 		set200Response(c, gson.toJson(JsonDevice.convertList(list)));
 	}
 	
 	private void resolveLearn(Container c) {
 		int id = getIntParameter(c, "deviceid");
 		
-		TellStickDevice dev = (TellStickDevice)c.ses.get(TellStickDevice.class, id);
+		TellStickDevice dev = (TellStickDevice)c.session.get(TellStickDevice.class, id);
 		
 		if (dev == null)
 			throw new ApiException("No TellStick device with specified ID found.");

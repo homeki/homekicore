@@ -43,7 +43,7 @@ public class DeviceStateHandler extends HttpHandler {
 		int channel = getOptionalIntParameter(c, "channel");
 		int value = getIntParameter(c, "value");
 
-		Device dev = (Device)c.ses.get(Device.class, id);
+		Device dev = (Device)c.session.get(Device.class, id);
 		
 		if (dev == null)
 			throw new ApiException("Could not load device from device ID.");
@@ -65,7 +65,7 @@ public class DeviceStateHandler extends HttpHandler {
 		Date from = getDateParameter(c, "from");
 		Date to = getDateParameter(c, "to");
 		
-		Device dev = (Device)c.ses.get(Device.class, id);
+		Device dev = (Device)c.session.get(Device.class, id);
 		
 		if (dev == null)
 			throw new ApiException("Could not load device from device ID.");
@@ -74,7 +74,7 @@ public class DeviceStateHandler extends HttpHandler {
 			channel = 0;
 		
 		@SuppressWarnings("unchecked")
-		List<HistoryPoint> l = c.ses.createFilter(dev.getHistoryPoints(), "where channel = ? and registered between ? and ? order by registered desc")
+		List<HistoryPoint> l = c.session.createFilter(dev.getHistoryPoints(), "where channel = ? and registered between ? and ? order by registered desc")
 				.setInteger(0, channel)
 				.setTimestamp(1, from)
 				.setTimestamp(2, to)

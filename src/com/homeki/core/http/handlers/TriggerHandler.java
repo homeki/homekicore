@@ -43,27 +43,27 @@ public class TriggerHandler extends HttpHandler {
 	
 	private void resolveList(Container c) {
 		@SuppressWarnings("unchecked")
-		List<Trigger> list = c.ses.createCriteria(Trigger.class).list();
+		List<Trigger> list = c.session.createCriteria(Trigger.class).list();
 		set200Response(c, gson.toJson(JsonTimerTrigger.convertList(list)));
 	}
 	
 	private void resolveDelete(Container c) {
 		int id = getIntParameter(c, "triggerid");
 
-		Trigger trigger = (Trigger)c.ses.get(Trigger.class, id);
+		Trigger trigger = (Trigger)c.session.get(Trigger.class, id);
 		
 		if (trigger == null)
 			throw new ApiException("No trigger with specified ID.");
 		
-		c.ses.delete(trigger);
+		c.session.delete(trigger);
 	}
 	
 	private void resolveLink(Container c) {
 		int deviceid = getIntParameter(c, "deviceid");
 		int triggerid = getIntParameter(c, "triggerid");
 		
-		Device dev = (Device)c.ses.get(Device.class, deviceid);
-		Trigger tri = (Trigger)c.ses.get(Trigger.class, triggerid);
+		Device dev = (Device)c.session.get(Device.class, deviceid);
+		Trigger tri = (Trigger)c.session.get(Trigger.class, triggerid);
 		
 		if (dev == null)
 			throw new ApiException("No device with specified ID found.");
@@ -73,7 +73,7 @@ public class TriggerHandler extends HttpHandler {
 			throw new ApiException("The specified device and the specified trigger are already linked.");
 
 		dev.getTriggers().add(tri);
-		c.ses.save(dev);
+		c.session.save(dev);
 		set200Response(c, "Specified device and specified trigger successfully linked.");
 	}
 	
@@ -81,8 +81,8 @@ public class TriggerHandler extends HttpHandler {
 		int deviceid = getIntParameter(c, "deviceid");
 		int triggerid = getIntParameter(c, "triggerid");
 
-		Device dev = (Device)c.ses.get(Device.class, deviceid);
-		Trigger tri = (Trigger)c.ses.get(Trigger.class, triggerid);
+		Device dev = (Device)c.session.get(Device.class, deviceid);
+		Trigger tri = (Trigger)c.session.get(Trigger.class, triggerid);
 		
 		if (dev == null)
 			throw new ApiException("No device with specified ID found.");
@@ -92,7 +92,7 @@ public class TriggerHandler extends HttpHandler {
 			throw new ApiException("Specified device does not contain the specified trigger.");
 			
 		dev.getTriggers().remove(tri);
-		c.ses.save(dev);
+		c.session.save(dev);
 		set200Response(c, "Link between specified device and specified trigger successfully removed.");
 	}
 }

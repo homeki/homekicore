@@ -55,7 +55,7 @@ public abstract class HttpHandler implements HttpRequestHandler {
 			
 			session = Hibernate.openSession();
 			
-			c.ses = session;
+			c.session = session;
 			c.path = st;
 			c.qs = queryString;
 			
