@@ -4,7 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 
-@Entity(name="double_history_point")
+@Entity
 public class DoubleHistoryPoint extends HistoryPoint {
 	@Column(name="double_value")
 	private Double value;

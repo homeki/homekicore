@@ -4,7 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 
-@Entity(name="int_history_point")
+@Entity
 public class IntegerHistoryPoint extends HistoryPoint {
 	@Column(name="int_value")
 	private int value;

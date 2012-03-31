@@ -151,4 +151,26 @@
 	<changeSet id="20" author="jonas">
 		<dropColumn tableName="int_history_point" columnName="level"/>
 	</changeSet>
+	
+	<changeSet id="21" author="jonas">
+		<renameTable newTableName="history_point" oldTableName="double_history_point"/>
+	</changeSet>
+	
+	<changeSet id="22" author="jonas">
+		<addColumn tableName="history_point">
+			<column name="type" type="VARCHAR(100)" defaultValue="" />
+		</addColumn>
+	</changeSet>
+	
+	<changeSet id="24" author="jonas">
+		<addColumn tableName="history_point">
+			<column name="int_value" type="INTEGER" />
+		</addColumn>
+	</changeSet>
+	
+	<changeSet id="25" author="jonas">
+		<update tableName="history_point">
+			<column name="type" value="DoubleHistoryPoint" />
+		</update>
+	</changeSet>
 </databaseChangeLog>
