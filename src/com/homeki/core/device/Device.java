@@ -134,6 +134,7 @@ public abstract class Device {
 		HistoryPoint p = (HistoryPoint)ses.createFilter(historyPoints, "where channel = ? order by registered desc")
 				.setInteger(0, channel)
 				.setMaxResults(1)
+				.setFetchSize(1)
 				.uniqueResult();
 		
 		return p;
