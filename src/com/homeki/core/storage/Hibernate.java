@@ -38,4 +38,13 @@ public class Hibernate {
         session.getTransaction().commit();
         session.close();
     }
+    
+    public static void shutdownDatabase() {
+    	if (sessionFactory == null)
+    		return;
+    	
+    	Session s = openSession();
+    	s.createSQLQuery("SHUTDOWN").executeUpdate();
+    	closeSession(s);
+    }
 }
