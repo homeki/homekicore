@@ -2,15 +2,10 @@ package com.homeki.core.main;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-
-import org.hibernate.Session;
 
 import com.homeki.core.device.TimerThread;
 import com.homeki.core.device.mock.MockModule;
-import com.homeki.core.device.mock.MockThermometer;
 import com.homeki.core.device.onewire.OneWireModule;
-import com.homeki.core.device.tellstick.TellStickDimmer;
 import com.homeki.core.device.tellstick.TellStickModule;
 import com.homeki.core.http.HttpListenerThread;
 import com.homeki.core.storage.DatabaseUpgrader;
@@ -108,24 +103,6 @@ public class ThreadMaster {
 		} catch (Exception e) {
 			L.e("Could not start BroadcastListenerThread.", e);
 		}
-		
-		/*
-		Session s = Hibernate.openSession();
-		
-		TellStickDimmer d = (TellStickDimmer)s.load(TellStickDimmer.class, 2);
-		Random rnd = new Random();
-		
-		for (int i = 0; i < 12*24*30*3; i++) {
-			if (i % 1000 == 0) {
-				System.out.println(i);
-			}
-			d.addLevelHistoryPoint(rnd.nextInt(200));
-		}
-		
-		Hibernate.closeSession(s);
-		
-		System.out.println("Done!");
-		*/
 	}
 	
 	private void setupModules() {
