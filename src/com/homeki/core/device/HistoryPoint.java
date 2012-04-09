@@ -8,21 +8,18 @@ import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
 public abstract class HistoryPoint {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "history_point_sequence")
-	@SequenceGenerator(name = "history_point_sequence", sequenceName = "history_point_sequence")
+	@GeneratedValue
 	private int id;
 	
 	@ManyToOne(fetch = FetchType.LAZY)

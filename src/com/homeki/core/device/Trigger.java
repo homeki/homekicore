@@ -22,12 +22,11 @@ import org.hibernate.annotations.LazyCollectionOption;
 import com.homeki.core.device.abilities.Triggable;
 import com.homeki.core.main.L;
 
-@Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Entity(name="abstract_trigger") // "trigger" is reserved in MySQL
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Trigger {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "trigger_sequence")
-	@SequenceGenerator(name = "trigger_sequence", sequenceName = "trigger_sequence")
+	@GeneratedValue
 	private Integer id;
 	
 	@Column

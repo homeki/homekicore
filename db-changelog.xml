@@ -94,7 +94,7 @@
 
 	<changeSet id="11" author="linus">
 		<renameColumn tableName="dimmer_history_point"
-			oldColumnName="int_value" newColumnName="level" />
+			oldColumnName="int_value" newColumnName="level" columnDataType="INTEGER" />
 	</changeSet>
 
 	<changeSet id="12" author="linus">
@@ -114,7 +114,7 @@
 	</changeSet>
 
 	<changeSet id="15" author="linus">
-		<renameColumn tableName="switch_history_point" oldColumnName="bool_value" newColumnName="int_switch_value" />
+		<renameColumn tableName="switch_history_point" oldColumnName="bool_value" newColumnName="int_switch_value" columnDataType="INTEGER" />
 	</changeSet>
 	
 	<changeSet id="16" author="jonas">
@@ -172,5 +172,28 @@
 		<update tableName="history_point">
 			<column name="type" value="DoubleHistoryPoint" />
 		</update>
+	</changeSet>
+	
+	<changeSet id="26" author="jonas">
+		<createTable tableName="trigger">
+			<column name="id" type="INTEGER" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="name" type="VARCHAR(100)" />
+			<column name="newValue" type="INTEGER" />
+		</createTable>
+	</changeSet>
+	
+	<changeSet id="27" author="jonas">
+		<renameColumn tableName="trigger" oldColumnName="newValue" newColumnName="new_value" columnDataType="INTEGER" />
+	</changeSet>
+	
+	<changeSet id="28" author="jonas">
+		<dropColumn tableName="timer_trigger" columnName="new_value"/>
+		<dropColumn tableName="timer_trigger" columnName="name"/>
+	</changeSet>
+	
+	<changeSet id="29" author="jonas">
+		<renameTable newTableName="abstract_trigger" oldTableName="trigger"/>
 	</changeSet>
 </databaseChangeLog>

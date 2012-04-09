@@ -15,10 +15,8 @@ if [ "$1" = "remove" ] ; then
 	rm -f /etc/rc2.d/S99homeki
 	echo "done"
 	
-	mkdir -p /home/homeki
-	
-	echo -n "backing up db: "
-	mv -f /opt/homeki/db /home/homeki/`date +%Y%m%d-%H%M%S`-db
+	echo -n "removing homeki user: "
+	deluser homeki
 	echo "done"
 fi
 
