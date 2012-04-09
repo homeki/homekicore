@@ -196,4 +196,11 @@
 	<changeSet id="29" author="jonas">
 		<renameTable newTableName="abstract_trigger" oldTableName="trigger"/>
 	</changeSet>
+	
+	<changeSet id="30" author="jonas">
+		<dropColumn tableName="history_point" columnName="type"/>
+		<addColumn tableName="history_point">
+			<column name="type" type="INTEGER" defaultValueNumeric="2" />
+		</addColumn>
+	</changeSet>
 </databaseChangeLog>
