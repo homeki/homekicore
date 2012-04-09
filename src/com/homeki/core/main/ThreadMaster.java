@@ -128,7 +128,5 @@ public class ThreadMaster {
 		for (Module m : modules)
 			m.destruct();
 		L.i("All modules destructed.");
-		
-		Hibernate.shutdownDatabase();
 	}
 }
