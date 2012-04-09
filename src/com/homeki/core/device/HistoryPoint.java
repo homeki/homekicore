@@ -2,6 +2,7 @@ package com.homeki.core.device;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
@@ -22,7 +23,7 @@ public abstract class HistoryPoint {
 	@GeneratedValue
 	private int id;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "device_id")
 	private Device device;
 	

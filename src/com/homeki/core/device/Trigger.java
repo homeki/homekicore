@@ -20,7 +20,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 import com.homeki.core.device.abilities.Triggable;
 import com.homeki.core.main.L;
 
-@Entity(name="abstract_trigger") // "trigger" is reserved in MySQL
+@Entity(name="trigger_abstract") // "trigger" is reserved in MySQL
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Trigger {
 	@Id
@@ -35,7 +35,7 @@ public abstract class Trigger {
 	
 	@ManyToMany(cascade = CascadeType.ALL)
 	@LazyCollection(LazyCollectionOption.EXTRA)
-	@JoinTable(name = "device_trigger", joinColumns = { @JoinColumn(name = "trigger_id") }, inverseJoinColumns = { @JoinColumn(name = "device_id") })
+	@JoinTable(name = "device__trigger_abstract", joinColumns = { @JoinColumn(name = "trigger_abstract_id") }, inverseJoinColumns = { @JoinColumn(name = "device_id") })
 	private Set<Device> devices;
 	
 	public Trigger() {

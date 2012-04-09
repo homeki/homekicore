@@ -39,7 +39,7 @@ public abstract class Device {
 	
 	@ManyToMany(cascade = CascadeType.ALL)
 	@LazyCollection(LazyCollectionOption.EXTRA)
-	@JoinTable(name = "device_trigger", joinColumns = { @JoinColumn(name = "device_id") }, inverseJoinColumns = { @JoinColumn(name = "trigger_id") })
+	@JoinTable(name = "device__trigger_abstract", joinColumns = { @JoinColumn(name = "device_id") }, inverseJoinColumns = { @JoinColumn(name = "trigger_abstract_id") })
 	private Set<Trigger> triggers;
 	
 	@Column

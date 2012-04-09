@@ -16,10 +16,10 @@ public class Setting {
 	private int id;
 	
 	@SuppressWarnings("unused")
-	@Column(name="setting_key")
+	@Column(name="setting_key") // "key" is reserved in MySQL
 	private String key;
 	
-	@Column(name="setting_value")
+	@Column(name="setting_value") // "value" is reserved in MySQL
 	private String value;
 	
 	public Setting() {
