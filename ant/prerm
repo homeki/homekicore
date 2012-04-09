@@ -14,10 +14,6 @@ if [ "$1" = "remove" ] ; then
 	echo -n "removing etc/rc2.d/S99homeki: "
 	rm -f /etc/rc2.d/S99homeki
 	echo "done"
-	
-	echo -n "removing homeki user: "
-	deluser homeki
-	echo "done"
 fi
 
 exit 0
