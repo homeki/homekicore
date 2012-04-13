@@ -1,5 +1,5 @@
 <project>
-	<property name="version" value="0.0.78" />
+	<property name="version" value="0.0.794" />
 
 	<path id="ant.classpath">
 		<fileset dir="." includes="*.jar" />
@@ -64,7 +64,7 @@
 		<mkdir dir="../build/dist" />
 		<for list="i386,amd64" param="arch">
 			<sequential>
-				<deb todir="../build/dist" package="homeki" section="misc" depends="openjdk-6-jre-headless, telldus-core, owfs" prerm="prerm" postinst="postinst" preinst="preinst" architecture="@{arch}">
+				<deb todir="../build/dist" package="homeki" section="misc" depends="openjdk-6-jre-headless, postgresql-9.1, telldus-core, owfs" prerm="prerm" postinst="postinst" preinst="preinst" architecture="@{arch}">
 					<version upstream="${version}" />
 					<maintainer name="Homeki Development Team" email="contact@homeki.com" />
 					<description synopsis="Unified interface for all your sensors and devices connected to your computer.">

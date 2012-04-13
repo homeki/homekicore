@@ -7,6 +7,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -20,11 +21,11 @@ import org.hibernate.annotations.LazyCollectionOption;
 import com.homeki.core.device.abilities.Triggable;
 import com.homeki.core.main.L;
 
-@Entity(name="trigger_abstract") // "trigger" is reserved in MySQL
+@Entity(name="trigger")
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Trigger {
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
 	@Column
@@ -35,7 +36,7 @@ public abstract class Trigger {
 	
 	@ManyToMany(cascade = CascadeType.ALL)
 	@LazyCollection(LazyCollectionOption.EXTRA)
-	@JoinTable(name = "device__trigger_abstract", joinColumns = { @JoinColumn(name = "trigger_abstract_id") }, inverseJoinColumns = { @JoinColumn(name = "device_id") })
+	@JoinTable(name = "device__trigger", joinColumns = { @JoinColumn(name = "trigger_id") }, inverseJoinColumns = { @JoinColumn(name = "device_id") })
 	private Set<Device> devices;
 	
 	public Trigger() {

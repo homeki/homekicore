@@ -14,7 +14,7 @@ import liquibase.resource.ResourceAccessor;
 import com.homeki.core.main.L;
 
 public class DatabaseUpgrader {
-	private static final String DATABASE_PATH = "jdbc:mysql://localhost:3306/homeki";
+	private static final String DATABASE_PATH = "jdbc:postgresql:homeki";
 	private static final String DATABASE_USER = "homeki";
 	private static final String DATABASE_PASSWORD = "homeki";
 	
@@ -23,7 +23,7 @@ public class DatabaseUpgrader {
 	public void upgrade() throws Exception {
 		LogFactory.setLoggingLevel("SEVERE");
 		
-		Class.forName("com.mysql.jdbc.Driver");
+		Class.forName("org.postgresql.Driver");
 		Connection c = DriverManager.getConnection(DATABASE_PATH, DATABASE_USER, DATABASE_PASSWORD);
 	
 		ResourceAccessor acc = new FileSystemResourceAccessor();

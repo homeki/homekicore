@@ -3,12 +3,6 @@
 set -e
 
 if [ "$1" = "configure" ] ; then
-	DBUSER=root
-	DBPASS=homeki
-	HDBUSER=homeki
-	HDBPASS=homeki
-	START=yes
-
 	echo -n "creating homeki user: "
 	if [ "X`grep "^homeki:" /etc/passwd`" == "X" ]; then
 		useradd --home-dir /home/homeki --create-home --groups admin,plugdev homeki
@@ -17,39 +11,27 @@ if [ "$1" = "configure" ] ; then
 		echo "not needed, already exists"
 	fi
 	
-	# needed because mysql commands rely on fail exit codes to determine what to do
+	# needed because psql commands rely on fail exit codes to determine what to do
 	set +e
 	
-	echo -n "connecting to mysql: "
-	echo "exit" | mysql --user=$DBUSER --password=$DBPASS > /dev/null 2>&1
-	
+	echo -n "creating postgresql homeki user: "
+	echo "SELECT usename FROM pg_user WHERE usename = 'homeki';" | sudo -u postgres psql | grep homeki > /dev/null 2>&1
 	if [ $? -ne 0 ]; then
-		echo "connection failed, manual database setup needed"
-		START=no
-	else
+		echo "CREATE USER homeki WITH PASSWORD 'homeki';" | sudo -u postgres psql > /dev/null 2>&1
 		echo "done"
-	
-		echo -n "creating mysql homeki user: "
-		echo "SELECT User FROM mysql.user WHERE User = 'homeki'" | mysql --user=$DBUSER --password=$DBPASS | grep homeki > /dev/null 2>&1
-		if [ $? -ne 0 ]; then
-			echo "CREATE USER '$HDBUSER'@'localhost' IDENTIFIED BY '$HDBPASS'" | mysql --user=$DBUSER --password=$DBPASS > /dev/null 2>&1
-			echo "done"
-		else
-			echo "not needed, already exists"
-		fi
-	
-		echo -n "creating mysql homeki database: "
-		echo "SHOW DATABASES" | mysql --user=$DBUSER --password=$DBPASS | grep homeki > /dev/null 2>&1
-	        if [ $? -ne 0 ]; then
-	                echo "CREATE DATABASE homeki" | mysql --user=$DBUSER --password=$DBPASS > /dev/null 2>&1
-			echo "done"
-		else
-			echo "not needed, already exists"
-	        fi
-	
-		echo "GRANT ALL ON homeki.* TO 'homeki'@'localhost'" | mysql --user=$DBUSER --password=$DBPASS > /dev/null 2>&1
+	else
+		echo "not needed, already exists"
 	fi
-	
+
+	echo -n "creating postgresql homeki database: "
+	echo "SELECT datname FROM pg_database WHERE datname = 'homeki';" | sudo -u postgres psql | grep homeki > /dev/null 2>&1
+    if [ $? -ne 0 ]; then
+        echo "CREATE DATABASE homeki WITH owner = homeki;" | sudo -u postgres psql > /dev/null 2>&1
+		echo "done"
+	else
+		echo "not needed, already exists"
+    fi
+
 	set -e
 	
 	echo -n "changing owner of /mnt/1wire: "
@@ -70,10 +52,8 @@ if [ "$1" = "configure" ] ; then
 	ln -sf /etc/init.d/homekid /etc/rc2.d/S99homeki
 	echo "done"
 	
-	if [ $START == "yes" ]; then
-		echo "------------------- APT: STARTED HOMEKI -------------------" >> /opt/homeki/stdout.log
-		/etc/init.d/homekid start
-	fi
+	echo "------------------- APT: STARTED HOMEKI -------------------" >> /opt/homeki/stdout.log
+	/etc/init.d/homekid start
 fi
 
 exit 0

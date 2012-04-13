@@ -6,12 +6,12 @@
 <hibernate-configuration>
     <session-factory>
     	<!--  General settings  -->
-      	<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="connection.url">jdbc:mysql://localhost:3306/homeki</property>
+      	<property name="connection.driver_class">org.postgresql.Driver</property>
+        <property name="connection.url">jdbc:postgresql:homeki</property>
         <property name="connection.username">homeki</property>
         <property name="connection.password">homeki</property>
         <property name="connection.pool_size">1</property>
-        <property name="dialect">org.hibernate.dialect.MySQL5Dialect</property>
+        <property name="dialect">org.hibernate.dialect.PostgreSQLDialect</property>
         
         <property name="current_session_context_class">managed</property>
         <property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>

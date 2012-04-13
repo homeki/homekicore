@@ -38,6 +38,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/commons-logging-1.1.1.jar"/>
-	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.19-bin.jar"/>
+	<classpathentry kind="lib" path="lib/postgresql-9.1-901.jdbc4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
