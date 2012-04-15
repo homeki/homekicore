@@ -21,7 +21,7 @@ public class MockModule implements Module {
 	}
 	
 	private void addMockDevice(Session session, String internalId, Device newdev) {
-		Device dev = Device.getByInternalId(session, internalId);
+		Device dev = Device.getByInternalId(internalId);
 		
 		if (dev == null) {
 			newdev.setInternalId(internalId);

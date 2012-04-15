@@ -61,7 +61,7 @@ public class OneWireDetectorThread extends ControlledThread {
 		// loop through 1-wire network; if Homeki OneWireDevice is not found, create it
 		for (String s : ids) {
 			String deviceDirPath = Configuration.ONEWIRE_PATH + "/" + s;
-			Device dev = Device.getByInternalId(session, s);
+			Device dev = Device.getByInternalId(s);
 			
 			if (dev == null) {
 				String type = "";
