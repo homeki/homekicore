@@ -11,6 +11,29 @@ if [ "$1" = "configure" ] ; then
 		echo "not needed, already exists"
 	fi
 	
+	# needed because psql commands rely on fail exit codes to determine what to do
+	set +e
+	
+	echo -n "creating postgresql homeki user: "
+	echo "SELECT usename FROM pg_user WHERE usename = 'homeki';" | sudo -u postgres psql | grep homeki > /dev/null 2>&1
+	if [ $? -ne 0 ]; then
+		echo "CREATE USER homeki WITH PASSWORD 'homeki';" | sudo -u postgres psql > /dev/null 2>&1
+		echo "done"
+	else
+		echo "not needed, already exists"
+	fi
+
+	echo -n "creating postgresql homeki database: "
+	echo "SELECT datname FROM pg_database WHERE datname = 'homeki';" | sudo -u postgres psql | grep homeki > /dev/null 2>&1
+    if [ $? -ne 0 ]; then
+        echo "CREATE DATABASE homeki WITH owner = homeki;" | sudo -u postgres psql > /dev/null 2>&1
+		echo "done"
+	else
+		echo "not needed, already exists"
+    fi
+
+	set -e
+	
 	echo -n "changing owner of /mnt/1wire: "
 	if [ -d /mnt/1wire ]; then
 		chown -R homeki:homeki /mnt/1wire
@@ -25,7 +48,10 @@ if [ "$1" = "configure" ] ; then
 	chmod a+w /opt/homeki/stderr.log
 	echo "done"
 	
+	echo -n "adding S99homeki symlink to runlevel 2: "
 	ln -sf /etc/init.d/homekid /etc/rc2.d/S99homeki
+	echo "done"
+	
 	echo "------------------- APT: STARTED HOMEKI -------------------" >> /opt/homeki/stdout.log
 	/etc/init.d/homekid start
 fi

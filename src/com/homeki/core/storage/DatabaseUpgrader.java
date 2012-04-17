@@ -6,7 +6,7 @@ import java.sql.DriverManager;
 
 import liquibase.Liquibase;
 import liquibase.database.DatabaseConnection;
-import liquibase.database.jvm.HsqlConnection;
+import liquibase.database.jvm.JdbcConnection;
 import liquibase.logging.LogFactory;
 import liquibase.resource.FileSystemResourceAccessor;
 import liquibase.resource.ResourceAccessor;
@@ -14,20 +14,24 @@ import liquibase.resource.ResourceAccessor;
 import com.homeki.core.main.L;
 
 public class DatabaseUpgrader {
-	private static final String DATABASE_PATH = "jdbc:hsqldb:file:db/homeki.db;hsqldb.default_table_type=cached";
-	private static final String DATABASE_USER = "sa";
-	private static final String DATABASE_PASSWORD = "";
+	private static final String DATABASE_PATH = "jdbc:postgresql:homeki";
+	private static final String DATABASE_USER = "homeki";
+	private static final String DATABASE_PASSWORD = "homeki";
+	
 	private static final String CHANGELOG = "db-changelog.xml";
 	
 	public void upgrade() throws Exception {
 		LogFactory.setLoggingLevel("SEVERE");
 		
-		Class.forName("org.hsqldb.jdbcDriver");
+		Class.forName("org.postgresql.Driver");
 		Connection c = DriverManager.getConnection(DATABASE_PATH, DATABASE_USER, DATABASE_PASSWORD);
 	
 		ResourceAccessor acc = new FileSystemResourceAccessor();
-		DatabaseConnection conn = new HsqlConnection(c);
+		DatabaseConnection conn = new JdbcConnection(c);
 		Liquibase liq = new Liquibase(CHANGELOG, acc, conn);
+		
+		liq.getDatabase().setDatabaseChangeLogLockTableName("liquibase_changelog_lock");
+		liq.getDatabase().setDatabaseChangeLogTableName("liquibase_changelog");
 		
 		if (liq.listUnrunChangeSets("").size() == 0)
 			return;

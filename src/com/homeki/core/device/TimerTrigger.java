@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 
 @Entity
 public class TimerTrigger extends Trigger {
+	@Column
 	private Integer secondsFromMidnight;
 	
 	@Column

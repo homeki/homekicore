@@ -1,10 +1,12 @@
 package com.homeki.core.device;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
 
 @Entity
+@DiscriminatorValue("1")
 public class IntegerHistoryPoint extends HistoryPoint {
 	@Column(name="int_value")
 	private int value;

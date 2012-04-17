@@ -24,7 +24,7 @@ public class TellStickListenerThread extends ControlledThread {
 			internalId = "s" + internalId;
 
 		Session session = Hibernate.openSession();
-		Device d = Device.getByInternalId(session, internalId);
+		Device d = Device.getByInternalId(internalId);
 		
 		if (d != null) {
 			if (d instanceof TellStickSwitch) {

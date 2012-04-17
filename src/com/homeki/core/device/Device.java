@@ -10,6 +10,7 @@ import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -30,7 +31,7 @@ import com.homeki.core.storage.Hibernate;
 @DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
 public abstract class Device {
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
 	@OneToMany(mappedBy = "device", cascade = CascadeType.ALL)
@@ -39,7 +40,7 @@ public abstract class Device {
 	
 	@ManyToMany(cascade = CascadeType.ALL)
 	@LazyCollection(LazyCollectionOption.EXTRA)
-	@JoinTable(name = "device_trigger", joinColumns = { @JoinColumn(name = "device_id") }, inverseJoinColumns = { @JoinColumn(name = "trigger_id") })
+	@JoinTable(name = "device__trigger", joinColumns = { @JoinColumn(name = "device_id") }, inverseJoinColumns = { @JoinColumn(name = "trigger_id") })
 	private Set<Trigger> triggers;
 	
 	@Column
@@ -108,8 +109,9 @@ public abstract class Device {
 		
 	}
 	
-	public static Device getByInternalId(Session session, String internalId) {
-		return (Device) session.createCriteria(Device.class).add(Restrictions.eq("internalId", internalId)).uniqueResult();
+	public static Device getByInternalId(String internalId) {
+		Session ses = Hibernate.currentSession();
+		return (Device)ses.createCriteria(Device.class).add(Restrictions.eq("internalId", internalId)).uniqueResult();
 	}
 	
 	public Boolean isActive() {

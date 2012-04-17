@@ -3,6 +3,7 @@ package com.homeki.core.main;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import org.hibernate.Session;
@@ -12,14 +13,14 @@ import org.hibernate.criterion.Restrictions;
 public class Setting {
 	@SuppressWarnings("unused")
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
 	@SuppressWarnings("unused")
-	@Column(name="setting_key")
+	@Column(name="setting_key") // "key" is reserved in MySQL
 	private String key;
 	
-	@Column(name="setting_value")
+	@Column(name="setting_value") // "value" is reserved in MySQL
 	private String value;
 	
 	public Setting() {

@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Set;
 
 import com.homeki.core.device.Device;
-import com.homeki.core.device.TimerTrigger;
 import com.homeki.core.device.Trigger;
 import com.homeki.core.http.ApiException;
 import com.homeki.core.http.Container;
