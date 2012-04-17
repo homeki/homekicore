@@ -45,7 +45,7 @@ public class TellStickSwitch extends TellStickDevice implements Settable, Trigga
 
 	@Override
 	public void trigger(int newValue) {
-		L.i("TellStickDimmer with internal ID'" + getInternalId() + "' triggered with newValue " + newValue + ".");
+		L.i("TellStickSwitch with internal ID'" + getInternalId() + "' triggered with newValue " + newValue + ".");
 		set(TELLSTICKSWITCH_ONOFF_CHANNEL, newValue);
 	}
 

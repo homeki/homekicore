@@ -33,12 +33,14 @@ public class TimerThread extends ControlledThread {
 						break;
 					case 1:
 						int weekday = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
-						if (t.getDays() >> weekday == 1)
+						weekday = weekday == 1 ? 7 : weekday - 1;
+						L.i("Weekday " + weekday + " t.getdays " + t.getDays());
+						if (((t.getDays() >> (weekday -1)) & 1) == 1)
 							t.trigger();
 						break;
 					case 2:
 						int dayOfMonth = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
-						if (t.getDays() >> dayOfMonth == 1)
+						if (((t.getDays() >> dayOfMonth) & 1) == 1)
 							t.trigger();
 						break;
 					
