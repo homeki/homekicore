@@ -1,5 +1,5 @@
 <project>
-	<property name="version" value="0.0.794" />
+	<property name="version" value="0.0.796" />
 
 	<path id="ant.classpath">
 		<fileset dir="." includes="*.jar" />
@@ -62,7 +62,7 @@
 
 	<target name="dist">
 		<mkdir dir="../build/dist" />
-		<for list="i386,amd64" param="arch">
+		<for list="i386,amd64,armhf" param="arch">
 			<sequential>
 				<deb todir="../build/dist" package="homeki" section="misc" depends="openjdk-6-jre-headless, postgresql-9.1, telldus, owfs" prerm="prerm" postinst="postinst" preinst="preinst" architecture="@{arch}">
 					<version upstream="${version}" />
