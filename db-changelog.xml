@@ -131,8 +131,8 @@
 
 	<changeSet id="9" author="linus">
 		<dropTable tableName="device__trigger"/>
-		<dropTable tableName="trigger"/>
 		<dropTable tableName="timer__trigger"/>
+		<dropTable tableName="trigger"/>
 	</changeSet>
 
 </databaseChangeLog>
