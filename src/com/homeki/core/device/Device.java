@@ -14,9 +14,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 import org.hibernate.Session;
@@ -37,11 +34,6 @@ public abstract class Device {
 	@OneToMany(mappedBy = "device", cascade = CascadeType.ALL)
 	@LazyCollection(LazyCollectionOption.EXTRA)
 	protected Set<HistoryPoint> historyPoints;
-	
-	@ManyToMany(cascade = CascadeType.ALL)
-	@LazyCollection(LazyCollectionOption.EXTRA)
-	@JoinTable(name = "device__trigger", joinColumns = { @JoinColumn(name = "device_id") }, inverseJoinColumns = { @JoinColumn(name = "trigger_id") })
-	private Set<Trigger> triggers;
 	
 	@Column
 	protected String internalId;
@@ -97,10 +89,6 @@ public abstract class Device {
 	
 	public Set<HistoryPoint> getHistoryPoints() {
 		return historyPoints;
-	}
-	
-	public Set<Trigger> getTriggers() {
-		return triggers;
 	}
 	
 	public abstract String getType();

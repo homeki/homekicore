@@ -21,8 +21,6 @@
 		<!--  Mapping classes -->
 		<mapping class="com.homeki.core.main.Setting" />
         <mapping class="com.homeki.core.device.Device" />
-        <mapping class="com.homeki.core.device.Trigger" />
-        <mapping class="com.homeki.core.device.TimerTrigger" />
         <mapping class="com.homeki.core.device.HistoryPoint" />
         <mapping class="com.homeki.core.device.IntegerHistoryPoint" />
         <mapping class="com.homeki.core.device.DoubleHistoryPoint" />

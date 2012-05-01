@@ -3,7 +3,6 @@ package com.homeki.core.main;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.homeki.core.device.TimerThread;
 import com.homeki.core.device.mock.MockModule;
 import com.homeki.core.device.onewire.OneWireModule;
 import com.homeki.core.device.tellstick.TellStickModule;
@@ -86,14 +85,6 @@ public class ThreadMaster {
 		} catch (Exception e) {
 			L.e("Could not bind socket for HttpListenerThread, killing Homeki.");
 			System.exit(-1);
-		}
-		
-		// start timer thread
-		try {
-			timerThread = new TimerThread();
-			timerThread.start();
-		} catch (Exception e) {
-			L.e("Could not start TimerThread.", e);
 		}
 		
 		// start broadcast listener thread
