@@ -1,5 +1,5 @@
 package com.homeki.core.events;
 
-public class Event {
+public abstract class Event {
 	
 }

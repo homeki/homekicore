@@ -1,15 +1,14 @@
 package com.homeki.core.events;
 
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class EventQueue {
 	private static EventQueue instance;
-	
-	private Queue<Event> queue;
+	private BlockingQueue<Event> queue;
 	
 	private EventQueue() {
-		this.queue = new LinkedList<Event>();
+		this.queue = new LinkedBlockingQueue<Event>();
 	}
 
 	public static synchronized EventQueue getInstance() {
@@ -19,20 +18,11 @@ public class EventQueue {
 		return instance;
 	}
 	
-	public synchronized void push(Event e) {
+	public void add(Event e) {
 		queue.add(e);
-		notifyAll();
 	}
 	
-	public synchronized Event pop() throws InterruptedException {
-		while (queue.isEmpty())
-			wait();
-		
-		return queue.poll();
-	}
-	
-	@Override
-	protected Object clone() throws CloneNotSupportedException {
-		return new CloneNotSupportedException();
+	public Event take() throws InterruptedException {
+		return queue.take();
 	}
 }

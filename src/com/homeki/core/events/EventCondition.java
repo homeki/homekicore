@@ -1,4 +1,4 @@
-package com.homeki.core.actions;
+package com.homeki.core.events;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,15 +7,17 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 
-import org.hibernate.Session;
-
-
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Action {
+public abstract class EventCondition {
+	
+	public static final int EQ = 0;
+	public static final int LT = 1;
+	public static final int GT = 2;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	public abstract void execute(Session ses);
+	public abstract boolean check(Event e);
 }
