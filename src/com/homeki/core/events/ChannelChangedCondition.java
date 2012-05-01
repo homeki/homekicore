@@ -4,7 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 @Entity
-public class ChannelChangedCondition extends EventCondition {
+public class ChannelChangedCondition extends Condition {
 	@Column
 	private int deviceId;
 	

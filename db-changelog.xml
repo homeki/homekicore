@@ -131,8 +131,37 @@
 
 	<changeSet id="9" author="linus">
 		<dropTable tableName="device__trigger"/>
-		<dropTable tableName="timer__trigger"/>
+		<dropTable tableName="timer_trigger"/>
 		<dropTable tableName="trigger"/>
+	</changeSet>
+	
+	<changeSet id="10" author="jonas">
+		<createTable tableName="condition">
+			<column name="id" type="INTEGER" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+		</createTable>
+	</changeSet>
+	
+	<changeSet id="11" author="jonas">
+		<createTable tableName="channel_changed_condition">
+			<column name="id" type="INTEGER">
+				<constraints nullable="false" references="condition(id)"
+					foreignKeyName="fk_channel_changed_condition-condition" />
+			</column>
+			<column name="device_id" type="INTEGER">
+				<constraints nullable="false" />
+			</column>
+			<column name="channel" type="INTEGER">
+				<constraints nullable="false" />
+			</column>
+			<column name="value" type="NUMERIC">
+				<constraints nullable="false" />
+			</column>
+			<column name="operator" type="INTEGER">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
 	</changeSet>
 
 </databaseChangeLog>

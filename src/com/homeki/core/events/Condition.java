@@ -18,7 +18,7 @@ import com.homeki.core.triggers.Trigger;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class EventCondition {
+public abstract class Condition {
 	public static final int EQ = 0;
 	public static final int LT = 1;
 	public static final int GT = 2;

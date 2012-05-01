@@ -13,7 +13,7 @@ import org.hibernate.Session;
 
 import com.homeki.core.actions.Action;
 import com.homeki.core.events.Event;
-import com.homeki.core.events.EventCondition;
+import com.homeki.core.events.Condition;
 
 
 @Entity
@@ -24,8 +24,8 @@ public class Trigger {
 	private int id;
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "event_condition_id")
-	private EventCondition eventCondition;
+	@JoinColumn(name = "condition_id")
+	private Condition eventCondition;
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "action_id")
