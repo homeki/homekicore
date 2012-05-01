@@ -5,7 +5,7 @@ set -e
 if [ "$1" = "configure" ] ; then
 	echo -n "creating homeki user: "
 	if [ "X`grep "^homeki:" /etc/passwd`" == "X" ]; then
-		useradd --home-dir /home/homeki --create-home --groups admin,plugdev homeki
+		useradd --home-dir /home/homeki --create-home --groups sudo,plugdev homeki
 		echo "done"
 	else
 		echo "not needed, already exists"
