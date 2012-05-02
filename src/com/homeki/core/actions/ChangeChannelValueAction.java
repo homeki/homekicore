@@ -21,7 +21,8 @@ public  class ChangeChannelValueAction extends Action{
 	
 	@Override
 	public void execute(Session ses) {
-		Settable s = (Settable) ses.get(Device.class, deviceId);
-		s.set(channel, value);
+//		Settable s = (Settable) ses.get(Device.class, deviceId);
+//		s.set(channel, value);
+		System.out.println("BOOOOOOOOOOOOOM");
 	}
 }

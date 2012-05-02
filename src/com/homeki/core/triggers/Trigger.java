@@ -12,8 +12,8 @@ import javax.persistence.ManyToOne;
 import org.hibernate.Session;
 
 import com.homeki.core.actions.Action;
-import com.homeki.core.events.Event;
 import com.homeki.core.events.Condition;
+import com.homeki.core.events.Event;
 
 
 @Entity
@@ -31,6 +31,11 @@ public class Trigger {
 	@JoinColumn(name = "action_id")
 	private Action action;
 	
+	public Trigger(Condition c, Action a) {
+		eventCondition = c;
+		action = a;
+	}
+
 	public boolean check(Event e){
 		return eventCondition.check(e);
 	}

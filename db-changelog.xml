@@ -164,4 +164,48 @@
 		</createTable>
 	</changeSet>
 
+	<changeSet id="12" author="linus">
+		<createTable tableName="action">
+			<column name="id" type="INTEGER" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+		</createTable>
+	</changeSet>
+
+	<changeSet id="13" author="linus">
+		<createTable tableName="channel_change_value_action">
+			<column name="id" type="INTEGER">
+				<constraints nullable="false" references="action(id)"
+					foreignKeyName="fk_channel_change_value_action-action" />
+			</column>
+			<column name="device_id" type="INTEGER">
+				<constraints nullable="false" />
+			</column>
+			<column name="channel" type="INTEGER">
+				<constraints nullable="false" />
+			</column>
+			<column name="value" type="NUMERIC">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+	</changeSet>
+
+	<changeSet id="14" author="linus">
+		<createTable tableName="trigger">
+			<column name="id" type="INTEGER" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="condition_id" type="INTEGER"
+				autoIncrement="true">
+				<constraints nullable="false" references="condition(id)"
+					foreignKeyName="fk_trigger-condition" />
+			</column>
+			<column name="action_id" type="INTEGER" autoIncrement="true">
+				<constraints nullable="false" references="action(id)"
+					foreignKeyName="fk_trigger-action" />
+			</column>
+		</createTable>
+	</changeSet>
+
+
 </databaseChangeLog>

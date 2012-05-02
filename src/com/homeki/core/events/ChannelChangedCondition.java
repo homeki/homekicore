@@ -20,9 +20,9 @@ public class ChannelChangedCondition extends Condition {
 	public boolean check(Event e) {
 		if (e instanceof ChannelChangedEvent) {
 			ChannelChangedEvent cce = (ChannelChangedEvent) e;
-			if (cce.channel == this.channel && cce.deviceId == this.deviceId) {
-				int v = Double.compare(cce.value.doubleValue(), value.doubleValue());
-				switch (operator) {
+			if (cce.channel == this.getChannel() && cce.deviceId == this.getDeviceId()) {
+				int v = Double.compare(cce.value.doubleValue(), getValue().doubleValue());
+				switch (getOperator()) {
 				case EQ:
 					return v == 0;
 				case LT:
@@ -33,5 +33,37 @@ public class ChannelChangedCondition extends Condition {
 			}
 		}
 		return false;
+	}
+
+	public int getDeviceId() {
+		return deviceId;
+	}
+
+	public void setDeviceId(int deviceId) {
+		this.deviceId = deviceId;
+	}
+
+	public int getChannel() {
+		return channel;
+	}
+
+	public void setChannel(int channel) {
+		this.channel = channel;
+	}
+
+	public Number getValue() {
+		return value;
+	}
+
+	public void setValue(Number value) {
+		this.value = value;
+	}
+
+	public int getOperator() {
+		return operator;
+	}
+
+	public void setOperator(int operator) {
+		this.operator = operator;
 	}
 }
