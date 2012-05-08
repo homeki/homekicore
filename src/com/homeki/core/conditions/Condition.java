@@ -1,4 +1,4 @@
-package com.homeki.core.events;
+package com.homeki.core.conditions;
 
 import java.util.Set;
 
@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
+import com.homeki.core.events.Event;
 import com.homeki.core.triggers.Trigger;
 
 @Entity

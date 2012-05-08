@@ -3,26 +3,22 @@ package com.homeki.core.main;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.homeki.core.actions.ChangeChannelValueAction;
 import com.homeki.core.device.mock.MockModule;
 import com.homeki.core.device.onewire.OneWireModule;
 import com.homeki.core.device.tellstick.TellStickModule;
-import com.homeki.core.events.ChannelChangedCondition;
-import com.homeki.core.events.ChannelChangedEvent;
-import com.homeki.core.events.Condition;
 import com.homeki.core.events.EventHandlerThread;
-import com.homeki.core.events.EventQueue;
+import com.homeki.core.generators.ClockGeneratorThread;
 import com.homeki.core.http.HttpListenerThread;
 import com.homeki.core.storage.DatabaseUpgrader;
 import com.homeki.core.storage.Hibernate;
-import com.homeki.core.triggers.Trigger;
 
 public class ThreadMaster {
 	private ControlledThread httpThread;
 	private ControlledThread timerThread;
 	private ControlledThread broadcastThread;
+	private ControlledThread eventHandlerThread;
+	private ControlledThread clockGeneratorThread;
 	private List<Module> modules;
-	private EventHandlerThread eventHandlerThread;
 	
 	public ThreadMaster() {
 		modules = new ArrayList<Module>();
@@ -103,12 +99,20 @@ public class ThreadMaster {
 			L.e("Could not start BroadcastListenerThread.", e);
 		}
 		
-		// start broadcast listener thread
+		// start event handler thread
 		try {
 			eventHandlerThread = new EventHandlerThread();
 			eventHandlerThread.start();
 		} catch (Exception e) {
-			L.e("Could not start BroadcastListenerThread.", e);
+			L.e("Could not start EventHandlerThread.", e);
+		}
+		
+		// start clock generator thread
+		try {
+			clockGeneratorThread = new ClockGeneratorThread();
+			clockGeneratorThread.start();
+		} catch (Exception e) {
+			L.e("Could not start ClockGeneratorThread.", e);
 		}
 	}
 	

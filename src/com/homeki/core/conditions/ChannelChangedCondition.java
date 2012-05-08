@@ -1,7 +1,10 @@
-package com.homeki.core.events;
+package com.homeki.core.conditions;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+
+import com.homeki.core.events.ChannelChangedEvent;
+import com.homeki.core.events.Event;
 
 @Entity
 public class ChannelChangedCondition extends Condition {

@@ -4,9 +4,9 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
-import com.homeki.core.events.ChannelChangedCondition;
+import com.homeki.core.conditions.ChannelChangedCondition;
+import com.homeki.core.conditions.Condition;
 import com.homeki.core.events.ChannelChangedEvent;
-import com.homeki.core.events.Condition;
 
 public class ChangeChannelEventTest {
 	int channel = 1;

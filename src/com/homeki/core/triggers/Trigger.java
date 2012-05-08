@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne;
 import org.hibernate.Session;
 
 import com.homeki.core.actions.Action;
-import com.homeki.core.events.Condition;
+import com.homeki.core.conditions.Condition;
 import com.homeki.core.events.Event;
 
 
