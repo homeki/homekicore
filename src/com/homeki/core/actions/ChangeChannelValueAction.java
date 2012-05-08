@@ -5,9 +5,6 @@ import javax.persistence.Entity;
 
 import org.hibernate.Session;
 
-import com.homeki.core.device.Device;
-import com.homeki.core.device.abilities.Settable;
-
 @Entity
 public  class ChangeChannelValueAction extends Action{
 	@Column

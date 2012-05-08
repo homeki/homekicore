@@ -110,21 +110,6 @@ public class ThreadMaster {
 		} catch (Exception e) {
 			L.e("Could not start BroadcastListenerThread.", e);
 		}
-		
-		ChannelChangedEvent cce = new ChannelChangedEvent();
-		cce.channel = 1;
-		cce.deviceId = 1;
-		cce.value = 1;
-		EventQueue.getInstance().add(cce);
-		ChannelChangedCondition ccc =  new ChannelChangedCondition();
-		ccc.setDeviceId(1);
-		ccc.setChannel(1);
-		ccc.setOperator(Condition.EQ);
-		ccc.setValue(1);
-		
-		ChangeChannelValueAction ccva = new ChangeChannelValueAction();
-		
-		Trigger t = new Trigger(ccc, ccva);
 	}
 	
 	private void setupModules() {

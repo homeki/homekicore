@@ -17,6 +17,15 @@ public class ChannelChangedCondition extends Condition {
 	@Column
 	private int operator;
 	
+	protected ChannelChangedCondition() {}
+	
+	public ChannelChangedCondition(int deviceId, int channel, Number value, int operator) {
+		this.deviceId = deviceId;
+		this.channel = channel;
+		this.value = value;
+		this.operator = operator;
+	}
+	
 	public boolean check(Event e) {
 		if (e instanceof ChannelChangedEvent) {
 			ChannelChangedEvent cce = (ChannelChangedEvent) e;
@@ -34,35 +43,35 @@ public class ChannelChangedCondition extends Condition {
 		}
 		return false;
 	}
-
+	
 	public int getDeviceId() {
 		return deviceId;
 	}
-
+	
 	public void setDeviceId(int deviceId) {
 		this.deviceId = deviceId;
 	}
-
+	
 	public int getChannel() {
 		return channel;
 	}
-
+	
 	public void setChannel(int channel) {
 		this.channel = channel;
 	}
-
+	
 	public Number getValue() {
 		return value;
 	}
-
+	
 	public void setValue(Number value) {
 		this.value = value;
 	}
-
+	
 	public int getOperator() {
 		return operator;
 	}
-
+	
 	public void setOperator(int operator) {
 		this.operator = operator;
 	}

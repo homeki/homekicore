@@ -15,10 +15,11 @@ public class EventHandlerThread extends ControlledThread {
 	
 	protected void iteration() throws Exception {
 		Event e = EventQueue.getInstance().take(); // will block until event received
-		Session ses = Hibernate.openSession();
 
+		Session ses = Hibernate.openSession();
 		@SuppressWarnings("unchecked")
 		List<Trigger> list = ses.createCriteria(Trigger.class).list();
+
 		for (Trigger t:list){
 			if (t.check(e)){
 				t.execute(ses);
