@@ -7,11 +7,10 @@ import javax.persistence.Entity;
 import com.homeki.core.device.Device;
 import com.homeki.core.device.IntegerHistoryPoint;
 import com.homeki.core.device.abilities.Settable;
-import com.homeki.core.device.abilities.Triggable;
 import com.homeki.core.main.L;
 
 @Entity
-public class MockDimmer extends Device implements Settable, Triggable {
+public class MockDimmer extends Device implements Settable {
 	public static final int MOCKDIMMER_ONOFF_CHANNEL = 0;
 	public static final int MOCKDIMMER_LEVEL_CHANNEL = 1;
 	
@@ -22,18 +21,6 @@ public class MockDimmer extends Device implements Settable, Triggable {
 	public MockDimmer(int defaultLevel) {
 		addOnOffHistoryPoint(false);
 		addLevelHistoryPoint(defaultLevel);
-	}
-
-	@Override
-	public void trigger(int newValue) {
-		L.i("MockDimmer with internal ID '" + getInternalId() + "' triggered with newValue " + newValue + ".");
-
-		if (newValue > 0) {
-			set(MOCKDIMMER_ONOFF_CHANNEL, 1);
-			set(MOCKDIMMER_LEVEL_CHANNEL, newValue);
-		} else {
-			set(MOCKDIMMER_ONOFF_CHANNEL, 0);
-		}
 	}
 
 	@Override

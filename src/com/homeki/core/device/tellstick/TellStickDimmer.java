@@ -6,11 +6,10 @@ import javax.persistence.Entity;
 
 import com.homeki.core.device.IntegerHistoryPoint;
 import com.homeki.core.device.abilities.Settable;
-import com.homeki.core.device.abilities.Triggable;
 import com.homeki.core.main.L;
 
 @Entity
-public class TellStickDimmer extends TellStickDevice implements Settable, Triggable, TellStickLearnable {
+public class TellStickDimmer extends TellStickDevice implements Settable, TellStickLearnable {
 	public static final int TELLSTICKDIMMER_ONOFF_CHANNEL = 0;
 	public static final int TELLSTICKDIMMER_LEVEL_CHANNEL = 1;
 	
@@ -29,19 +28,6 @@ public class TellStickDimmer extends TellStickDevice implements Settable, Trigga
 		int result = TellStickNative.addDimmer(house, unit);
 		
 		this.internalId = String.valueOf(result);
-	}
-	
-	@Override
-	public void trigger(int newValue) {
-		L.i("TellStickDimmer with internal ID'" + getInternalId() + "' triggered with newValue " + newValue + ".");
-
-		if (newValue > 0) {
-			// don't use the set() method here, or the dimmer won't turn on if it is off
-			// when setting it through a trigger
-			TellStickNative.dim(Integer.parseInt(getInternalId()), newValue);
-		} else {
-			set(TELLSTICKDIMMER_ONOFF_CHANNEL, 0);
-		}
 	}
 
 	@Override

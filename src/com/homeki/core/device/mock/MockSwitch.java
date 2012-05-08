@@ -7,11 +7,9 @@ import javax.persistence.Entity;
 import com.homeki.core.device.Device;
 import com.homeki.core.device.IntegerHistoryPoint;
 import com.homeki.core.device.abilities.Settable;
-import com.homeki.core.device.abilities.Triggable;
-import com.homeki.core.main.L;
 
 @Entity
-public class MockSwitch extends Device implements Settable, Triggable {
+public class MockSwitch extends Device implements Settable {
 	private static final int MOCKSWITCH_ONOFF_CHANNEL = 0;
 	
 	public MockSwitch() {
@@ -20,12 +18,6 @@ public class MockSwitch extends Device implements Settable, Triggable {
 	
 	public MockSwitch(boolean defaultValue) {
 		addHistoryPoint(defaultValue);
-	}
-	
-	@Override
-	public void trigger(int newValue) {
-		L.i("MockDimmerDevice '" + getInternalId() + "' triggered with newValue " + newValue + ".");
-		set(0, newValue);
 	}
 
 	@Override

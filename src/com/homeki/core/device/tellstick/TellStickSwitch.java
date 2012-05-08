@@ -6,11 +6,9 @@ import javax.persistence.Entity;
 
 import com.homeki.core.device.IntegerHistoryPoint;
 import com.homeki.core.device.abilities.Settable;
-import com.homeki.core.device.abilities.Triggable;
-import com.homeki.core.main.L;
 
 @Entity
-public class TellStickSwitch extends TellStickDevice implements Settable, Triggable, TellStickLearnable {
+public class TellStickSwitch extends TellStickDevice implements Settable, TellStickLearnable {
 	private static final int TELLSTICKSWITCH_ONOFF_CHANNEL = 0;
 	
 	public TellStickSwitch() {
@@ -41,12 +39,6 @@ public class TellStickSwitch extends TellStickDevice implements Settable, Trigga
 			TellStickNative.turnOn(internalId);
 		else
 			TellStickNative.turnOff(internalId);
-	}
-
-	@Override
-	public void trigger(int newValue) {
-		L.i("TellStickSwitch with internal ID'" + getInternalId() + "' triggered with newValue " + newValue + ".");
-		set(TELLSTICKSWITCH_ONOFF_CHANNEL, newValue);
 	}
 
 	@Override
