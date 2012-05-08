@@ -195,12 +195,11 @@
 			<column name="id" type="INTEGER" autoIncrement="true">
 				<constraints primaryKey="true" nullable="false" />
 			</column>
-			<column name="condition_id" type="INTEGER"
-				autoIncrement="true">
+			<column name="condition_id" type="INTEGER">
 				<constraints nullable="false" references="condition(id)"
 					foreignKeyName="fk_trigger-condition" />
 			</column>
-			<column name="action_id" type="INTEGER" autoIncrement="true">
+			<column name="action_id" type="INTEGER">
 				<constraints nullable="false" references="action(id)"
 					foreignKeyName="fk_trigger-action" />
 			</column>
