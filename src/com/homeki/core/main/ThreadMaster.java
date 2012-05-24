@@ -116,10 +116,6 @@ public class ThreadMaster {
 		}
 	}
 	
-	private void createTrigger() {
-		
-	}
-	
 	private void setupModules() {
 		if (Configuration.MOCK_ENABLED) {
 			L.i("Mock module enabled.");
