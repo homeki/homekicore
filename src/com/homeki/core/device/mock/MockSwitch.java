@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import com.homeki.core.device.Device;
 import com.homeki.core.device.IntegerHistoryPoint;
 import com.homeki.core.device.abilities.Settable;
+import com.homeki.core.events.ChannelChangedEvent;
+import com.homeki.core.events.EventQueue;
 
 @Entity
 public class MockSwitch extends Device implements Settable {
@@ -28,13 +30,15 @@ public class MockSwitch extends Device implements Settable {
 		addHistoryPoint(value > 0);
 	}
 	
-	public void addHistoryPoint(boolean value) {
+	public void addHistoryPoint(boolean on) {
+		int value = on ? 1 : 0;
 		IntegerHistoryPoint dhp = new IntegerHistoryPoint();
 		dhp.setDevice(this);
 		dhp.setRegistered(new Date());
-		dhp.setValue(value ? 1 : 0);
+		dhp.setValue(value);
 		dhp.setChannel(MOCKSWITCH_ONOFF_CHANNEL);
 		historyPoints.add(dhp);
+		EventQueue.getInstance().add(new ChannelChangedEvent(getId(), MOCKSWITCH_ONOFF_CHANNEL, value));
 	}
 	
 	@Override
