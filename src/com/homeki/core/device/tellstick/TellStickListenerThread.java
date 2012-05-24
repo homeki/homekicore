@@ -26,35 +26,35 @@ public class TellStickListenerThread extends ControlledThread {
 		Session session = Hibernate.openSession();
 		Device d = Device.getByInternalId(internalId);
 		
-		if (d != null) {
+		if (d == null) {
+			if (type.equals("sensor")) {
+				L.i("Found new TellStickThermometer with internal ID " + internalId + ".");
+				d = new TellStickThermometer(Double.parseDouble(s[2]));
+				d.setInternalId(internalId);
+				session.save(d);
+			} else {
+				L.w("Got a TellStick native event with internal ID " + internalId + ", but found no corresponding device.");
+			}
+		} else {
 			if (d instanceof TellStickSwitch) {
-				boolean status = Boolean.parseBoolean(s[2]);
-				((TellStickSwitch)d).addOnOffHistoryPoint(status);
-				L.i("Received '" + status + "' from TellStickListener.");
+				boolean on = Boolean.parseBoolean(s[2]);
+				((TellStickSwitch)d).addOnOffHistoryPoint(on);
+				L.i("Received '" + on + "' from TellStickListener.");
 			} else if (d instanceof TellStickDimmer) {
-				// TODO: fix this! very temporary solution!
-				// the reason we catch this exception is that we get a boolean
-				// value of we do tdTurnOff() on a dimmer (and not a zero value)
-				// could probably be handled more... elegant
 				try {
 					int level = Integer.parseInt(s[2]);
-					((TellStickDimmer)d).addOnOffHistoryPoint(true);
 					((TellStickDimmer)d).addLevelHistoryPoint(level);
 					L.i("Received '" + level + "' from TellStickListener.");
 				} catch (NumberFormatException e) {
-					((TellStickDimmer)d).addOnOffHistoryPoint(false);
-					L.i("Received 'NumberFormatException' from TellStickListener.");
+					boolean on = Boolean.parseBoolean(s[2]);
+					((TellStickDimmer)d).addOnOffHistoryPoint(on);
+					L.i("Received '" + on + "' from TellStickListener.");
 				}
 			} else if (d instanceof TellStickThermometer) {
 				double value = Double.parseDouble(s[2]);
 				((TellStickThermometer)d).addHistoryPoint(value);
 				L.i("Received '" + value + "'C from TellStickListener.");
 			}
-		} else if (type.equals("sensor")){
-			L.i("Register sensor value from " + internalId + ".");
-			d = new TellStickThermometer(Double.parseDouble(s[2]));
-			d.setInternalId(internalId);
-			session.save(d);
 		}
 		
 		Hibernate.closeSession(session);

@@ -6,7 +6,6 @@ import javax.persistence.Entity;
 
 import com.homeki.core.device.IntegerHistoryPoint;
 import com.homeki.core.device.abilities.Settable;
-import com.homeki.core.main.L;
 
 @Entity
 public class TellStickDimmer extends TellStickDevice implements Settable, TellStickLearnable {
@@ -38,26 +37,17 @@ public class TellStickDimmer extends TellStickDevice implements Settable, TellSt
 		
 		if (channel == TELLSTICKDIMMER_ONOFF_CHANNEL) {
 			boolean on = value > 0;
-			if (on && level != null) {
+			if (on) {
 				TellStickNative.dim(internalId, level.getValue());
 				addOnOffHistoryPoint(true);
-			} else if (on) {
-				L.e("Level is null. Level being null when setting TellStickDimmer should not occur more than once, and only after recent upgrade. If this message haven't been seen in a while, remove the check for null in code. Added a history point for this device now.");
-				TellStickNative.dim(internalId, 255);
 			} else {
 				TellStickNative.turnOff(internalId);
 			}
 		} else if (channel == TELLSTICKDIMMER_LEVEL_CHANNEL) {
-			if (onoff == null) {
-				L.e("Onoff is null. Onoff being null when setting TellStickDimmer should not occur more than once, and only after recent upgrade. If this message haven't been seen in a while, remove the check for null in code. Added a history point for this device now.");
-				addOnOffHistoryPoint(false);
-				
-			} else {
-				if (onoff.getValue() > 0)
-					TellStickNative.dim(internalId, value);
-				else
-					addLevelHistoryPoint(value);
-			}
+			if (onoff.getValue() > 0)
+				TellStickNative.dim(internalId, value);
+			else
+				addLevelHistoryPoint(value);
 		} else {
 			throw new RuntimeException("Tried to set invalid channel " + channel + " on TellStickDimmer '" + getInternalId() + "'.");
 		}
