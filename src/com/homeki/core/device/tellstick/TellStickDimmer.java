@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 
 import com.homeki.core.device.IntegerHistoryPoint;
 import com.homeki.core.device.abilities.Settable;
+import com.homeki.core.events.ChannelChangedEvent;
+import com.homeki.core.events.EventQueue;
 
 @Entity
 public class TellStickDimmer extends TellStickDevice implements Settable, TellStickLearnable {
@@ -59,12 +61,14 @@ public class TellStickDimmer extends TellStickDevice implements Settable, TellSt
 	}
 	
 	public void addOnOffHistoryPoint(boolean on) {
+		int value = on ? 1 : 0;
 		IntegerHistoryPoint dhp = new IntegerHistoryPoint();
 		dhp.setDevice(this);
 		dhp.setRegistered(new Date());
 		dhp.setChannel(TELLSTICKDIMMER_ONOFF_CHANNEL);
-		dhp.setValue(on ? 1 : 0);
+		dhp.setValue(value);
 		historyPoints.add(dhp);
+		EventQueue.getInstance().add(new ChannelChangedEvent(getId(), TELLSTICKDIMMER_ONOFF_CHANNEL, value));
 	}
 	
 	public void addLevelHistoryPoint(int level) {
@@ -74,6 +78,7 @@ public class TellStickDimmer extends TellStickDevice implements Settable, TellSt
 		dhp.setChannel(TELLSTICKDIMMER_LEVEL_CHANNEL);
 		dhp.setValue(level);
 		historyPoints.add(dhp);
+		EventQueue.getInstance().add(new ChannelChangedEvent(getId(), TELLSTICKDIMMER_LEVEL_CHANNEL, level));
 	}
 
 	@Override

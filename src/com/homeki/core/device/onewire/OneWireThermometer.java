@@ -6,6 +6,8 @@ import java.util.Date;
 import javax.persistence.Entity;
 
 import com.homeki.core.device.DoubleHistoryPoint;
+import com.homeki.core.events.ChannelChangedEvent;
+import com.homeki.core.events.EventQueue;
 
 @Entity
 public class OneWireThermometer extends OneWireDevice implements OneWireIntervalLoggable {
@@ -29,6 +31,7 @@ public class OneWireThermometer extends OneWireDevice implements OneWireInterval
 		dhp.setRegistered(new Date());
 		dhp.setValue(value);
 		historyPoints.add(dhp);
+		EventQueue.getInstance().add(new ChannelChangedEvent(getId(), 0, value));
 	}
 	
 	@Override

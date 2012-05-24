@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 
 import com.homeki.core.device.IntegerHistoryPoint;
 import com.homeki.core.device.abilities.Settable;
+import com.homeki.core.events.ChannelChangedEvent;
+import com.homeki.core.events.EventQueue;
 
 @Entity
 public class TellStickSwitch extends TellStickDevice implements Settable, TellStickLearnable {
@@ -47,11 +49,13 @@ public class TellStickSwitch extends TellStickDevice implements Settable, TellSt
 	}
 	
 	public void addOnOffHistoryPoint(boolean on) {
+		int value = on ? 1 : 0;
 		IntegerHistoryPoint shp = new IntegerHistoryPoint();
 		shp.setDevice(this);
 		shp.setRegistered(new Date());
 		shp.setValue(on ? 1 : 0);
 		historyPoints.add(shp);
+		EventQueue.getInstance().add(new ChannelChangedEvent(getId(), TELLSTICKSWITCH_ONOFF_CHANNEL, value));
 	}
 
 	@Override
