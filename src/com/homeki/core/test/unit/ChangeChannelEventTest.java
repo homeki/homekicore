@@ -14,7 +14,7 @@ public class ChangeChannelEventTest {
 	int value = 1;
 	
 	@Test
-	public void equalTest() throws Exception {
+	public void testEqual() throws Exception {
 		ChannelChangedCondition ccc =  new ChannelChangedCondition(deviceId, channel, value, Condition.EQ);
 		
 		Assert.assertTrue(ccc.check(new ChannelChangedEvent(deviceId, channel, value)));
@@ -25,7 +25,7 @@ public class ChangeChannelEventTest {
 	}
 	
 	@Test
-	public void greaterThanTest() throws Exception {
+	public void testGreaterThan() throws Exception {
 		ChannelChangedCondition ccc =  new ChannelChangedCondition(deviceId, channel, value, Condition.GT);
 		
 		Assert.assertFalse(ccc.check(new ChannelChangedEvent(deviceId, channel, value)));
@@ -36,7 +36,7 @@ public class ChangeChannelEventTest {
 	}
 	
 	@Test
-	public void lessThanTest() throws Exception {
+	public void testLessThan() throws Exception {
 		ChannelChangedCondition ccc =  new ChannelChangedCondition(deviceId, channel, value, Condition.LT);
 		
 		Assert.assertFalse(ccc.check(new ChannelChangedEvent(deviceId, channel, value)));
