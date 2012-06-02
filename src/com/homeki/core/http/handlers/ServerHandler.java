@@ -7,8 +7,6 @@ import com.homeki.core.http.json.JsonServerInfo;
 import com.homeki.core.main.Setting;
 
 public class ServerHandler extends HttpHandler {
-	private static final String SERVER_NAME_KEY = "SERVER_NAME";
-
 	public enum Actions {
 		GET, SET, BAD_ACTION
 	}
@@ -35,7 +33,7 @@ public class ServerHandler extends HttpHandler {
 	}
 	
 	private void resolveGet(Container c) {
-		String name = Setting.getString(c.session, SERVER_NAME_KEY);
+		String name = Setting.getString(c.session, Setting.SERVER_NAME_KEY);
 		set200Response(c, gson.toJson(new JsonServerInfo(name)));
 	}
 	
@@ -47,7 +45,7 @@ public class ServerHandler extends HttpHandler {
 		if (jinfo.name == null || jinfo.name.length() == 0)
 			throw new ApiException("Server name cannot be empty.");
 		
-		Setting.putString(c.session, SERVER_NAME_KEY, jinfo.name);
+		Setting.putString(c.session, Setting.SERVER_NAME_KEY, jinfo.name);
 		
 		set200Response(c, "Server information updated successfully.");
 	}
