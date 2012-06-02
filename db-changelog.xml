@@ -205,4 +205,12 @@
 			</column>
 		</createTable>
 	</changeSet>
+	
+	<changeSet id="15" author="jonas">
+	    <addColumn tableName="trigger">
+			<column name="name" defaultValue="" type="VARCHAR(255)">
+			    <constraints nullable="false" />
+			</column>       
+	    </addColumn>
+	</changeSet>
 </databaseChangeLog>

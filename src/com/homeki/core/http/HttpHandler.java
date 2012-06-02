@@ -30,7 +30,10 @@ import com.homeki.core.main.Util;
 import com.homeki.core.storage.Hibernate;
 
 public abstract class HttpHandler implements HttpRequestHandler {
-	protected static final Gson gson = new GsonBuilder().setPrettyPrinting().setDateFormat(Util.getDateTimeFormat().toPattern()).create();
+	protected static final Gson gson = new GsonBuilder()
+		.setPrettyPrinting()
+		.setDateFormat(Util.getDateTimeFormat().toPattern())
+		.create();
 	
 	@Override
 	public void handle(HttpRequest request, HttpResponse response, HttpContext context) throws HttpException, IOException {

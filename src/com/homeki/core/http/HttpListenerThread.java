@@ -28,6 +28,7 @@ import com.homeki.core.http.handlers.DeviceHandler;
 import com.homeki.core.http.handlers.DeviceStateHandler;
 import com.homeki.core.http.handlers.DeviceTellstickHandler;
 import com.homeki.core.http.handlers.ServerHandler;
+import com.homeki.core.http.handlers.TriggerHandler;
 import com.homeki.core.main.Configuration;
 import com.homeki.core.main.ControlledThread;
 import com.homeki.core.main.L;
@@ -54,6 +55,12 @@ public class HttpListenerThread extends ControlledThread {
 		registry.register("/device/tellstick/*", new DeviceTellstickHandler());
 		registry.register("/device/*", new DeviceHandler());
 		registry.register("/server/*", new ServerHandler());
+		//registry.register("/trigger/action/*", new TriggerActionHandler());
+		//registry.register("/trigger/actiongroup/*", new TriggerActionGroupHandler());
+		registry.register("/trigger/*", new TriggerHandler());
+		//registry.register("/actiongroup/action/*", new ActionGroupActionHandler());
+		//registry.register("/actiongroup/actiongroup/*", new ActionGroupActionGroupHandler());
+		//registry.register("/actiongroup/*", new ActionGroupHandler());
 		
 		HttpProcessor proc = new ImmutableHttpProcessor(new HttpResponseInterceptor[] { new ResponseDate(), new ResponseServer(), new ResponseContent(), new ResponseConnControl() });
 		
