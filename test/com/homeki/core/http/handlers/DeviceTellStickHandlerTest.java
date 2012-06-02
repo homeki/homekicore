@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import com.homeki.core.TestUtil;
 
-public class TellStickDeviceTest {
+public class DeviceTellStickHandlerTest {
 	public class JsonTellStickDevice {
 		public String type;
 		public Integer id;

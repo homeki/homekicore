@@ -7,7 +7,7 @@ import org.junit.Test;
 import com.homeki.core.TestUtil;
 
 
-public class ServerInfoTest {
+public class ServerHandlerTest {
 	public class JsonServerInfo {
 		public Long uptimeMs;
 		public Long timeMs;
