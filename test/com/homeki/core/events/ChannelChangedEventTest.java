@@ -1,4 +1,4 @@
-package com.homeki.core.test.unit;
+package com.homeki.core.events;
 
 import junit.framework.Assert;
 
@@ -8,7 +8,7 @@ import com.homeki.core.conditions.ChannelChangedCondition;
 import com.homeki.core.conditions.Condition;
 import com.homeki.core.events.ChannelChangedEvent;
 
-public class ChangeChannelEventTest {
+public class ChannelChangedEventTest {
 	int channel = 1;
 	int deviceId = 1;
 	int value = 1;

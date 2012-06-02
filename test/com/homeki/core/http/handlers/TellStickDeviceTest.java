@@ -1,10 +1,12 @@
-package com.homeki.core.test.api;
+package com.homeki.core.http.handlers;
 
 import static org.junit.Assert.assertEquals;
 
 import java.util.Date;
 
 import org.junit.Test;
+
+import com.homeki.core.TestUtil;
 
 public class TellStickDeviceTest {
 	public class JsonTellStickDevice {

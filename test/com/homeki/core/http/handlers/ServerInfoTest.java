@@ -1,8 +1,10 @@
-package com.homeki.core.test.api;
+package com.homeki.core.http.handlers;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+
+import com.homeki.core.TestUtil;
 
 
 public class ServerInfoTest {

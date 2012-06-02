@@ -1,4 +1,4 @@
-package com.homeki.core.test.api;
+package com.homeki.core;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
