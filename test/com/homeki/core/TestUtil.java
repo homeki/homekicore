@@ -1,7 +1,7 @@
 package com.homeki.core;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.fail;
 
 import java.io.IOException;
 import java.lang.reflect.Type;

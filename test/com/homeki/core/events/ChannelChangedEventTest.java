@@ -1,12 +1,10 @@
 package com.homeki.core.events;
 
-import junit.framework.Assert;
-
-import org.junit.Test;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 import com.homeki.core.conditions.ChannelChangedCondition;
 import com.homeki.core.conditions.Condition;
-import com.homeki.core.events.ChannelChangedEvent;
 
 public class ChannelChangedEventTest {
 	int channel = 1;

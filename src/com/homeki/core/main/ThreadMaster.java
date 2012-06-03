@@ -9,7 +9,7 @@ import com.homeki.core.device.tellstick.TellStickModule;
 import com.homeki.core.events.EventHandlerThread;
 import com.homeki.core.generators.ClockGeneratorThread;
 import com.homeki.core.http.HttpListenerThread;
-import com.homeki.core.storage.DatabaseUpgrader;
+import com.homeki.core.storage.DatabaseManager;
 import com.homeki.core.storage.Hibernate;
 
 public class ThreadMaster {
@@ -43,7 +43,7 @@ public class ThreadMaster {
 		
 		// perform, if necessary, database upgrades
 		try {
-			new DatabaseUpgrader().upgrade();
+			new DatabaseManager().upgrade();
 		} catch (ClassNotFoundException e) {
 			L.e("Failed to load HSQLDB JDBC driver, killing Homeki.", e);
 		} catch (Exception e) {

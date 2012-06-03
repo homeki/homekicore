@@ -1,10 +1,10 @@
 package com.homeki.core.http.handlers;
 
-import static org.junit.Assert.assertEquals;
+import static org.testng.Assert.assertEquals;
 
 import java.util.Date;
 
-import org.junit.Test;
+import org.testng.annotations.Test;
 
 import com.homeki.core.TestUtil;
 
