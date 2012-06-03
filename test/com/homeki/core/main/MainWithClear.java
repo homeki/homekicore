@@ -1,9 +1,8 @@
 package com.homeki.core.main;
 
-import com.homeki.core.device.tellstick.TellStickNative;
 import com.homeki.core.storage.DatabaseManager;
 
-public class MainWithClearDb {
+public class MainWithClear {
 	public static void main(String[] args) throws Exception {
 		DatabaseManager mgr = new DatabaseManager();
 		L.i("Dropping all database tables...");

@@ -47,6 +47,10 @@ public class Trigger {
 		action.execute(ses);
 	}
 	
+	public int getId() {
+		return id;
+	}
+	
 	public void setName(String name) {
 		this.name = name;
 	}

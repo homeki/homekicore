@@ -8,6 +8,7 @@ import org.testng.annotations.Test;
 
 import com.homeki.core.TestUtil;
 
+@Test(groups="DeviceHandlerTest")
 public class DeviceHandlerTest {
 	public class JsonDevice {
 		public String type;
@@ -41,14 +42,14 @@ public class DeviceHandlerTest {
 		assertEquals(jdevices[4].type, "thermometer");
 	}
 	
-	@Test
+	@Test(dependsOnMethods="testList")
 	public void testGet() {
 		assertEquals(TestUtil.sendGet("/device/get?deviceid=999999").statusCode, 405);
 		JsonDevice dev = TestUtil.sendGetAndParseAsJson("/device/get?deviceid=1", JsonDevice.class);
 		assertEquals((int)dev.id, 1);
 	}
 	
-	@Test
+	@Test(dependsOnMethods="testGet")
 	public void testSet() {
 		JsonDevice beforeDev = TestUtil.sendGetAndParseAsJson("/device/get?deviceid=2", JsonDevice.class);
 		assertEquals(beforeDev.name, "");
@@ -64,7 +65,7 @@ public class DeviceHandlerTest {
 		assertEquals(afterDev.description, "corner lamps in living room");
 	}
 	
-	@Test(dependsOnMethods= { "testGet", "testSet" })
+	@Test(dependsOnMethods="testSet")
 	public void testDelete() {
 		assertEquals(TestUtil.sendGet("/device/delete?deviceid=99999").statusCode, 405);
 		assertEquals(TestUtil.sendGet("/device/get?deviceid=1").statusCode, 200);

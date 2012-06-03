@@ -5,7 +5,12 @@ import java.util.List;
 import com.homeki.core.triggers.Trigger;
 
 public class JsonTrigger {
+	public Integer id;
 	public String name;
+	
+	public JsonTrigger() {
+		
+	}
 	
 	public JsonTrigger(Trigger trigger) {
 		this.name = trigger.getName();

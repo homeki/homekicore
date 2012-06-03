@@ -27,7 +27,7 @@ public class ServerHandlerTest {
 		assertTrue(jinfo.version.length() > 0);
 	}
 	
-	@Test
+	@Test(dependsOnMethods="testGet")
 	public void testSet() throws Exception {
 		JsonServerInfo get = TestUtil.sendGetAndParseAsJson("/server/get", JsonServerInfo.class);
 		assertEquals("Homeki", get.name);

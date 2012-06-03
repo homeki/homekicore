@@ -75,6 +75,20 @@ public class TestUtil {
 		return (T)gson.fromJson(json, t);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public static <T> T sendPostAndParseAsJson(String url, Object obj, Type t) {
+		Response r  = sendPost(url, obj);
+		
+		assertEquals(r.statusCode, 200, r.content);
+		
+		String json = r.content;
+		
+		if (json == null || json.length() == 0)
+			fail("Expected JSON in response, got none.");
+		
+		return (T)gson.fromJson(json, t);
+	}
+	
 	public static Response sendGet(String url) {
 		HttpClient client = new DefaultHttpClient();
 		HttpGet get = new HttpGet(HOST + url);

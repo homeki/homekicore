@@ -12,6 +12,7 @@ import org.hibernate.criterion.Restrictions;
 @Entity
 public class Setting {
 	public static final String SERVER_NAME_KEY = "SERVER_NAME";
+	public static final String NEXT_HOUSE_KEY = "TELLSTICK_NEXT_HOUSE_VALUE";
 	
 	@SuppressWarnings("unused")
 	@Id

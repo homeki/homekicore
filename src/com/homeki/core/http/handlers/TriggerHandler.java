@@ -2,11 +2,9 @@ package com.homeki.core.http.handlers;
 
 import java.util.List;
 
-import com.homeki.core.device.Device;
 import com.homeki.core.http.ApiException;
 import com.homeki.core.http.Container;
 import com.homeki.core.http.HttpHandler;
-import com.homeki.core.http.json.JsonDevice;
 import com.homeki.core.http.json.JsonTrigger;
 import com.homeki.core.triggers.Trigger;
 
@@ -53,5 +51,10 @@ public class TriggerHandler extends HttpHandler {
 		Trigger trigger = new Trigger();
 		trigger.setName(jtrigger.name);
 		c.session.save(trigger);
+		
+		JsonTrigger newid = new JsonTrigger();
+		newid.id = trigger.getId();
+		
+		set200Response(c, gson.toJson(newid));
 	}
 }

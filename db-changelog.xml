@@ -213,4 +213,9 @@
 			</column>       
 	    </addColumn>
 	</changeSet>
+	
+	<changeSet id="16" author="jonas">
+	    <dropNotNullConstraint tableName="trigger" columnName="condition_id" />
+	    <dropNotNullConstraint tableName="trigger" columnName="action_id" />
+	</changeSet>
 </databaseChangeLog>
