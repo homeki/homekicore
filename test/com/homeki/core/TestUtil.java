@@ -39,27 +39,33 @@ public class TestUtil {
 		return new SimpleDateFormat(DATETIME_FORMAT);
 	}
 	
-	public static Response sendPost(String url, Object obj) throws Exception {
+	public static Response sendPost(String url, Object obj) {
 		HttpClient client = new DefaultHttpClient();
 		HttpPost post = new HttpPost(HOST + url);
 		HttpResponse response = null;
 		String postString = gson.toJson(obj);
-	
-		post.setEntity(new StringEntity(postString));
-		response = client.execute(post);
+		Response r = null;
 		
-		Response r = new TestUtil().new Response();
-		r.statusCode = response.getStatusLine().getStatusCode();
-		r.content = convertToString(response.getEntity());
+		try {
+			post.setEntity(new StringEntity(postString));
+			response = client.execute(post);
+			
+			r = new TestUtil().new Response();
+			r.statusCode = response.getStatusLine().getStatusCode();
+			r.content = convertToString(response.getEntity());			
+		}
+		catch (Exception e) {
+			fail("Failed sending POST request, message: " + e.getMessage());
+		}
 		
 		return r;
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static <T> T sendAndParseAsJson(String url, Type t) throws Exception {
+	public static <T> T sendGetAndParseAsJson(String url, Type t) {
 		Response r  = sendGet(url);
 		
-		assertEquals(200, r.statusCode);
+		assertEquals(r.statusCode, 200, r.content);
 		
 		String json = r.content;
 		
@@ -69,16 +75,21 @@ public class TestUtil {
 		return (T)gson.fromJson(json, t);
 	}
 	
-	public static Response sendGet(String url) throws Exception {
+	public static Response sendGet(String url) {
 		HttpClient client = new DefaultHttpClient();
 		HttpGet get = new HttpGet(HOST + url);
 		HttpResponse response = null;
+		Response r = null;
 		
-		response = client.execute(get);
-		
-		Response r = new TestUtil().new Response();
-		r.statusCode = response.getStatusLine().getStatusCode();
-		r.content = convertToString(response.getEntity());
+		try {
+			response = client.execute(get);
+			
+			r = new TestUtil().new Response();
+			r.statusCode = response.getStatusLine().getStatusCode();
+			r.content = convertToString(response.getEntity());
+		} catch (Exception e) {
+			fail("Failed sending GET request, message: " + e.getMessage());
+		}
 		
 		return r;
 	}

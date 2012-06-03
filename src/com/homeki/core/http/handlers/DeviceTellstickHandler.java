@@ -43,7 +43,7 @@ public class DeviceTellstickHandler extends HttpHandler {
 			resolveLearn(c);
 			break;
 		default:
-			throw new ApiException("No such URL/action: '" + action + "'.");
+			throw new ApiException("No such URL/action.");
 		}
 	}
 	

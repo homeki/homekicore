@@ -11,7 +11,7 @@ import com.homeki.core.http.json.JsonDevice;
 
 public class DeviceHandler extends HttpHandler {
 	public enum Actions {
-		LIST, SET, DELETE, MERGE, BAD_ACTION
+		LIST, GET, SET, DELETE, MERGE, BAD_ACTION
 	}
 	
 	@Override
@@ -27,6 +27,9 @@ public class DeviceHandler extends HttpHandler {
 		case LIST:
 			resolveList(c);
 			break;
+		case GET:
+			resolveGet(c);
+			break;
 		case SET:
 			resolveSet(c);
 			break;
@@ -37,8 +40,19 @@ public class DeviceHandler extends HttpHandler {
 			resolveMerge(c);
 			break;
 		default:
-			throw new ApiException("No such URL/action: '" + action + "'.");
+			throw new ApiException("No such URL/action.");
 		}
+	}
+	
+	private void resolveGet(Container c) {
+		int id = getIntParameter(c, "deviceid");
+		
+		Device dev = (Device)c.session.get(Device.class, id);
+		
+		if (dev == null)
+			throw new ApiException("No device with specified ID.");
+		
+		set200Response(c, gson.toJson(new JsonDevice(dev)));
 	}
 	
 	private void resolveSet(Container c) {

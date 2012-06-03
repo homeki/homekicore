@@ -19,7 +19,7 @@ public class ServerHandlerTest {
 	
 	@Test
 	public void testGet() throws Exception {
-		JsonServerInfo jinfo = TestUtil.sendAndParseAsJson("/server/get", JsonServerInfo.class);
+		JsonServerInfo jinfo = TestUtil.sendGetAndParseAsJson("/server/get", JsonServerInfo.class);
 		assertEquals("Homeki", jinfo.name);
 		TestUtil.getDateTimeFormat().parse(jinfo.time);
 		assertTrue(jinfo.timeMs > 0);
@@ -29,7 +29,7 @@ public class ServerHandlerTest {
 	
 	@Test
 	public void testSet() throws Exception {
-		JsonServerInfo get = TestUtil.sendAndParseAsJson("/server/get", JsonServerInfo.class);
+		JsonServerInfo get = TestUtil.sendGetAndParseAsJson("/server/get", JsonServerInfo.class);
 		assertEquals("Homeki", get.name);
 		
 		JsonServerInfo set = new JsonServerInfo();
@@ -39,7 +39,7 @@ public class ServerHandlerTest {
 		set.name = "MyServer";
 		assertEquals(200, TestUtil.sendPost("/server/set", set).statusCode);
 		
-		get = TestUtil.sendAndParseAsJson("/server/get", JsonServerInfo.class);
+		get = TestUtil.sendGetAndParseAsJson("/server/get", JsonServerInfo.class);
 		assertEquals("MyServer", get.name);
 	}
 }

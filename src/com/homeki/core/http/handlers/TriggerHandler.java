@@ -32,7 +32,7 @@ public class TriggerHandler extends HttpHandler {
 			resolveAdd(c);
 			break;
 		default:
-			throw new ApiException("No such URL/action: '" + action + "'.");
+			throw new ApiException("No such URL/action.");
 		}
 	}
 	

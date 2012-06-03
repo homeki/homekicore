@@ -28,7 +28,7 @@ public class ServerHandler extends HttpHandler {
 			resolveSet(c);
 			break;
 		default:
-			throw new ApiException("No such URL/action: '" + action + "'.");
+			throw new ApiException("No such URL/action.");
 		}
 	}
 	
