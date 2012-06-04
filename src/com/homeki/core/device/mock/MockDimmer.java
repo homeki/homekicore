@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import com.homeki.core.device.Device;
 import com.homeki.core.device.IntegerHistoryPoint;
 import com.homeki.core.device.abilities.Settable;
+import com.homeki.core.events.ChannelChangedEvent;
+import com.homeki.core.events.EventQueue;
 import com.homeki.core.main.L;
 
 @Entity
@@ -36,12 +38,14 @@ public class MockDimmer extends Device implements Settable {
 	}
 	
 	public void addOnOffHistoryPoint(boolean on) {
+		int value = on ? 1 : 0;
 		IntegerHistoryPoint dhp = new IntegerHistoryPoint();
 		dhp.setDevice(this);
 		dhp.setRegistered(new Date());
 		dhp.setChannel(MOCKDIMMER_ONOFF_CHANNEL);
-		dhp.setValue(on ? 1 : 0);
+		dhp.setValue(value);
 		historyPoints.add(dhp);
+		EventQueue.getInstance().add(new ChannelChangedEvent(getId(), MOCKDIMMER_ONOFF_CHANNEL, value));
 	}
 	
 	public void addLevelHistoryPoint(int level) {
@@ -51,6 +55,7 @@ public class MockDimmer extends Device implements Settable {
 		dhp.setChannel(MOCKDIMMER_LEVEL_CHANNEL);
 		dhp.setValue(level);
 		historyPoints.add(dhp);
+		EventQueue.getInstance().add(new ChannelChangedEvent(getId(), MOCKDIMMER_LEVEL_CHANNEL, level));
 	}
 
 	@Override

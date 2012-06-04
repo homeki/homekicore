@@ -8,6 +8,8 @@ import javax.persistence.Transient;
 
 import com.homeki.core.device.Device;
 import com.homeki.core.device.DoubleHistoryPoint;
+import com.homeki.core.events.ChannelChangedEvent;
+import com.homeki.core.events.EventQueue;
 
 @Entity
 public class MockThermometer extends Device {
@@ -45,6 +47,7 @@ public class MockThermometer extends Device {
 		dhp.setRegistered(new Date());
 		dhp.setValue(value);
 		historyPoints.add(dhp);
+		EventQueue.getInstance().add(new ChannelChangedEvent(getId(), 0, value));
 	}
 	
 	@Override

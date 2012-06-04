@@ -11,16 +11,19 @@ import org.hibernate.criterion.Restrictions;
 
 @Entity
 public class Setting {
+	public static final String SERVER_NAME_KEY = "SERVER_NAME";
+	public static final String NEXT_HOUSE_KEY = "TELLSTICK_NEXT_HOUSE_VALUE";
+	
 	@SuppressWarnings("unused")
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
 	@SuppressWarnings("unused")
-	@Column(name="setting_key") // "key" is reserved in MySQL
+	@Column(name="setting_key")
 	private String key;
 	
-	@Column(name="setting_value") // "value" is reserved in MySQL
+	@Column(name="setting_value")
 	private String value;
 	
 	public Setting() {

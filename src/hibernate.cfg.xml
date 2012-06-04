@@ -32,5 +32,8 @@
         <mapping class="com.homeki.core.device.tellstick.TellStickSwitch" />
         <mapping class="com.homeki.core.device.tellstick.TellStickDimmer" />
         <mapping class="com.homeki.core.device.tellstick.TellStickThermometer" />
+        <mapping class="com.homeki.core.triggers.Trigger" />
+        <mapping class="com.homeki.core.actions.Action" />
+        <mapping class="com.homeki.core.conditions.Condition" />
     </session-factory>
 </hibernate-configuration>

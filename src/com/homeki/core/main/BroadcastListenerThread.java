@@ -4,6 +4,20 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
 
+import org.hibernate.Session;
+
+import com.homeki.core.storage.Hibernate;
+
+// Protocol
+// ===============================
+// Just sends a simple string, values seperated by |.
+//
+// Request: 
+// "HOMEKI"
+//
+// Response:
+// "[HOMEKI_VERSION]|[HOMEKI_SERVER_NAME]"
+//
 public class BroadcastListenerThread extends ControlledThread {
 	private DatagramSocket socket;
 	
@@ -14,20 +28,27 @@ public class BroadcastListenerThread extends ControlledThread {
 
 	protected void iteration() throws Exception {
 		try {
-			byte[] buffer = new byte[2048];
-			DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
-			socket.receive(packet);
-			String msg = new String(buffer, 0, packet.getLength());
-			L.i("Received broadcast: " + packet.getAddress().getHostName() + ", msg: " + msg);
-			packet.setLength(buffer.length);
+			byte[] buffer = new byte[512];
+			DatagramPacket requestPacket = new DatagramPacket(buffer, buffer.length);
+			socket.receive(requestPacket);
 			
-			DatagramSocket replySocket = new DatagramSocket(1337);
-			byte[] data = "sup".getBytes();
-			DatagramPacket p = new DatagramPacket(data, data.length, packet.getAddress(), 1337);
-			replySocket.send(p);
-			replySocket.close();
+			String msg = new String(buffer, 0, requestPacket.getLength());
+			
+			if (msg.startsWith("HOMEKI")) {
+				L.i("Received broadcast from " + requestPacket.getAddress().getHostAddress() + ".");
+				
+				Session session = Hibernate.openSession();
+				String response = Util.getVersion() + "|" + Setting.getString(session, Setting.SERVER_NAME_KEY);
+				Hibernate.closeSession(session);
+				
+				byte[] data = response.getBytes();
+				DatagramPacket responsePacket = new DatagramPacket(data, data.length, requestPacket.getAddress(), 1337);
+				socket.send(responsePacket);
+			} else {
+				L.w("Received invalid broadcast request from " + requestPacket.getAddress().getHostAddress() + ", ignored.");
+			}
 		} catch (SocketException e) {
-			L.i("Closed listener socket.");
+			L.i("Closed broadcast listener socket.");
 		} catch (Exception e) {
 			if (!socket.isClosed())
 				socket.close();
@@ -37,7 +58,7 @@ public class BroadcastListenerThread extends ControlledThread {
 	
 	@Override
 	public void shutdown() {
-		socket.close();
 		super.shutdown();
+		socket.close();
 	}
 }

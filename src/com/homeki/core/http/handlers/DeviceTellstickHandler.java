@@ -15,7 +15,6 @@ import com.homeki.core.http.json.JsonTellStickDevice;
 import com.homeki.core.main.Setting;
 
 public class DeviceTellstickHandler extends HttpHandler {
-	private static final String NEXT_HOUSE_KEY = "TELLSTICK_NEXT_HOUSE_VALUE";
 	private static final int UNIT = 3;
 	
 	public enum Actions {
@@ -43,7 +42,7 @@ public class DeviceTellstickHandler extends HttpHandler {
 			resolveLearn(c);
 			break;
 		default:
-			throw new ApiException("No such URL/action: '" + action + "'.");
+			throw new ApiException("No such URL/action.");
 		}
 	}
 	
@@ -55,7 +54,7 @@ public class DeviceTellstickHandler extends HttpHandler {
 		int unit;
 		
 		if (jsonDevice.house == null)
-			house = Setting.getInt(c.session, NEXT_HOUSE_KEY);
+			house = Setting.getInt(c.session, Setting.NEXT_HOUSE_KEY);
 		else
 			house = jsonDevice.house;
 		
@@ -79,7 +78,7 @@ public class DeviceTellstickHandler extends HttpHandler {
 			dev.setDescription(jsonDevice.description);
 		
 		if (jsonDevice.house == null)
-			Setting.putInt(c.session, NEXT_HOUSE_KEY, house+1);
+			Setting.putInt(c.session, Setting.NEXT_HOUSE_KEY, house+1);
 		
 		c.session.save(dev);
 		

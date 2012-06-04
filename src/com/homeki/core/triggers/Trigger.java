@@ -1,6 +1,7 @@
 package com.homeki.core.triggers;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -25,22 +26,44 @@ public class Trigger {
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "condition_id")
-	private Condition eventCondition;
+	private Condition condition;
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "action_id")
 	private Action action;
 	
-	public Trigger(Condition c, Action a) {
-		eventCondition = c;
-		action = a;
+	@Column
+	private String name;
+	
+	public Trigger() {
+		
 	}
 
 	public boolean check(Event e){
-		return eventCondition.check(e);
+		return condition.check(e);
 	}
 	
 	public void execute(Session ses){
 		action.execute(ses);
+	}
+	
+	public int getId() {
+		return id;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public void setCondition(Condition condition) {
+		this.condition = condition;
+	}
+	
+	public void setAction(Action action) {
+		this.action = action;
 	}
 }
