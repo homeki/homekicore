@@ -23,6 +23,9 @@ public abstract class Condition {
 	public static final int EQ = 0;
 	public static final int LT = 1;
 	public static final int GT = 2;
+	public static final int IGNORE = 3;
+	
+	protected boolean status;
 	
 	@SuppressWarnings("unused")
 	@Id
@@ -34,4 +37,19 @@ public abstract class Condition {
 	protected Set<Trigger> triggers;
 	
 	public abstract boolean check(Event e);
+	
+	protected boolean evalute(Number value, Number checkValue, int operator) {
+		int v = Double.compare(value.doubleValue(), checkValue.doubleValue());
+		switch (operator) {
+		case EQ:
+			return v == 0;
+		case LT:
+			return v < 0;
+		case GT:
+			return v > 0;
+		case IGNORE:
+			return true;
+		}
+		return false;
+	}
 }

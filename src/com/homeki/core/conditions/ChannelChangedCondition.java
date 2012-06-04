@@ -33,15 +33,7 @@ public class ChannelChangedCondition extends Condition {
 		if (e instanceof ChannelChangedEvent) {
 			ChannelChangedEvent cce = (ChannelChangedEvent) e;
 			if (cce.channel == this.getChannel() && cce.deviceId == this.getDeviceId()) {
-				int v = Double.compare(cce.value.doubleValue(), getValue().doubleValue());
-				switch (getOperator()) {
-				case EQ:
-					return v == 0;
-				case LT:
-					return v < 0;
-				case GT:
-					return v > 0;
-				}
+				return evalute(cce.value, getValue(), getOperator());
 			}
 		}
 		return false;
