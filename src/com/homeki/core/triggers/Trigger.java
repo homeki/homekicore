@@ -19,7 +19,6 @@ import com.homeki.core.events.Event;
 
 @Entity
 public class Trigger {
-	@SuppressWarnings("unused")
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
@@ -35,8 +34,12 @@ public class Trigger {
 	@Column
 	private String name;
 	
+	public Trigger(Condition c, Action a) {
+		condition = c;
+		action = a;
+	}
+
 	public Trigger() {
-		
 	}
 
 	public boolean check(Event e){

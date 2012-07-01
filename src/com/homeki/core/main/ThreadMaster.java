@@ -58,6 +58,7 @@ public class ThreadMaster {
 			Hibernate.init();
 		} catch (Exception e) {
 			L.e("Something went wrong when verifying access to database through Hibernate, killing Homeki.", e);
+			L.e(e.getStackTrace().toString());
 			System.exit(-1);
 		}
 		L.i("Database access through Hibernate verified.");

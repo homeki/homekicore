@@ -1,8 +1,7 @@
-package com.homeki.core.test.unit;
+package com.homeki.core.triggers;
 
-import junit.framework.Assert;
-
-import org.junit.Test;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 import com.homeki.core.conditions.Condition;
 import com.homeki.core.triggers.Trigger;

@@ -1,4 +1,4 @@
-package com.homeki.core.test.unit;
+package com.homeki.core.triggers;
 
 import com.homeki.core.conditions.Condition;
 import com.homeki.core.events.Event;
