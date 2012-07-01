@@ -25,6 +25,7 @@ import org.apache.http.protocol.ResponseDate;
 import org.apache.http.protocol.ResponseServer;
 
 import com.homeki.core.http.handlers.DeviceHandler;
+import com.homeki.core.http.handlers.DeviceMockHandler;
 import com.homeki.core.http.handlers.DeviceStateHandler;
 import com.homeki.core.http.handlers.DeviceTellstickHandler;
 import com.homeki.core.http.handlers.ServerHandler;
@@ -53,6 +54,7 @@ public class HttpListenerThread extends ControlledThread {
 		HttpRequestHandlerRegistry registry = new HttpRequestHandlerRegistry();
 		registry.register("/device/state/*", new DeviceStateHandler());
 		registry.register("/device/tellstick/*", new DeviceTellstickHandler());
+		registry.register("/device/mock/*", new DeviceMockHandler());
 		registry.register("/device/*", new DeviceHandler());
 		registry.register("/server/*", new ServerHandler());
 		//registry.register("/trigger/action/*", new TriggerActionHandler());

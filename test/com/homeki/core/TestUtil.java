@@ -18,6 +18,7 @@ import org.apache.http.util.EntityUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.homeki.core.http.json.JsonDevice;
 
 public class TestUtil {
 	private static final String DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
@@ -25,6 +26,12 @@ public class TestUtil {
 	private static final String HOST = "http://localhost:5000";
 	
 	private static Gson gson = new GsonBuilder().setPrettyPrinting().setDateFormat(DATETIME_FORMAT).create();
+	
+	public enum MockDeviceType {
+		SWITCH,
+		DIMMER,
+		THERMOMETER
+	}
 	
 	public class Response {
 		public int statusCode;
@@ -116,5 +123,18 @@ public class TestUtil {
 			s = "";
 		}
 		return s;
+	}
+	
+	public static int addMockDevice(MockDeviceType type) {
+		JsonDevice dev = new JsonDevice();
+		
+		dev.type = type.toString().toLowerCase();
+		
+		dev = sendPostAndParseAsJson("/device/mock/add", dev, JsonDevice.class);
+		return dev.id;
+	}
+	
+	public static void deleteDevice(int id) {
+		sendGet("/device/delete?deviceid=" + id);
 	}
 }

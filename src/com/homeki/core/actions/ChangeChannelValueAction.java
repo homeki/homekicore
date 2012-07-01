@@ -7,15 +7,12 @@ import org.hibernate.Session;
 
 @Entity
 public  class ChangeChannelValueAction extends Action{
-	@SuppressWarnings("unused")
 	@Column
 	private int channel;
 
-	@SuppressWarnings("unused")
 	@Column
 	private int deviceId;
 	
-	@SuppressWarnings("unused")
 	@Column
 	private int value;
 	

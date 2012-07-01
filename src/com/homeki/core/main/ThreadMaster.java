@@ -8,7 +8,6 @@ import com.homeki.core.device.onewire.OneWireModule;
 import com.homeki.core.device.tellstick.TellStickModule;
 import com.homeki.core.events.EventHandlerThread;
 import com.homeki.core.generators.ClockGeneratorThread;
-import com.homeki.core.generators.SunriseSunset;
 import com.homeki.core.http.HttpListenerThread;
 import com.homeki.core.storage.DatabaseManager;
 import com.homeki.core.storage.Hibernate;
@@ -116,8 +115,6 @@ public class ThreadMaster {
 		} catch (Exception e) {
 			L.e("Could not start ClockGeneratorThread.", e);
 		}
-		
-		System.out.println(new SunriseSunset().getSunset(52, 13));
 	}
 	
 	private void setupModules() {

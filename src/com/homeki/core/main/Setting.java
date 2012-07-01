@@ -14,12 +14,10 @@ public class Setting {
 	public static final String SERVER_NAME_KEY = "SERVER_NAME";
 	public static final String NEXT_HOUSE_KEY = "TELLSTICK_NEXT_HOUSE_VALUE";
 	
-	@SuppressWarnings("unused")
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	@SuppressWarnings("unused")
 	@Column(name="setting_key")
 	private String key;
 	

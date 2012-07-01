@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -25,9 +26,9 @@ public abstract class Condition {
 	public static final int GT = 2;
 	public static final int IGNORE = 3;
 	
+	@Transient
 	protected boolean status;
 	
-	@SuppressWarnings("unused")
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;

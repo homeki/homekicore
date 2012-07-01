@@ -21,7 +21,6 @@ import com.homeki.core.triggers.Trigger;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Action {
-	@SuppressWarnings("unused")
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;

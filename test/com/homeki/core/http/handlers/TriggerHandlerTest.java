@@ -5,7 +5,6 @@ import static org.testng.Assert.*;
 
 import com.homeki.core.TestUtil;
 
-@Test(dependsOnGroups="DeviceHandlerTest")
 public class TriggerHandlerTest {
 	public class JsonTrigger {
 		public Integer id;
