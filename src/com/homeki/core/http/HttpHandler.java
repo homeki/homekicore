@@ -122,7 +122,7 @@ public abstract class HttpHandler implements HttpRequestHandler {
 		}
 	}
 	
-	private String getStringParameter(Container c, String key) {
+	protected String getStringParameter(Container c, String key) {
 		for (NameValuePair pair : c.qs) {
 			if (pair.getName().toLowerCase().equals(key.toLowerCase()))
 				return pair.getValue();

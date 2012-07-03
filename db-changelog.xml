@@ -218,4 +218,16 @@
 	    <dropNotNullConstraint tableName="trigger" columnName="condition_id" />
 	    <dropNotNullConstraint tableName="trigger" columnName="action_id" />
 	</changeSet>
+	
+	<changeSet id="17" author="jonas">
+	    <dropColumn tableName="channel_changed_condition" columnName="value"/>
+	</changeSet>
+	
+	<changeSet id="18" author="jonas">
+	    <addColumn tableName="channel_changed_condition">
+	        <column name="value" type="bytea">
+	            <constraints nullable="false"/>
+	        </column>
+	    </addColumn>
+	</changeSet>
 </databaseChangeLog>

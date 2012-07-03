@@ -29,6 +29,7 @@ import com.homeki.core.http.handlers.DeviceMockHandler;
 import com.homeki.core.http.handlers.DeviceStateHandler;
 import com.homeki.core.http.handlers.DeviceTellstickHandler;
 import com.homeki.core.http.handlers.ServerHandler;
+import com.homeki.core.http.handlers.TriggerConditionHandler;
 import com.homeki.core.http.handlers.TriggerHandler;
 import com.homeki.core.main.Configuration;
 import com.homeki.core.main.ControlledThread;
@@ -60,6 +61,7 @@ public class HttpListenerThread extends ControlledThread {
 		//registry.register("/trigger/action/*", new TriggerActionHandler());
 		//registry.register("/trigger/actiongroup/*", new TriggerActionGroupHandler());
 		registry.register("/trigger/*", new TriggerHandler());
+		registry.register("/trigger/condition/*", new TriggerConditionHandler());
 		//registry.register("/actiongroup/action/*", new ActionGroupActionHandler());
 		//registry.register("/actiongroup/actiongroup/*", new ActionGroupActionGroupHandler());
 		//registry.register("/actiongroup/*", new ActionGroupHandler());

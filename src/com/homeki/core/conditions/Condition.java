@@ -53,4 +53,8 @@ public abstract class Condition {
 		}
 		return false;
 	}
+	
+	public int getId() {
+		return id;
+	}
 }

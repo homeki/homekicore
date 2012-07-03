@@ -6,6 +6,8 @@ import static org.testng.Assert.*;
 import com.homeki.core.TestUtil;
 
 public class TriggerHandlerTest {
+	private int id;
+	
 	public class JsonTrigger {
 		public Integer id;
 		public String name;
@@ -19,5 +21,8 @@ public class TriggerHandlerTest {
 		assertEquals(405, TestUtil.sendPost("/trigger/add", jtrigger).statusCode);
 		jtrigger.name = "MyTrigger";
 		TestUtil.sendPostAndParseAsJson("/trigger/add", jtrigger, JsonTrigger.class);
+		assertTrue(jtrigger.id > 0);
 	}
+	
+	// TODO: add delete
 }
