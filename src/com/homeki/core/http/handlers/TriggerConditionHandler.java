@@ -51,7 +51,9 @@ public class TriggerConditionHandler extends HttpHandler {
 			throw new ApiException("No trigger with the specified ID found.");
 		
 		List<Condition> list = new ArrayList<Condition>();
-		list.add(trigger.getCondition());
+		
+		if (trigger.getCondition() != null)
+			list.add(trigger.getCondition());
 		
 		set200Response(c, gson.toJson(JsonCondition.convertList(list)));
 	}
