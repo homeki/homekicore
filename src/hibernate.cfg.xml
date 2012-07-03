@@ -36,5 +36,6 @@
         <mapping class="com.homeki.core.actions.Action" />
         <mapping class="com.homeki.core.conditions.Condition" />
         <mapping class="com.homeki.core.conditions.ChannelChangedCondition" />
+        <mapping class="com.homeki.core.conditions.MinuteChangedCondition" />
     </session-factory>
 </hibernate-configuration>

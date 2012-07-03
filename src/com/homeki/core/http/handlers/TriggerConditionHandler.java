@@ -2,11 +2,13 @@ package com.homeki.core.http.handlers;
 
 import com.homeki.core.conditions.ChannelChangedCondition;
 import com.homeki.core.conditions.Condition;
+import com.homeki.core.conditions.MinuteChangedCondition;
 import com.homeki.core.http.ApiException;
 import com.homeki.core.http.Container;
 import com.homeki.core.http.HttpHandler;
 import com.homeki.core.http.json.JsonChannelChangedCondition;
 import com.homeki.core.http.json.JsonCondition;
+import com.homeki.core.http.json.JsonMinuteChangedCondition;
 import com.homeki.core.triggers.Trigger;
 
 public class TriggerConditionHandler extends HttpHandler {
@@ -48,6 +50,8 @@ public class TriggerConditionHandler extends HttpHandler {
 			
 		if (type.equals("channelchanged"))
 			condition = parseChannelChanged(c);
+		else if (type.equals("minutechanged"))
+			condition = parseMinuteChanged(c);
 		else
 			throw new ApiException("No such condition type.");
 		
@@ -64,19 +68,56 @@ public class TriggerConditionHandler extends HttpHandler {
 		String post = getPost(c);
 		JsonChannelChangedCondition jcond = gson.fromJson(post, JsonChannelChangedCondition.class);
 		
-		int op;
-		if (jcond.operator.equals("EQ"))
-			op = Condition.EQ;
-		else if (jcond.operator.equals("GT"))
-			op = Condition.GT;
-		else if (jcond.operator.equals("LT"))
-			op = Condition.LT;
-		else
-			throw new ApiException("No such operator available. The possible pperators EQ, GT or LT.");
+		if (jcond.operator == null)
+			throw new ApiException("Missing operator.");
+		if (jcond.number == null)
+			throw new ApiException("Missing number.");
+		
+		int op = convertOperatorString(jcond.operator);
 		
 		// TODO: add more validation here (does device exist, does device have channel, etc)
 			
 		return new ChannelChangedCondition(jcond.deviceId, jcond.channel, jcond.number, op);
+	}
+	
+	private Condition parseMinuteChanged(Container c) {
+		String post = getPost(c);
+		JsonMinuteChangedCondition jcond = gson.fromJson(post, JsonMinuteChangedCondition.class);
+		
+		if (jcond.timeOperator == null)
+			throw new ApiException("Missing timeOperator.");
+		if (jcond.day == null)
+			throw new ApiException("Missing day.");
+		if (jcond.weekday == null)
+			throw new ApiException("Missing weekday.");
+		
+		int op = convertOperatorString(jcond.timeOperator);
+		
+		// TODO: add more validation here (is everything passed valid, etc)
+		
+		MinuteChangedCondition cond = new MinuteChangedCondition.Builder()
+			.day(jcond.day)
+			.hour(jcond.hour)
+			.minute(jcond.minute)
+			.timeOperator(op)
+			.weekday(jcond.weekday)
+			.build();
+		
+		return cond;
+	}
+	
+	private int convertOperatorString(String operator) {
+		int op;
+		if (operator.equals("EQ"))
+			op = Condition.EQ;
+		else if (operator.equals("GT"))
+			op = Condition.GT;
+		else if (operator.equals("LT"))
+			op = Condition.LT;
+		else
+			throw new ApiException("No such operator available. The possible pperators EQ, GT or LT.");
+		return op;
+		
 	}
 
 	private void resolveList(Container c) {

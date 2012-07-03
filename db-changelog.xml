@@ -230,4 +230,28 @@
 	        </column>
 	    </addColumn>
 	</changeSet>
+	
+	<changeSet id="19" author="jonas">
+		<createTable tableName="minute_changed_condition">
+			<column name="id" type="INTEGER">
+				<constraints nullable="false" references="condition(id)"
+					foreignKeyName="fk_minute_changed_condition-condition" />
+			</column>
+			<column name="hour" type="INTEGER">
+				<constraints nullable="false" />
+			</column>
+			<column name="minute" type="INTEGER">
+				<constraints nullable="false" />
+			</column>
+			<column name="weekday" type="VARCHAR(100)">
+				<constraints nullable="false" />
+			</column>
+			<column name="day" type="VARCHAR(100)">
+				<constraints nullable="false" />
+			</column>
+			<column name="time_operator" type="INTEGER">
+				<constraints nullable="false" />
+			</column>
+		</createTable>	    
+	</changeSet>
 </databaseChangeLog>
