@@ -69,4 +69,8 @@ public class Trigger {
 	public void setAction(Action action) {
 		this.action = action;
 	}
+	
+	public Condition getCondition() {
+		return condition;
+	}
 }

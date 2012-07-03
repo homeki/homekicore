@@ -1,5 +1,8 @@
 package com.homeki.core.http.handlers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.homeki.core.conditions.ChannelChangedCondition;
 import com.homeki.core.conditions.Condition;
 import com.homeki.core.conditions.MinuteChangedCondition;
@@ -8,6 +11,7 @@ import com.homeki.core.http.Container;
 import com.homeki.core.http.HttpHandler;
 import com.homeki.core.http.json.JsonChannelChangedCondition;
 import com.homeki.core.http.json.JsonCondition;
+import com.homeki.core.http.json.JsonDevice;
 import com.homeki.core.http.json.JsonMinuteChangedCondition;
 import com.homeki.core.triggers.Trigger;
 
@@ -38,6 +42,20 @@ public class TriggerConditionHandler extends HttpHandler {
 		}
 	}
 
+	private void resolveList(Container c) {
+		int triggerId = getIntParameter(c, "triggerId");
+		
+		Trigger trigger = (Trigger)c.session.get(Trigger.class, triggerId);
+		
+		if (trigger == null)
+			throw new ApiException("No trigger with the specified ID found.");
+		
+		List<Condition> list = new ArrayList<Condition>();
+		list.add(trigger.getCondition());
+		
+		set200Response(c, gson.toJson(JsonCondition.convertList(list)));
+	}
+	
 	private void resolveAdd(Container c) {
 		String type = getStringParameter(c, "type");
 		int triggerId = getIntParameter(c, "triggerId");
@@ -117,10 +135,6 @@ public class TriggerConditionHandler extends HttpHandler {
 		else
 			throw new ApiException("No such operator available. The possible pperators EQ, GT or LT.");
 		return op;
-		
-	}
-
-	private void resolveList(Container c) {
 		
 	}
 }

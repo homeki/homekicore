@@ -14,4 +14,9 @@ public class DummyCondition extends Condition {
 	public boolean check(Event e) {
 		return state;
 	}
+
+	@Override
+	public String toString() {
+		return String.valueOf(state);
+	}
 }

@@ -57,4 +57,7 @@ public abstract class Condition {
 	public int getId() {
 		return id;
 	}
+	
+	@Override
+	public abstract String toString();
 }

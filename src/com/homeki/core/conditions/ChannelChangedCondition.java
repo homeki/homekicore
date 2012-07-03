@@ -70,4 +70,9 @@ public class ChannelChangedCondition extends Condition {
 	public void setOperator(int operator) {
 		this.operator = operator;
 	}
+	
+	@Override
+	public String toString() {
+		return channel + " on " + deviceId + " == " + value;
+	}
 }

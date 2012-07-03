@@ -3,19 +3,28 @@ package com.homeki.core.http.handlers;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import com.homeki.core.TestUtil;
-import com.homeki.core.http.json.JsonCondition;
 
 public class TriggerConditionHandlerTest {
 	private int triggerId;
+	private int conditionId;
 	
 	public class JsonTrigger {
 		public Integer id;
 		public String name;
+	}
+	
+	public class JsonCondition {
+		public String type;
+		public Integer id;
+		public String shortDescription;
 	}
 	
 	public class JsonChannelChangedCondition {
@@ -83,5 +92,19 @@ public class TriggerConditionHandlerTest {
 		jcond = TestUtil.sendPostAndParseAsJson("/trigger/condition/add?triggerid=" + triggerId + "&type=minutechanged", jcond, JsonMinuteChangedCondition.class);
 		
 		assertTrue(jcond.id > 0);
+		conditionId = jcond.id;
+	}
+	
+	@Test
+	public void testList() {
+		assertEquals(405, TestUtil.sendGet("/trigger/condition/list?triggerid=9999&type=minutechanged").statusCode);
+		JsonCondition[] jconditions = TestUtil.sendGetAndParseAsJson("/trigger/condition/list?triggerid=" + triggerId, JsonCondition[].class);
+		
+		Set<Integer> existingIds = new HashSet<Integer>();
+		
+		for (JsonCondition jc : jconditions)
+			existingIds.add(jc.id);
+		
+		assertTrue(existingIds.contains(conditionId));
 	}
 }
