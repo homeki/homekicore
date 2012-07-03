@@ -119,4 +119,9 @@ public class MinuteChangedCondition extends Condition {
 	public String toString() {
 		return "At " + hour + ":" + minute + " (day: " + day + ", weekday: " + weekday + ")";
 	}
+	
+	@Override
+	public String getType() {
+		return "minutechanged";
+	}
 }

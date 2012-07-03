@@ -19,4 +19,9 @@ public class DummyCondition extends Condition {
 	public String toString() {
 		return String.valueOf(state);
 	}
+	
+	@Override
+	public String getType() {
+		return "dummy";
+	}
 }

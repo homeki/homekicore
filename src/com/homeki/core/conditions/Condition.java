@@ -60,4 +60,6 @@ public abstract class Condition {
 	
 	@Override
 	public abstract String toString();
+	
+	public abstract String getType();
 }

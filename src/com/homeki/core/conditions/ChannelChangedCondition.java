@@ -75,4 +75,9 @@ public class ChannelChangedCondition extends Condition {
 	public String toString() {
 		return channel + " on " + deviceId + " == " + value;
 	}
+	
+	@Override
+	public String getType() {
+		return "channelchanged";
+	}
 }

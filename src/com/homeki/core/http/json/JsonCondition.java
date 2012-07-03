@@ -14,9 +14,9 @@ public class JsonCondition {
 	}
 	
 	public JsonCondition(Condition condition) {
-		this.type = condition.getClass().getSimpleName();
 		this.id = condition.getId();
 		this.shortDescription = condition.toString();
+		this.type = condition.getType();
 	}
 	
 	public static JsonCondition[] convertList(List<Condition> conditions) {
