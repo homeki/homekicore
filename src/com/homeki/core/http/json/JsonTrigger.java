@@ -13,6 +13,7 @@ public class JsonTrigger {
 	}
 	
 	public JsonTrigger(Trigger trigger) {
+		this.id = trigger.getId();
 		this.name = trigger.getName();
 	}
 	
