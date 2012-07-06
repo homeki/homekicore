@@ -14,7 +14,6 @@ import com.homeki.core.storage.Hibernate;
 
 public class ThreadMaster {
 	private ControlledThread httpThread;
-	private ControlledThread timerThread;
 	private ControlledThread broadcastThread;
 	private ControlledThread eventHandlerThread;
 	private ControlledThread clockGeneratorThread;
@@ -131,8 +130,6 @@ public class ThreadMaster {
 		L.i("Shutting down threads...");
 		if (httpThread != null)
 			httpThread.shutdown();
-		if (timerThread != null)
-			timerThread.shutdown();
 		if (broadcastThread != null)
 			broadcastThread.shutdown();
 		
