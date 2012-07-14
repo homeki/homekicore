@@ -6,6 +6,7 @@ import java.util.List;
 import com.homeki.core.conditions.ChannelChangedCondition;
 import com.homeki.core.conditions.Condition;
 import com.homeki.core.conditions.MinuteChangedCondition;
+import com.homeki.core.device.Device;
 import com.homeki.core.http.ApiException;
 import com.homeki.core.http.Container;
 import com.homeki.core.http.HttpHandler;
@@ -92,12 +93,21 @@ public class TriggerConditionHandler extends HttpHandler {
 			throw new ApiException("Missing operator.");
 		if (jcond.number == null)
 			throw new ApiException("Missing number.");
+		if (jcond.deviceId == null)
+			throw new ApiException("Missing deviceId.");
+		if (jcond.channel == null)
+			throw new ApiException("Missing channel.");
 		
 		int op = convertOperatorString(jcond.operator);
+
+		Device dev = (Device)c.session.get(Device.class, jcond.deviceId);
 		
-		// TODO: add more validation here (does device exist, does device have channel, etc)
+		if (dev == null)
+			throw new ApiException("Could not load device from device ID.");
+		
+		// TODO: add more validation here (does device have channel, etc)
 			
-		return new ChannelChangedCondition(jcond.deviceId, jcond.channel, jcond.number, op);
+		return new ChannelChangedCondition(dev, jcond.channel, jcond.number, op);
 	}
 	
 	private Condition parseMinuteChanged(Container c) {

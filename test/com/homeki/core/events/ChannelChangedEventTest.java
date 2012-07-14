@@ -5,15 +5,18 @@ import org.testng.annotations.Test;
 
 import com.homeki.core.conditions.ChannelChangedCondition;
 import com.homeki.core.conditions.Condition;
+import com.homeki.core.device.Device;
+import com.homeki.core.device.mock.MockSwitch;
 
 public class ChannelChangedEventTest {
-	int channel = 1;
-	int deviceId = 1;
-	int value = 1;
+	private int channel = 1;
+	private int deviceId = 1;
+	private int value = 1;
+	private Device device = new MockSwitch(1);
 	
 	@Test
 	public void testEqual() throws Exception {
-		ChannelChangedCondition ccc =  new ChannelChangedCondition(deviceId, channel, value, Condition.EQ);
+		ChannelChangedCondition ccc =  new ChannelChangedCondition(device, channel, value, Condition.EQ);
 		
 		Assert.assertTrue(ccc.check(new ChannelChangedEvent(deviceId, channel, value)));
 		Assert.assertFalse(ccc.check(new ChannelChangedEvent(deviceId + 1, channel, value)));
@@ -24,7 +27,7 @@ public class ChannelChangedEventTest {
 	
 	@Test
 	public void testGreaterThan() throws Exception {
-		ChannelChangedCondition ccc =  new ChannelChangedCondition(deviceId, channel, value, Condition.GT);
+		ChannelChangedCondition ccc =  new ChannelChangedCondition(device, channel, value, Condition.GT);
 		
 		Assert.assertFalse(ccc.check(new ChannelChangedEvent(deviceId, channel, value)));
 		Assert.assertFalse(ccc.check(new ChannelChangedEvent(deviceId, channel, value - 1)));
@@ -35,7 +38,7 @@ public class ChannelChangedEventTest {
 	
 	@Test
 	public void testLessThan() throws Exception {
-		ChannelChangedCondition ccc =  new ChannelChangedCondition(deviceId, channel, value, Condition.LT);
+		ChannelChangedCondition ccc =  new ChannelChangedCondition(device, channel, value, Condition.LT);
 		
 		Assert.assertFalse(ccc.check(new ChannelChangedEvent(deviceId, channel, value)));
 		Assert.assertFalse(ccc.check(new ChannelChangedEvent(deviceId, channel, value + 1)));

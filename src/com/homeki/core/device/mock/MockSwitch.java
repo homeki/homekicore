@@ -18,6 +18,10 @@ public class MockSwitch extends Device implements Settable {
 		
 	}
 	
+	public MockSwitch(int id) {
+		this.id = id;
+	}
+	
 	public MockSwitch(boolean defaultValue) {
 		addHistoryPoint(defaultValue);
 	}

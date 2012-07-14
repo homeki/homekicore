@@ -21,6 +21,7 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.criterion.Restrictions;
 
+import com.homeki.core.conditions.ChannelChangedCondition;
 import com.homeki.core.storage.Hibernate;
 
 @Entity
@@ -29,11 +30,15 @@ import com.homeki.core.storage.Hibernate;
 public abstract class Device {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	protected int id;
 	
 	@OneToMany(mappedBy = "device", cascade = CascadeType.ALL)
 	@LazyCollection(LazyCollectionOption.EXTRA)
 	protected Set<HistoryPoint> historyPoints;
+	
+	@OneToMany(mappedBy = "device", cascade = CascadeType.ALL)
+	@LazyCollection(LazyCollectionOption.EXTRA)
+	protected Set<ChannelChangedCondition> channelChangedConditions;
 	
 	@Column
 	protected String internalId;

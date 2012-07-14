@@ -1,15 +1,21 @@
 package com.homeki.core.conditions;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
+import com.homeki.core.device.Device;
 import com.homeki.core.events.ChannelChangedEvent;
 import com.homeki.core.events.Event;
 
 @Entity
 public class ChannelChangedCondition extends Condition {
-	@Column
-	private int deviceId;
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "device_id")
+	private Device device;
 	
 	@Column
 	private int channel;
@@ -20,10 +26,12 @@ public class ChannelChangedCondition extends Condition {
 	@Column
 	private int operator;
 	
-	protected ChannelChangedCondition() {}
+	public ChannelChangedCondition() {
+		
+	}
 	
-	public ChannelChangedCondition(int deviceId, int channel, Number value, int operator) {
-		this.deviceId = deviceId;
+	public ChannelChangedCondition(Device device, int channel, Number value, int operator) {
+		this.device = device;
 		this.channel = channel;
 		this.value = value;
 		this.operator = operator;
@@ -32,19 +40,19 @@ public class ChannelChangedCondition extends Condition {
 	public boolean check(Event e) {
 		if (e instanceof ChannelChangedEvent) {
 			ChannelChangedEvent cce = (ChannelChangedEvent) e;
-			if (cce.channel == this.getChannel() && cce.deviceId == this.getDeviceId()) {
+			if (cce.channel == this.getChannel() && cce.deviceId == device.getId()) {
 				return evalute(cce.value, getValue(), getOperator());
 			}
 		}
 		return false;
 	}
 	
-	public int getDeviceId() {
-		return deviceId;
+	public Device getDevice() {
+		return device;
 	}
 	
-	public void setDeviceId(int deviceId) {
-		this.deviceId = deviceId;
+	public void setDevice(Device device) {
+		this.device = device;
 	}
 	
 	public int getChannel() {
@@ -73,7 +81,7 @@ public class ChannelChangedCondition extends Condition {
 	
 	@Override
 	public String toString() {
-		return channel + " on " + deviceId + " == " + value;
+		return channel + " on " + device.getName() + " == " + value;
 	}
 	
 	@Override

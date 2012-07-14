@@ -11,10 +11,12 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import com.homeki.core.TestUtil;
+import com.homeki.core.TestUtil.MockDeviceType;
 
 public class TriggerConditionHandlerTest {
 	private int triggerId;
 	private int conditionId;
+	private int deviceId;
 	
 	public class JsonTrigger {
 		public Integer id;
@@ -50,17 +52,19 @@ public class TriggerConditionHandlerTest {
 		jtrigger.name = "forconditiontest";
 		jtrigger = TestUtil.sendPostAndParseAsJson("/trigger/add", jtrigger, JsonTrigger.class);
 		triggerId = jtrigger.id;
+		deviceId = TestUtil.addMockDevice(MockDeviceType.SWITCH);
 	}
 	
 	@AfterClass
 	public void afterClass() {
+		TestUtil.deleteDevice(deviceId);
 		// TODO: delete trigger
 	}
 	
 	@Test
 	public void testAddChannelChanged() {
 		JsonChannelChangedCondition jcond = new JsonChannelChangedCondition();
-		jcond.deviceId = 10;
+		jcond.deviceId = deviceId;
 		jcond.number = 12;
 		jcond.channel = 1;
 		jcond.operator = "dontthinkso";
