@@ -45,12 +45,10 @@
 	<changeSet id="3" author="jonas">
 		<createTable tableName="device__trigger">
 			<column name="device_id" type="INTEGER">
-				<constraints nullable="false" references="device(id)"
-					foreignKeyName="fk_device__trigger-device" />
+				<constraints nullable="false" references="device(id)" foreignKeyName="fk_device__trigger-device" />
 			</column>
 			<column name="trigger_id" type="INTEGER">
-				<constraints nullable="false" references="trigger(id)"
-					foreignKeyName="fk_device__trigger-trigger" />
+				<constraints nullable="false" references="trigger(id)" foreignKeyName="fk_device__trigger-trigger" />
 			</column>
 		</createTable>
 	</changeSet>
@@ -61,8 +59,7 @@
 				<constraints primaryKey="true" nullable="false" />
 			</column>
 			<column name="device_id" type="INTEGER">
-				<constraints nullable="false" references="device(id)"
-					foreignKeyName="fk_history_point-device" />
+				<constraints nullable="false" references="device(id)" foreignKeyName="fk_history_point-device" />
 			</column>
 			<column name="registered" type="TIMESTAMP">
 				<constraints nullable="false" />
@@ -146,8 +143,7 @@
 	<changeSet id="11" author="jonas">
 		<createTable tableName="channel_changed_condition">
 			<column name="id" type="INTEGER">
-				<constraints nullable="false" references="condition(id)"
-					foreignKeyName="fk_channel_changed_condition-condition" />
+				<constraints nullable="false" references="condition(id)" foreignKeyName="fk_channel_changed_condition-condition" />
 			</column>
 			<column name="device_id" type="INTEGER">
 				<constraints nullable="false" />
@@ -175,8 +171,7 @@
 	<changeSet id="13" author="linus">
 		<createTable tableName="channel_change_value_action">
 			<column name="id" type="INTEGER">
-				<constraints nullable="false" references="action(id)"
-					foreignKeyName="fk_channel_change_value_action-action" />
+				<constraints nullable="false" references="action(id)" foreignKeyName="fk_channel_change_value_action-action" />
 			</column>
 			<column name="device_id" type="INTEGER">
 				<constraints nullable="false" />
@@ -196,12 +191,10 @@
 				<constraints primaryKey="true" nullable="false" />
 			</column>
 			<column name="condition_id" type="INTEGER">
-				<constraints nullable="false" references="condition(id)"
-					foreignKeyName="fk_trigger-condition" />
+				<constraints nullable="false" references="condition(id)" foreignKeyName="fk_trigger-condition" />
 			</column>
 			<column name="action_id" type="INTEGER">
-				<constraints nullable="false" references="action(id)"
-					foreignKeyName="fk_trigger-action" />
+				<constraints nullable="false" references="action(id)" foreignKeyName="fk_trigger-action" />
 			</column>
 		</createTable>
 	</changeSet>
@@ -234,8 +227,7 @@
 	<changeSet id="19" author="jonas">
 		<createTable tableName="minute_changed_condition">
 			<column name="id" type="INTEGER">
-				<constraints nullable="false" references="condition(id)"
-					foreignKeyName="fk_minute_changed_condition-condition" />
+				<constraints nullable="false" references="condition(id)" foreignKeyName="fk_minute_changed_condition-condition" />
 			</column>
 			<column name="hour" type="INTEGER">
 				<constraints nullable="false" />
@@ -253,5 +245,14 @@
 				<constraints nullable="false" />
 			</column>
 		</createTable>	    
+	</changeSet>
+	
+	<changeSet id="20" author="jonas">
+		<dropColumn tableName="channel_change_value_action" columnName="value"/>
+	    <addColumn tableName="channel_change_value_action">
+	        <column name="value" type="bytea">
+	            <constraints nullable="false"/>
+	        </column>
+	    </addColumn>
 	</changeSet>
 </databaseChangeLog>
