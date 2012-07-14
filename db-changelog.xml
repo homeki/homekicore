@@ -259,4 +259,8 @@
 	<changeSet id="21" author="jonas">
 		<addForeignKeyConstraint constraintName="fk_channel_changed_condition-device" referencedTableName="device" baseColumnNames="device_id" baseTableName="channel_changed_condition" referencedColumnNames="id"/>	    
 	</changeSet>
+	
+	<changeSet id="22" author="jonas">
+		<addForeignKeyConstraint constraintName="fk_channel_change_value_action-device" referencedTableName="device" baseColumnNames="device_id" baseTableName="channel_change_value_action" referencedColumnNames="id"/>	    
+	</changeSet>
 </databaseChangeLog>

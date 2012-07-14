@@ -11,7 +11,7 @@ public abstract class ControlledThread extends Thread {
 		this.shutdown = false;
 		this.quiet = false;
 		this.interval = interval;
-		setName(this.getClass().getSimpleName());
+		this.setName(this.getClass().getSimpleName());
 	}
 
 	protected boolean keepRunning() {

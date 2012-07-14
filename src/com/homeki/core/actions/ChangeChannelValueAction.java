@@ -1,17 +1,24 @@
 package com.homeki.core.actions;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import org.hibernate.Session;
 
+import com.homeki.core.device.Device;
+
 @Entity
-public  class ChangeChannelValueAction extends Action{
+public class ChangeChannelValueAction extends Action {
 	@Column
 	private int channel;
 
-	@Column
-	private int deviceId;
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "device_id")
+	private Device device;
 	
 	@Column
 	private int value;

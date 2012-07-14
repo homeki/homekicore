@@ -42,11 +42,17 @@ public class Trigger {
 	public Trigger() {
 	}
 
-	public boolean check(Event e){
+	public boolean check(Event e) {
+		if (condition == null)
+			return false;
+		
 		return condition.check(e);
 	}
 	
-	public void execute(Session ses){
+	public void execute(Session ses) {
+		if (action == null)
+			return;
+		
 		action.execute(ses);
 	}
 	
