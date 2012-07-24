@@ -50,6 +50,9 @@ public class DeviceTellstickHandler extends HttpHandler {
 		String post = getPost(c);
 		JsonTellStickDevice jsonDevice = gson.fromJson(post, JsonTellStickDevice.class);
 		
+		if (jsonDevice.type == null)
+			throw new ApiException("Missing required field 'type' in JSON.");
+		
 		int house;
 		int unit;
 		
