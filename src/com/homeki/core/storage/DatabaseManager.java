@@ -43,7 +43,7 @@ public class DatabaseManager {
 		// log what's about to happen
 		StringWriter swriter = new StringWriter();
 		liq.reportStatus(false, "", swriter);
-		L.ii(swriter.toString());
+		L.i(swriter.toString());
 		
 		// execute the changelog
 		liq.validate();

@@ -2,6 +2,14 @@ package com.homeki.core.main;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.restlet.Component;
+import org.restlet.data.Protocol;
 
 import com.homeki.core.device.mock.MockModule;
 import com.homeki.core.device.onewire.OneWireModule;
@@ -9,6 +17,7 @@ import com.homeki.core.device.tellstick.TellStickModule;
 import com.homeki.core.events.EventHandlerThread;
 import com.homeki.core.generators.ClockGeneratorThread;
 import com.homeki.core.http.HttpListenerThread;
+import com.homeki.core.http.RestletApplication;
 import com.homeki.core.storage.DatabaseManager;
 import com.homeki.core.storage.Hibernate;
 
@@ -35,8 +44,17 @@ public class ThreadMaster {
 		});
 	}
 	
+	private void configureLogging() {
+		Logger log = Logger.getLogger("");
+		Handler[] handlers = log.getHandlers();
+		for (Handler h : handlers)
+			if (h instanceof ConsoleHandler)
+				h.setFormatter(new CustomLogFormatter());
+	}
+	
 	public void launch() {
 		Thread.currentThread().setName("Main");
+		configureLogging();
 		
 		L.i("Homeki version " + Util.getVersion() + " started.");
 		
@@ -88,6 +106,18 @@ public class ThreadMaster {
 			httpThread.start();
 		} catch (Exception e) {
 			L.e("Could not bind socket for HttpListenerThread, killing Homeki.");
+			System.exit(-1);
+		}
+		
+		// start Restlet listener thread
+		try {
+			Component comp = new Component();
+			comp.getServers().add(Protocol.HTTP, 5001);
+			comp.getDefaultHost().attach(new RestletApplication());
+			comp.getLogger().setLevel(Level.SEVERE);
+			comp.start();
+		} catch (Exception e) {
+			L.e("Unknown exception starting RestletListenerThread.", e);
 			System.exit(-1);
 		}
 		
