@@ -25,7 +25,7 @@ import org.hibernate.Session;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
-import com.homeki.core.main.L;
+import com.homeki.core.logging.L;
 import com.homeki.core.main.Util;
 import com.homeki.core.storage.Hibernate;
 

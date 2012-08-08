@@ -9,7 +9,7 @@ import com.homeki.core.device.IntegerHistoryPoint;
 import com.homeki.core.device.abilities.Settable;
 import com.homeki.core.events.ChannelChangedEvent;
 import com.homeki.core.events.EventQueue;
-import com.homeki.core.main.L;
+import com.homeki.core.logging.L;
 
 @Entity
 public class MockDimmer extends Device implements Settable {

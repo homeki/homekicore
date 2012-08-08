@@ -2,7 +2,7 @@ package com.homeki.core.http.json;
 
 import com.homeki.core.device.Device;
 import com.homeki.core.device.HistoryPoint;
-import com.homeki.core.main.L;
+import com.homeki.core.logging.L;
 
 public class ObjectJsonState extends JsonState {
 	public Object value;

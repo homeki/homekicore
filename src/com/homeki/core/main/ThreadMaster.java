@@ -2,11 +2,7 @@ package com.homeki.core.main;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.Handler;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.restlet.Component;
 import org.restlet.data.Protocol;
@@ -18,6 +14,7 @@ import com.homeki.core.events.EventHandlerThread;
 import com.homeki.core.generators.ClockGeneratorThread;
 import com.homeki.core.http.HttpListenerThread;
 import com.homeki.core.http.RestletApplication;
+import com.homeki.core.logging.L;
 import com.homeki.core.storage.DatabaseManager;
 import com.homeki.core.storage.Hibernate;
 
@@ -44,17 +41,9 @@ public class ThreadMaster {
 		});
 	}
 	
-	private void configureLogging() {
-		Logger log = Logger.getLogger("");
-		Handler[] handlers = log.getHandlers();
-		for (Handler h : handlers)
-			if (h instanceof ConsoleHandler)
-				h.setFormatter(new CustomLogFormatter());
-	}
-	
 	public void launch() {
 		Thread.currentThread().setName("Main");
-		configureLogging();
+		L.init();
 		
 		L.i("Homeki version " + Util.getVersion() + " started.");
 		

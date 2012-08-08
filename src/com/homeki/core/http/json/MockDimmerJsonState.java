@@ -2,7 +2,7 @@ package com.homeki.core.http.json;
 
 import com.homeki.core.device.IntegerHistoryPoint;
 import com.homeki.core.device.mock.MockDimmer;
-import com.homeki.core.main.L;
+import com.homeki.core.logging.L;
 
 public class MockDimmerJsonState extends JsonState {
 	public Integer value;

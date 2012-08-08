@@ -13,7 +13,7 @@ import liquibase.logging.LogFactory;
 import liquibase.resource.FileSystemResourceAccessor;
 import liquibase.resource.ResourceAccessor;
 
-import com.homeki.core.main.L;
+import com.homeki.core.logging.L;
 
 public class DatabaseManager {
 	private static final String DATABASE_PATH = "jdbc:postgresql:homeki";

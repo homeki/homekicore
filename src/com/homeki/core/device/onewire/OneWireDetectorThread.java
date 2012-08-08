@@ -11,9 +11,9 @@ import java.util.regex.Pattern;
 import org.hibernate.Session;
 
 import com.homeki.core.device.Device;
+import com.homeki.core.logging.L;
 import com.homeki.core.main.Configuration;
 import com.homeki.core.main.ControlledThread;
-import com.homeki.core.main.L;
 import com.homeki.core.storage.Hibernate;
 
 public class OneWireDetectorThread extends ControlledThread {

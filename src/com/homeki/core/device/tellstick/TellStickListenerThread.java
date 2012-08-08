@@ -3,8 +3,8 @@ package com.homeki.core.device.tellstick;
 import org.hibernate.Session;
 
 import com.homeki.core.device.Device;
+import com.homeki.core.logging.L;
 import com.homeki.core.main.ControlledThread;
-import com.homeki.core.main.L;
 import com.homeki.core.storage.Hibernate;
 
 public class TellStickListenerThread extends ControlledThread {

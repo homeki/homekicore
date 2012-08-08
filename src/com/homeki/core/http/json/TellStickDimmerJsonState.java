@@ -2,7 +2,7 @@ package com.homeki.core.http.json;
 
 import com.homeki.core.device.IntegerHistoryPoint;
 import com.homeki.core.device.tellstick.TellStickDimmer;
-import com.homeki.core.main.L;
+import com.homeki.core.logging.L;
 
 public class TellStickDimmerJsonState extends JsonState {
 	public Integer value;

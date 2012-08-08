@@ -1,5 +1,7 @@
 package com.homeki.core.main;
 
+import com.homeki.core.logging.L;
+
 
 public class MainMock {
 	public static void main(String[] args) {

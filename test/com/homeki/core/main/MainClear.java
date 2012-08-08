@@ -1,5 +1,6 @@
 package com.homeki.core.main;
 
+import com.homeki.core.logging.L;
 import com.homeki.core.storage.DatabaseManager;
 
 public class MainClear {

@@ -9,7 +9,7 @@ import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.protocol.HttpService;
 
-import com.homeki.core.main.L;
+import com.homeki.core.logging.L;
 
 public class HttpRequestResolverRunnable implements Runnable {
 	private HttpService httpservice;

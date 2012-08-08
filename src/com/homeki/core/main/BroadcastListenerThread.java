@@ -6,6 +6,7 @@ import java.net.SocketException;
 
 import org.hibernate.Session;
 
+import com.homeki.core.logging.L;
 import com.homeki.core.storage.Hibernate;
 
 // Protocol

@@ -1,10 +1,12 @@
-package com.homeki.core.main;
+package com.homeki.core.logging;
 
 import java.util.Calendar;
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
 
-public class CustomLogFormatter extends Formatter {
+import com.homeki.core.main.Util;
+
+public class CustomFormatter extends Formatter {
 	@Override
 	public String format(LogRecord log) {
 		Calendar c = Calendar.getInstance();

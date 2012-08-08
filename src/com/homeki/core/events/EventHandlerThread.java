@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.hibernate.Session;
 
+import com.homeki.core.logging.L;
 import com.homeki.core.main.ControlledThread;
-import com.homeki.core.main.L;
 import com.homeki.core.storage.Hibernate;
 import com.homeki.core.triggers.Trigger;
 

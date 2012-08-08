@@ -7,9 +7,9 @@ import java.util.Set;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
+import com.homeki.core.logging.L;
 import com.homeki.core.main.Configuration;
 import com.homeki.core.main.ControlledThread;
-import com.homeki.core.main.L;
 import com.homeki.core.storage.Hibernate;
 
 public class OneWireCollectorThread extends ControlledThread {
