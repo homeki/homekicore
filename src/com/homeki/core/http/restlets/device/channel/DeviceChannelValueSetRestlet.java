@@ -1,7 +1,7 @@
 package com.homeki.core.http.restlets.device.channel;
 
 import com.homeki.core.device.Device;
-import com.homeki.core.device.abilities.Settable;
+import com.homeki.core.device.Settable;
 import com.homeki.core.http.ApiException;
 import com.homeki.core.http.KiContainer;
 import com.homeki.core.http.KiRestlet;

@@ -33,8 +33,6 @@ public class TestUtil {
 		LogManager.getLogManager().reset();
 	}
 	
-
-	
 	public enum MockDeviceType {
 		SWITCH,
 		DIMMER,
@@ -69,13 +67,6 @@ public class TestUtil {
 		}
 		catch (Exception e) {
 			fail("Failed sending POST request, message: " + e.getMessage());
-		}
-		
-		try {
-			client.stop();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 		
 		return r;
@@ -124,13 +115,6 @@ public class TestUtil {
 			fail("Failed sending GET request, message: " + e.getMessage());
 		}
 		
-		try {
-			client.stop();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
 		return r;
 	}
 	
@@ -144,6 +128,6 @@ public class TestUtil {
 	}
 	
 	public static void deleteDevice(int id) {
-		sendGet("/device/delete?deviceid=" + id);
+		assertEquals(sendGet("/device/" + id + "/delete").statusCode, 200);
 	}
 }

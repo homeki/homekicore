@@ -46,7 +46,7 @@ public class DeviceTest {
 	private void afterClass() {
 		TestUtil.deleteDevice(ids[1]);
 		TestUtil.deleteDevice(ids[2]);
-		TestUtil.deleteDevice(ids[4]);
+		TestUtil.deleteDevice(ids[3]);
 	}
 	
 	@Test

@@ -134,4 +134,8 @@ public abstract class Device {
 		
 		return p;
 	}
+	
+	public String[] getAbilities() {
+		return new String[0];
+	}
 }

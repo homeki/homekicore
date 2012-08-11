@@ -13,6 +13,7 @@ public class JsonDevice {
 	public Date added;
 	public Boolean active;
 	public JsonState state;
+	public String[] abilities;
 	
 	public JsonDevice() {
 		
@@ -26,6 +27,7 @@ public class JsonDevice {
 		state = JsonState.create(d);
 		active = d.isActive();
 		description = d.getDescription();
+		abilities = d.getAbilities();
 	}
 
 	public static JsonDevice[] convertList(List<Device> devices) {

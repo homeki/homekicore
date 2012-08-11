@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 
 import com.homeki.core.device.Device;
 import com.homeki.core.device.IntegerHistoryPoint;
-import com.homeki.core.device.abilities.Settable;
+import com.homeki.core.device.Settable;
 import com.homeki.core.events.ChannelChangedEvent;
 import com.homeki.core.events.EventQueue;
 

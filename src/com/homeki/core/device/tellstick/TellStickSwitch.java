@@ -5,7 +5,7 @@ import java.util.Date;
 import javax.persistence.Entity;
 
 import com.homeki.core.device.IntegerHistoryPoint;
-import com.homeki.core.device.abilities.Settable;
+import com.homeki.core.device.Settable;
 import com.homeki.core.events.ChannelChangedEvent;
 import com.homeki.core.events.EventQueue;
 
@@ -66,5 +66,10 @@ public class TellStickSwitch extends TellStickDevice implements Settable, TellSt
 	@Override
 	public void preDelete() {
 		TellStickNative.removeDevice(Integer.valueOf(internalId));
+	}
+	
+	@Override
+	public String[] getAbilities() {
+		return new String[] { "tellstick" };
 	}
 }

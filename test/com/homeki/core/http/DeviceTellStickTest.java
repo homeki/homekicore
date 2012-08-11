@@ -1,14 +1,12 @@
 package com.homeki.core.http;
 
-import static org.testng.Assert.assertEquals;
-
 import java.util.Date;
 
 import org.testng.annotations.Test;
 
 import com.homeki.core.TestUtil;
 
-public class DeviceTellStickHandlerTest {
+public class DeviceTellStickTest {
 	public class JsonTellStickDevice {
 		public Integer id;
 		public String type;
@@ -41,8 +39,8 @@ public class DeviceTellStickHandlerTest {
 		dev.unit = 5;
 		JsonTellStickDevice id3 = TestUtil.sendPostAndParseAsJson("/device/tellstick/add", dev, JsonTellStickDevice.class);
 		
-		assertEquals(TestUtil.sendGet("/device/delete?deviceid=" + id1.id).statusCode, 200);
-		assertEquals(TestUtil.sendGet("/device/delete?deviceid=" + id2.id).statusCode, 200);
-		assertEquals(TestUtil.sendGet("/device/delete?deviceid=" + id3.id).statusCode, 200);
+		TestUtil.deleteDevice(id1.id);
+		TestUtil.deleteDevice(id2.id);
+		TestUtil.deleteDevice(id3.id);
 	}
 }
