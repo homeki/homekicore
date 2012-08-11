@@ -4,7 +4,7 @@ import com.homeki.core.device.Device;
 import com.homeki.core.device.tellstick.TellStickDimmer;
 import com.homeki.core.device.tellstick.TellStickSwitch;
 import com.homeki.core.http.ApiException;
-import com.homeki.core.http.KiContainer;
+import com.homeki.core.http.Container;
 import com.homeki.core.http.KiRestlet;
 import com.homeki.core.http.json.JsonDevice;
 import com.homeki.core.http.json.JsonTellStickDevice;
@@ -14,7 +14,7 @@ public class DeviceTellStickAddRestlet extends KiRestlet {
 	private static final int UNIT = 3;
 	
 	@Override
-	protected void handle(KiContainer c) {
+	protected void handle(Container c) {
 		JsonTellStickDevice jsonDevice = getJsonObject(c, JsonTellStickDevice.class);
 		
 		if (jsonDevice.type == null)

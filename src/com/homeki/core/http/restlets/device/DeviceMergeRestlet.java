@@ -3,12 +3,12 @@ package com.homeki.core.http.restlets.device;
 import com.homeki.core.device.Device;
 import com.homeki.core.device.HistoryPoint;
 import com.homeki.core.http.ApiException;
-import com.homeki.core.http.KiContainer;
+import com.homeki.core.http.Container;
 import com.homeki.core.http.KiRestlet;
 
 public class DeviceMergeRestlet extends KiRestlet {
 	@Override
-	protected void handle(KiContainer c) {
+	protected void handle(Container c) {
 		int deviceId = getInt(c, "deviceid");
 		int mergeWithDeviceId = getIntParam(c, "mergewith");
 		

@@ -16,6 +16,10 @@ import com.homeki.core.http.restlets.device.tellstick.DeviceTellStickAddRestlet;
 import com.homeki.core.http.restlets.device.tellstick.DeviceTellStickLearnRestlet;
 import com.homeki.core.http.restlets.server.ServerGetRestlet;
 import com.homeki.core.http.restlets.server.ServerSetRestlet;
+import com.homeki.core.http.restlets.trigger.TriggerAddRestlet;
+import com.homeki.core.http.restlets.trigger.TriggerListRestlet;
+import com.homeki.core.http.restlets.trigger.condition.TriggerConditionAddRestlet;
+import com.homeki.core.http.restlets.trigger.condition.TriggerConditionListRestlet;
 
 public class RestletApplication extends Application {
 	@Override
@@ -38,6 +42,12 @@ public class RestletApplication extends Application {
 		
 		r.attach("/server/get", new ServerGetRestlet());
 		r.attach("/server/set", new ServerSetRestlet());
+		
+		r.attach("/trigger/add", new TriggerAddRestlet());
+		r.attach("/trigger/list", new TriggerListRestlet());
+		
+		r.attach("/trigger/{triggerid}/condition/list", new TriggerConditionListRestlet());
+		r.attach("/trigger/{triggerid}/condition/add", new TriggerConditionAddRestlet());
 		
 		return r;
 	}

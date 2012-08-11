@@ -5,13 +5,13 @@ import com.homeki.core.device.mock.MockDimmer;
 import com.homeki.core.device.mock.MockSwitch;
 import com.homeki.core.device.mock.MockThermometer;
 import com.homeki.core.http.ApiException;
-import com.homeki.core.http.KiContainer;
+import com.homeki.core.http.Container;
 import com.homeki.core.http.KiRestlet;
 import com.homeki.core.http.json.JsonDevice;
 
 public class DeviceMockAddRestlet extends KiRestlet {
 	@Override
-	protected void handle(KiContainer c) {
+	protected void handle(Container c) {
 		JsonDevice jsonDevice = getJsonObject(c, JsonDevice.class);
 		Device dev;
 

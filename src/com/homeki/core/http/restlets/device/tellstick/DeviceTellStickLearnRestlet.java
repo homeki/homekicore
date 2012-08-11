@@ -3,12 +3,12 @@ package com.homeki.core.http.restlets.device.tellstick;
 import com.homeki.core.device.tellstick.TellStickDevice;
 import com.homeki.core.device.tellstick.TellStickLearnable;
 import com.homeki.core.http.ApiException;
-import com.homeki.core.http.KiContainer;
+import com.homeki.core.http.Container;
 import com.homeki.core.http.KiRestlet;
 
 public class DeviceTellStickLearnRestlet extends KiRestlet {
 	@Override
-	protected void handle(KiContainer c) {
+	protected void handle(Container c) {
 		int id = getInt(c, "deviceid");
 		
 		TellStickDevice dev = (TellStickDevice)c.ses.get(TellStickDevice.class, id);

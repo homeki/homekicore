@@ -1,7 +1,4 @@
-package com.homeki.core.http.handlers;
-
-import java.util.ArrayList;
-import java.util.List;
+package com.homeki.core.http.restlets.trigger.condition;
 
 import com.homeki.core.conditions.ChannelChangedCondition;
 import com.homeki.core.conditions.Condition;
@@ -9,62 +6,20 @@ import com.homeki.core.conditions.MinuteChangedCondition;
 import com.homeki.core.device.Device;
 import com.homeki.core.http.ApiException;
 import com.homeki.core.http.Container;
-import com.homeki.core.http.HttpHandler;
+import com.homeki.core.http.KiRestlet;
 import com.homeki.core.http.json.JsonChannelChangedCondition;
 import com.homeki.core.http.json.JsonCondition;
-import com.homeki.core.http.json.JsonDevice;
 import com.homeki.core.http.json.JsonMinuteChangedCondition;
 import com.homeki.core.triggers.Trigger;
 
-public class TriggerConditionHandler extends HttpHandler {
-	public enum Actions {
-		LIST, ADD, BAD_ACTION
-	}
-	
+public class TriggerConditionAddRestlet extends KiRestlet {
 	@Override
-	protected void handle(Container c) throws Exception {
-		c.path.nextToken(); // dismiss "trigger"
-		c.path.nextToken(); // dismiss "condition"
-		
-		Actions action = Actions.BAD_ACTION;
-		try {
-			action = Actions.valueOf(c.path.nextToken().toUpperCase());
-		} catch (Exception ignore) {}
-		
-		switch (action) {
-		case LIST:
-			resolveList(c);
-			break;
-		case ADD:
-			resolveAdd(c);
-			break;
-		default:
-			throw new ApiException("No such URL/action.");
-		}
-	}
-
-	private void resolveList(Container c) {
-		int triggerId = getIntParameter(c, "triggerId");
-		
-		Trigger trigger = (Trigger)c.session.get(Trigger.class, triggerId);
-		
-		if (trigger == null)
-			throw new ApiException("No trigger with the specified ID found.");
-		
-		List<Condition> list = new ArrayList<Condition>();
-		
-		if (trigger.getCondition() != null)
-			list.add(trigger.getCondition());
-		
-		set200Response(c, gson.toJson(JsonCondition.convertList(list)));
-	}
-	
-	private void resolveAdd(Container c) {
-		String type = getStringParameter(c, "type");
-		int triggerId = getIntParameter(c, "triggerId");
+	protected void handle(Container c) {
+		int triggerId = getInt(c, "triggerid");
+		String type = getStringParam(c, "type");
 		
 		Condition condition = null;
-		Trigger trigger = (Trigger)c.session.get(Trigger.class, triggerId);
+		Trigger trigger = (Trigger)c.ses.get(Trigger.class, triggerId);
 		
 		if (trigger == null)
 			throw new ApiException("No trigger with the specified ID found.");
@@ -76,7 +31,7 @@ public class TriggerConditionHandler extends HttpHandler {
 		else
 			throw new ApiException("No such condition type.");
 		
-		c.session.save(condition);
+		c.ses.save(condition);
 		trigger.setCondition(condition);
 		
 		JsonCondition newid = new JsonCondition();
@@ -86,8 +41,7 @@ public class TriggerConditionHandler extends HttpHandler {
 	}
 	
 	private Condition parseChannelChanged(Container c) {
-		String post = getPost(c);
-		JsonChannelChangedCondition jcond = gson.fromJson(post, JsonChannelChangedCondition.class);
+		JsonChannelChangedCondition jcond = getJsonObject(c, JsonChannelChangedCondition.class);
 		
 		if (jcond.operator == null)
 			throw new ApiException("Missing operator.");
@@ -100,7 +54,7 @@ public class TriggerConditionHandler extends HttpHandler {
 		
 		int op = convertOperatorString(jcond.operator);
 
-		Device dev = (Device)c.session.get(Device.class, jcond.deviceId);
+		Device dev = (Device)c.ses.get(Device.class, jcond.deviceId);
 		
 		if (dev == null)
 			throw new ApiException("Could not load device from device ID.");
@@ -111,8 +65,7 @@ public class TriggerConditionHandler extends HttpHandler {
 	}
 	
 	private Condition parseMinuteChanged(Container c) {
-		String post = getPost(c);
-		JsonMinuteChangedCondition jcond = gson.fromJson(post, JsonMinuteChangedCondition.class);
+		JsonMinuteChangedCondition jcond = getJsonObject(c, JsonMinuteChangedCondition.class);
 		
 		if (jcond.timeOperator == null)
 			throw new ApiException("Missing timeOperator.");
@@ -147,6 +100,5 @@ public class TriggerConditionHandler extends HttpHandler {
 		else
 			throw new ApiException("No such operator available. The possible pperators EQ, GT or LT.");
 		return op;
-		
 	}
 }

@@ -27,7 +27,7 @@ public abstract class KiRestlet extends Restlet {
 	
 	@Override
 	public void handle(Request request, Response response) {
-		KiContainer c = new KiContainer();
+		Container c = new Container();
 		Session session = null;
 		
 		c.req = request;
@@ -55,17 +55,17 @@ public abstract class KiRestlet extends Restlet {
 		}
 	}
 	
-	protected void set200Response(KiContainer c, String content) {
+	protected void set200Response(Container c, String content) {
 		c.res.setStatus(Status.SUCCESS_OK);
 		c.res.setEntity(content, MediaType.TEXT_PLAIN);
 	}
 	
-	protected void set400Response(KiContainer c, String content) {
+	protected void set400Response(Container c, String content) {
 		c.res.setStatus(Status.CLIENT_ERROR_BAD_REQUEST);
 		c.res.setEntity(content, MediaType.TEXT_PLAIN);
 	}
 	
-	protected int getInt(KiContainer c, String key) {
+	protected int getInt(Container c, String key) {
 		try {
 			return Integer.parseInt(getString(c, key));
 		} catch (NumberFormatException e) {
@@ -73,7 +73,7 @@ public abstract class KiRestlet extends Restlet {
 		}
 	}
 	
-	protected String getString(KiContainer c, String key) {
+	protected String getString(Container c, String key) {
 		Object value = c.req.getAttributes().get(key);
 		
 		if (value == null)
@@ -82,7 +82,7 @@ public abstract class KiRestlet extends Restlet {
 		return value.toString();
 	}
 	
-	protected String getStringParam(KiContainer c, String key) {
+	protected String getStringParam(Container c, String key) {
 		String value = c.req.getResourceRef().getQueryAsForm().getFirstValue(key);
 		
 		if (value == null)
@@ -91,7 +91,7 @@ public abstract class KiRestlet extends Restlet {
 		return value;
 	}
 	
-	protected int getIntParam(KiContainer c, String key) {
+	protected int getIntParam(Container c, String key) {
 		try {
 			return Integer.parseInt(getStringParam(c, key));
 		} catch (NumberFormatException e) {
@@ -99,7 +99,7 @@ public abstract class KiRestlet extends Restlet {
 		}
 	}
 	
-	protected Date getDateParam(KiContainer c, String key) {
+	protected Date getDateParam(Container c, String key) {
 		try {
 			try {
 				return Util.getDateTimeFormat().parse(getStringParam(c, key));
@@ -111,7 +111,7 @@ public abstract class KiRestlet extends Restlet {
 		}
 	}
 	
-	protected <T> T getJsonObject(KiContainer c, Type t) {
+	protected <T> T getJsonObject(Container c, Type t) {
 		String s = "";
 		
 		if (c.req.getMethod() != Method.POST)
@@ -125,5 +125,5 @@ public abstract class KiRestlet extends Restlet {
 		return gson.fromJson(s, t);
 	}
 	
-	protected abstract void handle(KiContainer c);
+	protected abstract void handle(Container c);
 }

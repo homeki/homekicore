@@ -3,12 +3,12 @@ package com.homeki.core.http.restlets.device.channel;
 import com.homeki.core.device.Device;
 import com.homeki.core.device.Settable;
 import com.homeki.core.http.ApiException;
-import com.homeki.core.http.KiContainer;
+import com.homeki.core.http.Container;
 import com.homeki.core.http.KiRestlet;
 
 public class DeviceChannelValueSetRestlet extends KiRestlet {
 	@Override
-	protected void handle(KiContainer c) {
+	protected void handle(Container c) {
 		int id = getInt(c, "deviceid");
 		int channel = getInt(c, "channelid");
 		int value = getIntParam(c, "value");
