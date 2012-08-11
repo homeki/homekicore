@@ -11,6 +11,6 @@ public class CustomFormatter extends Formatter {
 	public String format(LogRecord log) {
 		Calendar c = Calendar.getInstance();
 		c.setTimeInMillis(log.getMillis());
-		return "[" + Util.getDateTimeFormat().format(c.getTime()) + " | " + log.getLevel().getName() + " | " + Thread.currentThread().getName() + "] " + log.getMessage() + "\n";
+		return "[" + Util.getDateTimeFormat().format(c.getTime()) + " | " + log.getLevel().getName() + " | " + Thread.currentThread().getName() + "] " + log.getMessage() + " (" + log.getLoggerName() + ")\n";
 	}
 }

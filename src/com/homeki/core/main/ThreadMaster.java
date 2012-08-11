@@ -12,14 +12,13 @@ import com.homeki.core.device.onewire.OneWireModule;
 import com.homeki.core.device.tellstick.TellStickModule;
 import com.homeki.core.events.EventHandlerThread;
 import com.homeki.core.generators.ClockGeneratorThread;
-import com.homeki.core.http.HttpListenerThread;
 import com.homeki.core.http.RestletApplication;
 import com.homeki.core.logging.L;
 import com.homeki.core.storage.DatabaseManager;
 import com.homeki.core.storage.Hibernate;
 
 public class ThreadMaster {
-	private ControlledThread httpThread;
+	private Component restletComponent;
 	private ControlledThread broadcastThread;
 	private ControlledThread eventHandlerThread;
 	private ControlledThread clockGeneratorThread;
@@ -89,24 +88,16 @@ public class ThreadMaster {
 		}
 		L.i("Modules constructed.");
 		
-		// start HTTP listener socket
-		try {
-			httpThread = new HttpListenerThread();
-			httpThread.start();
-		} catch (Exception e) {
-			L.e("Could not bind socket for HttpListenerThread, killing Homeki.");
-			System.exit(-1);
-		}
-		
 		// start Restlet listener thread
 		try {
-			Component comp = new Component();
-			comp.getServers().add(Protocol.HTTP, 5001);
-			comp.getDefaultHost().attach(new RestletApplication());
-			comp.getLogger().setLevel(Level.SEVERE);
-			comp.start();
+			restletComponent = new Component();
+			restletComponent.getServers().add(Protocol.HTTP, 5000);
+			restletComponent.getDefaultHost().attach(new RestletApplication());
+			L.init();
+			restletComponent.getLogger().setLevel(Level.SEVERE);
+			restletComponent.start();
 		} catch (Exception e) {
-			L.e("Unknown exception starting RestletListenerThread.", e);
+			L.e("Unknown exception starting restlet HTTP server.", e);
 			System.exit(-1);
 		}
 		
@@ -147,8 +138,13 @@ public class ThreadMaster {
 	
 	public void shutdown() {
 		L.i("Shutting down threads...");
-		if (httpThread != null)
-			httpThread.shutdown();
+		if (restletComponent != null) {
+			try {
+				restletComponent.stop();
+			} catch (Exception e) {
+				L.e("Failed to stop restlet HTTP server.", e);
+			}
+		}
 		if (broadcastThread != null)
 			broadcastThread.shutdown();
 		

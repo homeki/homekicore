@@ -3,18 +3,15 @@ package com.homeki.core;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.fail;
 
-import java.io.IOException;
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
+import java.util.logging.LogManager;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
+import org.restlet.Client;
+import org.restlet.Request;
+import org.restlet.data.MediaType;
+import org.restlet.data.Method;
+import org.restlet.data.Protocol;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -25,7 +22,18 @@ public class TestUtil {
 	private static final String DATE_FORMAT = "yyyy-MM-dd";
 	private static final String HOST = "http://localhost:5000";
 	
-	private static Gson gson = new GsonBuilder().setPrettyPrinting().setDateFormat(DATETIME_FORMAT).create();
+	private static final Gson gson = new GsonBuilder()
+		.setPrettyPrinting()
+		.setDateFormat(DATETIME_FORMAT)
+		.create();
+	
+	protected static final Client client = new Client(Protocol.HTTP);
+	
+	static {
+		LogManager.getLogManager().reset();
+	}
+	
+
 	
 	public enum MockDeviceType {
 		SWITCH,
@@ -47,22 +55,27 @@ public class TestUtil {
 	}
 	
 	public static Response sendPost(String url, Object obj) {
-		HttpClient client = new DefaultHttpClient();
-		HttpPost post = new HttpPost(HOST + url);
-		HttpResponse response = null;
+		Request request = new Request(Method.POST, HOST + url);
 		String postString = gson.toJson(obj);
 		Response r = null;
 		
 		try {
-			post.setEntity(new StringEntity(postString));
-			response = client.execute(post);
+			request.setEntity(postString, MediaType.TEXT_PLAIN);
+			org.restlet.Response response = client.handle(request);
 			
 			r = new TestUtil().new Response();
-			r.statusCode = response.getStatusLine().getStatusCode();
-			r.content = convertToString(response.getEntity());			
+			r.statusCode = response.getStatus().getCode();
+			r.content = response.getEntityAsText();		
 		}
 		catch (Exception e) {
 			fail("Failed sending POST request, message: " + e.getMessage());
+		}
+		
+		try {
+			client.stop();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 		return r;
@@ -97,32 +110,28 @@ public class TestUtil {
 	}
 	
 	public static Response sendGet(String url) {
-		HttpClient client = new DefaultHttpClient();
-		HttpGet get = new HttpGet(HOST + url);
-		HttpResponse response = null;
+		Request request = new Request(Method.GET, HOST + url);
 		Response r = null;
 		
 		try {
-			response = client.execute(get);
+			org.restlet.Response response = client.handle(request);
 			
 			r = new TestUtil().new Response();
-			r.statusCode = response.getStatusLine().getStatusCode();
-			r.content = convertToString(response.getEntity());
-		} catch (Exception e) {
+			r.statusCode = response.getStatus().getCode();
+			r.content = response.getEntityAsText();		
+		}
+		catch (Exception e) {
 			fail("Failed sending GET request, message: " + e.getMessage());
 		}
 		
-		return r;
-	}
-	
-	private static String convertToString(HttpEntity he) throws IOException {
-		String s;
 		try {
-			s = EntityUtils.toString(he);
+			client.stop();
 		} catch (Exception e) {
-			s = "";
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		return s;
+		
+		return r;
 	}
 	
 	public static int addMockDevice(MockDeviceType type) {

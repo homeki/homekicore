@@ -43,7 +43,7 @@ public class HttpListenerThread extends ControlledThread {
 	
 	public HttpListenerThread() throws IOException {
 		super(0);
-		this.listenSocket = new ServerSocket(5000, 10, null);
+		this.listenSocket = new ServerSocket(5001, 10, null);
 		
 		this.params = new SyncBasicHttpParams();
 		this.params.setIntParameter(CoreConnectionPNames.SO_TIMEOUT, 2500);

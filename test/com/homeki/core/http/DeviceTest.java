@@ -1,4 +1,4 @@
-package com.homeki.core.http.handlers;
+package com.homeki.core.http;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
@@ -14,7 +14,7 @@ import org.testng.annotations.Test;
 import com.homeki.core.TestUtil;
 import com.homeki.core.TestUtil.MockDeviceType;
 
-public class DeviceHandlerTest {
+public class DeviceTest {
 	private int[] ids;
 	
 	public class JsonDevice {
@@ -64,41 +64,41 @@ public class DeviceHandlerTest {
 	
 	@Test(dependsOnMethods="testList")
 	public void testGet() {
-		assertEquals(TestUtil.sendGet("/device/get?deviceid=999999").statusCode, 405);
-		JsonDevice dev = TestUtil.sendGetAndParseAsJson("/device/get?deviceid=" + ids[0], JsonDevice.class);
+		assertEquals(TestUtil.sendGet("/device/999999/get").statusCode, 400);
+		JsonDevice dev = TestUtil.sendGetAndParseAsJson("/device/" + ids[0] + "/get", JsonDevice.class);
 		assertEquals((int)dev.id, ids[0]);
 	}
 	
 	@Test(dependsOnMethods="testGet")
 	public void testSet() {
-		JsonDevice beforeDev = TestUtil.sendGetAndParseAsJson("/device/get?deviceid=" + ids[1], JsonDevice.class);
+		JsonDevice beforeDev = TestUtil.sendGetAndParseAsJson("/device/" + ids[1] + "/get", JsonDevice.class);
 		assertEquals(beforeDev.name, "");
 		assertEquals(beforeDev.description, "");
 		
 		JsonDevice dev = new JsonDevice();
 		dev.name = "living room corner";	
 		dev.description = "corner lamps in living room";
-		assertEquals(TestUtil.sendPost("/device/set?deviceid=" + ids[1], dev).statusCode, 200);
+		assertEquals(TestUtil.sendPost("/device/" + ids[1] + "/set", dev).statusCode, 200);
 		
-		JsonDevice afterDev = TestUtil.sendGetAndParseAsJson("/device/get?deviceid=" + ids[1], JsonDevice.class);
+		JsonDevice afterDev = TestUtil.sendGetAndParseAsJson("/device/" + ids[1] + "/get", JsonDevice.class);
 		assertEquals(afterDev.name, "living room corner");
 		assertEquals(afterDev.description, "corner lamps in living room");
 	}
 	
 	@Test(dependsOnMethods="testSet")
 	public void testDelete() {
-		assertEquals(TestUtil.sendGet("/device/delete?deviceid=99999").statusCode, 405);
-		assertEquals(TestUtil.sendGet("/device/get?deviceid=" + ids[0]).statusCode, 200);
-		assertEquals(TestUtil.sendGet("/device/delete?deviceid=" + ids[0]).statusCode, 200);
-		assertEquals(TestUtil.sendGet("/device/get?deviceid=" + ids[0]).statusCode, 405);
+		assertEquals(TestUtil.sendGet("/device/99999/delete").statusCode, 400);
+		assertEquals(TestUtil.sendGet("/device/" + ids[0] + "/get").statusCode, 200);
+		assertEquals(TestUtil.sendGet("/device/" + ids[0] + "/delete").statusCode, 200);
+		assertEquals(TestUtil.sendGet("/device/" + ids[0] + "/get").statusCode, 400);
 	}
 	
 	@Test(dependsOnMethods="testDelete")
 	public void testMerge() {
-		assertEquals(TestUtil.sendGet("/device/get?deviceid=" + ids[3]).statusCode, 200);
-		assertEquals(TestUtil.sendGet("/device/get?deviceid=" + ids[4]).statusCode, 200);
-		assertEquals(TestUtil.sendGet("/device/merge?sourcedeviceid=" + ids[4] + "&targetdeviceid=" + ids[3]).statusCode, 200);
-		assertEquals(TestUtil.sendGet("/device/get?deviceid=" + ids[3]).statusCode, 200);
-		assertEquals(TestUtil.sendGet("/device/get?deviceid=" + ids[4]).statusCode, 405);
+		assertEquals(TestUtil.sendGet("/device/" + ids[3] + "/get").statusCode, 200);
+		assertEquals(TestUtil.sendGet("/device/" + ids[4] + "/get").statusCode, 200);
+		assertEquals(TestUtil.sendGet("/device/" + ids[3] + "/merge?mergewith=" + ids[4]).statusCode, 200);
+		assertEquals(TestUtil.sendGet("/device/" + ids[3] + "/get").statusCode, 200);
+		assertEquals(TestUtil.sendGet("/device/" + ids[4] + "/get").statusCode, 400);
 	}
 }

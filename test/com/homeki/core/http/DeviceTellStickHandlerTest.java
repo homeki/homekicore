@@ -1,4 +1,4 @@
-package com.homeki.core.http.handlers;
+package com.homeki.core.http;
 
 import static org.testng.Assert.assertEquals;
 

@@ -4,6 +4,8 @@ import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 public class L {
+	private static final String LOG_NAME = "org.homeki.core";
+	
 	public static void init() {
 		LogManager.getLogManager().reset();
 		Logger log = Logger.getLogger("");
@@ -11,15 +13,15 @@ public class L {
 	}
 	
 	public static void i(String msg) {
-		Logger.getLogger("").info(msg);
+		Logger.getLogger(LOG_NAME).info(msg);
 	}
 	
 	public static void w(String msg) {
-		Logger.getLogger("").warning(msg);
+		Logger.getLogger(LOG_NAME).warning(msg);
 	}
 	
 	public static void e(String msg) {
-		Logger.getLogger("").severe(msg);
+		Logger.getLogger(LOG_NAME).severe(msg);
 	}
 	
 	public static void e(String msg, Throwable e) {
