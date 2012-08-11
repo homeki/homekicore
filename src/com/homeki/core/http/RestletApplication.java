@@ -12,6 +12,8 @@ import com.homeki.core.http.restlets.device.DeviceSetRestlet;
 import com.homeki.core.http.restlets.device.channel.DeviceChannelValueListRestlet;
 import com.homeki.core.http.restlets.device.channel.DeviceChannelValueSetRestlet;
 import com.homeki.core.http.restlets.device.mock.DeviceMockAddRestlet;
+import com.homeki.core.http.restlets.server.ServerGetRestlet;
+import com.homeki.core.http.restlets.server.ServerSetRestlet;
 
 public class RestletApplication extends Application {
 	@Override
@@ -28,6 +30,9 @@ public class RestletApplication extends Application {
 		
 		r.attach("/device/{deviceid}/channel/{channelid}/list", new DeviceChannelValueListRestlet());
 		r.attach("/device/{deviceid}/channel/{channelid}/set", new DeviceChannelValueSetRestlet());
+		
+		r.attach("/server/get", new ServerGetRestlet());
+		r.attach("/server/set", new ServerSetRestlet());
 		
 		return r;
 	}

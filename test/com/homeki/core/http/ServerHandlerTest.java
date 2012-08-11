@@ -33,11 +33,11 @@ public class ServerHandlerTest {
 		assertEquals("Homeki", get.name);
 		
 		JsonServerInfo set = new JsonServerInfo();
-		assertEquals(405, TestUtil.sendPost("/server/set", set).statusCode);
+		assertEquals(TestUtil.sendPost("/server/set", set).statusCode, 400);
 		set.name = "";
-		assertEquals(405, TestUtil.sendPost("/server/set", set).statusCode);
+		assertEquals(TestUtil.sendPost("/server/set", set).statusCode, 400);
 		set.name = "MyServer";
-		assertEquals(200, TestUtil.sendPost("/server/set", set).statusCode);
+		assertEquals(TestUtil.sendPost("/server/set", set).statusCode, 200);
 		
 		get = TestUtil.sendGetAndParseAsJson("/server/get", JsonServerInfo.class);
 		assertEquals("MyServer", get.name);
