@@ -3,7 +3,9 @@ package com.homeki.core.http.json;
 import java.util.Date;
 import java.util.List;
 
+import com.homeki.core.device.Channel;
 import com.homeki.core.device.Device;
+import com.homeki.core.device.HistoryPoint;
 
 public class JsonDevice {
 	public String type;
@@ -12,7 +14,7 @@ public class JsonDevice {
 	public String description;
 	public Date added;
 	public Boolean active;
-	public JsonState state;
+	public JsonChannel[] channelValues;
 	public String[] abilities;
 	
 	public JsonDevice() {
@@ -24,10 +26,18 @@ public class JsonDevice {
 		id = d.getId();
 		name = d.getName();
 		added = d.getAdded();
-		state = JsonState.create(d);
 		active = d.isActive();
 		description = d.getDescription();
 		abilities = d.getAbilities();
+		
+		List<Channel> channels = d.getChannels();
+		channelValues = new JsonChannel[channels.size()];
+		
+		for (int i = 0; i < channels.size(); i++) {
+			int channelId = channels.get(i).id;
+			HistoryPoint p = d.getLatestHistoryPoint(channelId);
+			channelValues[i] = new JsonChannel(channelId, p.getValue());
+		}
 	}
 
 	public static JsonDevice[] convertList(List<Device> devices) {

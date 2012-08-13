@@ -8,11 +8,17 @@ public class JsonChannel {
 	public int id;
 	public String name;
 	public String dataType;
+	public Object lastValue;
 	
 	public JsonChannel(Channel channel) {
 		this.id = channel.id;
 		this.name = channel.name;
 		this.dataType = channel.dataType;
+	}
+	
+	public JsonChannel(int id, Object lastValue) {
+		this.id = id;
+		this.lastValue = lastValue;
 	}
 	
 	public static JsonChannel[] convertList(List<Channel> channels) {
