@@ -2,6 +2,7 @@ package com.homeki.core.device;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -138,4 +139,6 @@ public abstract class Device {
 	public String[] getAbilities() {
 		return new String[0];
 	}
+	
+	public abstract List<Channel> getChannels();
 }

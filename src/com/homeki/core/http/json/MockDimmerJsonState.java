@@ -9,8 +9,8 @@ public class MockDimmerJsonState extends JsonState {
 	public Integer level;
 	
 	public MockDimmerJsonState(MockDimmer d) {
-		IntegerHistoryPoint onoff = (IntegerHistoryPoint)d.getLatestHistoryPoint(MockDimmer.MOCKDIMMER_ONOFF_CHANNEL);
-		IntegerHistoryPoint level = (IntegerHistoryPoint)d.getLatestHistoryPoint(MockDimmer.MOCKDIMMER_LEVEL_CHANNEL);
+		IntegerHistoryPoint onoff = (IntegerHistoryPoint)d.getLatestHistoryPoint(MockDimmer.ONOFF_CHANNEL);
+		IntegerHistoryPoint level = (IntegerHistoryPoint)d.getLatestHistoryPoint(MockDimmer.LEVEL_CHANNEL);
 		
 		if (onoff != null) {
 			this.value = onoff.getValue();

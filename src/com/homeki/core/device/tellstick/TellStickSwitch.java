@@ -1,9 +1,12 @@
 package com.homeki.core.device.tellstick;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Entity;
 
+import com.homeki.core.device.Channel;
 import com.homeki.core.device.IntegerHistoryPoint;
 import com.homeki.core.device.Settable;
 import com.homeki.core.events.ChannelChangedEvent;
@@ -11,7 +14,7 @@ import com.homeki.core.events.EventQueue;
 
 @Entity
 public class TellStickSwitch extends TellStickDevice implements Settable, TellStickLearnable {
-	private static final int TELLSTICKSWITCH_ONOFF_CHANNEL = 0;
+	private static final int ONOFF_CHANNEL = 0;
 	
 	public TellStickSwitch() {
 		
@@ -31,7 +34,7 @@ public class TellStickSwitch extends TellStickDevice implements Settable, TellSt
 	
 	@Override
 	public void set(int channel, int value) {
-		if (channel != TELLSTICKSWITCH_ONOFF_CHANNEL)
+		if (channel != ONOFF_CHANNEL)
 			throw new RuntimeException("Tried to set invalid channel " + channel + " on TellStickSwitch '" + getInternalId() + "'.");
 		
 		boolean on = value > 0;
@@ -55,7 +58,7 @@ public class TellStickSwitch extends TellStickDevice implements Settable, TellSt
 		shp.setRegistered(new Date());
 		shp.setValue(on ? 1 : 0);
 		historyPoints.add(shp);
-		EventQueue.getInstance().add(new ChannelChangedEvent(getId(), TELLSTICKSWITCH_ONOFF_CHANNEL, value));
+		EventQueue.getInstance().add(new ChannelChangedEvent(getId(), ONOFF_CHANNEL, value));
 	}
 
 	@Override
@@ -71,5 +74,12 @@ public class TellStickSwitch extends TellStickDevice implements Settable, TellSt
 	@Override
 	public String[] getAbilities() {
 		return new String[] { "tellstick" };
+	}
+	
+	@Override
+	public List<Channel> getChannels() {
+		List<Channel> list = new ArrayList<Channel>();
+		list.add(new Channel(ONOFF_CHANNEL, "onoff", Channel.BOOL));
+		return list;
 	}
 }

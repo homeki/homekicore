@@ -9,6 +9,7 @@ import com.homeki.core.http.restlets.device.DeviceGetRestlet;
 import com.homeki.core.http.restlets.device.DeviceListRestlet;
 import com.homeki.core.http.restlets.device.DeviceMergeRestlet;
 import com.homeki.core.http.restlets.device.DeviceSetRestlet;
+import com.homeki.core.http.restlets.device.channel.DeviceChannelListRestlet;
 import com.homeki.core.http.restlets.device.channel.DeviceChannelValueListRestlet;
 import com.homeki.core.http.restlets.device.channel.DeviceChannelValueSetRestlet;
 import com.homeki.core.http.restlets.device.mock.DeviceMockAddRestlet;
@@ -37,6 +38,7 @@ public class RestletApplication extends Application {
 		r.attach("/device/tellstick/add", new DeviceTellStickAddRestlet());
 		r.attach("/device/{deviceid}/tellstick/learn", new DeviceTellStickLearnRestlet());
 		
+		r.attach("/device/{deviceid}/channel/list", new DeviceChannelListRestlet());
 		r.attach("/device/{deviceid}/channel/{channelid}/list", new DeviceChannelValueListRestlet());
 		r.attach("/device/{deviceid}/channel/{channelid}/set", new DeviceChannelValueSetRestlet());
 		

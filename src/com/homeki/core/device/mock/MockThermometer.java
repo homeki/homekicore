@@ -1,11 +1,14 @@
 package com.homeki.core.device.mock;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 import javax.persistence.Entity;
 import javax.persistence.Transient;
 
+import com.homeki.core.device.Channel;
 import com.homeki.core.device.Device;
 import com.homeki.core.device.DoubleHistoryPoint;
 import com.homeki.core.events.ChannelChangedEvent;
@@ -13,6 +16,8 @@ import com.homeki.core.events.EventQueue;
 
 @Entity
 public class MockThermometer extends Device {
+	private static final int TEMPERATURE_CHANNEL = 0;
+	
 	@Transient
 	private Random rnd;
 	
@@ -53,5 +58,12 @@ public class MockThermometer extends Device {
 	@Override
 	public String getType() {
 		return "thermometer";
+	}
+	
+	@Override
+	public List<Channel> getChannels() {
+		List<Channel> list = new ArrayList<Channel>();
+		list.add(new Channel(TEMPERATURE_CHANNEL, "temperature", Channel.DOUBLE));
+		return list;
 	}
 }

@@ -1,16 +1,21 @@
 package com.homeki.core.device.onewire;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Entity;
 
+import com.homeki.core.device.Channel;
 import com.homeki.core.device.DoubleHistoryPoint;
 import com.homeki.core.events.ChannelChangedEvent;
 import com.homeki.core.events.EventQueue;
 
 @Entity
 public class OneWireThermometer extends OneWireDevice implements OneWireIntervalLoggable {
+	private static final int TEMPERATURE_CHANNEL = 0;
+	
 	public OneWireThermometer() {
 
 	}
@@ -37,5 +42,12 @@ public class OneWireThermometer extends OneWireDevice implements OneWireInterval
 	@Override
 	public String getType() {
 		return "thermometer";
+	}
+	
+	@Override
+	public List<Channel> getChannels() {
+		List<Channel> list = new ArrayList<Channel>();
+		list.add(new Channel(TEMPERATURE_CHANNEL, "temperature", Channel.DOUBLE));
+		return list;
 	}
 }

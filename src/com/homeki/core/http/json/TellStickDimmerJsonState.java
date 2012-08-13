@@ -9,8 +9,8 @@ public class TellStickDimmerJsonState extends JsonState {
 	public Integer level;
 	
 	public TellStickDimmerJsonState(TellStickDimmer d) {
-		IntegerHistoryPoint onoff = (IntegerHistoryPoint)d.getLatestHistoryPoint(TellStickDimmer.TELLSTICKDIMMER_ONOFF_CHANNEL);
-		IntegerHistoryPoint level = (IntegerHistoryPoint)d.getLatestHistoryPoint(TellStickDimmer.TELLSTICKDIMMER_LEVEL_CHANNEL);
+		IntegerHistoryPoint onoff = (IntegerHistoryPoint)d.getLatestHistoryPoint(TellStickDimmer.ONOFF_CHANNEL);
+		IntegerHistoryPoint level = (IntegerHistoryPoint)d.getLatestHistoryPoint(TellStickDimmer.LEVEL_CHANNEL);
 		
 		if (onoff != null) {
 			this.value = onoff.getValue();
