@@ -79,7 +79,7 @@ public class TellStickSwitch extends TellStickDevice implements Settable, TellSt
 	@Override
 	public List<Channel> getChannels() {
 		List<Channel> list = new ArrayList<Channel>();
-		list.add(new Channel(ONOFF_CHANNEL, "onoff", Channel.BOOL));
+		list.add(new Channel(ONOFF_CHANNEL, "onoff", Channel.INT));
 		return list;
 	}
 }
