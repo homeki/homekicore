@@ -39,7 +39,7 @@ public abstract class Device {
 	
 	@OneToMany(mappedBy = "device", cascade = CascadeType.ALL)
 	@LazyCollection(LazyCollectionOption.EXTRA)
-	protected Set<ChannelValueCondition> channelChangedConditions;
+	protected Set<ChannelValueCondition> channelValueConditions;
 	
 	@Column
 	protected String internalId;
@@ -57,7 +57,7 @@ public abstract class Device {
 	private String description;
 	
 	public Device() {
-		this.historyPoints = new HashSet<HistoryPoint>(0);
+		this.historyPoints = new HashSet<HistoryPoint>();
 		this.name = "";
 		this.internalId = "";
 		this.added = new Date();

@@ -1,5 +1,7 @@
 package com.homeki.core.triggers;
 
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,8 +15,11 @@ import javax.persistence.ManyToOne;
 import org.hibernate.Session;
 
 import com.homeki.core.actions.Action;
+import com.homeki.core.actions.ActionGroup;
 import com.homeki.core.conditions.Condition;
+import com.homeki.core.conditions.ConditionGroup;
 import com.homeki.core.events.Event;
+import com.homeki.core.logging.L;
 
 
 @Entity
@@ -24,36 +29,33 @@ public class Trigger {
 	private int id;
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "condition_id")
-	private Condition condition;
+	@JoinColumn(name = "condition_group_id")
+	private ConditionGroup conditionGroup;
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "action_id")
-	private Action action;
+	@JoinColumn(name = "action_group_id")
+	private ActionGroup actionGroup;
 	
 	@Column
 	private String name;
 	
-	public Trigger(Condition c, Action a) {
-		condition = c;
-		action = a;
-	}
-
 	public Trigger() {
+		this.conditionGroup = new ConditionGroup();
+		this.actionGroup = new ActionGroup();
+	}
+	
+	public Trigger(Condition condition, Action action) {
+		this();
+		this.conditionGroup.addCondition(condition);
+		this.actionGroup.addAction(action);
 	}
 
 	public boolean check(Event e) {
-		if (condition == null)
-			return false;
-		
-		return condition.check(e);
+		return conditionGroup.check(e);
 	}
 	
 	public void execute(Session ses) {
-		if (action == null)
-			return;
-		
-		action.execute(ses);
+		actionGroup.execute(ses);
 	}
 	
 	public int getId() {
@@ -68,15 +70,20 @@ public class Trigger {
 		return name;
 	}
 	
-	public void setCondition(Condition condition) {
-		this.condition = condition;
+	public void addCondition(Condition condition) {
+		conditionGroup.addCondition(condition);
+		L.i("Size of conditionGroup condition list: " +  conditionGroup.getConditions().size());
 	}
 	
-	public void setAction(Action action) {
-		this.action = action;
+	public void addAction(Action action) {
+		actionGroup.addAction(action);
 	}
 	
-	public Condition getCondition() {
-		return condition;
+	public List<Condition> getConditions() {
+		return conditionGroup.getConditions();
+	}
+	
+	public List<Action> getActions() {
+		return actionGroup.getActions();
 	}
 }

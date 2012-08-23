@@ -7,7 +7,6 @@ import com.homeki.core.conditions.Condition;
 public class JsonCondition {
 	public String type;
 	public Integer id;
-	public String shortDescription;
 	
 	public JsonCondition() {
 		
@@ -15,7 +14,6 @@ public class JsonCondition {
 	
 	public JsonCondition(Condition condition) {
 		this.id = condition.getId();
-		this.shortDescription = condition.toString();
 		this.type = condition.getType();
 	}
 	

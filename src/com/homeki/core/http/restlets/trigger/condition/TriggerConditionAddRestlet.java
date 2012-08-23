@@ -24,15 +24,14 @@ public class TriggerConditionAddRestlet extends KiRestlet {
 		if (trigger == null)
 			throw new ApiException("No trigger with the specified ID found.");
 			
-		if (type.equals("channelchanged"))
+		if (type.equals("channelvalue"))
 			condition = parseChannelChanged(c);
-		else if (type.equals("minutechanged"))
+		else if (type.equals("minute"))
 			condition = parseMinuteChanged(c);
 		else
 			throw new ApiException("No such condition type.");
 		
-		c.ses.save(condition);
-		trigger.setCondition(condition);
+		trigger.addCondition(condition);
 		
 		JsonCondition newid = new JsonCondition();
 		newid.id = condition.getId();
@@ -98,7 +97,7 @@ public class TriggerConditionAddRestlet extends KiRestlet {
 		else if (operator.equals("LT"))
 			op = Condition.LT;
 		else
-			throw new ApiException("No such operator available. The possible pperators EQ, GT or LT.");
+			throw new ApiException("No such operator available. The possible operators EQ, GT or LT.");
 		return op;
 	}
 }

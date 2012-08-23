@@ -80,12 +80,7 @@ public class ChannelValueCondition extends Condition {
 	}
 	
 	@Override
-	public String toString() {
-		return channel + " on " + device.getName() + " == " + value;
-	}
-	
-	@Override
 	public String getType() {
-		return "channelchanged";
+		return "channelvalue";
 	}
 }

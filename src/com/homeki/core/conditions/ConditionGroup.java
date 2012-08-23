@@ -1,5 +1,8 @@
 package com.homeki.core.conditions;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -10,26 +13,47 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import com.homeki.core.events.Event;
+import com.homeki.core.logging.L;
 import com.homeki.core.triggers.Trigger;
 
 @Entity
 public class ConditionGroup extends Condition {
 	@OneToMany(mappedBy = "condition", cascade = CascadeType.ALL)
 	@LazyCollection(LazyCollectionOption.EXTRA)
-	protected Set<Condition> conditions;
+	private List<Condition> conditions;
+	
+	@OneToMany(mappedBy = "conditionGroup", cascade = CascadeType.ALL)
+	@LazyCollection(LazyCollectionOption.EXTRA)
+	private Set<Trigger> triggers;
+	
+	public ConditionGroup() {
+		this.conditions = new ArrayList<Condition>();
+		this.triggers = new HashSet<Trigger>();
+	}
 	
 	@Override
 	public boolean check(Event e) {
-		return false;
+		for (Condition c : conditions) {
+			if (!c.check(e))
+				return false;
+		}
+		
+		return true;
 	}
-
-	@Override
-	public String toString() {
-		return null;
+	
+	public void addCondition(Condition condition) {
+		L.i("Before add: " + conditions.size());
+		condition.setParent(this);
+		conditions.add(condition);
+		L.i("After add: " + conditions.size());
+	}
+	
+	public List<Condition> getConditions() {
+		return conditions;
 	}
 
 	@Override
 	public String getType() {
-		return "group";
+		return "conditiongroup";
 	}
 }

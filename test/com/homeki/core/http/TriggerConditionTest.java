@@ -57,7 +57,7 @@ public class TriggerConditionTest {
 	
 	@AfterClass
 	public void afterClass() {
-		TestUtil.deleteDevice(deviceId);
+		//TestUtil.deleteDevice(deviceId);
 		// TODO: delete trigger
 	}
 	
@@ -69,12 +69,12 @@ public class TriggerConditionTest {
 		jcond.channel = 1;
 		jcond.operator = "dontthinkso";
 		
-		assertEquals(TestUtil.sendPost("/trigger/9999/condition/add?type=channelchanged", jcond).statusCode, 400);
-		assertEquals(TestUtil.sendPost("/trigger/" +  triggerId + "/condition/add?type=channelchanged", jcond).statusCode, 400);
+		assertEquals(TestUtil.sendPost("/trigger/9999/condition/add?type=channelvalue", jcond).statusCode, 400);
+		assertEquals(TestUtil.sendPost("/trigger/" +  triggerId + "/condition/add?type=channelvalue", jcond).statusCode, 400);
 		
 		jcond.operator = "LT";
 		
-		jcond = TestUtil.sendPostAndParseAsJson("/trigger/" + triggerId + "/condition/add?type=channelchanged", jcond, JsonChannelChangedCondition.class);
+		jcond = TestUtil.sendPostAndParseAsJson("/trigger/" + triggerId + "/condition/add?type=channelvalue", jcond, JsonChannelChangedCondition.class);
 		
 		assertTrue(jcond.id > 0);
 	}
@@ -88,12 +88,12 @@ public class TriggerConditionTest {
 		jcond.minute = 13;
 		jcond.timeOperator = "naha";
 		
-		assertEquals(TestUtil.sendPost("/trigger/9999/condition/add?type=minutechanged", jcond).statusCode, 400);
-		assertEquals(TestUtil.sendPost("/trigger/" + triggerId + "/condition/add?type=minutechanged", jcond).statusCode, 400);
+		assertEquals(TestUtil.sendPost("/trigger/9999/condition/add?type=minute", jcond).statusCode, 400);
+		assertEquals(TestUtil.sendPost("/trigger/" + triggerId + "/condition/add?type=minute", jcond).statusCode, 400);
 		
 		jcond.timeOperator = "EQ";
 		
-		jcond = TestUtil.sendPostAndParseAsJson("/trigger/" + triggerId + "/condition/add?type=minutechanged", jcond, JsonMinuteChangedCondition.class);
+		jcond = TestUtil.sendPostAndParseAsJson("/trigger/" + triggerId + "/condition/add?type=minute", jcond, JsonMinuteChangedCondition.class);
 		
 		assertTrue(jcond.id > 0);
 		conditionId = jcond.id;
@@ -101,7 +101,6 @@ public class TriggerConditionTest {
 	
 	@Test
 	public void testList() {
-		assertEquals(TestUtil.sendGet("/trigger/9999/condition/list?type=minutechanged").statusCode, 400);
 		JsonCondition[] jconditions = TestUtil.sendGetAndParseAsJson("/trigger/" + triggerId + "/condition/list", JsonCondition[].class);
 		
 		Set<Integer> existingIds = new HashSet<Integer>();

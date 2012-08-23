@@ -1,21 +1,17 @@
 package com.homeki.core.actions;
 
-import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import org.hibernate.Session;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-
-import com.homeki.core.triggers.Trigger;
 
 
 @Entity
@@ -25,9 +21,9 @@ public abstract class Action {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	@OneToMany(mappedBy = "action", cascade = CascadeType.ALL)
-	@LazyCollection(LazyCollectionOption.EXTRA)
-	protected Set<Trigger> triggers;
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "action_id")
+	private Action action;
 	
 	public abstract void execute(Session ses);
 }

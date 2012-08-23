@@ -291,4 +291,48 @@
 		<dropForeignKeyConstraint baseTableName="channel_value_condition" constraintName="fk_channel_changed_condition-device"/>
 		<dropForeignKeyConstraint baseTableName="minute_condition" constraintName="fk_minute_changed_condition-condition"/>
 	</changeSet>
+	
+	<changeSet id="27" author="jonas">
+		<addColumn tableName="action">
+		    <column name="action_id" type="INTEGER">
+		        <constraints references="action(id)" foreignKeyName="fk_action-action"/>
+		    </column>
+		</addColumn>	    
+	</changeSet>
+	
+	<changeSet id="28" author="jonas">
+		<createTable tableName="action_group">
+			<column name="id" type="INTEGER" autoIncrement="true">
+				<constraints nullable="false" primaryKey="true" />
+			</column>
+		</createTable>	    
+	</changeSet>
+	
+	<changeSet id="29" author="jonas">
+		<addColumn tableName="condition">
+		    <column name="condition_id" type="INTEGER">
+		        <constraints references="condition(id)" foreignKeyName="fk_condition-condition"/>
+		    </column>
+		</addColumn>	    
+	</changeSet>
+	
+	<changeSet id="30" author="jonas">
+		<createTable tableName="condition_group">
+			<column name="id" type="INTEGER" autoIncrement="true">
+				<constraints nullable="false" primaryKey="true" />
+			</column>
+		</createTable>	    
+	</changeSet>
+	
+	<changeSet id="31" author="jonas">
+   		<renameColumn tableName="trigger" oldColumnName="action_id" newColumnName="action_group_id"/>
+   		<renameColumn tableName="trigger" oldColumnName="condition_id" newColumnName="condition_group_id"/>
+	</changeSet>
+	
+	<changeSet id="32" author="jonas">
+	    <dropForeignKeyConstraint baseTableName="trigger" constraintName="fk_trigger-action"/>
+	    <dropForeignKeyConstraint baseTableName="trigger" constraintName="fk_trigger-condition"/>
+	    <addForeignKeyConstraint constraintName="fk_trigger-action_group" referencedTableName="action_group" baseColumnNames="action_group_id" baseTableName="trigger" referencedColumnNames="id"/>
+	    <addForeignKeyConstraint constraintName="fk_trigger-condition_group" referencedTableName="condition_group" baseColumnNames="condition_group_id" baseTableName="trigger" referencedColumnNames="id"/>
+	</changeSet>
 </databaseChangeLog>

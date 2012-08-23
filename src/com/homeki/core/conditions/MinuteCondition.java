@@ -122,6 +122,6 @@ public class MinuteCondition extends Condition {
 	
 	@Override
 	public String getType() {
-		return "minutechanged";
+		return "minute";
 	}
 }
