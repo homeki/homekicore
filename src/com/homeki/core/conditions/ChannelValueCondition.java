@@ -12,7 +12,7 @@ import com.homeki.core.events.ChannelChangedEvent;
 import com.homeki.core.events.Event;
 
 @Entity
-public class ChannelChangedCondition extends Condition {
+public class ChannelValueCondition extends Condition {
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "device_id")
 	private Device device;
@@ -26,11 +26,11 @@ public class ChannelChangedCondition extends Condition {
 	@Column
 	private int operator;
 	
-	public ChannelChangedCondition() {
+	public ChannelValueCondition() {
 		
 	}
 	
-	public ChannelChangedCondition(Device device, int channel, Number value, int operator) {
+	public ChannelValueCondition(Device device, int channel, Number value, int operator) {
 		this.device = device;
 		this.channel = channel;
 		this.value = value;

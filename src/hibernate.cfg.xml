@@ -35,7 +35,7 @@
         <mapping class="com.homeki.core.triggers.Trigger" />
         <mapping class="com.homeki.core.actions.Action" />
         <mapping class="com.homeki.core.conditions.Condition" />
-        <mapping class="com.homeki.core.conditions.ChannelChangedCondition" />
-        <mapping class="com.homeki.core.conditions.MinuteChangedCondition" />
+        <mapping class="com.homeki.core.conditions.ChannelValueCondition" />
+        <mapping class="com.homeki.core.conditions.MinuteCondition" />
     </session-factory>
 </hibernate-configuration>

@@ -22,7 +22,7 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.criterion.Restrictions;
 
-import com.homeki.core.conditions.ChannelChangedCondition;
+import com.homeki.core.conditions.ChannelValueCondition;
 import com.homeki.core.storage.Hibernate;
 
 @Entity
@@ -39,7 +39,7 @@ public abstract class Device {
 	
 	@OneToMany(mappedBy = "device", cascade = CascadeType.ALL)
 	@LazyCollection(LazyCollectionOption.EXTRA)
-	protected Set<ChannelChangedCondition> channelChangedConditions;
+	protected Set<ChannelValueCondition> channelChangedConditions;
 	
 	@Column
 	protected String internalId;

@@ -263,4 +263,32 @@
 	<changeSet id="22" author="jonas">
 		<addForeignKeyConstraint constraintName="fk_channel_change_value_action-device" referencedTableName="device" baseColumnNames="device_id" baseTableName="channel_change_value_action" referencedColumnNames="id"/>	    
 	</changeSet>
+	
+	<changeSet id="23" author="jonas">
+	    <renameTable newTableName="minute_condition" oldTableName="minute_changed_condition"/>
+	    <renameTable newTableName="channel_value_condition" oldTableName="channel_changed_condition"/>
+	    <renameTable newTableName="change_channel_value_action" oldTableName="channel_change_value_action"/>
+	</changeSet>
+	
+	<changeSet id="24" author="jonas">
+	    <dropAllForeignKeyConstraints baseTableName="channel_value_condition"/>
+	    <dropAllForeignKeyConstraints baseTableName="minute_condition"/>
+	    <dropAllForeignKeyConstraints baseTableName="change_channel_value_action"/>
+	</changeSet>
+	
+	<changeSet id="25" author="jonas">
+	    <addForeignKeyConstraint constraintName="fk_channel_value_condition-device" referencedTableName="device" baseColumnNames="device_id" baseTableName="channel_value_condition" referencedColumnNames="id"/>
+	    <addForeignKeyConstraint constraintName="fk_channel_value_condition-condition" referencedTableName="condition" baseColumnNames="id" baseTableName="channel_value_condition" referencedColumnNames="id"/>
+	    <addForeignKeyConstraint constraintName="fk_change_channel_value_action-device" referencedTableName="device" baseColumnNames="device_id" baseTableName="change_channel_value_action" referencedColumnNames="id"/>
+	    <addForeignKeyConstraint constraintName="fk_change_channel_value_action-action" referencedTableName="action" baseColumnNames="id" baseTableName="change_channel_value_action" referencedColumnNames="id"/>
+	    <addForeignKeyConstraint constraintName="fk_minute_condition-condition" referencedTableName="condition" baseColumnNames="id" baseTableName="minute_condition" referencedColumnNames="id"/>
+	</changeSet>
+	
+	<changeSet id="26" author="jonas">
+		<dropForeignKeyConstraint baseTableName="change_channel_value_action" constraintName="fk_channel_change_value_action-action"/>
+		<dropForeignKeyConstraint baseTableName="change_channel_value_action" constraintName="fk_channel_change_value_action-device"/>
+		<dropForeignKeyConstraint baseTableName="channel_value_condition" constraintName="fk_channel_changed_condition-condition"/>
+		<dropForeignKeyConstraint baseTableName="channel_value_condition" constraintName="fk_channel_changed_condition-device"/>
+		<dropForeignKeyConstraint baseTableName="minute_condition" constraintName="fk_minute_changed_condition-condition"/>
+	</changeSet>
 </databaseChangeLog>

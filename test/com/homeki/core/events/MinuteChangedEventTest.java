@@ -4,8 +4,8 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.homeki.core.conditions.Condition;
-import com.homeki.core.conditions.MinuteChangedCondition;
-import com.homeki.core.conditions.MinuteChangedCondition.Builder;
+import com.homeki.core.conditions.MinuteCondition;
+import com.homeki.core.conditions.MinuteCondition.Builder;
 import com.homeki.core.events.MinuteChangedEvent;
 
 public class MinuteChangedEventTest {
@@ -16,9 +16,9 @@ public class MinuteChangedEventTest {
 	public void equalTest() throws Exception {
 		String days = "1,15,23";
 		String weekdays = "1,2,3";
-		Builder builder = new MinuteChangedCondition.Builder();
+		Builder builder = new MinuteCondition.Builder();
 		builder.day(days).hour(hour).minute(minute).timeOperator(Condition.EQ);
-		MinuteChangedCondition mcc = builder.build();
+		MinuteCondition mcc = builder.build();
 		
 		Assert.assertTrue(mcc.check(new MinuteChangedEvent(1, 15, hour, minute)));
 		
@@ -31,7 +31,7 @@ public class MinuteChangedEventTest {
 		//Fail because of incorrect minute
 		Assert.assertFalse(mcc.check(new MinuteChangedEvent(1, 15, hour, minute + 1)));
 		
-		builder = new MinuteChangedCondition.Builder();
+		builder = new MinuteCondition.Builder();
 		builder.weekday(weekdays).hour(hour).minute(minute).timeOperator(Condition.EQ);
 		mcc = builder.build();
 
@@ -42,9 +42,9 @@ public class MinuteChangedEventTest {
 	
 	@Test
 	public void gtTest() throws Exception {
-		Builder builder = new MinuteChangedCondition.Builder();
+		Builder builder = new MinuteCondition.Builder();
 		builder.hour(hour).minute(minute).timeOperator(Condition.GT);
-		MinuteChangedCondition mcc = builder.build();
+		MinuteCondition mcc = builder.build();
 		
 		Assert.assertTrue(mcc.check(new MinuteChangedEvent(1, 15, hour + 1, minute)));
 		Assert.assertTrue(mcc.check(new MinuteChangedEvent(1, 15, hour + 1, 0)));
@@ -58,9 +58,9 @@ public class MinuteChangedEventTest {
 	
 	@Test
 	public void ltTest() throws Exception {
-		Builder builder = new MinuteChangedCondition.Builder();
+		Builder builder = new MinuteCondition.Builder();
 		builder.hour(hour).minute(minute).timeOperator(Condition.LT);
-		MinuteChangedCondition mcc = builder.build();
+		MinuteCondition mcc = builder.build();
 		
 		Assert.assertTrue(mcc.check(new MinuteChangedEvent(1, 15, hour - 1, minute)));
 		Assert.assertTrue(mcc.check(new MinuteChangedEvent(1, 15, hour - 1, minute + 1)));

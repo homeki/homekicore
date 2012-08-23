@@ -9,7 +9,7 @@ import com.homeki.core.events.Event;
 import com.homeki.core.events.MinuteChangedEvent;
 
 @Entity
-public class MinuteChangedCondition extends Condition {
+public class MinuteCondition extends Condition {
 	@Column
 	public String weekday;
 	
@@ -25,7 +25,7 @@ public class MinuteChangedCondition extends Condition {
 	@Column
 	public int timeOperator;
 	
-	protected MinuteChangedCondition() {}
+	protected MinuteCondition() {}
 	
 	public static class Builder {
 		public String weekday = "";
@@ -59,13 +59,13 @@ public class MinuteChangedCondition extends Condition {
 			return this;
 		}
 		
-		public MinuteChangedCondition build() {
-			return new MinuteChangedCondition(this);
+		public MinuteCondition build() {
+			return new MinuteCondition(this);
 		}
 		
 	}
 	
-	private MinuteChangedCondition(Builder builder) {
+	private MinuteCondition(Builder builder) {
 		day = builder.day;
 		weekday = builder.weekday;
 		hour = builder.hour;

@@ -1,8 +1,8 @@
 package com.homeki.core.http.restlets.trigger.condition;
 
-import com.homeki.core.conditions.ChannelChangedCondition;
+import com.homeki.core.conditions.ChannelValueCondition;
 import com.homeki.core.conditions.Condition;
-import com.homeki.core.conditions.MinuteChangedCondition;
+import com.homeki.core.conditions.MinuteCondition;
 import com.homeki.core.device.Device;
 import com.homeki.core.http.ApiException;
 import com.homeki.core.http.Container;
@@ -61,7 +61,7 @@ public class TriggerConditionAddRestlet extends KiRestlet {
 		
 		// TODO: add more validation here (does device have channel, etc)
 			
-		return new ChannelChangedCondition(dev, jcond.channel, jcond.number, op);
+		return new ChannelValueCondition(dev, jcond.channel, jcond.number, op);
 	}
 	
 	private Condition parseMinuteChanged(Container c) {
@@ -78,7 +78,7 @@ public class TriggerConditionAddRestlet extends KiRestlet {
 		
 		// TODO: add more validation here (is everything passed valid, etc)
 		
-		MinuteChangedCondition cond = new MinuteChangedCondition.Builder()
+		MinuteCondition cond = new MinuteCondition.Builder()
 			.day(jcond.day)
 			.hour(jcond.hour)
 			.minute(jcond.minute)
