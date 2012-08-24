@@ -20,6 +20,7 @@ import com.homeki.core.http.restlets.server.ServerSetRestlet;
 import com.homeki.core.http.restlets.trigger.TriggerAddRestlet;
 import com.homeki.core.http.restlets.trigger.TriggerDeleteRestlet;
 import com.homeki.core.http.restlets.trigger.TriggerListRestlet;
+import com.homeki.core.http.restlets.trigger.TriggerSetRestlet;
 import com.homeki.core.http.restlets.trigger.condition.TriggerConditionAddRestlet;
 import com.homeki.core.http.restlets.trigger.condition.TriggerConditionDeleteRestlet;
 import com.homeki.core.http.restlets.trigger.condition.TriggerConditionListRestlet;
@@ -49,6 +50,7 @@ public class RestletApplication extends Application {
 		
 		r.attach("/trigger/add", new TriggerAddRestlet());
 		r.attach("/trigger/list", new TriggerListRestlet());
+		r.attach("/trigger/{triggerid}/set", new TriggerSetRestlet());
 		r.attach("/trigger/{triggerid}/delete", new TriggerDeleteRestlet());
 		
 		r.attach("/trigger/{triggerid}/condition/list", new TriggerConditionListRestlet());

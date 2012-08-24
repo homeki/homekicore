@@ -43,6 +43,26 @@ public class TriggerTest {
 	}
 	
 	@Test(dependsOnMethods="testList")
+	public void testSet() {
+		JsonTrigger jtrigger = new JsonTrigger();
+		assertEquals(TestUtil.sendPost("/trigger/9999/set", jtrigger).statusCode, 400);
+		assertEquals(TestUtil.sendPost("/trigger/" + triggerId + "/set", jtrigger).statusCode, 400);
+		jtrigger.name = "MyNewTrigger";
+		assertEquals(TestUtil.sendPost("/trigger/" + triggerId + "/set", jtrigger).statusCode, 200);
+		
+		JsonTrigger[] jtriggers = TestUtil.sendGetAndParseAsJson("/trigger/list", JsonTrigger[].class);
+		
+		boolean found = false;
+		for (JsonTrigger jt : jtriggers) {
+			if (jt.id == triggerId) {
+				found = true;
+				assertEquals(jt.name, "MyNewTrigger");
+			}
+		}
+		assertTrue(found);
+	}
+	
+	@Test(dependsOnMethods="testSet")
 	public void testDelete() {
 		assertEquals(TestUtil.sendGet("/trigger/" + triggerId + "/delete").statusCode, 200);
 	}
