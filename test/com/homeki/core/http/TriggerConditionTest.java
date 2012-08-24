@@ -15,7 +15,8 @@ import com.homeki.core.TestUtil.MockDeviceType;
 
 public class TriggerConditionTest {
 	private int triggerId;
-	private int conditionId;
+	private int conditionId1;
+	private int conditionId2;
 	private int deviceId;
 	
 	public class JsonTrigger {
@@ -57,8 +58,8 @@ public class TriggerConditionTest {
 	
 	@AfterClass
 	public void afterClass() {
-		//TestUtil.deleteDevice(deviceId);
-		// TODO: delete trigger
+		TestUtil.deleteDevice(deviceId);
+		TestUtil.sendGet("/trigger/" + triggerId + "/delete");
 	}
 	
 	@Test
@@ -77,6 +78,7 @@ public class TriggerConditionTest {
 		jcond = TestUtil.sendPostAndParseAsJson("/trigger/" + triggerId + "/condition/add?type=channelvalue", jcond, JsonChannelChangedCondition.class);
 		
 		assertTrue(jcond.id > 0);
+		conditionId2 = jcond.id;
 	}
 	
 	@Test
@@ -96,7 +98,7 @@ public class TriggerConditionTest {
 		jcond = TestUtil.sendPostAndParseAsJson("/trigger/" + triggerId + "/condition/add?type=minute", jcond, JsonMinuteChangedCondition.class);
 		
 		assertTrue(jcond.id > 0);
-		conditionId = jcond.id;
+		conditionId1 = jcond.id;
 	}
 	
 	@Test
@@ -108,6 +110,12 @@ public class TriggerConditionTest {
 		for (JsonCondition jc : jconditions)
 			existingIds.add(jc.id);
 		
-		assertTrue(existingIds.contains(conditionId));
+		assertTrue(existingIds.contains(conditionId1));
+		assertTrue(existingIds.contains(conditionId2));
+	}
+	
+	@Test(dependsOnMethods="testList")
+	public void testDelete() {
+		assertEquals(TestUtil.sendGet("/trigger/" + triggerId + "/condition/" + conditionId1 + "/delete").statusCode, 200);
 	}
 }

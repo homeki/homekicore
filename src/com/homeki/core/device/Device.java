@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
@@ -18,6 +17,8 @@ import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 
 import org.hibernate.Session;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.criterion.Restrictions;
@@ -33,11 +34,13 @@ public abstract class Device {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected int id;
 	
-	@OneToMany(mappedBy = "device", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "device", orphanRemoval = true)
+	@Cascade({ CascadeType.SAVE_UPDATE, CascadeType.DELETE })
 	@LazyCollection(LazyCollectionOption.EXTRA)
 	protected Set<HistoryPoint> historyPoints;
 	
-	@OneToMany(mappedBy = "device", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "device", orphanRemoval = true)
+	@Cascade({ CascadeType.SAVE_UPDATE })
 	@LazyCollection(LazyCollectionOption.EXTRA)
 	protected Set<ChannelValueCondition> channelValueConditions;
 	

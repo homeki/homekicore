@@ -2,7 +2,6 @@ package com.homeki.core.triggers;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,13 +12,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import org.hibernate.Session;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import com.homeki.core.actions.Action;
 import com.homeki.core.actions.ActionGroup;
 import com.homeki.core.conditions.Condition;
 import com.homeki.core.conditions.ConditionGroup;
 import com.homeki.core.events.Event;
-import com.homeki.core.logging.L;
 
 
 @Entity
@@ -28,11 +28,13 @@ public class Trigger {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.LAZY)
+	@Cascade({ CascadeType.SAVE_UPDATE, CascadeType.DELETE })
 	@JoinColumn(name = "condition_group_id")
 	private ConditionGroup conditionGroup;
 	
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.LAZY)
+	@Cascade({ CascadeType.SAVE_UPDATE, CascadeType.DELETE })
 	@JoinColumn(name = "action_group_id")
 	private ActionGroup actionGroup;
 	
@@ -72,7 +74,10 @@ public class Trigger {
 	
 	public void addCondition(Condition condition) {
 		conditionGroup.addCondition(condition);
-		L.i("Size of conditionGroup condition list: " +  conditionGroup.getConditions().size());
+	}
+	
+	public void deleteCondition(Condition condition) {
+		conditionGroup.deleteCondition(condition);
 	}
 	
 	public void addAction(Action action) {

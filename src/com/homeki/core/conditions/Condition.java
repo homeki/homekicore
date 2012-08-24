@@ -1,6 +1,5 @@
 package com.homeki.core.conditions;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -29,7 +28,7 @@ public abstract class Condition {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "condition_id")
 	private Condition condition;
 	

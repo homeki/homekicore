@@ -50,8 +50,15 @@ public abstract class KiRestlet extends Restlet {
 			set400Response(c, "Unhandled exception occured while processing HTTP request. The exception message was: " + e.getMessage());
 		}
 		finally {
-			if (session != null && session.isOpen())
-				Hibernate.closeSession(session);
+			if (session != null && session.isOpen()) {
+				try {
+					Hibernate.closeSession(session);
+				}
+				catch (Exception ex) {
+					L.e("Error committing transaction.", ex);
+					set400Response(c, "Error committing transaction, message: " + ex.getMessage());
+				}
+			}
 		}
 	}
 	

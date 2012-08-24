@@ -1,6 +1,5 @@
 package com.homeki.core.conditions;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,7 +12,7 @@ import com.homeki.core.events.Event;
 
 @Entity
 public class ChannelValueCondition extends Condition {
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "device_id")
 	private Device device;
 	

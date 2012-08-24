@@ -32,6 +32,7 @@ public class TriggerConditionAddRestlet extends KiRestlet {
 			throw new ApiException("No such condition type.");
 		
 		trigger.addCondition(condition);
+		c.ses.save(condition);
 		
 		JsonCondition newid = new JsonCondition();
 		newid.id = condition.getId();

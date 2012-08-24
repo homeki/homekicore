@@ -5,24 +5,25 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import com.homeki.core.events.Event;
-import com.homeki.core.logging.L;
 import com.homeki.core.triggers.Trigger;
 
 @Entity
 public class ConditionGroup extends Condition {
-	@OneToMany(mappedBy = "condition", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "condition", orphanRemoval = true)
+	@Cascade({ CascadeType.SAVE_UPDATE, CascadeType.DELETE })
 	@LazyCollection(LazyCollectionOption.EXTRA)
 	private List<Condition> conditions;
 	
-	@OneToMany(mappedBy = "conditionGroup", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "conditionGroup")
 	@LazyCollection(LazyCollectionOption.EXTRA)
 	private Set<Trigger> triggers;
 	
@@ -42,10 +43,8 @@ public class ConditionGroup extends Condition {
 	}
 	
 	public void addCondition(Condition condition) {
-		L.i("Before add: " + conditions.size());
 		condition.setParent(this);
 		conditions.add(condition);
-		L.i("After add: " + conditions.size());
 	}
 	
 	public List<Condition> getConditions() {
@@ -55,5 +54,10 @@ public class ConditionGroup extends Condition {
 	@Override
 	public String getType() {
 		return "conditiongroup";
+	}
+
+	public void deleteCondition(Condition condition) {
+		condition.setParent(null);
+		conditions.remove(condition);
 	}
 }

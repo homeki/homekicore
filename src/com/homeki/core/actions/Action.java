@@ -1,6 +1,5 @@
 package com.homeki.core.actions;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -21,7 +20,7 @@ public abstract class Action {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "action_id")
 	private Action action;
 	
