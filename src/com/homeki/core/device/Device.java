@@ -23,6 +23,7 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.criterion.Restrictions;
 
+import com.homeki.core.actions.ChangeChannelValueAction;
 import com.homeki.core.conditions.ChannelValueCondition;
 import com.homeki.core.storage.Hibernate;
 
@@ -43,6 +44,11 @@ public abstract class Device {
 	@Cascade({ CascadeType.SAVE_UPDATE })
 	@LazyCollection(LazyCollectionOption.EXTRA)
 	protected Set<ChannelValueCondition> channelValueConditions;
+	
+	@OneToMany(mappedBy = "device", orphanRemoval = true)
+	@Cascade({ CascadeType.SAVE_UPDATE })
+	@LazyCollection(LazyCollectionOption.EXTRA)
+	protected Set<ChangeChannelValueAction> changeChannelValueActions;
 	
 	@Column
 	protected String internalId;

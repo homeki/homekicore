@@ -35,6 +35,7 @@
         <mapping class="com.homeki.core.triggers.Trigger" />
         <mapping class="com.homeki.core.actions.Action" />
         <mapping class="com.homeki.core.actions.ActionGroup" />
+        <mapping class="com.homeki.core.actions.ChangeChannelValueAction" />
         <mapping class="com.homeki.core.conditions.Condition" />
         <mapping class="com.homeki.core.conditions.ConditionGroup" />
         <mapping class="com.homeki.core.conditions.ChannelValueCondition" />

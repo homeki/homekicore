@@ -24,5 +24,15 @@ public abstract class Action {
 	@JoinColumn(name = "action_id")
 	private Action action;
 	
+	public int getId() {
+		return id;
+	}
+	
+	public void setParent(Action action) {
+		this.action = action;
+	}
+	
 	public abstract void execute(Session ses);
+	
+	public abstract String getType();
 }

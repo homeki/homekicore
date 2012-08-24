@@ -7,9 +7,9 @@ import com.homeki.core.device.Device;
 import com.homeki.core.http.ApiException;
 import com.homeki.core.http.Container;
 import com.homeki.core.http.KiRestlet;
-import com.homeki.core.http.json.JsonChannelChangedCondition;
+import com.homeki.core.http.json.JsonChannelValueCondition;
 import com.homeki.core.http.json.JsonCondition;
-import com.homeki.core.http.json.JsonMinuteChangedCondition;
+import com.homeki.core.http.json.JsonMinuteCondition;
 import com.homeki.core.triggers.Trigger;
 
 public class TriggerConditionAddRestlet extends KiRestlet {
@@ -41,7 +41,7 @@ public class TriggerConditionAddRestlet extends KiRestlet {
 	}
 	
 	private Condition parseChannelChanged(Container c) {
-		JsonChannelChangedCondition jcond = getJsonObject(c, JsonChannelChangedCondition.class);
+		JsonChannelValueCondition jcond = getJsonObject(c, JsonChannelValueCondition.class);
 		
 		if (jcond.operator == null)
 			throw new ApiException("Missing operator.");
@@ -65,7 +65,7 @@ public class TriggerConditionAddRestlet extends KiRestlet {
 	}
 	
 	private Condition parseMinuteChanged(Container c) {
-		JsonMinuteChangedCondition jcond = getJsonObject(c, JsonMinuteChangedCondition.class);
+		JsonMinuteCondition jcond = getJsonObject(c, JsonMinuteCondition.class);
 		
 		if (jcond.timeOperator == null)
 			throw new ApiException("Missing timeOperator.");

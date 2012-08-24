@@ -5,7 +5,6 @@ import org.hibernate.Session;
 import com.homeki.core.actions.Action;
 
 public class DummyAction extends Action {
-	
 	private boolean triggered = false;
 	
 	@Override
@@ -15,5 +14,10 @@ public class DummyAction extends Action {
 	
 	public boolean getTriggered(){
 		return triggered;
+	}
+
+	@Override
+	public String getType() {
+		return "dummy";
 	}
 }

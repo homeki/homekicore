@@ -31,7 +31,13 @@ public class ActionGroup extends Action {
 	}
 	
 	public void addAction(Action action) {
+		action.setParent(this);
 		actions.add(action);
+	}
+	
+	public void deleteAction(Action action) {
+		action.setParent(null);
+		actions.remove(action);
 	}
 	
 	@Override
@@ -42,5 +48,10 @@ public class ActionGroup extends Action {
 	
 	public List<Action> getActions() {
 		return actions;
+	}
+
+	@Override
+	public String getType() {
+		return "actiongroup";
 	}
 }

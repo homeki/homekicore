@@ -91,4 +91,8 @@ public class Trigger {
 	public List<Action> getActions() {
 		return actionGroup.getActions();
 	}
+
+	public void deleteAction(Action action) {
+		actionGroup.deleteAction(action);
+	}
 }

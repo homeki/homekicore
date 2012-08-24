@@ -1,7 +1,7 @@
 package com.homeki.core.http.json;
 
 
-public class JsonChannelChangedCondition extends JsonCondition {
+public class JsonChannelValueCondition extends JsonCondition {
 	public Integer deviceId;
 	public Integer channel;
 	public Number number;

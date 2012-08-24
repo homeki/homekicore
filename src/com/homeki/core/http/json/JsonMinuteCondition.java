@@ -1,7 +1,7 @@
 package com.homeki.core.http.json;
 
 
-public class JsonMinuteChangedCondition extends JsonCondition {
+public class JsonMinuteCondition extends JsonCondition {
 	public String weekday;
 	public String day;
 	public int hour;

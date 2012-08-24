@@ -27,7 +27,6 @@ public class TriggerConditionTest {
 	public class JsonCondition {
 		public String type;
 		public Integer id;
-		public String shortDescription;
 	}
 	
 	public class JsonChannelChangedCondition {
@@ -81,7 +80,7 @@ public class TriggerConditionTest {
 		conditionId2 = jcond.id;
 	}
 	
-	@Test
+	@Test(dependsOnMethods="testAddChannelChanged")
 	public void testAddMinuteChanged() {
 		JsonMinuteChangedCondition jcond = new JsonMinuteChangedCondition();
 		jcond.day = "1,13";
@@ -101,7 +100,7 @@ public class TriggerConditionTest {
 		conditionId1 = jcond.id;
 	}
 	
-	@Test
+	@Test(dependsOnMethods="testAddMinuteChanged")
 	public void testList() {
 		JsonCondition[] jconditions = TestUtil.sendGetAndParseAsJson("/trigger/" + triggerId + "/condition/list", JsonCondition[].class);
 		
