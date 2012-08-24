@@ -24,11 +24,10 @@ public class EventHandlerThread extends ControlledThread {
 		List<Trigger> list = ses.createCriteria(Trigger.class).list();
 
 		for (Trigger t : list) {
-			if (t.check(e)) {
+			if (t.check(e))
 				t.execute(ses);
-			}
 		}
 		
-		ses.close();
+		Hibernate.closeSession(ses);
 	}
 }

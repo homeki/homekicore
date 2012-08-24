@@ -34,6 +34,9 @@ public class ConditionGroup extends Condition {
 	
 	@Override
 	public boolean check(Event e) {
+		if (conditions.isEmpty())
+			return false;
+		
 		for (Condition c : conditions) {
 			if (!c.check(e))
 				return false;
