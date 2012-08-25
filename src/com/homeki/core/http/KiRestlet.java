@@ -11,6 +11,8 @@ import org.restlet.Restlet;
 import org.restlet.data.MediaType;
 import org.restlet.data.Method;
 import org.restlet.data.Status;
+import org.restlet.engine.header.Header;
+import org.restlet.util.Series;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -35,6 +37,7 @@ public abstract class KiRestlet extends Restlet {
 		
 		try {
 			L.i("Got " + request.getMethod().getName() + " request for path " + request.getOriginalRef().getPath() + ".");
+			addCustomHttpHeaders(c);
 			session = Hibernate.openSession();
 			c.ses = session;
 			handle(c);
@@ -133,4 +136,14 @@ public abstract class KiRestlet extends Restlet {
 	}
 	
 	protected abstract void handle(Container c);
+	
+	private void addCustomHttpHeaders(Container c) {
+		@SuppressWarnings("unchecked")
+		Series<Header> responseHeaders = (Series<Header>)c.res.getAttributes().get("org.restlet.http.headers");
+		if (responseHeaders == null) {
+		    responseHeaders = new Series<Header>(Header.class);
+		    c.res.getAttributes().put("org.restlet.http.headers", responseHeaders);
+		}
+		responseHeaders.add(new Header("Access-Control-Allow-Origin", "*"));
+	}
 }
