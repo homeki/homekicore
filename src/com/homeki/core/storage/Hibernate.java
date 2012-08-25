@@ -5,6 +5,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.ImprovedNamingStrategy;
 import org.hibernate.context.ManagedSessionContext;
+import org.hibernate.proxy.HibernateProxy;
 
 public class Hibernate {
     private static SessionFactory sessionFactory = null;
@@ -37,5 +38,18 @@ public class Hibernate {
         session.flush();
         session.getTransaction().commit();
         session.close();
+    }
+    
+    @SuppressWarnings("unchecked")
+	public static <T> T unproxy(T entity) {
+        if (entity == null)
+            throw new NullPointerException("Entity passed for unproxy is null.");
+
+        org.hibernate.Hibernate.initialize(entity);
+        
+        if (entity instanceof HibernateProxy)
+            entity = (T)((HibernateProxy) entity).getHibernateLazyInitializer().getImplementation();
+        
+        return entity;
     }
 }

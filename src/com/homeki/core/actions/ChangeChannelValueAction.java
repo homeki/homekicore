@@ -11,6 +11,7 @@ import org.hibernate.Session;
 import com.homeki.core.device.Device;
 import com.homeki.core.device.Settable;
 import com.homeki.core.logging.L;
+import com.homeki.core.storage.Hibernate;
 
 @Entity
 public class ChangeChannelValueAction extends Action {
@@ -37,6 +38,7 @@ public class ChangeChannelValueAction extends Action {
 	@Override
 	public void execute(Session ses) {
 		try {
+			device = Hibernate.unproxy(device);
 			Settable s = (Settable)device;
 			s.set(channel, value.intValue());
 			L.i("Triggered change channel value action on device '" + device.getName() + "', channel " + channel + " to value " + value + ".");

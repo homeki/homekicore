@@ -39,11 +39,10 @@ public class ChannelValueCondition extends Condition {
 	public boolean check(Event e) {
 		if (e instanceof ChannelChangedEvent) {
 			ChannelChangedEvent cce = (ChannelChangedEvent) e;
-			if (cce.channel == this.getChannel() && cce.deviceId == device.getId()) {
-				return evalute(cce.value, getValue(), getOperator());
-			}
+			if (cce.channel == channel && cce.deviceId == device.getId())
+				status = evalute(cce.value, value, operator);
 		}
-		return false;
+		return status;
 	}
 	
 	public Device getDevice() {
