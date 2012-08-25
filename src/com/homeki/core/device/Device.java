@@ -25,6 +25,8 @@ import org.hibernate.criterion.Restrictions;
 
 import com.homeki.core.actions.ChangeChannelValueAction;
 import com.homeki.core.conditions.ChannelValueCondition;
+import com.homeki.core.events.ChannelValueChangedEvent;
+import com.homeki.core.events.EventQueue;
 import com.homeki.core.storage.Hibernate;
 
 @Entity
@@ -38,17 +40,17 @@ public abstract class Device {
 	@OneToMany(mappedBy = "device", orphanRemoval = true)
 	@Cascade({ CascadeType.SAVE_UPDATE, CascadeType.DELETE })
 	@LazyCollection(LazyCollectionOption.EXTRA)
-	protected Set<HistoryPoint> historyPoints;
+	private Set<HistoryPoint> historyPoints;
 	
 	@OneToMany(mappedBy = "device", orphanRemoval = true)
 	@Cascade({ CascadeType.SAVE_UPDATE, CascadeType.DELETE })
 	@LazyCollection(LazyCollectionOption.EXTRA)
-	protected Set<ChannelValueCondition> channelValueConditions;
+	private Set<ChannelValueCondition> channelValueConditions;
 	
 	@OneToMany(mappedBy = "device", orphanRemoval = true)
 	@Cascade({ CascadeType.SAVE_UPDATE, CascadeType.DELETE })
 	@LazyCollection(LazyCollectionOption.EXTRA)
-	protected Set<ChangeChannelValueAction> changeChannelValueActions;
+	private Set<ChangeChannelValueAction> changeChannelValueActions;
 	
 	@Column
 	protected String internalId;
@@ -145,9 +147,44 @@ public abstract class Device {
 		return p;
 	}
 	
+	public void addHistoryPoint(int channel, int value) {
+		IntegerHistoryPoint dhp = new IntegerHistoryPoint();
+		dhp.setDevice(this);
+		dhp.setRegistered(new Date());
+		dhp.setValue(value);
+		dhp.setChannel(channel);
+		historyPoints.add(dhp);
+		
+		if (id > 0)
+			EventQueue.getInstance().add(new ChannelValueChangedEvent(id, channel, value));
+		
+	}
+	
+	public void addHistoryPoint(int channel, double value) {
+		DoubleHistoryPoint dhp = new DoubleHistoryPoint();
+		dhp.setDevice(this);
+		dhp.setRegistered(new Date());
+		dhp.setValue(value);
+		historyPoints.add(dhp);
+		
+		if (id > 0)
+			EventQueue.getInstance().add(new ChannelValueChangedEvent(id, channel, value));
+	}
+	
 	public String[] getAbilities() {
 		return new String[0];
 	}
 	
 	public abstract List<Channel> getChannels();
+	
+	protected void validateChannel(int channel) {
+		List<Channel> channels = getChannels();
+		
+		for (Channel c : channels) {
+			if (c.id == channel)
+				return;
+		}
+		
+		throw new OperationException("Tried to operate on invalid channel " + channel + " on device with ID " + id + " (" + getType() + ").");
+	}
 }

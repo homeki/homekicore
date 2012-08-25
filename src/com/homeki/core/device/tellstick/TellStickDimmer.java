@@ -1,7 +1,6 @@
 package com.homeki.core.device.tellstick;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -9,8 +8,6 @@ import javax.persistence.Entity;
 import com.homeki.core.device.Channel;
 import com.homeki.core.device.IntegerHistoryPoint;
 import com.homeki.core.device.Settable;
-import com.homeki.core.events.ChannelChangedEvent;
-import com.homeki.core.events.EventQueue;
 
 @Entity
 public class TellStickDimmer extends TellStickDevice implements Settable, TellStickLearnable {
@@ -22,8 +19,8 @@ public class TellStickDimmer extends TellStickDevice implements Settable, TellSt
 	}
 	
 	public TellStickDimmer(int defaultLevel) {
-		addOnOffHistoryPoint(false);
-		addLevelHistoryPoint(defaultLevel);
+		addHistoryPoint(ONOFF_CHANNEL, 0);
+		addHistoryPoint(LEVEL_CHANNEL, defaultLevel);
 	}
 	
 	public TellStickDimmer(int defaultLevel, int house, int unit) {
@@ -36,6 +33,8 @@ public class TellStickDimmer extends TellStickDevice implements Settable, TellSt
 
 	@Override
 	public void set(int channel, int value) {
+		validateChannel(channel);
+		
 		int internalId = Integer.parseInt(getInternalId());
 		IntegerHistoryPoint level = (IntegerHistoryPoint)getLatestHistoryPoint(LEVEL_CHANNEL);
 		IntegerHistoryPoint onoff = (IntegerHistoryPoint)getLatestHistoryPoint(ONOFF_CHANNEL);
@@ -44,7 +43,7 @@ public class TellStickDimmer extends TellStickDevice implements Settable, TellSt
 			boolean on = value > 0;
 			if (on) {
 				TellStickNative.dim(internalId, level.getValue());
-				addOnOffHistoryPoint(true);
+				addHistoryPoint(ONOFF_CHANNEL, 1);
 			} else {
 				TellStickNative.turnOff(internalId);
 			}
@@ -52,36 +51,13 @@ public class TellStickDimmer extends TellStickDevice implements Settable, TellSt
 			if (onoff.getValue() > 0)
 				TellStickNative.dim(internalId, value);
 			else
-				addLevelHistoryPoint(value);
-		} else {
-			throw new RuntimeException("Tried to set invalid channel " + channel + " on TellStickDimmer '" + getInternalId() + "'.");
+				addHistoryPoint(LEVEL_CHANNEL, value);
 		}
 	}
 
 	@Override
 	public String getType() {
 		return "dimmer";
-	}
-	
-	public void addOnOffHistoryPoint(boolean on) {
-		int value = on ? 1 : 0;
-		IntegerHistoryPoint dhp = new IntegerHistoryPoint();
-		dhp.setDevice(this);
-		dhp.setRegistered(new Date());
-		dhp.setChannel(ONOFF_CHANNEL);
-		dhp.setValue(value);
-		historyPoints.add(dhp);
-		EventQueue.getInstance().add(new ChannelChangedEvent(getId(), ONOFF_CHANNEL, value));
-	}
-	
-	public void addLevelHistoryPoint(int level) {
-		IntegerHistoryPoint dhp = new IntegerHistoryPoint();
-		dhp.setDevice(this);
-		dhp.setRegistered(new Date());
-		dhp.setChannel(LEVEL_CHANNEL);
-		dhp.setValue(level);
-		historyPoints.add(dhp);
-		EventQueue.getInstance().add(new ChannelChangedEvent(getId(), LEVEL_CHANNEL, level));
 	}
 
 	@Override

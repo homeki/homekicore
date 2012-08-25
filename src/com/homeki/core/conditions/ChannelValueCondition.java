@@ -7,7 +7,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import com.homeki.core.device.Device;
-import com.homeki.core.events.ChannelChangedEvent;
+import com.homeki.core.events.ChannelValueChangedEvent;
 import com.homeki.core.events.Event;
 
 @Entity
@@ -37,8 +37,8 @@ public class ChannelValueCondition extends Condition {
 	}
 	
 	public boolean check(Event e) {
-		if (e instanceof ChannelChangedEvent) {
-			ChannelChangedEvent cce = (ChannelChangedEvent) e;
+		if (e instanceof ChannelValueChangedEvent) {
+			ChannelValueChangedEvent cce = (ChannelValueChangedEvent) e;
 			if (cce.channel == channel && cce.deviceId == device.getId())
 				status = evalute(cce.value, value, operator);
 		}

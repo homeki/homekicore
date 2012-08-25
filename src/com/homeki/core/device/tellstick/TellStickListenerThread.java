@@ -38,21 +38,21 @@ public class TellStickListenerThread extends ControlledThread {
 		} else {
 			if (d instanceof TellStickSwitch) {
 				boolean on = Boolean.parseBoolean(s[2]);
-				((TellStickSwitch)d).addOnOffHistoryPoint(on);
+				((TellStickSwitch)d).addHistoryPoint(TellStickSwitch.ONOFF_CHANNEL, on ? 1 : 0);
 				L.i("Received '" + on + "' from TellStickListener.");
 			} else if (d instanceof TellStickDimmer) {
 				try {
 					int level = Integer.parseInt(s[2]);
-					((TellStickDimmer)d).addLevelHistoryPoint(level);
+					((TellStickDimmer)d).addHistoryPoint(TellStickDimmer.LEVEL_CHANNEL, level);
 					L.i("Received '" + level + "' from TellStickListener.");
 				} catch (NumberFormatException e) {
 					boolean on = Boolean.parseBoolean(s[2]);
-					((TellStickDimmer)d).addOnOffHistoryPoint(on);
+					((TellStickDimmer)d).addHistoryPoint(TellStickDimmer.ONOFF_CHANNEL, on ? 1 : 0);
 					L.i("Received '" + on + "' from TellStickListener.");
 				}
 			} else if (d instanceof TellStickThermometer) {
 				double value = Double.parseDouble(s[2]);
-				((TellStickThermometer)d).addHistoryPoint(value);
+				((TellStickThermometer)d).addHistoryPoint(TellStickThermometer.TEMPERATURE_CHANNEL, value);
 				L.i("Received '" + value + "'C from TellStickListener.");
 			}
 		}

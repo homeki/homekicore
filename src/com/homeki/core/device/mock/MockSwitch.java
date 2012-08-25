@@ -1,17 +1,14 @@
 package com.homeki.core.device.mock;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
 
 import com.homeki.core.device.Channel;
 import com.homeki.core.device.Device;
-import com.homeki.core.device.IntegerHistoryPoint;
 import com.homeki.core.device.Settable;
-import com.homeki.core.events.ChannelChangedEvent;
-import com.homeki.core.events.EventQueue;
+import com.homeki.core.logging.L;
 
 @Entity
 public class MockSwitch extends Device implements Settable {
@@ -26,26 +23,14 @@ public class MockSwitch extends Device implements Settable {
 	}
 	
 	public MockSwitch(boolean defaultValue) {
-		addHistoryPoint(defaultValue);
+		addHistoryPoint(ONOFF_CHANNEL, defaultValue ? 1 : 0);
 	}
 
 	@Override
 	public void set(int channel, int value) {
-		if (channel != ONOFF_CHANNEL)
-			throw new RuntimeException("Tried to set invalid channel " + channel + " on MockSwitch '" + getInternalId() + "'.");
-		
-		addHistoryPoint(value > 0);
-	}
-	
-	public void addHistoryPoint(boolean on) {
-		int value = on ? 1 : 0;
-		IntegerHistoryPoint dhp = new IntegerHistoryPoint();
-		dhp.setDevice(this);
-		dhp.setRegistered(new Date());
-		dhp.setValue(value);
-		dhp.setChannel(ONOFF_CHANNEL);
-		historyPoints.add(dhp);
-		EventQueue.getInstance().add(new ChannelChangedEvent(getId(), ONOFF_CHANNEL, value));
+		validateChannel(channel);
+		addHistoryPoint(ONOFF_CHANNEL, value > 0 ? 1 : 0);
+		L.i("MockSwitch with internal ID '" + getInternalId() + "' changed channel " + channel + " to " + value + ".");
 	}
 	
 	@Override

@@ -1,7 +1,6 @@
 package com.homeki.core.device.mock;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -10,9 +9,6 @@ import javax.persistence.Transient;
 
 import com.homeki.core.device.Channel;
 import com.homeki.core.device.Device;
-import com.homeki.core.device.DoubleHistoryPoint;
-import com.homeki.core.events.ChannelChangedEvent;
-import com.homeki.core.events.EventQueue;
 
 @Entity
 public class MockThermometer extends Device {
@@ -27,13 +23,13 @@ public class MockThermometer extends Device {
 	
 	public MockThermometer(double defaultValue) {
 		this();
-		addHistoryPoint(defaultValue);
+		addHistoryPoint(TEMPERATURE_CHANNEL, defaultValue);
 	}
 
 	// TODO: log this using a thread or something, like in onewire
 	public void storeNewValue() {
 		double temp = getRandomThermometerValue();
-		addHistoryPoint(temp);
+		addHistoryPoint(TEMPERATURE_CHANNEL, temp);
 	}
 	
 	private Double getRandomThermometerValue() {
@@ -44,15 +40,6 @@ public class MockThermometer extends Device {
 		} catch (InterruptedException e) { }
 		
 		return (rnd.nextDouble() * 2 - 1) * 40;
-	}
-	
-	public void addHistoryPoint(double value) {
-		DoubleHistoryPoint dhp = new DoubleHistoryPoint();
-		dhp.setDevice(this);
-		dhp.setRegistered(new Date());
-		dhp.setValue(value);
-		historyPoints.add(dhp);
-		EventQueue.getInstance().add(new ChannelChangedEvent(getId(), 0, value));
 	}
 	
 	@Override
