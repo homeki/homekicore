@@ -11,7 +11,7 @@ import com.homeki.core.storage.Hibernate;
 
 // Protocol
 // ===============================
-// Just sends a simple string, values seperated by |.
+// Just sends a simple string, values seperated by |. Triggered by UDP packet broadcasted to port 53005.
 //
 // Request: 
 // "HOMEKI"
