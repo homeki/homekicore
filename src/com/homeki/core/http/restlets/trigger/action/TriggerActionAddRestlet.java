@@ -39,7 +39,7 @@ public class TriggerActionAddRestlet extends KiRestlet {
 	private Action parseChangeChannelValue(Container c) {
 		JsonChangeChannelValueAction jact = getJsonObject(c, JsonChangeChannelValueAction.class);
 		
-		if (jact.number == null)
+		if (jact.value == null)
 			throw new ApiException("Missing number.");
 		if (jact.deviceId == null)
 			throw new ApiException("Missing deviceId.");
@@ -53,6 +53,6 @@ public class TriggerActionAddRestlet extends KiRestlet {
 		
 		// TODO: add more validation here (does device have channel, etc)
 			
-		return new ChangeChannelValueAction(dev, jact.channel, jact.number);
+		return new ChangeChannelValueAction(dev, jact.channel, jact.value);
 	}
 }

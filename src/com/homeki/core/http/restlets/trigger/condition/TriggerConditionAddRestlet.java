@@ -45,7 +45,7 @@ public class TriggerConditionAddRestlet extends KiRestlet {
 		
 		if (jcond.operator == null)
 			throw new ApiException("Missing operator.");
-		if (jcond.number == null)
+		if (jcond.value == null)
 			throw new ApiException("Missing number.");
 		if (jcond.deviceId == null)
 			throw new ApiException("Missing deviceId.");
@@ -61,7 +61,7 @@ public class TriggerConditionAddRestlet extends KiRestlet {
 		
 		// TODO: add more validation here (does device have channel, etc)
 			
-		return new ChannelValueCondition(dev, jcond.channel, jcond.number, op);
+		return new ChannelValueCondition(dev, jcond.channel, jcond.value, op);
 	}
 	
 	private Condition parseMinuteChanged(Container c) {

@@ -33,7 +33,7 @@ public class TriggerConditionTest {
 		public Integer id;
 		public Integer deviceId;
 		public Integer channel;
-		public Number number;
+		public Number value;
 		public String operator;
 	}
 	
@@ -64,7 +64,7 @@ public class TriggerConditionTest {
 	public void testAddChannelChanged() {
 		JsonChannelChangedCondition jcond = new JsonChannelChangedCondition();
 		jcond.deviceId = deviceId;
-		jcond.number = 12;
+		jcond.value = 12;
 		jcond.channel = 1;
 		jcond.operator = "dontthinkso";
 		

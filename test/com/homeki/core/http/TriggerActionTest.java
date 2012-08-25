@@ -32,7 +32,7 @@ public class TriggerActionTest {
 		public Integer id;
 		public Integer deviceId;
 		public Integer channel;
-		public Number number;
+		public Number value;
 	}
 	
 	@BeforeClass
@@ -54,7 +54,7 @@ public class TriggerActionTest {
 	public void testAddChangeChannelValueAction() {
 		JsonChangeChannelValueAction jact = new JsonChangeChannelValueAction();
 		jact.deviceId = deviceId;
-		jact.number = 1;
+		jact.value = 1;
 		jact.channel = 1;
 		
 		assertEquals(TestUtil.sendPost("/trigger/9999/action/add?type=changechannelvalue", jact).statusCode, 400);

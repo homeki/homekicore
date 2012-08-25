@@ -6,7 +6,7 @@ import com.homeki.core.actions.Action;
 public class JsonChangeChannelValueAction extends JsonAction {
 	public Integer deviceId;
 	public Integer channel;
-	public Number number;
+	public Number value;
 	
 	public JsonChangeChannelValueAction(Action action) {
 		super(action);
