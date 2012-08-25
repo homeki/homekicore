@@ -50,6 +50,18 @@ public class ChangeChannelValueAction extends Action {
 			L.e("Unknown exception occured when executing ChangeChannelValueAction on device with ID " + device.getId() + " and name '" + device.getName() + "'.", ex);
 		}
 	}
+	
+	public int getDeviceId() {
+		return device.getId();
+	}
+	
+	public Number getValue() {
+		return value;
+	}
+	
+	public int getChannel() {
+		return channel;
+	}
 
 	@Override
 	public String getType() {

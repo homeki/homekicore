@@ -28,8 +28,7 @@ public class TriggerActionTest {
 		public Integer id;
 	}
 	
-	public class JsonChangeChannelValueAction {
-		public Integer id;
+	public class JsonChangeChannelValueAction extends JsonAction {
 		public Integer deviceId;
 		public Integer channel;
 		public Number value;
@@ -79,7 +78,17 @@ public class TriggerActionTest {
 	}
 	
 	@Test(dependsOnMethods="testList")
+	public void testGet() {
+		JsonChangeChannelValueAction jact = TestUtil.sendGetAndParseAsJson("/trigger/" + triggerId + "/action/" + actionId1 + "/get", JsonChangeChannelValueAction.class);
+		assertEquals((int)jact.channel, 1);
+		assertEquals(jact.value.intValue(), 1);
+		assertEquals((int)jact.deviceId, deviceId);
+	}
+	
+	@Test(dependsOnMethods="testGet")
 	public void testDelete() {
+		assertEquals(TestUtil.sendGet("/trigger/" + triggerId + "/action/" + actionId1 + "/get").statusCode, 200);
 		assertEquals(TestUtil.sendGet("/trigger/" + triggerId + "/action/" + actionId1 + "/delete").statusCode, 200);
+		assertEquals(TestUtil.sendGet("/trigger/" + triggerId + "/action/" + actionId1 + "/get").statusCode, 400);
 	}
 }

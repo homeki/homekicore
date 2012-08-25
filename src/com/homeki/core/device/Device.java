@@ -27,6 +27,7 @@ import com.homeki.core.actions.ChangeChannelValueAction;
 import com.homeki.core.conditions.ChannelValueCondition;
 import com.homeki.core.events.ChannelValueChangedEvent;
 import com.homeki.core.events.EventQueue;
+import com.homeki.core.main.OperationException;
 import com.homeki.core.storage.Hibernate;
 
 @Entity

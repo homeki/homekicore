@@ -29,16 +29,14 @@ public class TriggerConditionTest {
 		public Integer id;
 	}
 	
-	public class JsonChannelChangedCondition {
-		public Integer id;
+	public class JsonChannelChangedCondition extends JsonCondition {
 		public Integer deviceId;
 		public Integer channel;
 		public Number value;
 		public String operator;
 	}
 	
-	public class JsonMinuteChangedCondition {
-		public int id;
+	public class JsonMinuteCondition extends JsonCondition {
 		public String weekday;
 		public String day;
 		public Integer hour;
@@ -81,7 +79,7 @@ public class TriggerConditionTest {
 	
 	@Test(dependsOnMethods="testAddChannelChanged")
 	public void testAddMinuteChanged() {
-		JsonMinuteChangedCondition jcond = new JsonMinuteChangedCondition();
+		JsonMinuteCondition jcond = new JsonMinuteCondition();
 		jcond.day = "1,13";
 		jcond.weekday = "1,3,5";
 		jcond.hour = 12;
@@ -89,7 +87,7 @@ public class TriggerConditionTest {
 		
 		assertEquals(TestUtil.sendPost("/trigger/9999/condition/add?type=minute", jcond).statusCode, 400);
 		assertEquals(TestUtil.sendPost("/trigger/" + triggerId + "/condition/add?type=feelminute", jcond).statusCode, 400);
-		jcond = TestUtil.sendPostAndParseAsJson("/trigger/" + triggerId + "/condition/add?type=minute", jcond, JsonMinuteChangedCondition.class);
+		jcond = TestUtil.sendPostAndParseAsJson("/trigger/" + triggerId + "/condition/add?type=minute", jcond, JsonMinuteCondition.class);
 		
 		assertTrue(jcond.id > 0);
 		conditionId1 = jcond.id;
@@ -109,7 +107,18 @@ public class TriggerConditionTest {
 	}
 	
 	@Test(dependsOnMethods="testList")
+	public void testGet() {
+		JsonMinuteCondition jcond = TestUtil.sendGetAndParseAsJson("/trigger/" + triggerId + "/condition/" + conditionId1 + "/get", JsonMinuteCondition.class);
+		assertEquals(jcond.day, "1,13");
+		assertEquals(jcond.weekday, "1,3,5");
+		assertEquals((int)jcond.hour, 12);
+		assertEquals((int)jcond.minute, 13);
+	}
+	
+	@Test(dependsOnMethods="testGet")
 	public void testDelete() {
+		assertEquals(TestUtil.sendGet("/trigger/" + triggerId + "/condition/" + conditionId1 + "/get").statusCode, 200);
 		assertEquals(TestUtil.sendGet("/trigger/" + triggerId + "/condition/" + conditionId1 + "/delete").statusCode, 200);
+		assertEquals(TestUtil.sendGet("/trigger/" + triggerId + "/condition/" + conditionId1 + "/get").statusCode, 400);
 	}
 }

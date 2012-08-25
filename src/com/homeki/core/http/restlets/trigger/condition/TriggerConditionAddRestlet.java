@@ -52,8 +52,7 @@ public class TriggerConditionAddRestlet extends KiRestlet {
 		if (jcond.channel == null)
 			throw new ApiException("Missing channel.");
 		
-		int op = convertOperatorString(jcond.operator);
-
+		int op = jcond.getOperatorInt();
 		Device dev = (Device)c.ses.get(Device.class, jcond.deviceId);
 		
 		if (dev == null)
@@ -82,18 +81,5 @@ public class TriggerConditionAddRestlet extends KiRestlet {
 			.build();
 		
 		return cond;
-	}
-	
-	private int convertOperatorString(String operator) {
-		int op;
-		if (operator.equals("EQ"))
-			op = Condition.EQ;
-		else if (operator.equals("GT"))
-			op = Condition.GT;
-		else if (operator.equals("LT"))
-			op = Condition.LT;
-		else
-			throw new ApiException("No such operator available. The possible operators EQ, GT or LT.");
-		return op;
 	}
 }

@@ -62,6 +62,22 @@ public class MinuteCondition extends Condition {
 		this.minute = builder.minute;
 	}
 	
+	public String getDay() {
+		return day;
+	}
+	
+	public String getWeekday() {
+		return weekday;
+	}
+	
+	public int getHour() {
+		return hour;
+	}
+	
+	public int getMinute() {
+		return minute;
+	}
+	
 	public boolean check(Event e) {
 		if (e instanceof MinuteChangedEvent) {
 			MinuteChangedEvent mce = (MinuteChangedEvent)e;

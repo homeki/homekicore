@@ -45,36 +45,20 @@ public class ChannelValueCondition extends Condition {
 		return status;
 	}
 	
-	public Device getDevice() {
-		return device;
-	}
-	
-	public void setDevice(Device device) {
-		this.device = device;
+	public int getDeviceId() {
+		return device.getId();
 	}
 	
 	public int getChannel() {
 		return channel;
 	}
 	
-	public void setChannel(int channel) {
-		this.channel = channel;
-	}
-	
 	public Number getValue() {
 		return value;
 	}
 	
-	public void setValue(Number value) {
-		this.value = value;
-	}
-	
 	public int getOperator() {
 		return operator;
-	}
-	
-	public void setOperator(int operator) {
-		this.operator = operator;
 	}
 	
 	@Override

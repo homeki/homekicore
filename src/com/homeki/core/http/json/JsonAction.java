@@ -3,6 +3,8 @@ package com.homeki.core.http.json;
 import java.util.List;
 
 import com.homeki.core.actions.Action;
+import com.homeki.core.actions.ChangeChannelValueAction;
+import com.homeki.core.main.OperationException;
 
 public class JsonAction {
 	public String type;
@@ -21,8 +23,16 @@ public class JsonAction {
 		JsonAction[] jsonActions = new JsonAction[actions.size()];
 		
 		for (int i = 0; i < jsonActions.length; i++)
-			jsonActions[i] = new JsonAction(actions.get(i));
+			jsonActions[i] = JsonAction.create(actions.get(i));
 		
 		return jsonActions;
+	}
+
+	public static JsonAction create(Action act) {
+		if (act instanceof ChangeChannelValueAction) {
+			return new JsonChangeChannelValueAction((ChangeChannelValueAction)act);
+		}
+		
+		throw new OperationException("Tried to create JSON action from unknown action.");
 	}
 }

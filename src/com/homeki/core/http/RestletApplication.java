@@ -23,9 +23,11 @@ import com.homeki.core.http.restlets.trigger.TriggerListRestlet;
 import com.homeki.core.http.restlets.trigger.TriggerSetRestlet;
 import com.homeki.core.http.restlets.trigger.action.TriggerActionAddRestlet;
 import com.homeki.core.http.restlets.trigger.action.TriggerActionDeleteRestlet;
+import com.homeki.core.http.restlets.trigger.action.TriggerActionGetRestlet;
 import com.homeki.core.http.restlets.trigger.action.TriggerActionListRestlet;
 import com.homeki.core.http.restlets.trigger.condition.TriggerConditionAddRestlet;
 import com.homeki.core.http.restlets.trigger.condition.TriggerConditionDeleteRestlet;
+import com.homeki.core.http.restlets.trigger.condition.TriggerConditionGetRestlet;
 import com.homeki.core.http.restlets.trigger.condition.TriggerConditionListRestlet;
 
 public class RestletApplication extends Application {
@@ -58,10 +60,12 @@ public class RestletApplication extends Application {
 		
 		r.attach("/trigger/{triggerid}/condition/list", new TriggerConditionListRestlet());
 		r.attach("/trigger/{triggerid}/condition/add", new TriggerConditionAddRestlet());
+		r.attach("/trigger/{triggerid}/condition/{conditionid}/get", new TriggerConditionGetRestlet());
 		r.attach("/trigger/{triggerid}/condition/{conditionid}/delete", new TriggerConditionDeleteRestlet());
 		
 		r.attach("/trigger/{triggerid}/action/list", new TriggerActionListRestlet());
 		r.attach("/trigger/{triggerid}/action/add", new TriggerActionAddRestlet());
+		r.attach("/trigger/{triggerid}/action/{actionid}/get", new TriggerActionGetRestlet());
 		r.attach("/trigger/{triggerid}/action/{actionid}/delete", new TriggerActionDeleteRestlet());
 		
 		return r;
