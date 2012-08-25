@@ -23,6 +23,6 @@ public class DeviceChannelValueSetRestlet extends KiRestlet {
 
 		((Settable)dev).set(channel, value);
 		
-		set200Response(c, "Device state successfully changed.");
+		set200Response(c, "Device channel value successfully changed.");
 	}
 }
