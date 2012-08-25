@@ -65,5 +65,5 @@ public abstract class HistoryPoint {
 		return this.id;
 	}
 	
-	public abstract Object getValue();
+	public abstract Number getValue();
 }

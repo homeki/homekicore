@@ -8,7 +8,7 @@ import com.homeki.core.device.HistoryPoint;
 public class JsonHistoryPoint {	
 	public Date registered;
 	public Integer channel;
-	public Object value;
+	public Number value;
 	
 	public JsonHistoryPoint() {
 		

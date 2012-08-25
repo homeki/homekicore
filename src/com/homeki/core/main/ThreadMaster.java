@@ -10,6 +10,7 @@ import org.restlet.data.Protocol;
 import com.homeki.core.device.mock.MockModule;
 import com.homeki.core.device.onewire.OneWireModule;
 import com.homeki.core.device.tellstick.TellStickModule;
+import com.homeki.core.events.ChannelValueChangedEvent;
 import com.homeki.core.events.EventHandlerThread;
 import com.homeki.core.generators.ClockGeneratorThread;
 import com.homeki.core.http.RestletApplication;
@@ -124,6 +125,9 @@ public class ThreadMaster {
 		} catch (Exception e) {
 			L.e("Could not start ClockGeneratorThread.", e);
 		}
+		
+		// generate channel value changed event once, for init
+		ChannelValueChangedEvent.generateOnce();
 	}
 	
 	private void setupModules() {
