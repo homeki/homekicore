@@ -33,6 +33,7 @@ public class DeviceMergeRestlet extends KiRestlet {
 		}
 		mergeWithDev.getHistoryPoints().clear();
 		
+		c.ses.flush();
 		c.ses.delete(mergeWithDev);
 		
 		set200Response(c, "Merge-with device successfully merged into device.");

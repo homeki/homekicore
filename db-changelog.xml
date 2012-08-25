@@ -335,4 +335,8 @@
 	    <addForeignKeyConstraint constraintName="fk_trigger-action_group" referencedTableName="action_group" baseColumnNames="action_group_id" baseTableName="trigger" referencedColumnNames="id"/>
 	    <addForeignKeyConstraint constraintName="fk_trigger-condition_group" referencedTableName="condition_group" baseColumnNames="condition_group_id" baseTableName="trigger" referencedColumnNames="id"/>
 	</changeSet>
+	
+	<changeSet id="33" author="jonas">
+		<dropColumn tableName="minute_condition" columnName="time_operator"/>	    
+	</changeSet>
 </databaseChangeLog>

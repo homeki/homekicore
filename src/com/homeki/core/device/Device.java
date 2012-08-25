@@ -41,12 +41,12 @@ public abstract class Device {
 	protected Set<HistoryPoint> historyPoints;
 	
 	@OneToMany(mappedBy = "device", orphanRemoval = true)
-	@Cascade({ CascadeType.SAVE_UPDATE })
+	@Cascade({ CascadeType.SAVE_UPDATE, CascadeType.DELETE })
 	@LazyCollection(LazyCollectionOption.EXTRA)
 	protected Set<ChannelValueCondition> channelValueConditions;
 	
 	@OneToMany(mappedBy = "device", orphanRemoval = true)
-	@Cascade({ CascadeType.SAVE_UPDATE })
+	@Cascade({ CascadeType.SAVE_UPDATE, CascadeType.DELETE })
 	@LazyCollection(LazyCollectionOption.EXTRA)
 	protected Set<ChangeChannelValueAction> changeChannelValueActions;
 	

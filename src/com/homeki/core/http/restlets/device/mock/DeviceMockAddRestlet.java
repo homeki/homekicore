@@ -2,6 +2,7 @@ package com.homeki.core.http.restlets.device.mock;
 
 import com.homeki.core.device.Device;
 import com.homeki.core.device.mock.MockDimmer;
+import com.homeki.core.device.mock.MockModule;
 import com.homeki.core.device.mock.MockSwitch;
 import com.homeki.core.device.mock.MockThermometer;
 import com.homeki.core.http.ApiException;
@@ -23,6 +24,8 @@ public class DeviceMockAddRestlet extends KiRestlet {
 			dev = new MockThermometer(0.0);
 		else
 			throw new ApiException("Did not recognize type '" + jsonDevice.type + "' as a valid mock device type.");
+		
+		dev.setInternalId(jsonDevice.type + MockModule.getNextCount());
 		
 		if (jsonDevice.name != null)
 			dev.setName(jsonDevice.name);

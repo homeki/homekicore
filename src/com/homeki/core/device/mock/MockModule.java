@@ -7,6 +7,8 @@ import com.homeki.core.main.Module;
 import com.homeki.core.storage.Hibernate;
 
 public class MockModule implements Module {
+	private static int count = 87;
+	
 	@Override
 	public void construct() {
 		Session session = Hibernate.openSession();
@@ -32,5 +34,9 @@ public class MockModule implements Module {
 	@Override
 	public void destruct() {
 		
+	}
+	
+	public static int getNextCount() {
+		return ++count;
 	}
 }

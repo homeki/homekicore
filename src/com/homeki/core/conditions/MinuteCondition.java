@@ -22,9 +22,6 @@ public class MinuteCondition extends Condition {
 	@Column
 	public int minute;
 	
-	@Column
-	public int timeOperator;
-	
 	protected MinuteCondition() {}
 	
 	public static class Builder {
@@ -32,7 +29,6 @@ public class MinuteCondition extends Condition {
 		public String day = "";
 		public int hour;
 		public int minute;
-		public int timeOperator = Condition.IGNORE;
 		
 		public Builder weekday(String weekday) {
 			this.weekday = weekday;
@@ -54,28 +50,21 @@ public class MinuteCondition extends Condition {
 			return this;
 		}
 		
-		public Builder timeOperator(int timeOperator) {
-			this.timeOperator = timeOperator;
-			return this;
-		}
-		
 		public MinuteCondition build() {
 			return new MinuteCondition(this);
 		}
-		
 	}
 	
 	private MinuteCondition(Builder builder) {
-		day = builder.day;
-		weekday = builder.weekday;
-		hour = builder.hour;
-		minute = builder.minute;
-		timeOperator = builder.timeOperator;
+		this.day = builder.day;
+		this.weekday = builder.weekday;
+		this.hour = builder.hour;
+		this.minute = builder.minute;
 	}
 	
 	public boolean check(Event e) {
 		if (e instanceof MinuteChangedEvent) {
-			MinuteChangedEvent mce = (MinuteChangedEvent) e;
+			MinuteChangedEvent mce = (MinuteChangedEvent)e;
 			status = true;
 			
 			if (this.day.length() > 0) {
@@ -89,35 +78,10 @@ public class MinuteCondition extends Condition {
 				status &= this.weekday.contains(weekday);
 			}
 			
-			switch (this.timeOperator) {
-			case EQ:
-				status &= evalute(mce.hour, hour, EQ);
-				status &= evalute(mce.minute, minute, EQ);
-				break;
-			case LT:
-				if (!evalute(mce.hour, hour, LT)) {
-					status &= evalute(mce.hour, hour, EQ);
-					status &= evalute(mce.minute, minute, LT);
-				}
-				break;
-			case GT:
-				if (!evalute(mce.hour, hour, GT)) {
-					status &= evalute(mce.hour, hour, EQ);
-					status &= evalute(mce.minute, minute, GT);
-				}
-				break;
-			case IGNORE:
-				break;
-			default:
-				break;
-			}
+			status &= hour == mce.hour && minute == mce.minute;
 		}
+		
 		return status;
-	}
-	
-	@Override
-	public String toString() {
-		return "At " + hour + ":" + minute + " (day: " + day + ", weekday: " + weekday + ")";
 	}
 	
 	@Override

@@ -9,6 +9,7 @@ import javax.persistence.ManyToOne;
 import org.hibernate.Session;
 
 import com.homeki.core.device.Device;
+import com.homeki.core.device.Settable;
 import com.homeki.core.logging.L;
 
 @Entity
@@ -35,9 +36,17 @@ public class ChangeChannelValueAction extends Action {
 	
 	@Override
 	public void execute(Session ses) {
-//		Settable s = (Settable) ses.get(Device.class, deviceId);
-//		s.set(channel, value);
-		L.i("Triggered change channel value action on device '" + device.getName() + "', channel " + channel + " to value " + value + ".");
+		try {
+			Settable s = (Settable)device;
+			s.set(channel, value.intValue());
+			L.i("Triggered change channel value action on device '" + device.getName() + "', channel " + channel + " to value " + value + ".");
+		}
+		catch (ClassCastException ex) {
+			L.e("Device with ID " + device.getId() + " and name '" + device.getName() + "' was about to be switched in a ChangeChannelValueAction, but the device is not Settable.");
+		}
+		catch (Exception ex) {
+			L.e("Unknown exception occured when executing ChangeChannelValueAction on device with ID " + device.getId() + " and name '" + device.getName() + "'.", ex);
+		}
 	}
 
 	@Override

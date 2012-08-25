@@ -43,7 +43,6 @@ public class TriggerConditionTest {
 		public String day;
 		public Integer hour;
 		public Integer minute;
-		public String timeOperator;
 	}
 	
 	@BeforeClass
@@ -87,13 +86,9 @@ public class TriggerConditionTest {
 		jcond.weekday = "1,3,5";
 		jcond.hour = 12;
 		jcond.minute = 13;
-		jcond.timeOperator = "naha";
 		
 		assertEquals(TestUtil.sendPost("/trigger/9999/condition/add?type=minute", jcond).statusCode, 400);
-		assertEquals(TestUtil.sendPost("/trigger/" + triggerId + "/condition/add?type=minute", jcond).statusCode, 400);
-		
-		jcond.timeOperator = "EQ";
-		
+		assertEquals(TestUtil.sendPost("/trigger/" + triggerId + "/condition/add?type=feelminute", jcond).statusCode, 400);
 		jcond = TestUtil.sendPostAndParseAsJson("/trigger/" + triggerId + "/condition/add?type=minute", jcond, JsonMinuteChangedCondition.class);
 		
 		assertTrue(jcond.id > 0);

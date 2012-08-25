@@ -6,5 +6,4 @@ public class JsonMinuteCondition extends JsonCondition {
 	public String day;
 	public int hour;
 	public int minute;
-	public String timeOperator;
 }

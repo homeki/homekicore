@@ -67,14 +67,10 @@ public class TriggerConditionAddRestlet extends KiRestlet {
 	private Condition parseMinuteChanged(Container c) {
 		JsonMinuteCondition jcond = getJsonObject(c, JsonMinuteCondition.class);
 		
-		if (jcond.timeOperator == null)
-			throw new ApiException("Missing timeOperator.");
 		if (jcond.day == null)
 			throw new ApiException("Missing day.");
 		if (jcond.weekday == null)
 			throw new ApiException("Missing weekday.");
-		
-		int op = convertOperatorString(jcond.timeOperator);
 		
 		// TODO: add more validation here (is everything passed valid, etc)
 		
@@ -82,7 +78,6 @@ public class TriggerConditionAddRestlet extends KiRestlet {
 			.day(jcond.day)
 			.hour(jcond.hour)
 			.minute(jcond.minute)
-			.timeOperator(op)
 			.weekday(jcond.weekday)
 			.build();
 		
