@@ -113,7 +113,7 @@ public class ThreadMaster {
 				webGuiRestletComponent = new Component();
 				webGuiRestletComponent.getServers().add(Protocol.HTTP, 8080);
 				webGuiRestletComponent.getClients().add(Protocol.FILE);
-				webGuiRestletComponent.getDefaultHost().attach(new Directory(webGuiRestletComponent.getContext().createChildContext(), "file:///home/dev/workspace/homeki/homekiweb"));
+				webGuiRestletComponent.getDefaultHost().attach(new Directory(webGuiRestletComponent.getContext().createChildContext(), "file:///opt/homeki/www"));
 				L.init();
 				webGuiRestletComponent.getLogger().setLevel(Level.SEVERE);
 				webGuiRestletComponent.start();
