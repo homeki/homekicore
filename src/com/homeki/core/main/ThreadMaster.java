@@ -1,11 +1,13 @@
 package com.homeki.core.main;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
 import org.restlet.Component;
 import org.restlet.data.Protocol;
+import org.restlet.resource.Directory;
 
 import com.homeki.core.device.mock.MockModule;
 import com.homeki.core.device.onewire.OneWireModule;
@@ -13,13 +15,14 @@ import com.homeki.core.device.tellstick.TellStickModule;
 import com.homeki.core.events.ChannelValueChangedEvent;
 import com.homeki.core.events.EventHandlerThread;
 import com.homeki.core.generators.ClockGeneratorThread;
-import com.homeki.core.http.RestletApplication;
+import com.homeki.core.http.JsonRestletApplication;
 import com.homeki.core.logging.L;
 import com.homeki.core.storage.DatabaseManager;
 import com.homeki.core.storage.Hibernate;
 
 public class ThreadMaster {
-	private Component restletComponent;
+	private Component jsonRestletComponent;
+	private Component webGuiRestletComponent;
 	private ControlledThread broadcastThread;
 	private ControlledThread eventHandlerThread;
 	private ControlledThread clockGeneratorThread;
@@ -89,17 +92,38 @@ public class ThreadMaster {
 		}
 		L.i("Modules constructed.");
 		
-		// start Restlet listener thread
+		// start JSON Restlet listener thread
 		try {
-			restletComponent = new Component();
-			restletComponent.getServers().add(Protocol.HTTP, 5000);
-			restletComponent.getDefaultHost().attach(new RestletApplication());
+			jsonRestletComponent = new Component();
+			jsonRestletComponent.getServers().add(Protocol.HTTP, 5000);
+			jsonRestletComponent.getDefaultHost().attach(new JsonRestletApplication());
 			L.init();
-			restletComponent.getLogger().setLevel(Level.SEVERE);
-			restletComponent.start();
+			jsonRestletComponent.getLogger().setLevel(Level.SEVERE);
+			jsonRestletComponent.start();
 		} catch (Exception e) {
-			L.e("Unknown exception starting restlet HTTP server.", e);
+			L.e("Unknown exception starting JSON restlet HTTP server.", e);
 			System.exit(-1);
+		}
+		
+		// start web GUI Restlet listener thread
+		File webRoot = new File("/opt/homeki/www");
+		if (webRoot.exists()) {
+			L.i("Web root exists, starting static web server on port 8080.");
+			try {
+				webGuiRestletComponent = new Component();
+				webGuiRestletComponent.getServers().add(Protocol.HTTP, 8080);
+				webGuiRestletComponent.getClients().add(Protocol.FILE);
+				webGuiRestletComponent.getDefaultHost().attach(new Directory(webGuiRestletComponent.getContext().createChildContext(), "file:///home/dev/workspace/homeki/homekiweb"));
+				L.init();
+				webGuiRestletComponent.getLogger().setLevel(Level.SEVERE);
+				webGuiRestletComponent.start();
+			} catch (Exception e) {
+				L.e("Unknown exception when starting static web server on port 8080.", e);
+				System.exit(-1);
+			}
+		}
+		else {
+			L.i("Found no web root in /opt/homeki/www, skipping start of static web server.");
 		}
 		
 		// start broadcast listener thread
@@ -142,11 +166,18 @@ public class ThreadMaster {
 	
 	public void shutdown() {
 		L.i("Shutting down threads...");
-		if (restletComponent != null) {
+		if (jsonRestletComponent != null) {
 			try {
-				restletComponent.stop();
+				jsonRestletComponent.stop();
 			} catch (Exception e) {
-				L.e("Failed to stop restlet HTTP server.", e);
+				L.e("Failed to stop JSON restlet HTTP server.", e);
+			}
+		}
+		if (webGuiRestletComponent != null) {
+			try {
+				webGuiRestletComponent.stop();
+			} catch (Exception e) {
+				L.e("Failed to stop web GUI restlet HTTP server.", e);
 			}
 		}
 		if (broadcastThread != null)

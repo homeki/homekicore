@@ -30,7 +30,7 @@ import com.homeki.core.http.restlets.trigger.condition.TriggerConditionDeleteRes
 import com.homeki.core.http.restlets.trigger.condition.TriggerConditionGetRestlet;
 import com.homeki.core.http.restlets.trigger.condition.TriggerConditionListRestlet;
 
-public class RestletApplication extends Application {
+public class JsonRestletApplication extends Application {
 	@Override
 	public Restlet createInboundRoot() {
 		Router r = new Router(getContext().createChildContext());
