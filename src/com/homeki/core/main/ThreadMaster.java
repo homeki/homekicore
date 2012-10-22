@@ -54,7 +54,7 @@ public class ThreadMaster {
 		try {
 			new DatabaseManager().upgrade();
 		} catch (ClassNotFoundException e) {
-			L.e("Failed to load HSQLDB JDBC driver, killing Homeki.", e);
+			L.e("Failed to load Postgres JDBC driver, killing Homeki.", e);
 		} catch (Exception e) {
 			L.e("Database upgrade failed, killing Homeki.", e);
 			System.exit(-1);
@@ -106,7 +106,7 @@ public class ThreadMaster {
 		}
 		
 		// start web GUI Restlet listener thread
-		File webRoot = new File("/opt/homeki/www");
+		File webRoot = new File(Configuration.WEBROOT_PATH);
 		if (webRoot.exists()) {
 			L.i("Web root exists, starting static web server on port 8080.");
 			try {
@@ -123,7 +123,7 @@ public class ThreadMaster {
 			}
 		}
 		else {
-			L.i("Found no web root in /opt/homeki/www, skipping start of static web server.");
+			L.i("Found no web root in " + Configuration.WEBROOT_PATH + ", skipping start of static web server.");
 		}
 		
 		// start broadcast listener thread

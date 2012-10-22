@@ -6,5 +6,6 @@ public class Configuration {
 	public final static int ONEWIRE_DETECTOR_INTERVAL = 2*60*1000;
 	public final static int ONEWIRE_COLLECTOR_INTERVAL = 15*60*1000;
 	public final static String ONEWIRE_PATH = "/mnt/1wire";
-	public final static int HTTP_THREAD_POOL_SIZE = 10;
+	public final static String WEBROOT_PATH = "/opt/homeki/www";
+	
 }
