@@ -56,14 +56,18 @@ public class Util {
 		return version;
 	}
 	
-	
 	public static void sleep(int ms){
 		try {
 			Thread.sleep(ms);
 		} catch (InterruptedException e) {
 			L.e("Util.sleep failed.");
-			e.printStackTrace();
 		}
-		
+	}
+	
+	public static String byteArrayToHex(byte[] a) {
+	   StringBuilder sb = new StringBuilder();
+	   for(byte b : a)
+	      sb.append(String.format("%02x", b&0xff));
+	   return sb.toString();
 	}
 }

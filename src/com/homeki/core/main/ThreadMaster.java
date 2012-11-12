@@ -17,6 +17,7 @@ import com.homeki.core.events.EventHandlerThread;
 import com.homeki.core.generators.ClockGeneratorThread;
 import com.homeki.core.http.JsonRestletApplication;
 import com.homeki.core.logging.L;
+import com.homeki.core.report.ReportThread;
 import com.homeki.core.storage.DatabaseManager;
 import com.homeki.core.storage.Hibernate;
 
@@ -26,6 +27,7 @@ public class ThreadMaster {
 	private ControlledThread broadcastThread;
 	private ControlledThread eventHandlerThread;
 	private ControlledThread clockGeneratorThread;
+	private ControlledThread reportThread;
 	private List<Module> modules;
 	
 	public ThreadMaster() {
@@ -55,6 +57,7 @@ public class ThreadMaster {
 			new DatabaseManager().upgrade();
 		} catch (ClassNotFoundException e) {
 			L.e("Failed to load Postgres JDBC driver, killing Homeki.", e);
+			System.exit(-1);
 		} catch (Exception e) {
 			L.e("Database upgrade failed, killing Homeki.", e);
 			System.exit(-1);
@@ -79,6 +82,14 @@ public class ThreadMaster {
 			System.exit(-1);
 		}
 		L.i("Native JNI library loaded.");
+		
+		// setup and start report thread reporting user statistics to GAE app
+		try {
+			reportThread = new ReportThread();
+			reportThread.start();
+		} catch (Exception e) {
+			L.e("Could not start report thread.", e);
+		}
 		
 		// setup and construct modules
 		setupModules();
