@@ -124,7 +124,7 @@ public abstract class KiRestlet extends Restlet {
 	protected <T> T getJsonObject(Container c, Type t) {
 		String s = "";
 		
-		if (c.req.getMethod() != Method.POST)
+		if (!c.req.getMethod().equals(Method.POST))
 			throw new ApiException("Expected POST HTTP, but received " + c.req.getMethod().getName() + ".");
 		
 		s = c.req.getEntityAsText();

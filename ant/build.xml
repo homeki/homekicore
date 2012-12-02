@@ -1,5 +1,5 @@
 <project>
-	<property name="version" value="0.1.36" />
+	<property name="version" value="0.1.43" />
 
 	<path id="ant.classpath">
 		<fileset dir="." includes="*.jar" />
@@ -25,7 +25,7 @@
 
 	<target name="compile">
 		<mkdir dir="../build/classes" />
-		<javac srcdir="../src" destdir="../build/classes">
+		<javac target="1.6" source="1.6" srcdir="../src" destdir="../build/classes">
 			<classpath>
 				<pathelement location="../lib/gson-1.7.1.jar" />
 				<pathelement location="../lib/dom4j-1.6.1.jar" />
@@ -38,6 +38,9 @@
 				<pathelement location="../lib/liquibase.jar" />
 				<pathelement location="../lib/postgresql-9.1-901.jdbc4.jar" />
 				<pathelement location="../lib/org.restlet.jar" />
+				<pathelement location="../lib/org.restlet.ext.jackson.jar" />
+				<pathelement location="../lib/org.codehaus.jackson.core.jar" />
+				<pathelement location="../lib/org.codehaus.jackson.mapper.jar" />
 				<pathelement location="../lib/commons-collections-3.1.jar" />
 				<pathelement location="../lib/commons-logging-1.1.1.jar" />
 				<pathelement path="${java.class.path}/" />
