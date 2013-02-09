@@ -53,7 +53,7 @@
 		<jar destfile="../build/jar/homekicore.jar" basedir="../build/classes">
 			<zipfileset file="../src/hibernate.cfg.xml" />
 			<zipgroupfileset dir="../lib/" includes="*.jar" />
-			<manifest>	
+			<manifest>
 				<attribute name="Implementation-Version" value="${version}" />
 				<attribute name="Main-Class" value="com.homeki.core.main.Main" />
 			</manifest>
@@ -63,7 +63,7 @@
 
 	<target name="dist">
 		<mkdir dir="../build/dist" />
-		<for list="i386,amd64,armhf" param="arch">
+		<for list="amd64,armhf" param="arch">
 			<sequential>
 				<deb todir="../build/dist" package="homeki" section="misc" depends="openjdk-6-jre-headless, postgresql-9.1, telldus, owfs" prerm="prerm" postinst="postinst" preinst="preinst" architecture="@{arch}">
 					<version upstream="${version}" />
@@ -76,6 +76,7 @@
 					<tarfileset file="../ant/start.sh" prefix="/opt/homeki/" filemode="755" />
 					<tarfileset file="../lib/libhomekijni-@{arch}.so" fullpath="/opt/homeki/lib/libhomekijni.so" filemode="755" />
 					<tarfileset file="../db-changelog.xml" prefix="/opt/homeki/" filemode="755" />
+					<tarfileset file="../logging.properties" prefix="/opt/homeki/" filemode="755" />
 				</deb>
 			</sequential>
 		</for>

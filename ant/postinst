@@ -42,6 +42,10 @@ if [ "$1" = "configure" ] ; then
 		echo "does not exist"
 	fi
 
+	echo -n "creating folder /opt/homeki/log: "
+	mkdir -p /opt/homeki/log
+	echo "done"
+
 	echo -n "changing owner and permissions in /opt/homeki: "
 	chown -R homeki:homeki /opt/homeki
 	chmod a+w /opt/homeki/stdout.log

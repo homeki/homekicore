@@ -9,6 +9,7 @@ if [ "$1" = "remove" ] ; then
 	rm -f /opt/homeki/stdout.log
 	rm -f /opt/homeki/stderr.log
 	rm -f /opt/homeki/homeki.pid
+	rm -rf /opt/homeki/log
 	echo "done"
 	
 	echo -n "removing etc/rc2.d/S99homeki: "

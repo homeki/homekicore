@@ -1,7 +1,7 @@
 #!/bin/sh
 
 DAEMON="/usr/bin/java"
-DAEMON_ARGS="-jar /opt/homeki/homekicore.jar"
+DAEMON_ARGS="-jar -Djava.util.logging.config.file=/opt/homeki/logging.properties /opt/homeki/homekicore.jar"
 STDOUT_FILE="/opt/homeki/stdout.log"
 STDERR_FILE="/opt/homeki/stderr.log"
 

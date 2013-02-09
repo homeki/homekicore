@@ -1,11 +1,11 @@
 package com.homeki.core.logging;
 
+import java.util.logging.ConsoleHandler;
 import java.util.logging.ErrorManager;
-import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
-public class CustomConsoleHandler extends Handler {
+public class CustomConsoleHandler extends ConsoleHandler {
 	@Override
 	public void publish(LogRecord record) {
 		if (getFormatter() == null)

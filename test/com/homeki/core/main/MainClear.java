@@ -5,8 +5,6 @@ import com.homeki.core.storage.DatabaseManager;
 
 public class MainClear {
 	public static void main(String[] args) throws Exception {
-		L.init();
-		
 		DatabaseManager mgr = new DatabaseManager();
 		L.i("MainClear: Dropping all database tables...");
 		mgr.dropAll();

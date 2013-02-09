@@ -3,7 +3,6 @@ package com.homeki.core.main;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 
 import org.restlet.Component;
 import org.restlet.data.Protocol;
@@ -48,7 +47,6 @@ public class ThreadMaster {
 	
 	public void launch() {
 		Thread.currentThread().setName("Main");
-		L.init();
 		
 		L.i("Homeki version " + Util.getVersion() + " started.");
 		
@@ -84,11 +82,16 @@ public class ThreadMaster {
 		L.i("Native JNI library loaded.");
 		
 		// setup and start report thread reporting user statistics to GAE app
-		try {
-			reportThread = new ReportThread();
-			reportThread.start();
-		} catch (Exception e) {
-			L.e("Could not start report thread.", e);
+		if (Configuration.REPORTER_ENABLED) {
+			try {
+				reportThread = new ReportThread();
+				reportThread.start();
+			} catch (Exception e) {
+				L.e("Could not start report thread.", e);
+			}
+		}
+		else {
+			L.w("Reporting disabled in configuration.");
 		}
 		
 		// setup and construct modules
@@ -108,8 +111,6 @@ public class ThreadMaster {
 			jsonRestletComponent = new Component();
 			jsonRestletComponent.getServers().add(Protocol.HTTP, 5000);
 			jsonRestletComponent.getDefaultHost().attach(new JsonRestletApplication());
-			L.init();
-			jsonRestletComponent.getLogger().setLevel(Level.SEVERE);
 			jsonRestletComponent.start();
 		} catch (Exception e) {
 			L.e("Unknown exception starting JSON restlet HTTP server.", e);
@@ -125,8 +126,6 @@ public class ThreadMaster {
 				webGuiRestletComponent.getServers().add(Protocol.HTTP, 8080);
 				webGuiRestletComponent.getClients().add(Protocol.FILE);
 				webGuiRestletComponent.getDefaultHost().attach(new Directory(webGuiRestletComponent.getContext().createChildContext(), "file:///opt/homeki/www"));
-				L.init();
-				webGuiRestletComponent.getLogger().setLevel(Level.SEVERE);
 				webGuiRestletComponent.start();
 			} catch (Exception e) {
 				L.e("Unknown exception when starting static web server on port 8080.", e);
