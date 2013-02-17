@@ -16,6 +16,6 @@ public class ServerSetRestlet extends KiRestlet {
 		
 		Setting.putString(c.ses, Setting.SERVER_NAME_KEY, jinfo.name);
 		
-		set200Response(c, "Server information updated successfully.");
+		set200Response(c, msg("Server information updated successfully."));
 	}
 }

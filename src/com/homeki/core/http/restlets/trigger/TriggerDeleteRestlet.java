@@ -17,6 +17,6 @@ public class TriggerDeleteRestlet extends KiRestlet {
 		
 		c.ses.delete(trigger);
 		
-		set200Response(c, "Trigger deleted successfully.");
+		set200Response(c, msg("Trigger deleted successfully."));
 	}
 }

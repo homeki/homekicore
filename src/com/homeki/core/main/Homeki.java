@@ -20,7 +20,7 @@ import com.homeki.core.report.ReportThread;
 import com.homeki.core.storage.DatabaseManager;
 import com.homeki.core.storage.Hibernate;
 
-public class ThreadMaster {
+public class Homeki {
 	private Component jsonRestletComponent;
 	private Component webGuiRestletComponent;
 	private ControlledThread broadcastThread;
@@ -29,7 +29,7 @@ public class ThreadMaster {
 	private ControlledThread reportThread;
 	private List<Module> modules;
 	
-	public ThreadMaster() {
+	public Homeki() {
 		modules = new ArrayList<Module>();
 		addShutdownHook();
 	}
@@ -38,7 +38,7 @@ public class ThreadMaster {
 		Runtime rt = Runtime.getRuntime();
 		rt.addShutdownHook(new Thread() {
 			public void run() {
-				Thread.currentThread().setName("Main");
+				Thread.currentThread().setName("ShutdownHook");
 				shutdown();
 				L.i("Homeki version " + Util.getVersion() + " exited.");
 			};
@@ -46,11 +46,9 @@ public class ThreadMaster {
 	}
 	
 	public void launch() {
-		Thread.currentThread().setName("Main");
+		Thread.currentThread().setName("Homeki");
 		
 		L.i("Homeki version " + Util.getVersion() + " started.");
-		
-		Configuration.transform();
 		
 		// perform, if necessary, database upgrades
 		try {

@@ -36,6 +36,6 @@ public class DeviceMergeRestlet extends KiRestlet {
 		c.ses.flush();
 		c.ses.delete(mergeWithDev);
 		
-		set200Response(c, "Merge-with device successfully merged into device.");
+		set200Response(c, msg("Merge-with device successfully merged into device."));
 	}
 }

@@ -24,6 +24,6 @@ public class TriggerActionDeleteRestlet extends KiRestlet {
 		
 		trigger.deleteAction(act);
 		
-		set200Response(c, "Action successfully deleted.");
+		set200Response(c, msg("Action successfully deleted."));
 	}
 }

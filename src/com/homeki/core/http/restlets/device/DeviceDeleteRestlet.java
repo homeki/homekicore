@@ -18,6 +18,6 @@ public class DeviceDeleteRestlet extends KiRestlet {
 		dev.preDelete();
 		c.ses.delete(dev);
 		
-		set200Response(c, "Device successfully deleted.");
+		set200Response(c, msg("Device successfully deleted."));
 	}
 }

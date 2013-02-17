@@ -21,6 +21,6 @@ public class DeviceTellStickLearnRestlet extends KiRestlet {
 		
 		((TellStickLearnable)dev).learn();
 		
-		set200Response(c, "Learn command sent successfully.");
+		set200Response(c, msg("Learn command sent successfully."));
 	}
 }

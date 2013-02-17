@@ -23,6 +23,6 @@ public class TriggerSetRestlet extends KiRestlet {
 		
 		trigger.setName(jtrigger.name);
 		
-		set200Response(c, "Trigger updated successfully.");
+		set200Response(c, msg("Trigger updated successfully."));
 	}
 }

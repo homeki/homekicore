@@ -24,6 +24,6 @@ public class DeviceSetRestlet extends KiRestlet {
 		
 		c.ses.save(dev);
 		
-		set200Response(c, "Device updated successfully.");
+		set200Response(c, msg("Device updated successfully."));
 	}
 }

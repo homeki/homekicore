@@ -17,6 +17,7 @@ import org.restlet.util.Series;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
+import com.homeki.core.http.json.JsonVoid;
 import com.homeki.core.logging.L;
 import com.homeki.core.main.Util;
 import com.homeki.core.storage.Hibernate;
@@ -43,14 +44,14 @@ public abstract class KiRestlet extends Restlet {
 			handle(c);
 		}
 		catch (JsonSyntaxException e) {
-			set400Response(c, "Could not parse JSON, make sure it is well formed.");
+			set400Response(c, msg("Could not parse JSON, make sure it is well formed."));
 		}
 		catch (ApiException e) {
-			set400Response(c, e.getMessage());
+			set400Response(c, msg(e.getMessage()));
 		}
 		catch (Throwable e) {
 			L.e("Unknown exception occured while processing HTTP request.", e);
-			set400Response(c, "Unhandled exception occured while processing HTTP request. The exception message was: " + e.getMessage());
+			set400Response(c, msg("Unhandled exception occured while processing HTTP request. The exception message was: " + e.getMessage()));
 		}
 		finally {
 			if (session != null && session.isOpen()) {
@@ -59,7 +60,7 @@ public abstract class KiRestlet extends Restlet {
 				}
 				catch (Exception ex) {
 					L.e("Error committing transaction.", ex);
-					set400Response(c, "Error committing transaction, message: " + ex.getMessage());
+					set400Response(c, msg("Error committing transaction, message: " + ex.getMessage()));
 				}
 			}
 		}
@@ -133,6 +134,10 @@ public abstract class KiRestlet extends Restlet {
 			throw new ApiException("Expected JSON in POST HTTP, but received nothing.");
 		
 		return gson.fromJson(s, t);
+	}
+	
+	protected String msg(String msg) {
+		return gson.toJson(new JsonVoid(msg));
 	}
 	
 	protected abstract void handle(Container c);

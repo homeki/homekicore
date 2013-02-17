@@ -24,6 +24,6 @@ public class TriggerConditionDeleteRestlet extends KiRestlet {
 		
 		trigger.deleteCondition(cond);
 		
-		set200Response(c, "Condition successfully deleted.");
+		set200Response(c, msg("Condition successfully deleted."));
 	}
 }
