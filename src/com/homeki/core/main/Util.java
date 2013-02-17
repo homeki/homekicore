@@ -70,4 +70,12 @@ public class Util {
 	      sb.append(String.format("%02x", b&0xff));
 	   return sb.toString();
 	}
+	
+	public static boolean isNullOrEmpty(String s) {
+		return s == null || s.length() == 0;
+	}
+	
+	public static boolean isNotNullAndEmpty(String s) {
+		return s != null && s.length() == 0;
+	}
 }

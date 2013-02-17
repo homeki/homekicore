@@ -4,6 +4,7 @@ import com.homeki.core.http.ApiException;
 import com.homeki.core.http.Container;
 import com.homeki.core.http.KiRestlet;
 import com.homeki.core.http.json.JsonTrigger;
+import com.homeki.core.main.Util;
 import com.homeki.core.triggers.Trigger;
 
 public class TriggerAddRestlet extends KiRestlet {
@@ -11,7 +12,7 @@ public class TriggerAddRestlet extends KiRestlet {
 	protected void handle(Container c) {
 		JsonTrigger jtrigger = getJsonObject(c, JsonTrigger.class);
 		
-		if (jtrigger.name == null || jtrigger.name.length() == 0)
+		if (Util.isNullOrEmpty(jtrigger.name))
 			throw new ApiException("Trigger name cannot be empty.");
 		
 		Trigger trigger = new Trigger();

@@ -81,12 +81,15 @@ public class TriggerConditionTest {
 	public void testAddMinuteChanged() {
 		JsonMinuteCondition jcond = new JsonMinuteCondition();
 		jcond.day = "1,13";
-		jcond.weekday = "1,3,5";
+		jcond.weekday = "";
 		jcond.hour = 12;
 		jcond.minute = 13;
 		
 		assertEquals(TestUtil.sendPost("/trigger/9999/condition/add?type=minute", jcond).statusCode, 400);
 		assertEquals(TestUtil.sendPost("/trigger/" + triggerId + "/condition/add?type=feelminute", jcond).statusCode, 400);
+		assertEquals(TestUtil.sendPost("/trigger/" + triggerId + "/condition/add?type=minute", jcond).statusCode, 400);
+		
+		jcond.weekday = "*";
 		jcond = TestUtil.sendPostAndParseAsJson("/trigger/" + triggerId + "/condition/add?type=minute", jcond, JsonMinuteCondition.class);
 		
 		assertTrue(jcond.id > 0);
@@ -110,7 +113,7 @@ public class TriggerConditionTest {
 	public void testGet() {
 		JsonMinuteCondition jcond = TestUtil.sendGetAndParseAsJson("/trigger/" + triggerId + "/condition/" + conditionId1 + "/get", JsonMinuteCondition.class);
 		assertEquals(jcond.day, "1,13");
-		assertEquals(jcond.weekday, "1,3,5");
+		assertEquals(jcond.weekday, "*");
 		assertEquals((int)jcond.hour, 12);
 		assertEquals((int)jcond.minute, 13);
 	}

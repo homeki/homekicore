@@ -10,6 +10,7 @@ import com.homeki.core.http.KiRestlet;
 import com.homeki.core.http.json.JsonChannelValueCondition;
 import com.homeki.core.http.json.JsonCondition;
 import com.homeki.core.http.json.JsonMinuteCondition;
+import com.homeki.core.main.Util;
 import com.homeki.core.triggers.Trigger;
 
 public class TriggerConditionAddRestlet extends KiRestlet {
@@ -43,7 +44,7 @@ public class TriggerConditionAddRestlet extends KiRestlet {
 	private Condition parseChannelChanged(Container c) {
 		JsonChannelValueCondition jcond = getJsonObject(c, JsonChannelValueCondition.class);
 		
-		if (jcond.operator == null)
+		if (Util.isNullOrEmpty(jcond.operator))
 			throw new ApiException("Missing operator.");
 		if (jcond.value == null)
 			throw new ApiException("Missing number.");
@@ -66,9 +67,9 @@ public class TriggerConditionAddRestlet extends KiRestlet {
 	private Condition parseMinuteChanged(Container c) {
 		JsonMinuteCondition jcond = getJsonObject(c, JsonMinuteCondition.class);
 		
-		if (jcond.day == null)
+		if (Util.isNullOrEmpty(jcond.day))
 			throw new ApiException("Missing day.");
-		if (jcond.weekday == null)
+		if (Util.isNullOrEmpty(jcond.weekday))
 			throw new ApiException("Missing weekday.");
 		
 		// TODO: add more validation here (is everything passed valid, etc)

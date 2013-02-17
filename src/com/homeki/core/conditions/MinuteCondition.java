@@ -83,13 +83,13 @@ public class MinuteCondition extends Condition {
 			MinuteChangedEvent mce = (MinuteChangedEvent)e;
 			status = true;
 			
-			if (this.day.length() > 0) {
+			if (!this.day.equals("*")) {
 				String day = String.valueOf(mce.day);
 				Pattern p = Pattern.compile( "(^|,)" + day + "(,|$)");
-				status &= p.matcher(this.day).find();;
+				status &= p.matcher(this.day).find();
 			}
 			
-			if (this.weekday.length() > 0) {
+			if (!this.weekday.equals("*")) {
 				String weekday = String.valueOf(mce.weekday);
 				status &= this.weekday.contains(weekday);
 			}

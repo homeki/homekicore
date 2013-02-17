@@ -9,6 +9,7 @@ import com.homeki.core.http.KiRestlet;
 import com.homeki.core.http.json.JsonDevice;
 import com.homeki.core.http.json.JsonTellStickDevice;
 import com.homeki.core.main.Setting;
+import com.homeki.core.main.Util;
 
 public class DeviceTellStickAddRestlet extends KiRestlet {
 	private static final int UNIT = 3;
@@ -17,8 +18,10 @@ public class DeviceTellStickAddRestlet extends KiRestlet {
 	protected void handle(Container c) {
 		JsonTellStickDevice jsonDevice = getJsonObject(c, JsonTellStickDevice.class);
 		
-		if (jsonDevice.type == null)
+		if (Util.isNullOrEmpty(jsonDevice.type))
 			throw new ApiException("Missing required field 'type' in JSON.");
+		if (Util.isNullOrEmpty(jsonDevice.name))
+			throw new ApiException("Missing required field 'name' in JSON.");
 		
 		int house;
 		int unit;
@@ -42,8 +45,8 @@ public class DeviceTellStickAddRestlet extends KiRestlet {
 		else
 			throw new ApiException("Did not recognize type '" + jsonDevice.type + "' as a valid TellStick type.");
 		
-		if (jsonDevice.name != null)
-			dev.setName(jsonDevice.name);
+		dev.setName(jsonDevice.name);
+		
 		if (jsonDevice.description != null)
 			dev.setDescription(jsonDevice.description);
 		
