@@ -50,6 +50,8 @@ public class ThreadMaster {
 		
 		L.i("Homeki version " + Util.getVersion() + " started.");
 		
+		Configuration.transform();
+		
 		// perform, if necessary, database upgrades
 		try {
 			new DatabaseManager().upgrade();
