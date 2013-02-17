@@ -1,5 +1,5 @@
 <project>
-	<property name="version" value="0.1.52" />
+	<property name="version" value="0.1.53" />
 
 	<path id="ant.classpath">
 		<fileset dir="." includes="*.jar" />
@@ -10,7 +10,6 @@
 	</path>
 
 	<taskdef name="deb" classname="com.googlecode.ant_deb_task.Deb" classpathref="ant.classpath" />
-	<taskdef resource="net/sf/antcontrib/antcontrib.properties" classpathref="ant.classpath" />
 		
 	<target name="clean">
 		<delete dir="../build" />
@@ -65,21 +64,17 @@
 
 	<target name="dist">
 		<mkdir dir="../build/dist" />
-		<for list="amd64,armhf" param="arch">
-			<sequential>
-				<deb todir="../build/dist" package="homeki" section="misc" depends="openjdk-6-jre-headless, postgresql-9.1, telldus, owfs, libjna-java" prerm="prerm" postinst="postinst" preinst="preinst" architecture="@{arch}">
-					<version upstream="${version}" />
-					<maintainer name="Homeki Development Team" email="contact@homeki.com" />
-					<description synopsis="Unified interface for all your sensors and devices connected to your computer.">
-						Provides a JSON HTTP API for accessing, logging, modifying and managing various devices and sensors connected to your computer.
-					</description>
-					<tarfileset dir="../build/jar" prefix="/opt/homeki/" filemode="755" />
-					<tarfileset file="../ant/homekid" prefix="/etc/init.d" filemode="755" />
-					<tarfileset file="../ant/start.sh" prefix="/opt/homeki/" filemode="755" />
-					<tarfileset file="../db-changelog.xml" prefix="/opt/homeki/" filemode="755" />
-					<tarfileset file="../logging.properties" prefix="/opt/homeki/" filemode="755" />
-				</deb>
-			</sequential>
-		</for>
+		<deb todir="../build/dist" package="homeki" section="misc" depends="openjdk-6-jre-headless, postgresql-9.1, telldus, owfs, libjna-java" prerm="prerm" postinst="postinst" preinst="preinst" architecture="all">
+			<version upstream="${version}" />
+			<maintainer name="Homeki Development Team" email="contact@homeki.com" />
+			<description synopsis="Unified interface for all your sensors and devices connected to your computer.">
+				Provides a JSON HTTP API for accessing, logging, modifying and managing various devices and sensors connected to your computer.
+			</description>
+			<tarfileset dir="../build/jar" prefix="/opt/homeki/" filemode="755" />
+			<tarfileset file="../ant/homekid" prefix="/etc/init.d" filemode="755" />
+			<tarfileset file="../ant/start.sh" prefix="/opt/homeki/" filemode="755" />
+			<tarfileset file="../db-changelog.xml" prefix="/opt/homeki/" filemode="755" />
+			<tarfileset file="../logging.properties" prefix="/opt/homeki/" filemode="755" />
+		</deb>
 	</target>
 </project>
