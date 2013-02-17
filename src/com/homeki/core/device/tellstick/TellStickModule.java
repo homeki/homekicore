@@ -27,8 +27,8 @@ public class TellStickModule implements Module {
 			for (TellStickDevice d : devices)
 				d.setActive(false);
 			
-			TellStickNative.open();
-			int[] nativeIds = TellStickNative.getDeviceIds();
+			TellStickApi.INSTANCE.open();
+			int[] nativeIds = TellStickApi.INSTANCE.getDeviceIds();
 			
 			syncWithDb(session, nativeIds, devices);
 		} finally {
@@ -42,7 +42,7 @@ public class TellStickModule implements Module {
 	@Override
 	public void destruct() {
 		listenerThread.shutdown();
-		TellStickNative.close();
+		TellStickApi.INSTANCE.close();
 	}
 	
 	private void syncWithDb(Session session, int[] nativeIds, List<TellStickDevice> devices) {
@@ -51,7 +51,7 @@ public class TellStickModule implements Module {
 	
 		for (int id : nativeIds) {
 			String sid = String.valueOf(id);
-			String type = TellStickNative.getDeviceType(id);
+			String type = TellStickApi.INSTANCE.getDeviceType(id);
 			
 			Device dev = existsInList(devices, sid);
 			

@@ -11,4 +11,5 @@ public class Configuration {
 	public final static String REPORTER_URL = "http://report.homeki.com";
 	public final static String ONEWIRE_PATH = "/mnt/1wire";
 	public final static String WEBROOT_PATH = "/opt/homeki/www";
+	//public final static String WEBROOT_PATH = "/home/dev/workspace/homeki/homekiweb";
 }

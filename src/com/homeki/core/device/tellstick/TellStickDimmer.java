@@ -26,7 +26,7 @@ public class TellStickDimmer extends TellStickDevice implements Settable, TellSt
 	public TellStickDimmer(int defaultLevel, int house, int unit) {
 		this(defaultLevel);
 		
-		int result = TellStickNative.addDimmer(house, unit);
+		int result = TellStickApi.INSTANCE.addDimmer(house, unit);
 		
 		this.internalId = String.valueOf(result);
 	}
@@ -42,14 +42,14 @@ public class TellStickDimmer extends TellStickDevice implements Settable, TellSt
 		if (channel == ONOFF_CHANNEL) {
 			boolean on = value > 0;
 			if (on) {
-				TellStickNative.dim(internalId, level.getValue());
+				TellStickApi.INSTANCE.dim(internalId, level.getValue());
 				addHistoryPoint(ONOFF_CHANNEL, 1);
 			} else {
-				TellStickNative.turnOff(internalId);
+				TellStickApi.INSTANCE.turnOff(internalId);
 			}
 		} else if (channel == LEVEL_CHANNEL) {
 			if (onoff.getValue() > 0)
-				TellStickNative.dim(internalId, value);
+				TellStickApi.INSTANCE.dim(internalId, value);
 			else
 				addHistoryPoint(LEVEL_CHANNEL, value);
 		}
@@ -62,12 +62,12 @@ public class TellStickDimmer extends TellStickDevice implements Settable, TellSt
 
 	@Override
 	public void learn() {
-		TellStickNative.learn(Integer.valueOf(internalId));
+		TellStickApi.INSTANCE.learn(Integer.valueOf(internalId));
 	}
 	
 	@Override
 	public void preDelete() {
-		TellStickNative.removeDevice(Integer.valueOf(internalId));
+		TellStickApi.INSTANCE.removeDevice(Integer.valueOf(internalId));
 	}
 	
 	@Override

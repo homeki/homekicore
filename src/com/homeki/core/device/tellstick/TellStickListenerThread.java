@@ -14,7 +14,7 @@ public class TellStickListenerThread extends ControlledThread {
 	
 	@Override
 	protected void iteration() throws InterruptedException {
-		String raw = TellStickNative.getEvent();
+		String raw = TellStickApi.INSTANCE.getEvent();
 		String s[] = raw.split(" ");
 		
 		String type = s[0];

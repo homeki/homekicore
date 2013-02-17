@@ -23,7 +23,7 @@ public class TellStickSwitch extends TellStickDevice implements Settable, TellSt
 	public TellStickSwitch(boolean defaultValue, int house, int unit) {
 		this(defaultValue);
 		
-		int result = TellStickNative.addSwitch(house, unit);
+		int result = TellStickApi.INSTANCE.addSwitch(house, unit);
 		
 		this.internalId = String.valueOf(result);
 	}
@@ -36,9 +36,9 @@ public class TellStickSwitch extends TellStickDevice implements Settable, TellSt
 		int internalId = Integer.parseInt(getInternalId());
 		
 		if (on)
-			TellStickNative.turnOn(internalId);
+			TellStickApi.INSTANCE.turnOn(internalId);
 		else
-			TellStickNative.turnOff(internalId);
+			TellStickApi.INSTANCE.turnOff(internalId);
 	}
 
 	@Override
@@ -48,12 +48,12 @@ public class TellStickSwitch extends TellStickDevice implements Settable, TellSt
 
 	@Override
 	public void learn() {
-		TellStickNative.learn(Integer.valueOf(internalId));
+		TellStickApi.INSTANCE.learn(Integer.valueOf(internalId));
 	}
 	
 	@Override
 	public void preDelete() {
-		TellStickNative.removeDevice(Integer.valueOf(internalId));
+		TellStickApi.INSTANCE.removeDevice(Integer.valueOf(internalId));
 	}
 	
 	@Override

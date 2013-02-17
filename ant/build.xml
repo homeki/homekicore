@@ -1,5 +1,5 @@
 <project>
-	<property name="version" value="0.1.45" />
+	<property name="version" value="0.1.52" />
 
 	<path id="ant.classpath">
 		<fileset dir="." includes="*.jar" />
@@ -27,6 +27,7 @@
 		<mkdir dir="../build/classes" />
 		<javac target="1.6" source="1.6" srcdir="../src" destdir="../build/classes">
 			<classpath>
+			    <pathelement location="/usr/share/java/jna.jar" />
 				<pathelement location="../lib/gson-1.7.1.jar" />
 				<pathelement location="../lib/dom4j-1.6.1.jar" />
 				<pathelement location="../lib/hibernate-jpa-2.0-api-1.0.1.Final.jar" />
@@ -56,6 +57,7 @@
 			<manifest>
 				<attribute name="Implementation-Version" value="${version}" />
 				<attribute name="Main-Class" value="com.homeki.core.main.Main" />
+				<attribute name="Class-Path" value="file:///usr/share/java/jna.jar" />
 			</manifest>
 		</jar>
 		<chmod file="../build/jar/homekicore.jar" perm="a+x" />
@@ -65,7 +67,7 @@
 		<mkdir dir="../build/dist" />
 		<for list="amd64,armhf" param="arch">
 			<sequential>
-				<deb todir="../build/dist" package="homeki" section="misc" depends="openjdk-6-jre-headless, postgresql-9.1, telldus, owfs" prerm="prerm" postinst="postinst" preinst="preinst" architecture="@{arch}">
+				<deb todir="../build/dist" package="homeki" section="misc" depends="openjdk-6-jre-headless, postgresql-9.1, telldus, owfs, libjna-java" prerm="prerm" postinst="postinst" preinst="preinst" architecture="@{arch}">
 					<version upstream="${version}" />
 					<maintainer name="Homeki Development Team" email="contact@homeki.com" />
 					<description synopsis="Unified interface for all your sensors and devices connected to your computer.">
@@ -74,7 +76,6 @@
 					<tarfileset dir="../build/jar" prefix="/opt/homeki/" filemode="755" />
 					<tarfileset file="../ant/homekid" prefix="/etc/init.d" filemode="755" />
 					<tarfileset file="../ant/start.sh" prefix="/opt/homeki/" filemode="755" />
-					<tarfileset file="../lib/libhomekijni-@{arch}.so" fullpath="/opt/homeki/lib/libhomekijni.so" filemode="755" />
 					<tarfileset file="../db-changelog.xml" prefix="/opt/homeki/" filemode="755" />
 					<tarfileset file="../logging.properties" prefix="/opt/homeki/" filemode="755" />
 				</deb>

@@ -48,7 +48,7 @@ public abstract class KiRestlet extends Restlet {
 		catch (ApiException e) {
 			set400Response(c, e.getMessage());
 		}
-		catch (Exception e) {
+		catch (Throwable e) {
 			L.e("Unknown exception occured while processing HTTP request.", e);
 			set400Response(c, "Unhandled exception occured while processing HTTP request. The exception message was: " + e.getMessage());
 		}

@@ -72,15 +72,6 @@ public class ThreadMaster {
 		}
 		L.i("Database access through Hibernate verified.");
 		
-		// load native JNI library
-		try {
-			System.loadLibrary("homekijni");
-		} catch (UnsatisfiedLinkError e) {
-			L.e("Failed to load Homeki JNI library, killing Homeki.", e);
-			System.exit(-1);
-		}
-		L.i("Native JNI library loaded.");
-		
 		// setup and start report thread reporting user statistics to GAE app
 		if (Configuration.REPORTER_ENABLED) {
 			try {
@@ -125,7 +116,7 @@ public class ThreadMaster {
 				webGuiRestletComponent = new Component();
 				webGuiRestletComponent.getServers().add(Protocol.HTTP, 8080);
 				webGuiRestletComponent.getClients().add(Protocol.FILE);
-				webGuiRestletComponent.getDefaultHost().attach(new Directory(webGuiRestletComponent.getContext().createChildContext(), "file:///opt/homeki/www"));
+				webGuiRestletComponent.getDefaultHost().attach(new Directory(webGuiRestletComponent.getContext().createChildContext(), "file://" + Configuration.WEBROOT_PATH));
 				webGuiRestletComponent.start();
 			} catch (Exception e) {
 				L.e("Unknown exception when starting static web server on port 8080.", e);

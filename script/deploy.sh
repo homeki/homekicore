@@ -1,5 +1,12 @@
 #!/bin/bash
 
+set -e
+
+read -p "Did you remember to change Configuration.java for release? (y/N)"
+if [[ $REPLY != "y" && $REPLY != "Y" ]]; then
+	exit
+fi
+
 pushd `dirname "$0"`> /dev/null
 
 pushd ../ant > /dev/null
