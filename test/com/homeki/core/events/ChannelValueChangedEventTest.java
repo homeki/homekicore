@@ -19,8 +19,8 @@ public class ChannelValueChangedEventTest {
 		ChannelValueCondition ccc =  new ChannelValueCondition(device, channel, value, Condition.EQ);
 		
 		Assert.assertTrue(ccc.check(new ChannelValueChangedEvent(deviceId, channel, value)));
-		Assert.assertFalse(ccc.check(new ChannelValueChangedEvent(deviceId + 1, channel, value)));
-		Assert.assertFalse(ccc.check(new ChannelValueChangedEvent(deviceId, channel + 1, value)));
+		Assert.assertTrue(ccc.check(new ChannelValueChangedEvent(deviceId + 1, channel, value)));
+		Assert.assertTrue(ccc.check(new ChannelValueChangedEvent(deviceId, channel + 1, value)));
 		Assert.assertFalse(ccc.check(new ChannelValueChangedEvent(deviceId, channel, value + 1)));
 		Assert.assertFalse(ccc.check(new ChannelValueChangedEvent(deviceId, channel, value - 1)));
 	}
@@ -32,8 +32,8 @@ public class ChannelValueChangedEventTest {
 		Assert.assertFalse(ccc.check(new ChannelValueChangedEvent(deviceId, channel, value)));
 		Assert.assertFalse(ccc.check(new ChannelValueChangedEvent(deviceId, channel, value - 1)));
 		Assert.assertTrue(ccc.check(new ChannelValueChangedEvent(deviceId, channel, value + 1)));
-		Assert.assertFalse(ccc.check(new ChannelValueChangedEvent(deviceId + 1, channel, value + 1)));
-		Assert.assertFalse(ccc.check(new ChannelValueChangedEvent(deviceId, channel + 1, value + 1)));
+		Assert.assertTrue(ccc.check(new ChannelValueChangedEvent(deviceId + 1, channel, value + 1)));
+		Assert.assertTrue(ccc.check(new ChannelValueChangedEvent(deviceId, channel + 1, value + 1)));
 	}
 	
 	@Test
@@ -43,7 +43,7 @@ public class ChannelValueChangedEventTest {
 		Assert.assertFalse(ccc.check(new ChannelValueChangedEvent(deviceId, channel, value)));
 		Assert.assertFalse(ccc.check(new ChannelValueChangedEvent(deviceId, channel, value + 1)));
 		Assert.assertTrue(ccc.check(new ChannelValueChangedEvent(deviceId, channel, value - 1)));
-		Assert.assertFalse(ccc.check(new ChannelValueChangedEvent(deviceId + 1, channel, value - 1)));
-		Assert.assertFalse(ccc.check(new ChannelValueChangedEvent(deviceId, channel+1, value - 1)));
+		Assert.assertTrue(ccc.check(new ChannelValueChangedEvent(deviceId + 1, channel, value - 1)));
+		Assert.assertTrue(ccc.check(new ChannelValueChangedEvent(deviceId, channel+1, value - 1)));
 	}
 }

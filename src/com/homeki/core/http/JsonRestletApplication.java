@@ -30,6 +30,7 @@ import com.homeki.core.http.restlets.trigger.condition.TriggerConditionAddRestle
 import com.homeki.core.http.restlets.trigger.condition.TriggerConditionDeleteRestlet;
 import com.homeki.core.http.restlets.trigger.condition.TriggerConditionGetRestlet;
 import com.homeki.core.http.restlets.trigger.condition.TriggerConditionListRestlet;
+import com.homeki.core.http.restlets.trigger.condition.TriggerConditionSetRestlet;
 
 public class JsonRestletApplication extends Application {
 	@Override
@@ -62,6 +63,7 @@ public class JsonRestletApplication extends Application {
 		r.attach("/trigger/{triggerid}/condition/list", new TriggerConditionListRestlet());
 		r.attach("/trigger/{triggerid}/condition/add", new TriggerConditionAddRestlet());
 		r.attach("/trigger/{triggerid}/condition/{conditionid}/get", new TriggerConditionGetRestlet());
+		r.attach("/trigger/{triggerid}/condition/{conditionid}/set", new TriggerConditionSetRestlet());
 		r.attach("/trigger/{triggerid}/condition/{conditionid}/delete", new TriggerConditionDeleteRestlet());
 		
 		r.attach("/trigger/{triggerid}/action/list", new TriggerActionListRestlet());

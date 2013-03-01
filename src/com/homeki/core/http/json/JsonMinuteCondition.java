@@ -6,8 +6,8 @@ import com.homeki.core.conditions.MinuteCondition;
 public class JsonMinuteCondition extends JsonCondition {
 	public String weekday;
 	public String day;
-	public int hour;
-	public int minute;
+	public Integer hour;
+	public Integer minute;
 	
 	public JsonMinuteCondition(MinuteCondition cond) {
 		super(cond);

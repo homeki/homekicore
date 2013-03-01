@@ -47,7 +47,7 @@ public class TriggerConditionAddRestlet extends KiRestlet {
 		if (Util.isNullOrEmpty(jcond.operator))
 			throw new ApiException("Missing operator.");
 		if (jcond.value == null)
-			throw new ApiException("Missing number.");
+			throw new ApiException("Missing value.");
 		if (jcond.deviceId == null)
 			throw new ApiException("Missing deviceId.");
 		if (jcond.channel == null)
@@ -71,16 +71,13 @@ public class TriggerConditionAddRestlet extends KiRestlet {
 			throw new ApiException("Missing day.");
 		if (Util.isNullOrEmpty(jcond.weekday))
 			throw new ApiException("Missing weekday.");
+		if (jcond.hour == null)
+			throw new ApiException("Missing hour.");
+		if (jcond.minute == null)
+			throw new ApiException("Missing minute.");
 		
 		// TODO: add more validation here (is everything passed valid, etc)
 		
-		MinuteCondition cond = new MinuteCondition.Builder()
-			.day(jcond.day)
-			.hour(jcond.hour)
-			.minute(jcond.minute)
-			.weekday(jcond.weekday)
-			.build();
-		
-		return cond;
+		return new MinuteCondition(jcond.day, jcond.weekday, jcond.hour, jcond.minute);
 	}
 }

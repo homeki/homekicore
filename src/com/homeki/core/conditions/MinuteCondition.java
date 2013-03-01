@@ -22,60 +22,43 @@ public class MinuteCondition extends Condition {
 	@Column
 	public int minute;
 	
-	protected MinuteCondition() {}
-	
-	public static class Builder {
-		public String weekday = "";
-		public String day = "";
-		public int hour;
-		public int minute;
-		
-		public Builder weekday(String weekday) {
-			this.weekday = weekday;
-			return this;
-		}
-		
-		public Builder day(String day) {
-			this.day = day;
-			return this;
-		}
-		
-		public Builder hour(int hour) {
-			this.hour = hour;
-			return this;
-		}
-		
-		public Builder minute(int minute) {
-			this.minute = minute;
-			return this;
-		}
-		
-		public MinuteCondition build() {
-			return new MinuteCondition(this);
-		}
-	}
-	
-	private MinuteCondition(Builder builder) {
-		this.day = builder.day;
-		this.weekday = builder.weekday;
-		this.hour = builder.hour;
-		this.minute = builder.minute;
+	public MinuteCondition(String day, String weekday, int hour, int minute) {
+		this.day = day;
+		this.weekday = weekday;
+		this.hour = hour;
+		this.minute = minute;
 	}
 	
 	public String getDay() {
 		return day;
 	}
 	
+	public void setDay(String day) {
+		this.day = day;
+	}
+	
 	public String getWeekday() {
 		return weekday;
+	}
+	
+	public void setWeekday(String weekday) {
+		this.weekday = weekday;
 	}
 	
 	public int getHour() {
 		return hour;
 	}
 	
+	public void setHour(int hour) {
+		this.hour = hour;
+	}
+	
 	public int getMinute() {
 		return minute;
+	}
+	
+	public void setMinute(int minute) {
+		this.minute = minute;
 	}
 	
 	public boolean check(Event e) {
