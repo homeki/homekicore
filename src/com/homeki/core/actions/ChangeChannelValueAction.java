@@ -55,12 +55,24 @@ public class ChangeChannelValueAction extends Action {
 		return device.getId();
 	}
 	
+	public void setDevice(Device device) {
+		this.device = device;
+	}
+	
 	public Number getValue() {
 		return value;
 	}
 	
+	public void setValue(Number value) {
+		this.value = value;
+	}
+	
 	public int getChannel() {
 		return channel;
+	}
+	
+	public void setChannel(int channel) {
+		this.channel = channel;
 	}
 
 	@Override

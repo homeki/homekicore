@@ -16,7 +16,8 @@ import com.homeki.core.TestUtil.MockDeviceType;
 public class TriggerActionTest {
 	private int triggerId;
 	private int actionId1;
-	private int deviceId;
+	private int deviceId1;
+	private int deviceId2;
 	
 	public class JsonTrigger {
 		public Integer id;
@@ -40,19 +41,21 @@ public class TriggerActionTest {
 		jtrigger.name = "foractiontest";
 		jtrigger = TestUtil.sendPostAndParseAsJson("/trigger/add", jtrigger, JsonTrigger.class);
 		triggerId = jtrigger.id;
-		deviceId = TestUtil.addMockDevice(MockDeviceType.SWITCH);
+		deviceId1 = TestUtil.addMockDevice(MockDeviceType.SWITCH);
+		deviceId2 = TestUtil.addMockDevice(MockDeviceType.DIMMER);
 	}
 	
 	@AfterClass
 	public void afterClass() {
-		TestUtil.deleteDevice(deviceId);
+		TestUtil.deleteDevice(deviceId1);
+		TestUtil.deleteDevice(deviceId2);
 		TestUtil.sendGet("/trigger/" + triggerId + "/delete");
 	}
 	
 	@Test
 	public void testAddChangeChannelValueAction() {
 		JsonChangeChannelValueAction jact = new JsonChangeChannelValueAction();
-		jact.deviceId = deviceId;
+		jact.deviceId = deviceId1;
 		jact.value = 1;
 		jact.channel = 1;
 		
@@ -78,14 +81,23 @@ public class TriggerActionTest {
 	}
 	
 	@Test(dependsOnMethods="testList")
-	public void testGet() {
-		JsonChangeChannelValueAction jact = TestUtil.sendGetAndParseAsJson("/trigger/" + triggerId + "/action/" + actionId1 + "/get", JsonChangeChannelValueAction.class);
-		assertEquals((int)jact.channel, 1);
-		assertEquals(jact.value.intValue(), 1);
-		assertEquals((int)jact.deviceId, deviceId);
+	public void testSetChangeChannelValueAction() {
+		JsonChangeChannelValueAction jact = new JsonChangeChannelValueAction();
+		jact.deviceId = deviceId2;
+		jact.value = 3;
+		jact.channel = 2;
+		assertEquals(TestUtil.sendPost("/trigger/" + triggerId + "/action/" + actionId1 + "/set", jact).statusCode, 200);
 	}
 	
-	@Test(dependsOnMethods="testGet")
+	@Test(dependsOnMethods="testSetChangeChannelValueAction")
+	public void testGetChangeChannelValueAction() {
+		JsonChangeChannelValueAction jact = TestUtil.sendGetAndParseAsJson("/trigger/" + triggerId + "/action/" + actionId1 + "/get", JsonChangeChannelValueAction.class);
+		assertEquals((int)jact.channel, 2);
+		assertEquals(jact.value.intValue(), 3);
+		assertEquals((int)jact.deviceId, deviceId2);
+	}
+	
+	@Test(dependsOnMethods="testGetChangeChannelValueAction")
 	public void testDelete() {
 		assertEquals(TestUtil.sendGet("/trigger/" + triggerId + "/action/" + actionId1 + "/get").statusCode, 200);
 		assertEquals(TestUtil.sendGet("/trigger/" + triggerId + "/action/" + actionId1 + "/delete").statusCode, 200);
