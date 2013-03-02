@@ -19,18 +19,19 @@ import com.homeki.core.storage.Hibernate;
 
 public class ReportThread extends ControlledThread {
 	private String macAddress;
+	private ClientResource cr;
+	private InstanceResource resource;
 	
 	public ReportThread() {
 		super(Configuration.REPORTER_INTERVAL);
 		this.macAddress = getMacAddress();
+		this.cr = new ClientResource(Configuration.REPORTER_URL);
+		this.cr.setRequestEntityBuffering(true);
+		this.resource = cr.wrap(InstanceResource.class);
 	}
 
 	@Override
 	protected void iteration() {
-		ClientResource cr = new ClientResource(Configuration.REPORTER_URL);
-		cr.setRequestEntityBuffering(true);
-		InstanceResource resource = cr.wrap(InstanceResource.class);
-		
 		Session session = Hibernate.openSession();
 		
 		int deviceCount = ((Number)session.createCriteria(Device.class).setProjection(Projections.rowCount()).uniqueResult()).intValue();
