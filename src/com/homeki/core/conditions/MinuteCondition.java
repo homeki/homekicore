@@ -22,6 +22,10 @@ public class MinuteCondition extends Condition {
 	@Column
 	public int minute;
 	
+	public MinuteCondition() {
+		
+	}
+	
 	public MinuteCondition(String day, String weekday, int hour, int minute) {
 		this.day = day;
 		this.weekday = weekday;
