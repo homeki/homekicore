@@ -7,7 +7,7 @@ public class Configuration {
 	public static int TIMER_THREAD_INTERVAL = 10*1000;
 	public static int ONEWIRE_DETECTOR_INTERVAL = 2*60*1000;
 	public static int ONEWIRE_COLLECTOR_INTERVAL = 15*60*1000;
-	public static int REPORTER_INTERVAL = 24*60*1000;
+	public static int REPORTER_INTERVAL = 30*60*1000;
 	public static boolean REPORTER_ENABLED = true;
 	public static String REPORTER_URL = "http://report.homeki.com";
 	public static String ONEWIRE_PATH = "/mnt/1wire";
