@@ -339,4 +339,13 @@
 	<changeSet id="33" author="jonas">
 		<dropColumn tableName="minute_condition" columnName="time_operator"/>	    
 	</changeSet>
+	
+	<changeSet id="34" author="jonas">
+		<addColumn tableName="action_group">
+		    <column name="name" type="VARCHAR(150)" />
+			<column name="explicit" type="BOOLEAN" defaultValueBoolean="false">
+				<constraints nullable="false" />
+			</column>
+		</addColumn>
+	</changeSet>
 </databaseChangeLog>

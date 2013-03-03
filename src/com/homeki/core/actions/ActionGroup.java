@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
@@ -20,11 +21,17 @@ public class ActionGroup extends Action {
 	@OneToMany(mappedBy = "action", orphanRemoval = true)
 	@Cascade({ CascadeType.SAVE_UPDATE, CascadeType.DELETE })
 	@LazyCollection(LazyCollectionOption.EXTRA)
-	protected List<Action> actions;
+	private List<Action> actions;
 	
 	@OneToMany(mappedBy = "actionGroup")
 	@LazyCollection(LazyCollectionOption.EXTRA)
-	protected Set<Trigger> triggers;
+	private Set<Trigger> triggers;
+
+	@Column
+	private String name;
+	
+	@Column
+	private boolean explicit;
 	
 	public ActionGroup() {
 		this.actions = new ArrayList<Action>();
@@ -53,5 +60,21 @@ public class ActionGroup extends Action {
 	@Override
 	public String getType() {
 		return "actiongroup";
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public boolean isExplicit() {
+		return explicit;
+	}
+	
+	public void setExplicit(boolean explicit) {
+		this.explicit = explicit;
 	}
 }
