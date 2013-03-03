@@ -8,6 +8,8 @@ import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.homeki.core.logging.L;
 
 
@@ -56,11 +58,18 @@ public class Util {
 		return version;
 	}
 	
+	public static Gson constructGson() {
+		return new GsonBuilder()
+		.setPrettyPrinting()
+		.setDateFormat(Util.getDateTimeFormat().toPattern())
+		.create();
+	}
+	
 	public static void sleep(int ms){
 		try {
 			Thread.sleep(ms);
 		} catch (InterruptedException e) {
-			L.e("Util.sleep failed.");
+			L.e("Util.sleep aborted due to InterruptedException.");
 		}
 	}
 	

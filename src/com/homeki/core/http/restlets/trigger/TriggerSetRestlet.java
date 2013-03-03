@@ -19,7 +19,7 @@ public class TriggerSetRestlet extends KiRestlet {
 		
 		JsonTrigger jtrigger = getJsonObject(c, JsonTrigger.class);
 		
-		if (Util.isNotNullAndEmpty(jtrigger.name))
+		if (Util.isNullOrEmpty(jtrigger.name))
 			throw new ApiException("New trigger name cannot be empty.");
 		
 		if (jtrigger.name != null)

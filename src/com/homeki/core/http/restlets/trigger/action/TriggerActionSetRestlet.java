@@ -1,12 +1,10 @@
 package com.homeki.core.http.restlets.trigger.action;
 
 import com.homeki.core.actions.Action;
-import com.homeki.core.actions.ChangeChannelValueAction;
-import com.homeki.core.device.Device;
+import com.homeki.core.actions.ActionParser;
 import com.homeki.core.http.ApiException;
 import com.homeki.core.http.Container;
 import com.homeki.core.http.KiRestlet;
-import com.homeki.core.http.json.JsonChangeChannelValueAction;
 import com.homeki.core.triggers.Trigger;
 
 public class TriggerActionSetRestlet extends KiRestlet {
@@ -25,29 +23,9 @@ public class TriggerActionSetRestlet extends KiRestlet {
 		if (act == null)
 			throw new ApiException("No action with the specified ID found.");
 		
-		if (act instanceof ChangeChannelValueAction)
-			parseChangeChannelAction(c, (ChangeChannelValueAction)act);
+		ActionParser.updateAction(act, getPost(c));
 		
 		c.ses.save(act);
 		set200Response(c, msg("Action updated successfully."));
-	}
-	
-	private void parseChangeChannelAction(Container c, ChangeChannelValueAction act) {
-		JsonChangeChannelValueAction jact = getJsonObject(c, JsonChangeChannelValueAction.class);
-		
-		if (jact.deviceId != null) {
-			Device dev = (Device)c.ses.get(Device.class, jact.deviceId);
-			
-			if (dev == null)
-				throw new ApiException("Could not load new device from device ID.");
-			
-			act.setDevice(dev);
-		}
-		if (jact.channel != null) {
-			act.setChannel(jact.channel);
-		}
-		if (jact.value != null) {
-			act.setValue(jact.value);
-		}
 	}
 }

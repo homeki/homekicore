@@ -8,6 +8,11 @@ import com.homeki.core.http.restlets.actiongroup.ActionGroupAddRestlet;
 import com.homeki.core.http.restlets.actiongroup.ActionGroupDeleteRestlet;
 import com.homeki.core.http.restlets.actiongroup.ActionGroupListRestlet;
 import com.homeki.core.http.restlets.actiongroup.ActionGroupSetRestlet;
+import com.homeki.core.http.restlets.actiongroup.action.ActionGroupActionAddRestlet;
+import com.homeki.core.http.restlets.actiongroup.action.ActionGroupActionDeleteRestlet;
+import com.homeki.core.http.restlets.actiongroup.action.ActionGroupActionGetRestlet;
+import com.homeki.core.http.restlets.actiongroup.action.ActionGroupActionListRestlet;
+import com.homeki.core.http.restlets.actiongroup.action.ActionGroupActionSetRestlet;
 import com.homeki.core.http.restlets.device.DeviceDeleteRestlet;
 import com.homeki.core.http.restlets.device.DeviceGetRestlet;
 import com.homeki.core.http.restlets.device.DeviceListRestlet;
@@ -81,11 +86,11 @@ public class JsonRestletApplication extends Application {
 		r.attach("/actiongroup/{actiongroupid}/set", new ActionGroupSetRestlet());
 		r.attach("/actiongroup/{actiongroupid}/delete", new ActionGroupDeleteRestlet());
 		
-		/*r.attach("/actiongroup/{actiongroupid}/action/list", new TriggerActionListRestlet());
-		r.attach("/actiongroup/{actiongroupid}/action/add", new TriggerActionAddRestlet());
-		r.attach("/actiongroup/{actiongroupid}/action/{actionid}/get", new TriggerActionGetRestlet());
-		r.attach("/actiongroup/{actiongroupid}/action/{actionid}/set", new TriggerActionSetRestlet());
-		r.attach("/actiongroup/{actiongroupid}/action/{actionid}/delete", new TriggerActionDeleteRestlet());*/
+		r.attach("/actiongroup/{actiongroupid}/action/list", new ActionGroupActionListRestlet());
+		r.attach("/actiongroup/{actiongroupid}/action/add", new ActionGroupActionAddRestlet());
+		r.attach("/actiongroup/{actiongroupid}/action/{actionid}/get", new ActionGroupActionGetRestlet());
+		r.attach("/actiongroup/{actiongroupid}/action/{actionid}/set", new ActionGroupActionSetRestlet());
+		r.attach("/actiongroup/{actiongroupid}/action/{actionid}/delete", new ActionGroupActionDeleteRestlet());
 		
 		return r;
 	}

@@ -15,7 +15,6 @@ import org.restlet.engine.header.Header;
 import org.restlet.util.Series;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.homeki.core.http.json.JsonVoid;
 import com.homeki.core.logging.L;
@@ -23,10 +22,7 @@ import com.homeki.core.main.Util;
 import com.homeki.core.storage.Hibernate;
 
 public abstract class KiRestlet extends Restlet {
-	protected static final Gson gson = new GsonBuilder()
-		.setPrettyPrinting()
-		.setDateFormat(Util.getDateTimeFormat().toPattern())
-		.create();
+	protected static final Gson gson = Util.constructGson();
 	
 	@Override
 	public void handle(Request request, Response response) {
@@ -122,7 +118,7 @@ public abstract class KiRestlet extends Restlet {
 		}
 	}
 	
-	protected <T> T getJsonObject(Container c, Type t) {
+	protected String getPost(Container c) {
 		String s = "";
 		
 		if (!c.req.getMethod().equals(Method.POST))
@@ -131,9 +127,13 @@ public abstract class KiRestlet extends Restlet {
 		s = c.req.getEntityAsText();
 		
 		if (s.length() == 0)
-			throw new ApiException("Expected JSON in POST HTTP, but received nothing.");
+			throw new ApiException("Expected text in POST HTTP, but received nothing.");
 		
-		return gson.fromJson(s, t);
+		return s;
+	}
+	
+	protected <T> T getJsonObject(Container c, Type t) {
+		return gson.fromJson(getPost(c), t);
 	}
 	
 	protected String msg(String msg) {

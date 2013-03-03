@@ -99,7 +99,7 @@ public class TriggerActionGroupTest {
 		for (JsonActionGroup jt : jactgrps) {
 			if (jt.id == actionGroupId) {
 				found = true;
-				assertEquals(jt.name, "MyNewTrigger");
+				assertEquals(jt.name, "MyNewActionGroup");
 			}
 		}
 		assertTrue(found);

@@ -19,7 +19,7 @@ public class ActionGroupSetRestlet extends KiRestlet {
 		
 		JsonActionGroup jactgr = getJsonObject(c, JsonActionGroup.class);
 		
-		if (Util.isNotNullAndEmpty(jactgr.name))
+		if (Util.isNullOrEmpty(jactgr.name))
 			throw new ApiException("New action group name cannot be empty.");
 		
 		if (jactgr.name != null)
