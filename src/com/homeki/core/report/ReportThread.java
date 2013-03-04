@@ -33,8 +33,6 @@ public class ReportThread extends ControlledThread {
 
 	@Override
 	protected void iteration() {
-		L.i("Enter iteration for reporting instance status.");
-		
 		Session session = Hibernate.openSession();
 		
 		int deviceCount = ((Number)session.createCriteria(Device.class).setProjection(Projections.rowCount()).uniqueResult()).intValue();
@@ -51,19 +49,18 @@ public class ReportThread extends ControlledThread {
 		Hibernate.closeSession(session);
 		
 		try {
-			L.i("Just before store of instance status.");
 			resource.store(report);
 			L.i("Instance status was successfully reported.");
 		} catch (Exception e) {
 			L.w("Failed to report instance status.");
-		}/* finally {
+		} finally {
 			try {
 				cr.getResponseEntity().exhaust();
 				cr.getResponseEntity().release();
 			} catch (IOException e) {
 				L.e("Failed to exhaust response entity while reporting instance status.");
 			}
-		}*/
+		}
 	}
 	
 	private String getMacAddress() {
