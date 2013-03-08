@@ -6,8 +6,8 @@
 # Required-Stop:	$local_fs $remote_fs postgresql telldusd
 # Should-Start:		
 # Should-Stop:		
-# Default-Start:	
-# Default-Stop:		
+# Default-Start:	2 3 4 5	
+# Default-Stop:		0 1 6
 # Short-Description:	Service for gathering sensors and devices
 # Description:		Service for gathering sensors and devices
 ### END INIT INFO
