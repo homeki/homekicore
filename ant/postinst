@@ -52,9 +52,7 @@ if [ "$1" = "configure" ] ; then
 	chmod a+w /opt/homeki/stderr.log
 	echo "done"
 	
-	echo -n "adding S99homeki symlink to runlevel 2: "
-	ln -sf /etc/init.d/homekid /etc/rc2.d/S99homeki
-	echo "done"
+	update-rc.d homekid defaults 99
 	
 	echo "------------------- APT: STARTED HOMEKI -------------------" >> /opt/homeki/stdout.log
 	/etc/init.d/homekid start

@@ -1,5 +1,17 @@
 #! /bin/sh
 
+### BEGIN INIT INFO
+# Provides:		homekid
+# Required-Start:	$local_fs $remote_fs postgresql telldusd
+# Required-Stop:	$local_fs $remote_fs postgresql telldusd
+# Should-Start:		
+# Should-Stop:		
+# Default-Start:	
+# Default-Stop:		
+# Short-Description:	Service for gathering sensors and devices
+# Description:		Service for gathering sensors and devices
+### END INIT INFO
+
 PATH="/sbin:/usr/sbin:/bin:/usr/bin"
 NAME="homeki"
 CURRENT_DIR="/opt/homeki"

@@ -12,9 +12,7 @@ if [ "$1" = "remove" ] ; then
 	rm -rf /opt/homeki/log
 	echo "done"
 	
-	echo -n "removing etc/rc2.d/S99homeki: "
-	rm -f /etc/rc2.d/S99homeki
-	echo "done"
+	update-rc.d homekid remove
 fi
 
 exit 0
