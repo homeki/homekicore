@@ -157,7 +157,7 @@ public abstract class Device {
 		historyPoints.add(dhp);
 		
 		if (id > 0)
-			EventQueue.getInstance().add(new ChannelValueChangedEvent(id, channel, value));
+			EventQueue.INSTANCE.add(new ChannelValueChangedEvent(id, channel, value));
 		
 	}
 	
@@ -169,7 +169,7 @@ public abstract class Device {
 		historyPoints.add(dhp);
 		
 		if (id > 0)
-			EventQueue.getInstance().add(new ChannelValueChangedEvent(id, channel, value));
+			EventQueue.INSTANCE.add(new ChannelValueChangedEvent(id, channel, value));
 	}
 	
 	public String[] getAbilities() {

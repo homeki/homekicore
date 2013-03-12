@@ -18,16 +18,16 @@ public class ClockGeneratorThread extends ControlledThread {
 		calendar.setTimeInMillis(System.currentTimeMillis());
 		
 		int tempWeekday = calendar.get(Calendar.DAY_OF_WEEK);
-		//week begins with sunday in java, but we want monday to be day 1!
+		
+		// week begins with sunday in java, but we want monday to be day 1!
 		tempWeekday -= 1;
-		if (tempWeekday == 0){
+		if (tempWeekday == 0)
 			tempWeekday = 7;
-		}
 		
 		int weekday = tempWeekday;
 		int day = calendar.get(Calendar.DAY_OF_MONTH);
 		int hour = calendar.get(Calendar.HOUR_OF_DAY);
 		int minute = calendar.get(Calendar.MINUTE);
-		EventQueue.getInstance().add(new MinuteChangedEvent(weekday, day, hour, minute));
+		EventQueue.INSTANCE.add(new MinuteChangedEvent(weekday, day, hour, minute));
 	}
 }

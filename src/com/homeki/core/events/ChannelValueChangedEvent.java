@@ -35,7 +35,7 @@ public class ChannelValueChangedEvent extends Event {
 			
 			for (Channel c : channels) {
 				HistoryPoint p = d.getLatestHistoryPoint(c.id);
-				EventQueue.getInstance().add(new ChannelValueChangedEvent(d.getId(), c.id, p.getValue()));
+				EventQueue.INSTANCE.add(new ChannelValueChangedEvent(d.getId(), c.id, p.getValue()));
 			}
 		}
 		

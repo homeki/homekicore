@@ -14,7 +14,7 @@ public class EventHandlerThread extends ControlledThread {
 	}
 	
 	protected void iteration() throws Exception {
-		Event e = EventQueue.getInstance().take(); // will block until event received
+		Event e = EventQueue.INSTANCE.take(); // will block until event received
 
 		Session ses = Hibernate.openSession();
 		
