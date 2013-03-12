@@ -348,4 +348,21 @@
 			</column>
 		</addColumn>
 	</changeSet>
+	
+	<changeSet id="35" author="jonas">
+	    <createTable tableName="special_value_condition">
+	        <column name="id" type="INTEGER">
+	            <constraints nullable="false" references="condition(id)" foreignKeyName="fk_special_value_condition-condition" />
+	        </column>
+	        <column name="operator" type="INTEGER">
+	            <constraints nullable="false" />
+	        </column>
+	        <column name="source" type="VARCHAR(150)">
+	            <constraints nullable="false" />
+	        </column>
+	        <column name="value" type="INTEGER">
+	            <constraints nullable="false" />
+	        </column>
+	    </createTable>
+	</changeSet>
 </databaseChangeLog>

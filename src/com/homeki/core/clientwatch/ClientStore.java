@@ -6,6 +6,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.homeki.core.events.EventQueue;
+import com.homeki.core.events.SpecialValueChangedEvent;
+
 public enum ClientStore {
 	INSTANCE;
 	
@@ -36,10 +39,12 @@ public enum ClientStore {
 	
 	public synchronized void addClient(InetAddress ip) {
 		clients.add(new Client(ip));
+		EventQueue.INSTANCE.add(SpecialValueChangedEvent.CreateClientWatchEvent(clients.size()));
 	}
 	
 	public synchronized void removeClient(InetAddress ip) {
 		clients.remove(ip);
+		EventQueue.INSTANCE.add(SpecialValueChangedEvent.CreateClientWatchEvent(clients.size()));
 	}
 	
 	public synchronized List<Client> getClients() {

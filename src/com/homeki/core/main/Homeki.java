@@ -70,7 +70,7 @@ public class Homeki {
 		modules.add(new RestApiModule());
 		modules.add(new WebGuiModule());
 		modules.add(new BroadcastModule());
-		//modules.add(new ClientWatchModule());
+		modules.add(new ClientWatchModule());
 		
 		for (Module module : modules) {
 			try {
