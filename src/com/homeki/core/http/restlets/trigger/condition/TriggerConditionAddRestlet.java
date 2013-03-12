@@ -3,13 +3,16 @@ package com.homeki.core.http.restlets.trigger.condition;
 import com.homeki.core.conditions.ChannelValueCondition;
 import com.homeki.core.conditions.Condition;
 import com.homeki.core.conditions.MinuteCondition;
+import com.homeki.core.conditions.SpecialValueCondition;
 import com.homeki.core.device.Device;
+import com.homeki.core.events.SpecialValueChangedEvent;
 import com.homeki.core.http.ApiException;
 import com.homeki.core.http.Container;
 import com.homeki.core.http.KiRestlet;
 import com.homeki.core.http.json.JsonChannelValueCondition;
 import com.homeki.core.http.json.JsonCondition;
 import com.homeki.core.http.json.JsonMinuteCondition;
+import com.homeki.core.http.json.JsonSpecialValueCondition;
 import com.homeki.core.main.Util;
 import com.homeki.core.triggers.Trigger;
 
@@ -26,9 +29,11 @@ public class TriggerConditionAddRestlet extends KiRestlet {
 			throw new ApiException("No trigger with the specified ID found.");
 			
 		if (type.equals("channelvalue"))
-			condition = parseChannelChanged(c);
+			condition = parseChannelValueCondition(c);
 		else if (type.equals("minute"))
-			condition = parseMinuteChanged(c);
+			condition = parseMinuteCondition(c);
+		else if (type.equals("specialvalue"))
+			condition = parseSpecialValueCondition(c);
 		else
 			throw new ApiException("No such condition type.");
 		
@@ -41,7 +46,7 @@ public class TriggerConditionAddRestlet extends KiRestlet {
 		set200Response(c, gson.toJson(newid));
 	}
 	
-	private Condition parseChannelChanged(Container c) {
+	private Condition parseChannelValueCondition(Container c) {
 		JsonChannelValueCondition jcond = getJsonObject(c, JsonChannelValueCondition.class);
 		
 		if (Util.isNullOrEmpty(jcond.operator))
@@ -53,7 +58,7 @@ public class TriggerConditionAddRestlet extends KiRestlet {
 		if (jcond.channel == null)
 			throw new ApiException("Missing channel.");
 		
-		int op = jcond.getOperatorInt();
+		int op = JsonCondition.convertStringOperator(jcond.operator);
 		Device dev = (Device)c.ses.get(Device.class, jcond.deviceId);
 		
 		if (dev == null)
@@ -64,7 +69,26 @@ public class TriggerConditionAddRestlet extends KiRestlet {
 		return new ChannelValueCondition(dev, jcond.channel, jcond.value, op);
 	}
 	
-	private Condition parseMinuteChanged(Container c) {
+	private Condition parseSpecialValueCondition(Container c) {
+		JsonSpecialValueCondition jcond = getJsonObject(c, JsonSpecialValueCondition.class);
+		
+		if (Util.isNullOrEmpty(jcond.operator))
+			throw new ApiException("Missing operator.");
+		if (Util.isNullOrEmpty(jcond.source))
+			throw new ApiException("Missing operator.");
+		if (jcond.value == null)
+			throw new ApiException("Missing value.");
+		
+		int op = JsonCondition.convertStringOperator(jcond.operator);
+		jcond.source = jcond.source.toUpperCase();
+		
+		if (!SpecialValueChangedEvent.verifySource(jcond.source))
+			throw new ApiException("No source '" + jcond.source + "' exists.");
+		
+		return new SpecialValueCondition(jcond.source, jcond.value, op);
+	}
+	
+	private Condition parseMinuteCondition(Container c) {
 		JsonMinuteCondition jcond = getJsonObject(c, JsonMinuteCondition.class);
 		
 		if (Util.isNullOrEmpty(jcond.day))

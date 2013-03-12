@@ -39,12 +39,12 @@ public enum ClientStore {
 	
 	public synchronized void addClient(InetAddress ip) {
 		clients.add(new Client(ip));
-		EventQueue.INSTANCE.add(SpecialValueChangedEvent.CreateClientWatchEvent(clients.size()));
+		EventQueue.INSTANCE.add(SpecialValueChangedEvent.createClientWatchEvent(clients.size()));
 	}
 	
 	public synchronized void removeClient(InetAddress ip) {
 		clients.remove(ip);
-		EventQueue.INSTANCE.add(SpecialValueChangedEvent.CreateClientWatchEvent(clients.size()));
+		EventQueue.INSTANCE.add(SpecialValueChangedEvent.createClientWatchEvent(clients.size()));
 	}
 	
 	public synchronized List<Client> getClients() {

@@ -21,9 +21,10 @@ public class SpecialValueCondition extends Condition {
 		
 	}
 	
-	public SpecialValueCondition(String source, int value) {
+	public SpecialValueCondition(String source, int value, int op) {
 		this.source = source;
 		this.value = value;
+		this.operator = op;
 	}
 	
 	public boolean check(Event e) {
@@ -49,6 +50,14 @@ public class SpecialValueCondition extends Condition {
 	
 	public void setValue(int value) {
 		this.value = value;
+	}
+	
+	public int getOperator() {
+		return operator;
+	}
+	
+	public void setOperator(int operator) {
+		this.operator = operator;
 	}
 	
 	@Override

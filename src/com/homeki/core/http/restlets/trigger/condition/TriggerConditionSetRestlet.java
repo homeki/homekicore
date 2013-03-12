@@ -3,12 +3,16 @@ package com.homeki.core.http.restlets.trigger.condition;
 import com.homeki.core.conditions.ChannelValueCondition;
 import com.homeki.core.conditions.Condition;
 import com.homeki.core.conditions.MinuteCondition;
+import com.homeki.core.conditions.SpecialValueCondition;
 import com.homeki.core.device.Device;
+import com.homeki.core.events.SpecialValueChangedEvent;
 import com.homeki.core.http.ApiException;
 import com.homeki.core.http.Container;
 import com.homeki.core.http.KiRestlet;
 import com.homeki.core.http.json.JsonChannelValueCondition;
+import com.homeki.core.http.json.JsonCondition;
 import com.homeki.core.http.json.JsonMinuteCondition;
+import com.homeki.core.http.json.JsonSpecialValueCondition;
 import com.homeki.core.main.Util;
 import com.homeki.core.triggers.Trigger;
 
@@ -29,18 +33,22 @@ public class TriggerConditionSetRestlet extends KiRestlet {
 			throw new ApiException("No condition with the specified ID found.");
 		
 		if (cond instanceof ChannelValueCondition)
-			parseChangeValueCondition(c, (ChannelValueCondition)cond);
+			parseChannelValueCondition(c, (ChannelValueCondition)cond);
 		else if (cond instanceof MinuteCondition)
 			parseMinuteCondition(c, (MinuteCondition)cond);
+		else if (cond instanceof SpecialValueCondition)
+			parseSpecialValueCondition(c, (SpecialValueCondition)cond);
+		else
+			throw new ApiException("Condition does not yet support /set.");
 		
 		c.ses.save(cond);
 	}
 	
-	private void parseChangeValueCondition(Container c, ChannelValueCondition cond) {
+	private void parseChannelValueCondition(Container c, ChannelValueCondition cond) {
 		JsonChannelValueCondition jcond = getJsonObject(c, JsonChannelValueCondition.class);
 		
 		if (!Util.isNullOrEmpty(jcond.operator)) {
-			cond.setOperator(jcond.getOperatorInt());
+			cond.setOperator(JsonCondition.convertStringOperator(jcond.operator));
 		}
 		if (jcond.value != null) {
 			cond.setValue(jcond.value);
@@ -69,5 +77,24 @@ public class TriggerConditionSetRestlet extends KiRestlet {
 			cond.setHour(jcond.hour);
 		if (jcond.minute != null)
 			cond.setMinute(jcond.minute);
+	}
+	
+	private void parseSpecialValueCondition(Container c, SpecialValueCondition cond) {
+		JsonSpecialValueCondition jcond = getJsonObject(c, JsonSpecialValueCondition.class);
+		
+		if (!Util.isNullOrEmpty(jcond.operator)) {
+			cond.setOperator(JsonCondition.convertStringOperator(jcond.operator));
+		}
+		if (jcond.value != null) {
+			cond.setValue(jcond.value);
+		}
+		if (jcond.source != null) {
+			jcond.source = jcond.source.toUpperCase();
+			
+			if (!SpecialValueChangedEvent.verifySource(jcond.source))
+				throw new ApiException("No source '" + jcond.source + "' exists.");
+			
+			cond.setSource(jcond.source);
+		}
 	}
 }

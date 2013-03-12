@@ -17,6 +17,7 @@ public class TriggerConditionTest {
 	private int triggerId;
 	private int conditionId1;
 	private int conditionId2;
+	private int conditionId3;
 	private int deviceId;
 	
 	public class JsonTrigger {
@@ -29,10 +30,16 @@ public class TriggerConditionTest {
 		public Integer id;
 	}
 	
-	public class JsonChannelChangedCondition extends JsonCondition {
+	public class JsonChannelValueCondition extends JsonCondition {
 		public Integer deviceId;
 		public Integer channel;
 		public Number value;
+		public String operator;
+	}
+	
+	public class JsonSpecialValueCondition extends JsonCondition {
+		public String source;
+		public Integer value;
 		public String operator;
 	}
 	
@@ -59,8 +66,8 @@ public class TriggerConditionTest {
 	}
 	
 	@Test
-	public void testAddChannelChangedCondition() {
-		JsonChannelChangedCondition jcond = new JsonChannelChangedCondition();
+	public void testAddChannelValueCondition() {
+		JsonChannelValueCondition jcond = new JsonChannelValueCondition();
 		jcond.deviceId = deviceId;
 		jcond.value = 12;
 		jcond.channel = 1;
@@ -71,13 +78,13 @@ public class TriggerConditionTest {
 		
 		jcond.operator = "LT";
 		
-		jcond = TestUtil.sendPostAndParseAsJson("/trigger/" + triggerId + "/condition/add?type=channelvalue", jcond, JsonChannelChangedCondition.class);
+		jcond = TestUtil.sendPostAndParseAsJson("/trigger/" + triggerId + "/condition/add?type=channelvalue", jcond, JsonChannelValueCondition.class);
 		
 		assertTrue(jcond.id > 0);
 		conditionId2 = jcond.id;
 	}
 	
-	@Test(dependsOnMethods="testAddChannelChangedCondition")
+	@Test(dependsOnMethods="testAddChannelValueCondition")
 	public void testAddMinuteCondition() {
 		JsonMinuteCondition jcond = new JsonMinuteCondition();
 		jcond.day = "1,13";
@@ -97,6 +104,28 @@ public class TriggerConditionTest {
 	}
 	
 	@Test(dependsOnMethods="testAddMinuteCondition")
+	public void testAddSpecialValueCondition() {
+		JsonSpecialValueCondition jcond = new JsonSpecialValueCondition();
+		jcond.value = 12;
+		jcond.source = "123CONNEadCTED_CLIENasdTS";
+		jcond.operator = "dontthinkso";
+		
+		assertEquals(TestUtil.sendPost("/trigger/9999/condition/add?type=specialvalue", jcond).statusCode, 400);
+		assertEquals(TestUtil.sendPost("/trigger/" +  triggerId + "/condition/add?type=specialvalue", jcond).statusCode, 400);
+		
+		jcond.operator = "LT";
+		
+		assertEquals(TestUtil.sendPost("/trigger/" +  triggerId + "/condition/add?type=specialvalue", jcond).statusCode, 400);
+		
+		jcond.source = "CONNECTED_CLIENTS";
+		
+		jcond = TestUtil.sendPostAndParseAsJson("/trigger/" + triggerId + "/condition/add?type=specialvalue", jcond, JsonSpecialValueCondition.class);
+		
+		assertTrue(jcond.id > 0);
+		conditionId3 = jcond.id;
+	}
+	
+	@Test(dependsOnMethods="testAddSpecialValueCondition")
 	public void testList() {
 		JsonCondition[] jconditions = TestUtil.sendGetAndParseAsJson("/trigger/" + triggerId + "/condition/list", JsonCondition[].class);
 		
@@ -107,18 +136,19 @@ public class TriggerConditionTest {
 		
 		assertTrue(existingIds.contains(conditionId1));
 		assertTrue(existingIds.contains(conditionId2));
+		assertTrue(existingIds.contains(conditionId3));
 	}
 
 	@Test(dependsOnMethods="testList")
-	public void testSetChannelChangedCondition() {
-		JsonChannelChangedCondition jcond = new JsonChannelChangedCondition();
+	public void testSetChannelValueCondition() {
+		JsonChannelValueCondition jcond = new JsonChannelValueCondition();
 		jcond.value = 13;
 		jcond.channel = 2;
 		jcond.operator = "GT";
 		assertEquals(TestUtil.sendPost("/trigger/" + triggerId + "/condition/" + conditionId2 + "/set", jcond).statusCode, 200);
 	}
 	
-	@Test(dependsOnMethods="testSetChannelChangedCondition")
+	@Test(dependsOnMethods="testSetChannelValueCondition")
 	public void testSetMinuteCondition() {
 		JsonMinuteCondition jcond = new JsonMinuteCondition();
 		jcond.weekday = "4";
@@ -128,6 +158,14 @@ public class TriggerConditionTest {
 	}
 	
 	@Test(dependsOnMethods="testSetMinuteCondition")
+	public void testSetSpecialValueCondition() {
+		JsonSpecialValueCondition jcond = new JsonSpecialValueCondition();
+		jcond.value = 99;
+		jcond.operator = "GT";
+		assertEquals(TestUtil.sendPost("/trigger/" + triggerId + "/condition/" + conditionId3 + "/set", jcond).statusCode, 200);
+	}
+	
+	@Test(dependsOnMethods="testSetSpecialValueCondition")
 	public void testGetMinuteCondition() {
 		JsonMinuteCondition jcond = TestUtil.sendGetAndParseAsJson("/trigger/" + triggerId + "/condition/" + conditionId1 + "/get", JsonMinuteCondition.class);
 		assertEquals(jcond.day, "1,13");
@@ -137,15 +175,23 @@ public class TriggerConditionTest {
 	}
 	
 	@Test(dependsOnMethods="testGetMinuteCondition")
-	public void testGetChannelChangedCondition() {
-		JsonChannelChangedCondition jcond = TestUtil.sendGetAndParseAsJson("/trigger/" + triggerId + "/condition/" + conditionId2 + "/get", JsonChannelChangedCondition.class);
+	public void testGetChannelValueCondition() {
+		JsonChannelValueCondition jcond = TestUtil.sendGetAndParseAsJson("/trigger/" + triggerId + "/condition/" + conditionId2 + "/get", JsonChannelValueCondition.class);
 		assertEquals((int)jcond.deviceId, deviceId);
 		assertEquals(jcond.value, 13);
 		assertEquals((int)jcond.channel, 2);
 		assertEquals(jcond.operator, "GT");
 	}
 	
-	@Test(dependsOnMethods="testGetChannelChangedCondition")
+	@Test(dependsOnMethods="testGetChannelValueCondition")
+	public void testGetSpecialValueCondition() {
+		JsonSpecialValueCondition jcond = TestUtil.sendGetAndParseAsJson("/trigger/" + triggerId + "/condition/" + conditionId3 + "/get", JsonSpecialValueCondition.class);
+		assertEquals(jcond.source, "CONNECTED_CLIENTS");
+		assertEquals((int)jcond.value, 99);
+		assertEquals(jcond.operator, "GT");
+	}
+	
+	@Test(dependsOnMethods="testGetSpecialValueCondition")
 	public void testDelete() {
 		assertEquals(TestUtil.sendGet("/trigger/" + triggerId + "/condition/" + conditionId1 + "/get").statusCode, 200);
 		assertEquals(TestUtil.sendGet("/trigger/" + triggerId + "/condition/" + conditionId1 + "/delete").statusCode, 200);
