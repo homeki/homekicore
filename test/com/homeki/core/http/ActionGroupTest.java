@@ -12,8 +12,9 @@ import org.testng.annotations.Test;
 
 import com.homeki.core.TestUtil;
 import com.homeki.core.TestUtil.MockDeviceType;
+import com.homeki.core.main.Util;
 
-public class TriggerActionGroupTest {
+public class ActionGroupTest {
 	private int deviceId1;
 	private int deviceId2;
 	private int actionGroupId;
@@ -61,7 +62,7 @@ public class TriggerActionGroupTest {
 	@Test(dependsOnMethods="testAdd")
 	public void testAddChangeChannelValueAction() {
 		JsonChangeChannelValueAction jact = new JsonChangeChannelValueAction();
-		jact.deviceId = deviceId1;
+		jact.deviceId = deviceId2;
 		jact.value = 1;
 		jact.channel = 1;
 		
@@ -74,6 +75,12 @@ public class TriggerActionGroupTest {
 	}
 	
 	@Test(dependsOnMethods="testAddChangeChannelValueAction")
+	public void testTrigger() {
+		assertEquals(TestUtil.sendGet("/actiongroup/" + actionGroupId + "/trigger").statusCode, 200);
+		Util.sleep(2000); // wait for the trigger to complete
+	}
+	
+	@Test(dependsOnMethods="testTrigger")
 	public void testList() {
 		JsonActionGroup[] jactgrps = TestUtil.sendGetAndParseAsJson("/actiongroup/list", JsonActionGroup[].class);
 		
