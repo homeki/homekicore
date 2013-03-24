@@ -14,6 +14,7 @@ import com.homeki.core.http.restlets.actiongroup.action.ActionGroupActionDeleteR
 import com.homeki.core.http.restlets.actiongroup.action.ActionGroupActionGetRestlet;
 import com.homeki.core.http.restlets.actiongroup.action.ActionGroupActionListRestlet;
 import com.homeki.core.http.restlets.actiongroup.action.ActionGroupActionSetRestlet;
+import com.homeki.core.http.restlets.client.ClientRegisterRestlet;
 import com.homeki.core.http.restlets.device.DeviceDeleteRestlet;
 import com.homeki.core.http.restlets.device.DeviceGetRestlet;
 import com.homeki.core.http.restlets.device.DeviceListRestlet;
@@ -93,6 +94,8 @@ public class JsonRestletApplication extends Application {
 		r.attach("/actiongroup/{actiongroupid}/action/{actionid}/get", new ActionGroupActionGetRestlet());
 		r.attach("/actiongroup/{actiongroupid}/action/{actionid}/set", new ActionGroupActionSetRestlet());
 		r.attach("/actiongroup/{actiongroupid}/action/{actionid}/delete", new ActionGroupActionDeleteRestlet());
+		
+		r.attach("/client/register", new ClientRegisterRestlet());
 		
 		return r;
 	}
