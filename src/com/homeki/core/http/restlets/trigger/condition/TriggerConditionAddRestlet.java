@@ -75,7 +75,7 @@ public class TriggerConditionAddRestlet extends KiRestlet {
 		if (Util.isNullOrEmpty(jcond.operator))
 			throw new ApiException("Missing operator.");
 		if (Util.isNullOrEmpty(jcond.source))
-			throw new ApiException("Missing operator.");
+			throw new ApiException("Missing source.");
 		if (jcond.value == null)
 			throw new ApiException("Missing value.");
 		
