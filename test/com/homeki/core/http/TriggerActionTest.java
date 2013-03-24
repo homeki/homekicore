@@ -16,6 +16,8 @@ import com.homeki.core.TestUtil.MockDeviceType;
 public class TriggerActionTest {
 	private int triggerId;
 	private int actionId1;
+	private int actionId2;
+	private int actionGroupId;
 	private int deviceId1;
 	private int deviceId2;
 	
@@ -35,12 +37,27 @@ public class TriggerActionTest {
 		public Number value;
 	}
 	
+	public class JsonTriggerActionGroupAction extends JsonAction {
+		public Integer actionGroupId;
+	}
+	
+	public class JsonActionGroup {
+		public Integer id;
+		public String name;
+	}
+	
 	@BeforeClass
 	public void beforeClass() {
 		JsonTrigger jtrigger = new JsonTrigger();
 		jtrigger.name = "foractiontest";
 		jtrigger = TestUtil.sendPostAndParseAsJson("/trigger/add", jtrigger, JsonTrigger.class);
 		triggerId = jtrigger.id;
+		
+		JsonActionGroup jactgrp = new JsonActionGroup();
+		jactgrp.name = "Test action group";
+		jactgrp = TestUtil.sendPostAndParseAsJson("/actiongroup/add", jactgrp, JsonActionGroup.class);
+		actionGroupId = jactgrp.id;
+		
 		deviceId1 = TestUtil.addMockDevice(MockDeviceType.SWITCH);
 		deviceId2 = TestUtil.addMockDevice(MockDeviceType.DIMMER);
 	}
@@ -50,6 +67,7 @@ public class TriggerActionTest {
 		TestUtil.deleteDevice(deviceId1);
 		TestUtil.deleteDevice(deviceId2);
 		TestUtil.sendGet("/trigger/" + triggerId + "/delete");
+		TestUtil.sendGet("/actiongroup/" + actionGroupId + "/delete");
 	}
 	
 	@Test
@@ -69,6 +87,20 @@ public class TriggerActionTest {
 	}
 	
 	@Test(dependsOnMethods="testAddChangeChannelValueAction")
+	public void testAddTriggerActionGroupAction() {
+		JsonTriggerActionGroupAction jact = new JsonTriggerActionGroupAction();
+		jact.actionGroupId = 9238298;
+		
+		assertEquals(TestUtil.sendPost("/trigger/" + triggerId + "/action/add?type=triggeractiongroup", jact).statusCode, 400);
+		
+		jact.actionGroupId = actionGroupId;
+		jact = TestUtil.sendPostAndParseAsJson("/trigger/" + triggerId + "/action/add?type=triggeractiongroup", jact, JsonTriggerActionGroupAction.class);
+		
+		assertTrue(jact.id > 0);
+		actionId2 = jact.id;
+	}
+	
+	@Test(dependsOnMethods="testAddTriggerActionGroupAction")
 	public void testList() {
 		JsonAction[] jactions = TestUtil.sendGetAndParseAsJson("/trigger/" + triggerId + "/action/list", JsonAction[].class);
 		
@@ -78,6 +110,7 @@ public class TriggerActionTest {
 			existingIds.add(jc.id);
 		
 		assertTrue(existingIds.contains(actionId1));
+		assertTrue(existingIds.contains(actionId2));
 	}
 	
 	@Test(dependsOnMethods="testList")

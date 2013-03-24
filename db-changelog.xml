@@ -365,4 +365,15 @@
 	        </column>
 	    </createTable>
 	</changeSet>
+	
+	<changeSet id="36" author="jonas">
+	    <createTable tableName="trigger_action_group_action">
+	        <column name="id" type="INTEGER">
+	            <constraints nullable="false" references="action(id)" foreignKeyName="fk_trigger_action_group_action-action" />
+	        </column>
+	        <column name="action_group_id" type="INTEGER">
+	            <constraints nullable="false" references="action(id)" foreignKeyName="fk_trigger_action_group_action-2-action" />
+	        </column>
+	    </createTable>
+	</changeSet>
 </databaseChangeLog>

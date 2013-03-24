@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.homeki.core.actions.Action;
 import com.homeki.core.actions.ChangeChannelValueAction;
+import com.homeki.core.actions.TriggerActionGroupAction;
 import com.homeki.core.main.OperationException;
 
 public class JsonAction {
@@ -29,9 +30,10 @@ public class JsonAction {
 	}
 
 	public static JsonAction create(Action act) {
-		if (act instanceof ChangeChannelValueAction) {
+		if (act instanceof ChangeChannelValueAction)
 			return new JsonChangeChannelValueAction((ChangeChannelValueAction)act);
-		}
+		else if (act instanceof TriggerActionGroupAction)
+			return new JsonTriggerActionGroupAction((TriggerActionGroupAction)act);
 		
 		throw new OperationException("Tried to create JSON action from unknown action.");
 	}
