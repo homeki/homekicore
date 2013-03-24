@@ -8,6 +8,7 @@ import java.util.Set;
 
 import com.homeki.core.events.EventQueue;
 import com.homeki.core.events.SpecialValueChangedEvent;
+import com.homeki.core.logging.L;
 
 public enum ClientStore {
 	INSTANCE;
@@ -40,11 +41,13 @@ public enum ClientStore {
 	public synchronized void addClient(InetAddress ip) {
 		clients.add(new Client(ip));
 		EventQueue.INSTANCE.add(SpecialValueChangedEvent.createClientWatchEvent(clients.size()));
+		L.i("New client " + ip.getHostAddress() + " registered.");
 	}
 	
 	public synchronized void removeClient(InetAddress ip) {
 		clients.remove(ip);
 		EventQueue.INSTANCE.add(SpecialValueChangedEvent.createClientWatchEvent(clients.size()));
+		L.i("Client " + ip.getHostAddress() + " was removed.");
 	}
 	
 	public synchronized List<Client> getClients() {
