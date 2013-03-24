@@ -64,7 +64,7 @@ public class TriggerConditionAddRestlet extends KiRestlet {
 		if (dev == null)
 			throw new ApiException("Could not load device from device ID.");
 		
-		// TODO: add more validation here (does device have channel, etc)
+		// TODO: add more validation here (is everything passed valid, etc)
 			
 		return new ChannelValueCondition(dev, jcond.channel, jcond.value, op);
 	}
@@ -84,6 +84,8 @@ public class TriggerConditionAddRestlet extends KiRestlet {
 		
 		if (!SpecialValueChangedEvent.verifySource(jcond.source))
 			throw new ApiException("No source '" + jcond.source + "' exists.");
+		
+		// TODO: add more validation here (is everything passed valid, etc)
 		
 		return new SpecialValueCondition(jcond.source, jcond.value, op);
 	}

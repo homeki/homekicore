@@ -64,6 +64,8 @@ public class TriggerConditionSetRestlet extends KiRestlet {
 		if (jcond.channel != null) {
 			cond.setChannel(jcond.channel);
 		}
+		
+		// TODO: add more validation here (is everything passed valid, etc)
 	}
 	
 	private void parseMinuteCondition(Container c, MinuteCondition cond) {
@@ -77,6 +79,8 @@ public class TriggerConditionSetRestlet extends KiRestlet {
 			cond.setHour(jcond.hour);
 		if (jcond.minute != null)
 			cond.setMinute(jcond.minute);
+		
+		// TODO: add more validation here (is everything passed valid, etc)
 	}
 	
 	private void parseSpecialValueCondition(Container c, SpecialValueCondition cond) {
@@ -96,5 +100,7 @@ public class TriggerConditionSetRestlet extends KiRestlet {
 			
 			cond.setSource(jcond.source);
 		}
+		
+		// TODO: add more validation here (is everything passed valid, etc)
 	}
 }
