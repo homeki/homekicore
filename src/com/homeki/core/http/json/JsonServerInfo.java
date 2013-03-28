@@ -12,12 +12,16 @@ public class JsonServerInfo {
 	public String time;
 	public String version;
 	public String name;
+	public Double locationLongitude;
+	public Double locationLatitude;
 	
-	public JsonServerInfo(String name) {
+	public JsonServerInfo(String name, Double longitude, Double latitude) {
 		this.name = name;
 		this.time = Util.getDateTimeFormat().format(new Date());
 		this.version = Util.getVersion();
 		this.timeMs = System.currentTimeMillis();
 		this.uptimeMs = ManagementFactory.getRuntimeMXBean().getUptime();
+		this.locationLongitude = longitude;
+		this.locationLatitude = latitude;
 	}
 }

@@ -16,6 +16,8 @@ public class ServerSetRestlet extends KiRestlet {
 			throw new ApiException("Server name cannot be empty.");
 		
 		Setting.putString(c.ses, Setting.SERVER_NAME_KEY, jinfo.name);
+		Setting.putDouble(c.ses, Setting.LOCATION_LONGITUDE, jinfo.locationLongitude);
+		Setting.putDouble(c.ses, Setting.LOCATION_LATITUDE, jinfo.locationLatitude);
 		
 		set200Response(c, msg("Server information updated successfully."));
 	}

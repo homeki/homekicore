@@ -2,12 +2,21 @@ package com.homeki.core.generators;
 
 import java.util.Calendar;
 
+import org.hibernate.Session;
+
 import com.homeki.core.events.EventQueue;
 import com.homeki.core.events.MinuteChangedEvent;
+import com.homeki.core.events.SpecialValueChangedEvent;
 import com.homeki.core.main.ControlledThread;
+import com.homeki.core.main.Setting;
+import com.homeki.core.storage.Hibernate;
+import com.luckycatlabs.sunrisesunset.SunriseSunsetCalculator;
+import com.luckycatlabs.sunrisesunset.dto.Location;
 
 public class ClockGeneratorThread extends ControlledThread {
-	private static final Calendar calendar = Calendar.getInstance();
+	private final Calendar now = Calendar.getInstance();
+	private Calendar sunrise;
+	private Calendar sunset;
 	
 	public ClockGeneratorThread() {
 		super(60*1000);
@@ -15,9 +24,9 @@ public class ClockGeneratorThread extends ControlledThread {
 
 	@Override
 	protected void iteration() throws Exception {
-		calendar.setTimeInMillis(System.currentTimeMillis());
+		now.setTimeInMillis(System.currentTimeMillis());
 		
-		int tempWeekday = calendar.get(Calendar.DAY_OF_WEEK);
+		int tempWeekday = now.get(Calendar.DAY_OF_WEEK);
 		
 		// week begins with sunday in java, but we want monday to be day 1!
 		tempWeekday -= 1;
@@ -25,9 +34,33 @@ public class ClockGeneratorThread extends ControlledThread {
 			tempWeekday = 7;
 		
 		int weekday = tempWeekday;
-		int day = calendar.get(Calendar.DAY_OF_MONTH);
-		int hour = calendar.get(Calendar.HOUR_OF_DAY);
-		int minute = calendar.get(Calendar.MINUTE);
+		int day = now.get(Calendar.DAY_OF_MONTH);
+		int hour = now.get(Calendar.HOUR_OF_DAY);
+		int minute = now.get(Calendar.MINUTE);
 		EventQueue.INSTANCE.add(new MinuteChangedEvent(weekday, day, hour, minute));
+		
+		if (hour == 2 && minute == 0 || sunrise == null || sunset == null)
+			updateSunriseSunsetTimes();
+		
+		int sunriseHour = sunrise.get(Calendar.HOUR_OF_DAY);
+		int sunriseMinute = sunrise.get(Calendar.MINUTE);
+		int sunsetHour = sunset.get(Calendar.HOUR_OF_DAY);
+		int sunsetMinute = sunset.get(Calendar.MINUTE);
+		
+		if (hour == sunriseHour && minute == sunriseMinute)
+			EventQueue.INSTANCE.add(SpecialValueChangedEvent.createSunriseEvent());
+		else if (hour == sunsetHour && minute == sunsetMinute)
+			EventQueue.INSTANCE.add(SpecialValueChangedEvent.createSunsetEvent());
+	}
+	
+	private void updateSunriseSunsetTimes() {
+		Session ses = Hibernate.openSession();
+		double lo = Setting.getDouble(ses, Setting.LOCATION_LONGITUDE);
+		double la = Setting.getDouble(ses, Setting.LOCATION_LATITUDE);
+		Hibernate.closeSession(ses);
+		Location location = new Location(la, lo);
+		SunriseSunsetCalculator calc = new SunriseSunsetCalculator(location, now.getTimeZone().getID());
+		sunrise = calc.getCivilSunriseCalendarForDate(now);
+		sunset = calc.getCivilSunsetCalendarForDate(now);
 	}
 }

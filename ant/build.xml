@@ -43,6 +43,7 @@
 				<pathelement location="../lib/org.codehaus.jackson.mapper.jar" />
 				<pathelement location="../lib/commons-collections-3.1.jar" />
 				<pathelement location="../lib/commons-logging-1.1.1.jar" />
+				<pathelement location="../lib/mikereedell-sunrisesunsetlib.jar" />
 				<pathelement path="${java.class.path}/" />
 			</classpath>
 		</javac>

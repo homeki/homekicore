@@ -13,6 +13,8 @@ import org.hibernate.criterion.Restrictions;
 public class Setting {
 	public static final String SERVER_NAME_KEY = "SERVER_NAME";
 	public static final String NEXT_HOUSE_KEY = "TELLSTICK_NEXT_HOUSE_VALUE";
+	public static final String LOCATION_LONGITUDE = "LOCATION_LONGITUDE";
+	public static final String LOCATION_LATITUDE = "LOCATION_LATITUDE";
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,15 +31,23 @@ public class Setting {
 		this.value = "";
 	}
 	
-	private void setValueAsInt(int value) {
-		this.value = String.valueOf(value);
+	private static Setting getByKey(Session session, String key) {
+		return (Setting) session.createCriteria(Setting.class).add(Restrictions.eq("key", key)).uniqueResult();
 	}
 	
-	private int getValueAsInt() {
+	public static void putInt(Session session, String key, int value) {
+		putString(session, key, String.valueOf(value));
+	}
+	
+	public static void putDouble(Session session, String key, double value) {
+		putString(session, key, String.valueOf(value));
+	}
+	
+	public static int getInt(Session session, String key) {
 		int tmp;
 		
 		try {
-			tmp = Integer.valueOf(value);
+			tmp = Integer.valueOf(getString(session, key));
 		} catch (NumberFormatException e) {
 			tmp = -1;
 		}
@@ -45,29 +55,16 @@ public class Setting {
 		return tmp;
 	}
 	
-	private static Setting getByKey(Session session, String key) {
-		return (Setting) session.createCriteria(Setting.class).add(Restrictions.eq("key", key)).uniqueResult();
-	}
-	
-	public static void putInt(Session session, String key, int value) {
-		Setting setting = getByKey(session, key);
+	public static double getDouble(Session session, String key) {
+		double tmp;
 		
-		if (setting == null) {
-			setting = new Setting();
-			setting.key = key;
-			session.save(setting);
+		try {
+			tmp = Double.valueOf(getString(session, key));
+		} catch (NumberFormatException e) {
+			tmp = -1;
 		}
 		
-		setting.setValueAsInt(value);
-	}
-	
-	public static int getInt(Session session, String key) {
-		Setting setting = getByKey(session, key);
-		
-		if (setting == null)
-			return -1;
-		
-		return setting.getValueAsInt();
+		return tmp;
 	}
 	
 	public static void putString(Session session, String key, String value) {

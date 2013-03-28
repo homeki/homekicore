@@ -9,6 +9,7 @@ import com.homeki.core.device.onewire.OneWireModule;
 import com.homeki.core.device.tellstick.TellStickModule;
 import com.homeki.core.events.ChannelValueChangedEvent;
 import com.homeki.core.events.EventHandlerModule;
+import com.homeki.core.generators.GeneratorModule;
 import com.homeki.core.http.RestApiModule;
 import com.homeki.core.logging.L;
 import com.homeki.core.report.ReportModule;
@@ -71,6 +72,7 @@ public class Homeki {
 		modules.add(new WebGuiModule());
 		modules.add(new BroadcastModule());
 		modules.add(new ClientWatchModule());
+		modules.add(new GeneratorModule());
 		
 		for (Module module : modules) {
 			try {
