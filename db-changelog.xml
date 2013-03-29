@@ -376,4 +376,21 @@
 	        </column>
 	    </createTable>
 	</changeSet>
+	
+	<changeSet id="37" author="jonas">
+	    <createTable tableName="send_mail_action">
+	        <column name="id" type="INTEGER">
+	            <constraints nullable="false" references="action(id)" foreignKeyName="fk_send_mail_action-action" />
+	        </column>
+	        <column name="subject" type="VARCHAR(500)">
+	            <constraints nullable="false" />
+	        </column>
+	        <column name="recipients" type="VARCHAR(1000)">
+	            <constraints nullable="false" />
+	        </column>
+	        <column name="text" type="VARCHAR(5000)">
+	            <constraints nullable="false" />
+	        </column>
+	    </createTable>
+	</changeSet>
 </databaseChangeLog>

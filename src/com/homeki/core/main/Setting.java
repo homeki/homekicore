@@ -11,10 +11,16 @@ import org.hibernate.criterion.Restrictions;
 
 @Entity
 public class Setting {
-	public static final String SERVER_NAME_KEY = "SERVER_NAME";
+	public static final String SERVER_NAME = "SERVER_NAME";
 	public static final String NEXT_HOUSE_KEY = "TELLSTICK_NEXT_HOUSE_VALUE";
 	public static final String LOCATION_LONGITUDE = "LOCATION_LONGITUDE";
 	public static final String LOCATION_LATITUDE = "LOCATION_LATITUDE";
+	public static final String SMTP_HOST = "SMTP_HOST";
+	public static final String SMTP_PORT = "SMTP_PORT";
+	public static final String SMTP_AUTH = "SMTP_AUTH";
+	public static final String SMTP_TLS = "SMTP_TLS";
+	public static final String SMTP_USER = "SMTP_USER";
+	public static final String SMTP_PASSWORD = "SMTP_PASSWORD";
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,6 +49,10 @@ public class Setting {
 		putString(session, key, String.valueOf(value));
 	}
 	
+	public static void putBoolean(Session session, String key, boolean value) {
+		putString(session, key, String.valueOf(value));
+	}
+	
 	public static int getInt(Session session, String key) {
 		int tmp;
 		
@@ -62,6 +72,18 @@ public class Setting {
 			tmp = Double.valueOf(getString(session, key));
 		} catch (NumberFormatException e) {
 			tmp = -1;
+		}
+		
+		return tmp;
+	}
+	
+	public static boolean getBoolean(Session session, String key) {
+		boolean tmp;
+		
+		try {
+			tmp = Boolean.valueOf(getString(session, key));
+		} catch (NumberFormatException e) {
+			tmp = false;
 		}
 		
 		return tmp;

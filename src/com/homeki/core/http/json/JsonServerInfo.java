@@ -14,8 +14,14 @@ public class JsonServerInfo {
 	public String name;
 	public Double locationLongitude;
 	public Double locationLatitude;
+	public String smtpHost;
+	public Integer smtpPort;
+	public Boolean smtpAuth;
+	public Boolean smtpTls;
+	public String smtpUser;
+	public String smtpPassword;
 	
-	public JsonServerInfo(String name, Double longitude, Double latitude) {
+	public JsonServerInfo(String name, Double longitude, Double latitude, String smtpHost, Integer smtpPort, Boolean smtpAuth, Boolean smtpTls, String smtpUser, String smtpPassword) {
 		this.name = name;
 		this.time = Util.getDateTimeFormat().format(new Date());
 		this.version = Util.getVersion();
@@ -23,5 +29,11 @@ public class JsonServerInfo {
 		this.uptimeMs = ManagementFactory.getRuntimeMXBean().getUptime();
 		this.locationLongitude = longitude;
 		this.locationLatitude = latitude;
+		this.smtpHost = smtpHost;
+		this.smtpPort = smtpPort;
+		this.smtpAuth = smtpAuth;
+		this.smtpTls = smtpTls;
+		this.smtpUser = smtpUser;
+		this.smtpPassword = smtpPassword;
 	}
 }

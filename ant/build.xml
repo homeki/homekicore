@@ -27,6 +27,7 @@
 		<javac target="1.6" source="1.6" srcdir="../src" destdir="../build/classes">
 			<classpath>
 			    <pathelement location="/usr/share/java/jna.jar" />
+			    <pathelement location="/usr/share/java/gnumail.jar" />
 				<pathelement location="../lib/gson-1.7.1.jar" />
 				<pathelement location="../lib/dom4j-1.6.1.jar" />
 				<pathelement location="../lib/hibernate-jpa-2.0-api-1.0.1.Final.jar" />
@@ -65,7 +66,7 @@
 
 	<target name="dist">
 		<mkdir dir="../build/dist" />
-		<deb todir="../build/dist" package="homeki" section="misc" depends="openjdk-6-jre-headless, postgresql-9.1, telldus, owfs, libjna-java" prerm="prerm" postinst="postinst" preinst="preinst" architecture="all">
+		<deb todir="../build/dist" package="homeki" section="misc" depends="openjdk-6-jre-headless, postgresql-9.1, telldus, owfs, libjna-java, libgnumail-java" prerm="prerm" postinst="postinst" preinst="preinst" architecture="all">
 			<version upstream="${version}" />
 			<maintainer name="Homeki Development Team" email="contact@homeki.com" />
 			<description synopsis="Unified interface for all your sensors and devices connected to your computer.">

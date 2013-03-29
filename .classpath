@@ -43,5 +43,6 @@
 	<classpathentry kind="lib" path="lib/org.restlet.ext.jackson.jar"/>
 	<classpathentry kind="lib" path="/usr/share/java/jna.jar"/>
 	<classpathentry kind="lib" path="lib/mikereedell-sunrisesunsetlib.jar"/>
+	<classpathentry kind="lib" path="/usr/share/java/gnumail.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

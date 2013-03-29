@@ -39,7 +39,7 @@ public class BroadcastListenerThread extends ControlledThread {
 				L.i("Received broadcast from " + requestPacket.getAddress().getHostAddress() + ".");
 				
 				Session session = Hibernate.openSession();
-				String response = Util.getVersion() + "|" + Setting.getString(session, Setting.SERVER_NAME_KEY);
+				String response = Util.getVersion() + "|" + Setting.getString(session, Setting.SERVER_NAME);
 				Hibernate.closeSession(session);
 				
 				byte[] data = response.getBytes();

@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.homeki.core.device.Device;
 import com.homeki.core.http.ApiException;
 import com.homeki.core.http.json.JsonChangeChannelValueAction;
+import com.homeki.core.http.json.JsonSendMailAction;
 import com.homeki.core.http.json.JsonTriggerActionGroupAction;
 import com.homeki.core.main.Util;
 import com.homeki.core.storage.Hibernate;
@@ -16,6 +17,8 @@ public class ActionParser {
 			return createChangeChannelValue(json);
 		else if (type.equals("triggeractiongroup"))
 			return createTriggerActionGroup(json);
+		else if (type.equals("sendmail"))
+			return createSendMail(json);
 		else
 			throw new ApiException("No such action type.");
 	}
@@ -25,6 +28,8 @@ public class ActionParser {
 			updateChangeChannelValue(json, (ChangeChannelValueAction)action);
 		else if (action instanceof TriggerActionGroupAction)
 			updateTriggerActionGroup(json, (TriggerActionGroupAction)action);
+		else if (action instanceof SendMailAction)
+			updateSendMail(json, (SendMailAction)action);
 	}
 
 	private static void updateChangeChannelValue(String json, ChangeChannelValueAction action) {
@@ -59,6 +64,17 @@ public class ActionParser {
 		}
 	}
 	
+	private static void updateSendMail(String json, SendMailAction action) {
+		JsonSendMailAction jact = gson.fromJson(json, JsonSendMailAction.class);
+		
+		if (jact.subject != null)
+			action.setSubject(jact.subject);
+		if (jact.recipients != null)
+			action.setRecipients(jact.recipients);
+		if (jact.text != null)
+			action.setText(jact.text);
+	}
+	
 	private static Action createChangeChannelValue(String json) {
 		JsonChangeChannelValueAction jact = gson.fromJson(json, JsonChangeChannelValueAction.class);
 		
@@ -91,5 +107,18 @@ public class ActionParser {
 			throw new ApiException("Could not load action group from action group ID.");
 			
 		return new TriggerActionGroupAction(actionGroup);
+	}
+	
+	private static Action createSendMail(String json) {
+		JsonSendMailAction jact = gson.fromJson(json, JsonSendMailAction.class);
+		
+		if (jact.recipients == null)
+			throw new ApiException("Missing to (recipients).");
+		if (jact.subject == null)
+			throw new ApiException("Missing subject.");
+		if (jact.text == null)
+			throw new ApiException("Missing text.");
+		
+		return new SendMailAction(jact.subject, jact.recipients, jact.text);
 	}
 }

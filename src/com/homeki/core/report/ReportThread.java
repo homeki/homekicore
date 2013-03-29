@@ -36,7 +36,7 @@ public class ReportThread extends ControlledThread {
 		
 		int deviceCount = ((Number)session.createCriteria(Device.class).setProjection(Projections.rowCount()).uniqueResult()).intValue();
 		long historyPointCount = ((Number)session.createCriteria(HistoryPoint.class).setProjection(Projections.rowCount()).uniqueResult()).longValue();
-		String serverName = Setting.getString(session, Setting.SERVER_NAME_KEY);
+		String serverName = Setting.getString(session, Setting.SERVER_NAME);
 		
 		Report report = new Report();
 		report.setMacAddress(macAddress);
