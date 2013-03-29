@@ -42,6 +42,7 @@ public class TriggerConditionSetRestlet extends KiRestlet {
 			throw new ApiException("Condition does not yet support /set.");
 		
 		c.ses.save(cond);
+		set200Response(c, msg("Condition updated successfully."));
 	}
 	
 	private void parseChannelValueCondition(Container c, ChannelValueCondition cond) {
