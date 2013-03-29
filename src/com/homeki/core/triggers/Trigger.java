@@ -52,8 +52,12 @@ public class Trigger {
 		this.actionGroup.addAction(action);
 	}
 
-	public boolean check(Event e) {
-		return conditionGroup.check(e);
+	public boolean update(Event e) {
+		return conditionGroup.update(e);
+	}
+	
+	public boolean isFulfilled() {
+		return conditionGroup.isFulfilled();
 	}
 	
 	public void execute(Session ses) {

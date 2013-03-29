@@ -2,6 +2,7 @@ package com.homeki.core.conditions;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 
 import com.homeki.core.events.Event;
 import com.homeki.core.events.SpecialValueChangedEvent;
@@ -17,6 +18,9 @@ public class SpecialValueCondition extends Condition {
 	@Column
 	private int operator;
 	
+	@Transient
+	private boolean status;
+	
 	public SpecialValueCondition() {
 		
 	}
@@ -27,12 +31,25 @@ public class SpecialValueCondition extends Condition {
 		this.operator = op;
 	}
 	
-	public boolean check(Event e) {
+	@Override
+	public boolean update(Event e) {
 		if (e instanceof SpecialValueChangedEvent) {
 			SpecialValueChangedEvent svce = (SpecialValueChangedEvent)e;
-			if (svce.source.equals(source))
-				status = evalute(svce.value, value, operator);
+			if (svce.source.equals(source)) {
+				boolean newStatus = evalute(svce.value, value, operator);
+				
+				if (newStatus != status) {
+					status = newStatus;
+					return true;
+				}
+			}
 		}
+		
+		return false;
+	}
+	
+	@Override
+	public boolean isFulfilled() {
 		return status;
 	}
 	

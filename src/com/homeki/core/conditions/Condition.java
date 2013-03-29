@@ -9,7 +9,6 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Transient;
 
 import com.homeki.core.events.Event;
 
@@ -21,9 +20,6 @@ public abstract class Condition {
 	public static final int GT = 2;
 	public static final int IGNORE = 3;
 	
-	@Transient
-	protected boolean status;
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
@@ -32,7 +28,8 @@ public abstract class Condition {
 	@JoinColumn(name = "condition_id")
 	private Condition condition;
 	
-	public abstract boolean check(Event e);
+	public abstract boolean update(Event e);
+	public abstract boolean isFulfilled();
 	
 	public void setParent(Condition condition) {
 		this.condition = condition;

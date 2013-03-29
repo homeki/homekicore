@@ -22,7 +22,10 @@ public class EventHandlerThread extends ControlledThread {
 		List<Trigger> list = ses.createCriteria(Trigger.class).list();
 
 		for (Trigger t : list) {
-			if (t.check(e))
+			if (!t.update(e))
+				continue;
+			
+			if (t.isFulfilled())
 				t.execute(ses);
 		}
 		

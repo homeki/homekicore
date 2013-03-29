@@ -33,12 +33,21 @@ public class ConditionGroup extends Condition {
 	}
 	
 	@Override
-	public boolean check(Event e) {
-		if (conditions.isEmpty())
-			return false;
+	public boolean update(Event e) {
+		boolean modified = false;
 		
 		for (Condition c : conditions) {
-			if (!c.check(e))
+			if (c.update(e))
+				modified = true;
+		}
+		
+		return modified;
+	}
+	
+	@Override
+	public boolean isFulfilled() {
+		for (Condition c : conditions) {
+			if (!c.isFulfilled())
 				return false;
 		}
 		

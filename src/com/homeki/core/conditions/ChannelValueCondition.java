@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 import com.homeki.core.device.Device;
 import com.homeki.core.events.ChannelValueChangedEvent;
@@ -25,6 +26,9 @@ public class ChannelValueCondition extends Condition {
 	@Column
 	private int operator;
 	
+	@Transient
+	private boolean status;
+	
 	public ChannelValueCondition() {
 		
 	}
@@ -36,12 +40,24 @@ public class ChannelValueCondition extends Condition {
 		this.operator = operator;
 	}
 	
-	public boolean check(Event e) {
+	public boolean update(Event e) {		
 		if (e instanceof ChannelValueChangedEvent) {
 			ChannelValueChangedEvent cce = (ChannelValueChangedEvent) e;
-			if (cce.channel == channel && cce.deviceId == device.getId())
-				status = evalute(cce.value, value, operator);
+			if (cce.channel == channel && cce.deviceId == device.getId()) {
+				boolean newStatus = evalute(cce.value, value, operator);
+				
+				if (newStatus != status) {
+					status = newStatus;
+					return true;
+				}
+			}
 		}
+		
+		return false;
+	}
+	
+	@Override
+	public boolean isFulfilled() {
 		return status;
 	}
 	

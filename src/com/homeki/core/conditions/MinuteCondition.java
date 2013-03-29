@@ -4,6 +4,7 @@ import java.util.regex.Pattern;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 
 import com.homeki.core.events.Event;
 import com.homeki.core.events.MinuteChangedEvent;
@@ -21,6 +22,9 @@ public class MinuteCondition extends Condition {
 	
 	@Column
 	public int minute;
+	
+	@Transient
+	private boolean status;
 	
 	public MinuteCondition() {
 		
@@ -65,25 +69,36 @@ public class MinuteCondition extends Condition {
 		this.minute = minute;
 	}
 	
-	public boolean check(Event e) {
+	@Override
+	public boolean update(Event e) {
 		if (e instanceof MinuteChangedEvent) {
 			MinuteChangedEvent mce = (MinuteChangedEvent)e;
-			status = true;
+			boolean newStatus = true;
 			
 			if (!this.day.equals("*")) {
 				String day = String.valueOf(mce.day);
 				Pattern p = Pattern.compile( "(^|,)" + day + "(,|$)");
-				status &= p.matcher(this.day).find();
+				newStatus &= p.matcher(this.day).find();
 			}
 			
 			if (!this.weekday.equals("*")) {
 				String weekday = String.valueOf(mce.weekday);
-				status &= this.weekday.contains(weekday);
+				newStatus &= this.weekday.contains(weekday);
 			}
 			
-			status &= hour == mce.hour && minute == mce.minute;
+			newStatus &= hour == mce.hour && minute == mce.minute;
+			
+			if (newStatus != status) {
+				status = newStatus;
+				return true;
+			}
 		}
 		
+		return false;
+	}
+	
+	@Override
+	public boolean isFulfilled() {
 		return status;
 	}
 	
