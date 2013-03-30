@@ -39,21 +39,28 @@ public class SendMailAction extends Action {
 	
 	@Override
 	public void execute(Session ses) {
-		final String username = Setting.getString(ses, Setting.SMTP_USER);
-		final String password = Setting.getString(ses, Setting.SMTP_PASSWORD);
+		boolean smtpAuth = Setting.getBoolean(ses, Setting.SMTP_AUTH);
  
 		Properties props = new Properties();
-		props.put("mail.smtp.auth", Setting.getString(ses, Setting.SMTP_AUTH));
-		props.put("mail.smtp.starttls.enable", Setting.getString(ses, Setting.SMTP_TLS));
+		props.put("mail.smtp.auth", smtpAuth);
+		props.put("mail.smtp.starttls.enable", Setting.getBoolean(ses, Setting.SMTP_TLS));
 		props.put("mail.smtp.host", Setting.getString(ses, Setting.SMTP_HOST));
-		props.put("mail.smtp.port", Setting.getString(ses, Setting.SMTP_PORT));
+		props.put("mail.smtp.port", Setting.getInt(ses, Setting.SMTP_PORT));
  
-		javax.mail.Session session = javax.mail.Session.getInstance(props,
-		  new javax.mail.Authenticator() {
-			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication(username, password);
-			}
-		  });
+		javax.mail.Session session;
+		if (smtpAuth) {
+			final String username = Setting.getString(ses, Setting.SMTP_USER);
+			final String password = Setting.getString(ses, Setting.SMTP_PASSWORD);
+			session = javax.mail.Session.getInstance(props,
+				  new javax.mail.Authenticator() {
+					protected PasswordAuthentication getPasswordAuthentication() {
+						return new PasswordAuthentication(username, password);
+					}
+				  });
+		}
+		else {
+			session = javax.mail.Session.getInstance(props);
+		}
  
 		try {
 			Message message = new MimeMessage(session);
