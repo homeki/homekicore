@@ -1,5 +1,5 @@
 <project>
-	<property name="version" value="0.2.24" />
+	<property name="version" value="0.2.25" />
 
 	<path id="ant.classpath">
 		<fileset dir="." includes="*.jar" />
@@ -58,7 +58,7 @@
 			<manifest>
 				<attribute name="Implementation-Version" value="${version}" />
 				<attribute name="Main-Class" value="com.homeki.core.main.Main" />
-				<attribute name="Class-Path" value="file:///usr/share/java/jna.jar" />
+				<attribute name="Class-Path" value="file:///usr/share/java/jna.jar file:///usr/share/java/gnumail.jar" />
 			</manifest>
 		</jar>
 		<chmod file="../build/jar/homekicore.jar" perm="a+x" />
