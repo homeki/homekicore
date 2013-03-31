@@ -40,16 +40,16 @@ public class SendMailAction extends Action {
 	@Override
 	public void execute(Session ses) {
 		boolean smtpAuth = Setting.getBoolean(ses, Setting.SMTP_AUTH);
+		final String username = Setting.getString(ses, Setting.SMTP_USER);
 		
 		Properties props = new Properties();
-		props.put("mail.smtp.auth", smtpAuth);
-		props.put("mail.smtp.starttls.enable", Setting.getBoolean(ses, Setting.SMTP_TLS));
+		props.put("mail.smtp.auth", String.valueOf(smtpAuth));
+		props.put("mail.smtp.starttls.enable", Setting.getString(ses, Setting.SMTP_TLS));
 		props.put("mail.smtp.host", Setting.getString(ses, Setting.SMTP_HOST));
-		props.put("mail.smtp.port", Setting.getInt(ses, Setting.SMTP_PORT));
+		props.put("mail.smtp.port", Setting.getString(ses, Setting.SMTP_PORT));
  
 		javax.mail.Session session;
 		if (smtpAuth) {
-			final String username = Setting.getString(ses, Setting.SMTP_USER);
 			final String password = Setting.getString(ses, Setting.SMTP_PASSWORD);
 			session = javax.mail.Session.getInstance(props,
 				  new javax.mail.Authenticator() {
@@ -64,7 +64,7 @@ public class SendMailAction extends Action {
  
 		try {
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress("homeki@gmail.com"));
+			message.setFrom(new InternetAddress(username));
 			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipients));
 			message.setSubject(subject);
 			message.setText(text);
