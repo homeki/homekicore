@@ -44,5 +44,6 @@
 	<classpathentry kind="lib" path="/usr/share/java/jna.jar"/>
 	<classpathentry kind="lib" path="lib/mikereedell-sunrisesunsetlib.jar"/>
 	<classpathentry kind="lib" path="/usr/share/java/gnumail.jar"/>
+	<classpathentry kind="lib" path="/usr/share/java/gnumail-providers.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

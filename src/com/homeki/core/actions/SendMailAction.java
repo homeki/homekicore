@@ -40,7 +40,7 @@ public class SendMailAction extends Action {
 	@Override
 	public void execute(Session ses) {
 		boolean smtpAuth = Setting.getBoolean(ses, Setting.SMTP_AUTH);
- 
+		
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", smtpAuth);
 		props.put("mail.smtp.starttls.enable", Setting.getBoolean(ses, Setting.SMTP_TLS));

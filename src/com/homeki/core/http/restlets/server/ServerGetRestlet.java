@@ -15,7 +15,7 @@ public class ServerGetRestlet extends KiRestlet {
 		Integer smtpPort = Setting.getInt(c.ses, Setting.SMTP_PORT);
 		Boolean smtpAuth = Setting.getBoolean(c.ses, Setting.SMTP_AUTH);
 		Boolean smtpTls = Setting.getBoolean(c.ses, Setting.SMTP_TLS);
-		String smtpUser = Setting.getString(c.ses, Setting.SMTP_HOST);
+		String smtpUser = Setting.getString(c.ses, Setting.SMTP_USER);
 		String smtpPassword = Setting.getString(c.ses, Setting.SMTP_PASSWORD);
 		set200Response(c, gson.toJson(new JsonServerInfo(name, longitude, latitude, smtpHost, smtpPort, smtpAuth, smtpTls, smtpUser, smtpPassword)));
 	}
