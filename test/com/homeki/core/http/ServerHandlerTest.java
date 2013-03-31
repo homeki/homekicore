@@ -17,36 +17,46 @@ public class ServerHandlerTest {
 		public String name;
 		public Double locationLongitude;
 		public Double locationLatitude;
+		public String smtpHost;
+		public Integer smtpPort;
+		public Boolean smtpAuth;
+		public Boolean smtpTls;
+		public String smtpUser;
+		public String smtpPassword;
 	}
 	
 	@Test
+	public void testSet() throws Exception {
+		JsonServerInfo jinfo = new JsonServerInfo();
+		assertEquals(TestUtil.sendPost("/server/set", jinfo).statusCode, 200);
+		
+		jinfo.name = "MyServer";
+		jinfo.locationLongitude = 12.03;
+		jinfo.locationLatitude = 15.05;
+		jinfo.smtpAuth = true;
+		jinfo.smtpHost = "some.host.com";
+		jinfo.smtpPassword = "somepass";
+		jinfo.smtpPort = 25;
+		jinfo.smtpTls = true;
+		jinfo.smtpUser = "some@user.com";
+		assertEquals(TestUtil.sendPost("/server/set", jinfo).statusCode, 200);
+	}
+	
+	@Test(dependsOnMethods="testSet")
 	public void testGet() throws Exception {
 		JsonServerInfo jinfo = TestUtil.sendGetAndParseAsJson("/server/get", JsonServerInfo.class);
-		assertEquals("Homeki", jinfo.name);
 		TestUtil.getDateTimeFormat().parse(jinfo.time);
 		assertTrue(jinfo.timeMs > 0);
 		assertTrue(jinfo.uptimeMs > 0);
 		assertTrue(jinfo.version.length() > 0);
-	}
-	
-	@Test(dependsOnMethods="testGet")
-	public void testSet() throws Exception {
-		JsonServerInfo get = TestUtil.sendGetAndParseAsJson("/server/get", JsonServerInfo.class);
-		assertEquals("Homeki", get.name);
-		
-		JsonServerInfo set = new JsonServerInfo();
-		assertEquals(TestUtil.sendPost("/server/set", set).statusCode, 400);
-		set.name = "";
-		assertEquals(TestUtil.sendPost("/server/set", set).statusCode, 400);
-		
-		set.name = "MyServer";
-		set.locationLongitude = 12.03;
-		set.locationLatitude = 15.05;
-		assertEquals(TestUtil.sendPost("/server/set", set).statusCode, 200);
-		
-		get = TestUtil.sendGetAndParseAsJson("/server/get", JsonServerInfo.class);
-		assertEquals("MyServer", get.name);
-		assertEquals(get.locationLongitude, 12.03, 0.01);
-		assertEquals(get.locationLatitude, 15.05, 0.01);
+		assertEquals(jinfo.name, "MyServer");
+		assertEquals(jinfo.locationLongitude, 12.03, 0.01);
+		assertEquals(jinfo.locationLatitude, 15.05, 0.01);
+		assertEquals((boolean)jinfo.smtpAuth, true);
+		assertEquals(jinfo.smtpHost, "some.host.com");
+		assertEquals(jinfo.smtpPassword, "somepass");
+		assertEquals((int)jinfo.smtpPort, 25);
+		assertEquals((boolean)jinfo.smtpTls, true);
+		assertEquals(jinfo.smtpUser, "some@user.com");
 	}
 }

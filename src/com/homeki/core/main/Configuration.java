@@ -7,8 +7,6 @@ public class Configuration {
 	public static int TIMER_THREAD_INTERVAL = 10*1000;
 	public static int ONEWIRE_DETECTOR_INTERVAL = 2*60*1000;
 	public static int ONEWIRE_COLLECTOR_INTERVAL = 15*60*1000;
-	public static int CLIENT_WATCH_CHECK_INTERVAL = 7*60*1000;
-	public static int CLIENT_WATCH_FAIL_COUNT_THRESHOLD = 2;
 	public static int REPORTER_INTERVAL = 30*60*1000;
 	public static boolean REPORTER_ENABLED = true;
 	public static String REPORTER_URL = "http://report.homeki.com";

@@ -8,7 +8,7 @@ import com.homeki.core.TestUtil;
 
 public class ClientTest {
 	public class JsonClient {
-		public String ipAddress;
+		public String id;
 	}
 	
 	@Test
@@ -16,13 +16,16 @@ public class ClientTest {
 		JsonClient jclient = new JsonClient();
 		assertEquals(TestUtil.sendPost("/client/register", jclient).statusCode, 400);
 		
-		jclient.ipAddress = "somethingnotanipaddress";
-		assertEquals(TestUtil.sendPost("/client/register", jclient).statusCode, 400);
-		
-		jclient.ipAddress = "192.168.0.450";
-		assertEquals(TestUtil.sendPost("/client/register", jclient).statusCode, 400);
-		
-		jclient.ipAddress = "192.168.0.30";
+		jclient.id = "someid";
 		assertEquals(TestUtil.sendPost("/client/register", jclient).statusCode, 200);
+	}
+	
+	@Test
+	public void testUnregister() throws Exception {
+		JsonClient jclient = new JsonClient();
+		assertEquals(TestUtil.sendPost("/client/unregister", jclient).statusCode, 400);
+		
+		jclient.id = "someid";
+		assertEquals(TestUtil.sendPost("/client/unregister", jclient).statusCode, 200);
 	}
 }

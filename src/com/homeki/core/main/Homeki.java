@@ -3,8 +3,6 @@ package com.homeki.core.main;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.homeki.core.actions.SendMailAction;
-import com.homeki.core.clientwatch.ClientWatchModule;
 import com.homeki.core.device.mock.MockModule;
 import com.homeki.core.device.onewire.OneWireModule;
 import com.homeki.core.device.tellstick.TellStickModule;
@@ -63,9 +61,6 @@ public class Homeki {
 		}
 		L.i("Database access through Hibernate verified.");
 		
-		SendMailAction action = new SendMailAction("Testmail", "jonas.osc@rsson.nu", "Some text");
-		action.execute(Hibernate.openSession());
-		
 		// setup and construct modules
 		modules.add(new ReportModule());
 		modules.add(new EventHandlerModule());
@@ -75,7 +70,6 @@ public class Homeki {
 		modules.add(new RestApiModule());
 		modules.add(new WebGuiModule());
 		modules.add(new BroadcastModule());
-		modules.add(new ClientWatchModule());
 		modules.add(new GeneratorModule());
 		
 		for (Module module : modules) {
