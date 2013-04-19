@@ -2,6 +2,7 @@ package com.homeki.core.report;
 
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.util.Collections;
 import java.util.NoSuchElementException;
 
 import org.hibernate.Session;
@@ -59,19 +60,27 @@ public class ReportThread extends ControlledThread {
 	
 	private String getMacAddress() {
 		try {
-			NetworkInterface ni = NetworkInterface.getByName("eth0");
+			NetworkInterface netInt = null;
 			
-			if (ni == null)
-				throw new NoSuchElementException();
+			for (NetworkInterface ni : Collections.list(NetworkInterface.getNetworkInterfaces())) {
+				if (ni.isLoopback())
+					continue;
+				
+				netInt = ni;
+				break;
+			}
+			
+			if (netInt == null)
+				throw new NoSuchElementException("Failed to find any network interface to fetch MAC address from.");
 			
 			StringBuilder sb = new StringBuilder();
-			for(byte b : ni.getHardwareAddress())
+			for(byte b : netInt.getHardwareAddress())
 				sb.append(String.format("%02x:", b&0xff));
 			sb.deleteCharAt(sb.length()-1);
 			
 			return sb.toString();
 		} catch (SocketException e) {
-			throw new NoSuchElementException();
+			throw new NoSuchElementException("Failed to find any network interface to fetch MAC address from (socket error).");
 		}
 	}
 }

@@ -9,6 +9,7 @@ public class Configuration {
 	public static int ONEWIRE_COLLECTOR_INTERVAL = 15*60*1000;
 	public static int REPORTER_INTERVAL = 30*60*1000;
 	public static boolean REPORTER_ENABLED = true;
+	public static int SUNSET_SUNRISE_OFFSET_MINUTES = 90;
 	public static String REPORTER_URL = "http://report.homeki.com";
 	public static String ONEWIRE_PATH = "/mnt/1wire";
 	public static String WEBROOT_PATH = "/opt/homeki/www";

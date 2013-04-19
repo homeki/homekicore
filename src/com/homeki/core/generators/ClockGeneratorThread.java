@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import com.homeki.core.events.EventQueue;
 import com.homeki.core.events.MinuteChangedEvent;
 import com.homeki.core.events.SpecialValueChangedEvent;
+import com.homeki.core.main.Configuration;
 import com.homeki.core.main.ControlledThread;
 import com.homeki.core.main.Setting;
 import com.homeki.core.storage.Hibernate;
@@ -62,5 +63,10 @@ public class ClockGeneratorThread extends ControlledThread {
 		SunriseSunsetCalculator calc = new SunriseSunsetCalculator(location, now.getTimeZone().getID());
 		sunrise = calc.getCivilSunriseCalendarForDate(now);
 		sunset = calc.getCivilSunsetCalendarForDate(now);
+		
+		// add constants so events are sent when its completely bright outside and when
+		// it is starting to get dark
+		sunrise.add(Calendar.MINUTE, Configuration.SUNSET_SUNRISE_OFFSET_MINUTES);
+		sunset.add(Calendar.MINUTE, -Configuration.SUNSET_SUNRISE_OFFSET_MINUTES);
 	}
 }
