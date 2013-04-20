@@ -8,6 +8,7 @@ import org.hibernate.Session;
 import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.Restlet;
+import org.restlet.data.CharacterSet;
 import org.restlet.data.MediaType;
 import org.restlet.data.Method;
 import org.restlet.data.Status;
@@ -124,6 +125,7 @@ public abstract class KiRestlet extends Restlet {
 		if (!c.req.getMethod().equals(Method.POST))
 			throw new ApiException("Expected POST HTTP, but received " + c.req.getMethod().getName() + ".");
 		
+		c.req.getEntity().setCharacterSet(CharacterSet.UTF_8);
 		s = c.req.getEntityAsText();
 		
 		if (s.length() == 0)
