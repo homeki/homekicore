@@ -82,7 +82,7 @@ public class TriggerConditionAddRestlet extends KiRestlet {
 		int op = JsonCondition.convertStringOperator(jcond.operator);
 		jcond.source = jcond.source.toUpperCase();
 		
-		if (!SpecialValueChangedEvent.verifySource(jcond.source))
+		if ((jcond.customSource == null || (jcond.customSource != null && !jcond.customSource)) && !SpecialValueChangedEvent.verifySource(jcond.source))
 			throw new ApiException("No source '" + jcond.source + "' exists.");
 		
 		// TODO: add more validation here (is everything passed valid, etc)

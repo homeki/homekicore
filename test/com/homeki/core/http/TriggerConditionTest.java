@@ -18,6 +18,7 @@ public class TriggerConditionTest {
 	private int conditionId1;
 	private int conditionId2;
 	private int conditionId3;
+	private int conditionId4;
 	private int deviceId;
 	
 	public class JsonTrigger {
@@ -41,6 +42,7 @@ public class TriggerConditionTest {
 		public String source;
 		public Integer value;
 		public String operator;
+		public Boolean customSource;
 	}
 	
 	public class JsonMinuteCondition extends JsonCondition {
@@ -123,6 +125,16 @@ public class TriggerConditionTest {
 		
 		assertTrue(jcond.id > 0);
 		conditionId3 = jcond.id;
+		
+		jcond.operator = "EQ";
+		jcond.value = 12;
+		jcond.source = "SOME_CUSTOM_SOURCE";
+		jcond.customSource = true;
+		
+		jcond = TestUtil.sendPostAndParseAsJson("/trigger/" + triggerId + "/condition/add?type=specialvalue", jcond, JsonSpecialValueCondition.class);
+		
+		assertTrue(jcond.id > 0);
+		conditionId4 = jcond.id;
 	}
 	
 	@Test(dependsOnMethods="testAddSpecialValueCondition")
@@ -137,6 +149,7 @@ public class TriggerConditionTest {
 		assertTrue(existingIds.contains(conditionId1));
 		assertTrue(existingIds.contains(conditionId2));
 		assertTrue(existingIds.contains(conditionId3));
+		assertTrue(existingIds.contains(conditionId4));
 	}
 
 	@Test(dependsOnMethods="testList")
