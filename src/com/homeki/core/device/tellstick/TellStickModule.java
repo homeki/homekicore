@@ -58,8 +58,10 @@ public class TellStickModule implements Module {
 			if (dev == null) {
 				if (type.equals("switch")) {
 					dev = new TellStickSwitch(false);
+					dev.setName("Switch " + sid);
 				} else if (type.equals("dimmer")) {
 					dev = new TellStickDimmer(255);
+					dev.setName("Dimmer " + sid);
 				} else {
 					L.e("Found no corresponding device for TellStick device with internal ID '" + sid + "' and type '" + type + "'.");
 					continue;

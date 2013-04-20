@@ -79,6 +79,7 @@ public class OneWireDetectorThread extends ControlledThread {
 				if (type.equals("DS18S20") || type.equals("DS18B20")) {
 					dev = new OneWireThermometer(0.0);
 					dev.setInternalId(s);
+					dev.setName("Thermometer " + s);
 					session.save(dev);
 				} else if (loggedSet.add(NOCORR_LOG_DIFF + s)) {
 					L.e("Found no corresponding device for 1-wire device with internal ID " + s + " and type " + type + ". Log message throttled until application restart.");
