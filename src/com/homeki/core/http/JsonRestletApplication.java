@@ -27,6 +27,7 @@ import com.homeki.core.http.restlets.device.channel.DeviceChannelValueSetRestlet
 import com.homeki.core.http.restlets.device.mock.DeviceMockAddRestlet;
 import com.homeki.core.http.restlets.device.tellstick.DeviceTellStickAddRestlet;
 import com.homeki.core.http.restlets.device.tellstick.DeviceTellStickLearnRestlet;
+import com.homeki.core.http.restlets.event.EventSpecialValueRestlet;
 import com.homeki.core.http.restlets.server.ServerGetRestlet;
 import com.homeki.core.http.restlets.server.ServerSetRestlet;
 import com.homeki.core.http.restlets.trigger.TriggerAddRestlet;
@@ -98,6 +99,8 @@ public class JsonRestletApplication extends Application {
 		
 		r.attach("/client/register", new ClientRegisterRestlet());
 		r.attach("/client/unregister", new ClientUnregisterRestlet());
+		
+		r.attach("/event/specialvalue", new EventSpecialValueRestlet());
 		
 		return r;
 	}

@@ -28,6 +28,10 @@ public class SpecialValueChangedEvent extends Event {
 		return new SpecialValueChangedEvent(SUNRISE_SUNSET, 0);
 	}
 	
+	public static Event createCustomEvent(String source, int value) {
+		return new SpecialValueChangedEvent(source, value);
+	}
+	
 	public static boolean verifySource(String source) {
 		List<String> validSources = Arrays.asList(new String[] { 
 				CLIENT_WATCH,
