@@ -1,0 +1,80 @@
+<project>
+	<property name="version" value="0.2.33" />
+	<property name="versionlibs" value="0.1" />
+
+	<path id="ant.classpath">
+		<fileset dir="ant" includes="*.jar" />
+	</path>
+
+	<path id="my.classpath">
+		<fileset dir="lib" includes="*.jar" />
+		<fileset file="/usr/share/java/jna.jar" />
+	</path>
+
+	<taskdef name="deb" classname="com.googlecode.ant_deb_task.Deb" classpathref="ant.classpath" />
+		
+	<target name="clean">
+		<delete dir="build" />
+	</target>
+
+	<target name="all">
+		<antcall target="clean" />
+		<antcall target="compile" />
+		<antcall target="jar" />
+		<antcall target="dist" />
+	</target>
+
+	<target name="compile">
+		<mkdir dir="build/classes" />
+		<javac target="1.6" source="1.6" srcdir="src" destdir="build/classes">
+			<classpath refid="my.classpath" />
+		</javac>
+	</target>
+	
+	<pathconvert property="jar.classpath" pathsep=" ">
+  		<path refid="my.classpath"/>
+  		<map from="/usr/share/java/" to="file:///usr/share/java/"/>
+  		<map from="${basedir}/" to="" />
+    </pathconvert>
+
+	<target name="jar">
+		<mkdir dir="build/jar" />
+		<jar destfile="build/jar/homekicore.jar" basedir="build/classes">
+			<zipfileset file="src/hibernate.cfg.xml" />
+			<manifest>
+				<attribute name="Implementation-Version" value="${version}" />
+				<attribute name="Main-Class" value="com.homeki.core.main.Main" />
+				<attribute name="Class-Path" value="${jar.classpath}" />
+			</manifest>
+		</jar>
+		<chmod file="build/jar/homekicore.jar" perm="a+x" />
+	</target>
+
+	<target name="dist">
+		<mkdir dir="build/dist" />
+		<deb todir="build/dist" package="homeki" section="misc" depends="openjdk-6-jre-headless, postgresql-9.1, telldus, owfs, libjna-java, homekilibs" prerm="ant/prerm" postinst="ant/postinst" preinst="ant/preinst" architecture="all">
+			<version upstream="${version}" />
+			<maintainer name="Homeki Development Team" email="contact@homeki.com" />
+			<description synopsis="Unified interface for all your sensors and devices connected to your computer.">
+				Provides a JSON HTTP API for accessing, logging, modifying and managing various devices and sensors connected to your computer.
+			</description>
+			<tarfileset dir="build/jar" prefix="/opt/homeki/" filemode="755" />
+			<tarfileset file="ant/homekid" prefix="/etc/init.d" filemode="755" />
+			<tarfileset file="ant/start.sh" prefix="/opt/homeki/" filemode="755" />
+			<tarfileset file="db-changelog.xml" prefix="/opt/homeki/" filemode="755" />
+			<tarfileset file="logging.properties" prefix="/opt/homeki/" filemode="755" />
+		</deb>
+	</target>
+	
+	<target name="libsdist">
+	    <mkdir dir="build/dist" />
+	    <deb todir="build/dist" package="homekilibs" section="misc" architecture="all">
+	        <version upstream="${versionlibs}" />
+	        <maintainer name="Homeki Development Team" email="contact@homeki.com" />
+	        <description synopsis="Java libs used by Homeki.">
+	            Provides all Java libs used by the Homeki application.
+	        </description>
+	        <tarfileset dir="lib" prefix="/opt/homeki/lib" filemode="755" />
+	    </deb>
+	</target>
+</project>

@@ -4,7 +4,7 @@ set -e
 
 pushd `dirname "$0"`> /dev/null
 
-pushd ../ant > /dev/null
+pushd ../ > /dev/null
 ant all
 popd > /dev/null
 pushd ../build/dist > /dev/null
