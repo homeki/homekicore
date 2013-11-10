@@ -6,4 +6,4 @@ The core server providing the REST API and communication with various sensors an
 API
 ---
 
- * [HttpApi]
+ * [HttpApi](HttpApi)
