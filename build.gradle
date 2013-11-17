@@ -9,6 +9,10 @@ repositories {
     repositories { flatDir(dirs: "lib") }
 }
 
+configurations {
+    dist
+}
+
 dependencies {
     compile "com.google.code.gson:gson:2.2.4"
     compile "org.liquibase:liquibase-core:3.0.7"
@@ -23,6 +27,7 @@ dependencies {
     runtime "org.slf4j:slf4j-nop:1.6.1"
     runtime "javassist:javassist:3.12.0.GA" // required for hibernate
     testCompile "org.testng:testng:6.5.1"
+    dist "ant-deb:ant-deb:0.0.1"
 }
 
 jar {
@@ -42,12 +47,7 @@ task dist(dependsOn: jar) << {
 
   new File("build/dist").mkdir()
 
-  ant.taskdef(name: "deb", classname: "com.googlecode.ant_deb_task.Deb") {
-    classpath {
-      fileset(dir: "ant", includes: "*.jar")
-    }
-  }
-
+  ant.taskdef(name: "deb", classname: "com.googlecode.ant_deb_task.Deb", classpath: configurations.dist.asPath)
   ant.deb(todir: "build/dist", package: "homeki", section: "misc",  depends: "openjdk-6-jre-headless, postgresql-9.1, telldus, owfs, libjna-java", prerm: "ant/prerm",  postinst: "ant/postinst", preinst: "ant/preinst", architecture: "all", version: version) {
     description(synopsis: "Unified interface for all your sensors and devices connected to your computer.", "Provides a JSON HTTP API for accessing, logging, modifying and managing various devices and sensors connected to your computer.")
     maintainer(name: "Homeki Development Team", email: "contact@homeki.com")
