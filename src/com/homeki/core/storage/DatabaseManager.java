@@ -1,19 +1,18 @@
 package com.homeki.core.storage;
 
+import com.homeki.core.logging.L;
+import liquibase.Liquibase;
+import liquibase.database.DatabaseConnection;
+import liquibase.database.jvm.JdbcConnection;
+import liquibase.logging.LogFactory;
+import liquibase.resource.ClassLoaderResourceAccessor;
+import liquibase.resource.ResourceAccessor;
+
 import java.io.StringWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
-import liquibase.Liquibase;
-import liquibase.database.DatabaseConnection;
-import liquibase.database.jvm.JdbcConnection;
-import liquibase.logging.LogFactory;
-import liquibase.resource.FileSystemResourceAccessor;
-import liquibase.resource.ResourceAccessor;
-
-import com.homeki.core.logging.L;
 
 public class DatabaseManager {
 	private static final String DATABASE_PATH = "jdbc:postgresql:homeki";
@@ -28,7 +27,7 @@ public class DatabaseManager {
 		Class.forName("org.postgresql.Driver");
 		Connection c = DriverManager.getConnection(DATABASE_PATH, DATABASE_USER, DATABASE_PASSWORD);
 	
-		ResourceAccessor acc = new FileSystemResourceAccessor();
+		ResourceAccessor acc = new ClassLoaderResourceAccessor();
 		DatabaseConnection conn = new JdbcConnection(c);
 		Liquibase liq = new Liquibase(CHANGELOG, acc, conn);
 
