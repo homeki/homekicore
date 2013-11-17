@@ -58,7 +58,6 @@
 			<description synopsis="Unified interface for all your sensors and devices connected to your computer.">
 				Provides a JSON HTTP API for accessing, logging, modifying and managing various devices and sensors connected to your computer.
 			</description>
-			<tarfileset dir="lib" prefix="/opt/homeki/lib" filemode="755" />
 			<tarfileset dir="build/jar" prefix="/opt/homeki/" filemode="755" />
 			<tarfileset file="ant/homekid" prefix="/etc/init.d" filemode="755" />
 			<tarfileset file="ant/start.sh" prefix="/opt/homeki/" filemode="755" />

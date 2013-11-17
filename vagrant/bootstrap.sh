@@ -3,6 +3,17 @@
 # Halt on errors
 set -e
 
+# Set timezone to Swedish timezone
+echo "Europe/Stockholm" > /etc/timezone
+dpkg-reconfigure -f noninteractive tzdata
+
+# Specifies locale for all users
+echo "LANGUAGE=en_US.UTF-8
+LC_ALL=en_US.UTF-8
+LANG=en_US.UTF-8
+LC_TYPE=en_US.UTF-8
+" > /etc/environment
+
 # Add homeki user
 useradd --home-dir /home/homeki --create-home --groups sudo,plugdev homeki
 

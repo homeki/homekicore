@@ -1,15 +1,59 @@
-apply plugin: 'java'
+apply plugin: "java"
+
+sourceCompatibility = 1.6
+targetCompatibility = 1.6
+
 repositories {
     mavenCentral()
-    maven {url "http://maven.restlet.org"}
+    maven { url "http://maven.restlet.org" }
+    repositories { flatDir(dirs: "locallib") }
 }
+
 dependencies {
-    compile 'com.google.code.gson:gson:2.2.4'
-    compile 'org.liquibase:liquibase-core:3.0.7'
-    compile 'javax.mail:mail:1.4'
-    compile 'org.hibernate:hibernate-annotations:3.5.6-Final'
-    compile 'org.slf4j:slf4j-api:1.7.5'
-    compile 'org.restlet.jee:org.restlet:2.1.1'
-    compile 'com.sun.jna:jna:3.0.9'
-    testCompile "junit:junit:4.11"
+    compile "com.google.code.gson:gson:2.2.4"
+    compile "org.liquibase:liquibase-core:3.0.7"
+    compile "javax.mail:mail:1.4"
+    compile "org.hibernate:hibernate-annotations:3.5.6-Final"
+    compile "org.slf4j:slf4j-api:1.7.5"
+    compile "org.restlet.jee:org.restlet:2.1.1"
+    compile "net.java.dev.jna:jna:3.2.7"
+    compile "mikereedell-sunrisesunsetlib:mikereedell-sunrisesunsetlib"
+    runtime "postgresql:postgresql:9.1-901.jdbc4"
+    runtime "org.hibernate:hibernate-core:3.6.8.Final"
+    runtime "org.slf4j:slf4j-nop:1.6.1"
+    runtime "javassist:javassist:3.12.0.GA" // required for hibernate
+    testCompile "org.testng:testng:6.5.1"
+}
+
+jar {
+    from {
+        configurations.compile.collect { project.zipTree(it) }
+        configurations.runtime.collect { project.zipTree(it) }
+    }
+
+    manifest {
+        attributes "Main-Class": "com.homeki.core.main.Main"
+        attributes "Implementation-Version": version
+    }
+}
+
+task dist(dependsOn: jar) << {
+  if (version.endsWith("-SNAPSHOT")) throw new GradleException("Can't build dist from SNAPSHOT version.")
+
+  new File("build/dist").mkdir()
+
+  ant.taskdef(name: "deb", classname: "com.googlecode.ant_deb_task.Deb") {
+    classpath {
+      fileset(dir: "ant", includes: "*.jar")
+    }
+  }
+
+  ant.deb(todir: "build/dist", package: "homeki", section: "misc",  depends: "openjdk-6-jre-headless, postgresql-9.1, telldus, owfs, libjna-java", prerm: "ant/prerm",  postinst: "ant/postinst", preinst: "ant/preinst", architecture: "all", version: version) {
+    description(synopsis: "Unified interface for all your sensors and devices connected to your computer.", "Provides a JSON HTTP API for accessing, logging, modifying and managing various devices and sensors connected to your computer.")
+    maintainer(name: "Homeki Development Team", email: "contact@homeki.com")
+    tarfileset(file: "build/libs/homekicore-${version}.jar", fullpath: "/opt/homeki/homekicore.jar", filemode: "755")
+    tarfileset(file: "ant/homekid", prefix: "/etc/init.d/", filemode: "755")
+    tarfileset(file: "ant/start.sh", prefix: "/opt/homeki/", filemode: "755")
+    tarfileset(file: "logging.properties", prefix: "/opt/homeki/", filemode: "755")
+  }
 }
