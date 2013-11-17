@@ -17,5 +17,5 @@ Prereqs needed:
 6. `./run.sh`
 
 This will start the jar built through gradle on a vm. To debug, use `run-debug.sh` instead of `run.sh`
-(attach a remote debugger to port 5050).
+(attach a remote debugger to port 5050). The API will be exposed on port 5000 when the jar is running.
 
