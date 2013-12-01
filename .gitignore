@@ -2,5 +2,7 @@
 /build
 /db
 /test-output
+/.idea
 .vagrant
 .gradle
+*.iml
