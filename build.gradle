@@ -20,6 +20,7 @@ dependencies {
     compile "org.hibernate:hibernate-annotations:3.5.6-Final"
     compile "org.slf4j:slf4j-api:1.7.5"
     compile "org.restlet.jee:org.restlet:2.1.1"
+    compile "org.restlet.jee:org.restlet.ext.jackson:2.1.1"
     compile "net.java.dev.jna:jna:3.2.7"
     compile "mikereedell-sunrisesunsetlib:mikereedell-sunrisesunsetlib"
     runtime "postgresql:postgresql:9.1-901.jdbc4"
