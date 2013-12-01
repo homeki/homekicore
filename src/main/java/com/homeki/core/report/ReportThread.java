@@ -1,14 +1,5 @@
 package com.homeki.core.report;
 
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.util.Collections;
-import java.util.NoSuchElementException;
-
-import org.hibernate.Session;
-import org.hibernate.criterion.Projections;
-import org.restlet.resource.ClientResource;
-
 import com.homeki.core.device.Device;
 import com.homeki.core.device.HistoryPoint;
 import com.homeki.core.logging.L;
@@ -17,6 +8,14 @@ import com.homeki.core.main.ControlledThread;
 import com.homeki.core.main.Setting;
 import com.homeki.core.main.Util;
 import com.homeki.core.storage.Hibernate;
+import org.hibernate.Session;
+import org.hibernate.criterion.Projections;
+import org.restlet.resource.ClientResource;
+
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.Collections;
+import java.util.NoSuchElementException;
 
 public class ReportThread extends ControlledThread {
 	private String macAddress;
@@ -52,7 +51,7 @@ public class ReportThread extends ControlledThread {
 			resource.store(report);
 			L.i("Instance status was successfully reported.");
 		} catch (Exception e) {
-			L.w("Failed to report instance status.");
+			L.e("Failed to report instance status.", e);
 		} finally {
 			cr.release();
 		}
