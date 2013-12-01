@@ -1,5 +1,6 @@
 package com.homeki.core.http;
 
+import com.homeki.core.http.restlets.client.ClientListRestlet;
 import org.restlet.Application;
 import org.restlet.Restlet;
 import org.restlet.routing.Router;
@@ -99,6 +100,7 @@ public class JsonRestletApplication extends Application {
 		
 		r.attach("/client/register", new ClientRegisterRestlet());
 		r.attach("/client/unregister", new ClientUnregisterRestlet());
+		r.attach("/client/list", new ClientListRestlet());
 		
 		r.attach("/event/specialvalue", new EventSpecialValueRestlet());
 		

@@ -1,11 +1,13 @@
 package com.homeki.core.clientwatch;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import com.homeki.core.events.EventQueue;
 import com.homeki.core.events.SpecialValueChangedEvent;
 import com.homeki.core.logging.L;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public enum ClientStore {
 	INSTANCE;
@@ -27,5 +29,9 @@ public enum ClientStore {
 			EventQueue.INSTANCE.add(SpecialValueChangedEvent.createClientWatchEvent(clients.size()));
 			L.i("Client " + id + " was removed.");
 		}
+	}
+
+	public synchronized List<String> listClients() {
+		return new ArrayList<String>(clients);
 	}
 }
