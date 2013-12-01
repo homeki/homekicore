@@ -285,11 +285,8 @@
 	</changeSet>
 	
 	<changeSet id="26" author="jonas">
-		<dropForeignKeyConstraint baseTableName="change_channel_value_action" constraintName="fk_channel_change_value_action-action"/>
-		<dropForeignKeyConstraint baseTableName="change_channel_value_action" constraintName="fk_channel_change_value_action-device"/>
-		<dropForeignKeyConstraint baseTableName="channel_value_condition" constraintName="fk_channel_changed_condition-condition"/>
-		<dropForeignKeyConstraint baseTableName="channel_value_condition" constraintName="fk_channel_changed_condition-device"/>
-		<dropForeignKeyConstraint baseTableName="minute_condition" constraintName="fk_minute_changed_condition-condition"/>
+    <validCheckSum>7:d41d8cd98f00b204e9800998ecf8427e</validCheckSum>
+    <comment>Wrongly deleted non-existing FKs.</comment>
 	</changeSet>
 	
 	<changeSet id="27" author="jonas">
