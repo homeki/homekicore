@@ -4,7 +4,6 @@ import com.homeki.core.logging.L;
 
 public class Configuration {
 	public static boolean MOCK_ENABLED = false;
-	public static int TIMER_THREAD_INTERVAL = 10*1000;
 	public static int ONEWIRE_DETECTOR_INTERVAL = 2*60*1000;
 	public static int ONEWIRE_COLLECTOR_INTERVAL = 15*60*1000;
 	public static int REPORTER_INTERVAL = 30*60*1000;
