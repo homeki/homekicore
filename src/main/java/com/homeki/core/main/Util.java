@@ -1,5 +1,9 @@
 package com.homeki.core.main;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.homeki.core.logging.L;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -7,10 +11,6 @@ import java.nio.CharBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.homeki.core.logging.L;
 
 
 public class Util {
@@ -47,17 +47,21 @@ public class Util {
 	public static SimpleDateFormat getDateTimeFormat() {
 		return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	}
-	
+
 	public static String getVersion() {
 		Package p = new Util().getClass().getPackage();
 		String version = p.getImplementationVersion();
-		
+
 		if (version == null)
-			version = "(DEV)";
-		
+			version = "SNAPSHOT";
+
 		return version;
 	}
-	
+
+	public static boolean isDevVersion() {
+		return getVersion().endsWith("SNAPSHOT");
+	}
+
 	public static Gson constructGson() {
 		return new GsonBuilder()
 		.setPrettyPrinting()
