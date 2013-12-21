@@ -1,17 +1,16 @@
 package com.homeki.core.http;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
-
-import java.util.HashSet;
-import java.util.Set;
-
+import com.homeki.core.TestUtil;
+import com.homeki.core.TestUtil.MockDeviceType;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import com.homeki.core.TestUtil;
-import com.homeki.core.TestUtil.MockDeviceType;
+import java.util.HashSet;
+import java.util.Set;
+
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 public class TriggerConditionTest {
 	private int triggerId;
@@ -191,7 +190,7 @@ public class TriggerConditionTest {
 	public void testGetChannelValueCondition() {
 		JsonChannelValueCondition jcond = TestUtil.sendGetAndParseAsJson("/trigger/" + triggerId + "/condition/" + conditionId2 + "/get", JsonChannelValueCondition.class);
 		assertEquals((int)jcond.deviceId, deviceId);
-		assertEquals(jcond.value, 13);
+		assertEquals(jcond.value.intValue(), 13);
 		assertEquals((int)jcond.channel, 2);
 		assertEquals(jcond.operator, "GT");
 	}

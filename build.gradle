@@ -43,6 +43,12 @@ jar {
     }
 }
 
+test {
+    useTestNG()
+
+    testLogging.showStandardStreams = true
+}
+
 task dist(dependsOn: jar) << {
   if (version.endsWith("-SNAPSHOT")) throw new GradleException("Can't build dist from SNAPSHOT version.")
 
@@ -50,7 +56,7 @@ task dist(dependsOn: jar) << {
 
   ant.taskdef(name: "deb", classname: "com.googlecode.ant_deb_task.Deb", classpath: configurations.dist.asPath)
   ant.deb(todir: "build/dist", package: "homeki", section: "misc",  depends: "openjdk-6-jre-headless, postgresql-9.1, telldus, owfs, libjna-java", prerm: "dist/prerm",  postinst: "dist/postinst", preinst: "dist/preinst", architecture: "all", version: version) {
-    description(synopsis: "Unified interface for all your sensors and devices connected to your computer.", "Provides a JSON HTTP API for accessing, logging, modifying and managing various devices and sensors connected to your computer.")
+    description(synopsis: "Unified interface for all your sensors and devices connected to your computer.", "Provides a REST HTTP API for accessing, logging, modifying and managing various devices and sensors connected to your computer.")
     maintainer(name: "Homeki Development Team", email: "contact@homeki.com")
     tarfileset(file: "build/libs/homekicore-${version}.jar", fullpath: "/opt/homeki/homekicore.jar", filemode: "755")
     tarfileset(file: "dist/homekid", prefix: "/etc/init.d/", filemode: "755")

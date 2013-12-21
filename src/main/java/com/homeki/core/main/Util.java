@@ -14,7 +14,9 @@ import java.text.SimpleDateFormat;
 
 
 public class Util {
-	public static String fromFile(String filePath) {
+  private static boolean testVersion;
+
+  public static String fromFile(String filePath) {
 		FileInputStream fis = null;
 		String result = "";
 		
@@ -91,4 +93,8 @@ public class Util {
 	public static boolean isNotNullAndEmpty(String s) {
 		return s != null && s.length() == 0;
 	}
+
+  public static boolean isTestVersion() {
+    return System.getProperty("test") != null;
+  }
 }

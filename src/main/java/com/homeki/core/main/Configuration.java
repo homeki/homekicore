@@ -1,6 +1,7 @@
 package com.homeki.core.main;
 
 import com.homeki.core.logging.L;
+import com.homeki.core.storage.DatabaseManager;
 
 public class Configuration {
 	public static boolean MOCK_ENABLED = false;
@@ -21,7 +22,17 @@ public class Configuration {
 	}
 	
 	public static void transformForTest() {
-		L.i("Test version detected, adjusting configuration.");
+    L.i("Test version detected, adjusting configuration.");
+
+    DatabaseManager mgr = new DatabaseManager();
+    L.i("Dropping all database tables...");
+    try {
+      mgr.dropAll();
+      L.i("All database tables dropped.");
+    } catch (Exception e) {
+      L.e("Failed to drop database tables.", e);
+    }
+
 		Configuration.REPORTER_ENABLED = false;
 		Configuration.MOCK_ENABLED = false;
 	}
