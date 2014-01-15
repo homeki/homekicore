@@ -16,6 +16,16 @@ Prereqs needed:
 5. `vagrant up`
 6. `./run.sh`
 
-This will start the jar built through gradle on a vm. To debug, use `run-debug.sh` instead of `run.sh`
+This will start the jar built through gradle on a vm. To debug, add the `debug` argument to `run.sh`
 (attach a remote debugger to port 5050). The API will be exposed on port 5000 when the jar is running.
 
+Run the API tests
+-----------------
+
+To run the API test, an instance of Homeki is started in test mode. Test mode clears the database and performs some configuration changes to mock devices and such.
+
+1. `cd homekicore`
+2. `cd vagrant`
+3. `run-test-server.sh`
+4. `cd ..`
+5. `./gradlew build -DrunTests` (or run them from inside your editor)
