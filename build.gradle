@@ -46,7 +46,12 @@ jar {
 test {
     useTestNG()
 
-    testLogging.showStandardStreams = true
+    testLogging {
+        showStandardStreams = true
+        exceptionFormat = 'full'
+    }
+
+    onlyIf { Boolean.getBoolean('runTests') }
 }
 
 task dist(dependsOn: jar) << {
