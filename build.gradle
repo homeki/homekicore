@@ -23,10 +23,14 @@ dependencies {
     compile "org.restlet.jee:org.restlet.ext.jackson:2.1.1"
     compile "net.java.dev.jna:jna:3.2.7"
     compile "mikereedell-sunrisesunsetlib:mikereedell-sunrisesunsetlib"
+    compile "org.apache.tomcat.embed:tomcat-embed-core:7.0.47"
+    compile "org.apache.tomcat.embed:tomcat-embed-logging-juli:7.0.47"
+    compile "org.glassfish.jersey.containers:jersey-container-servlet:2.4.1"
     runtime "postgresql:postgresql:9.1-901.jdbc4"
     runtime "org.hibernate:hibernate-core:3.6.8.Final"
     runtime "org.slf4j:slf4j-nop:1.6.1"
     runtime "javassist:javassist:3.12.0.GA" // required for hibernate
+    runtime "org.glassfish.jersey.ext:jersey-bean-validation:2.4.1" // required for jersey
     testCompile "org.testng:testng:6.5.1"
     dist "ant-deb:ant-deb:0.0.1"
 }

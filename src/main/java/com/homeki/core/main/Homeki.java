@@ -1,8 +1,5 @@
 package com.homeki.core.main;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.homeki.core.device.mock.MockModule;
 import com.homeki.core.device.onewire.OneWireModule;
 import com.homeki.core.device.tellstick.TellStickModule;
@@ -14,6 +11,10 @@ import com.homeki.core.logging.L;
 import com.homeki.core.report.ReportModule;
 import com.homeki.core.storage.DatabaseManager;
 import com.homeki.core.storage.Hibernate;
+import com.homeki.core.web.WebModule;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Homeki {
 	private List<Module> modules;
@@ -68,6 +69,7 @@ public class Homeki {
 		modules.add(new TellStickModule());
 		modules.add(new OneWireModule());
 		modules.add(new RestApiModule());
+		modules.add(new WebModule());
 		modules.add(new WebGuiModule());
 		modules.add(new BroadcastModule());
 		modules.add(new GeneratorModule());
