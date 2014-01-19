@@ -1,26 +1,25 @@
 package com.homeki.core;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.fail;
-
-import java.lang.reflect.Type;
-import java.text.SimpleDateFormat;
-import java.util.logging.LogManager;
-
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.homeki.core.http.json.JsonDevice;
 import org.restlet.Client;
 import org.restlet.Request;
 import org.restlet.data.MediaType;
 import org.restlet.data.Method;
 import org.restlet.data.Protocol;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.homeki.core.http.json.JsonDevice;
+import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
+import java.util.logging.LogManager;
+
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.fail;
 
 public class TestUtil {
 	private static final String DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
 	private static final String DATE_FORMAT = "yyyy-MM-dd";
-	private static final String HOST = "http://localhost:5000";
+	private static final String HOST = "http://localhost:5001";
 	
 	private static final Gson gson = new GsonBuilder()
 		.setPrettyPrinting()
@@ -58,7 +57,7 @@ public class TestUtil {
 		Response r = null;
 		
 		try {
-			request.setEntity(postString, MediaType.TEXT_PLAIN);
+			request.setEntity(postString, MediaType.APPLICATION_JSON);
 			org.restlet.Response response = client.handle(request);
 			
 			r = new TestUtil().new Response();

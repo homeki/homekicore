@@ -4,7 +4,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 
-@Path("helloworld")
+@Path("/helloworld")
 public class HelloWorldResource {
 	@GET
 	public Response get() {

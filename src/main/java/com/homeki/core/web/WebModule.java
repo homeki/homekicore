@@ -29,12 +29,12 @@ public class WebModule implements Module {
 
 			FilterMap filterMap = new FilterMap();
 			filterMap.setFilterName(HibernateSessionFilter.class.getSimpleName());
-			filterMap.addURLPattern("/api/*");
+			filterMap.addURLPattern("/*");
 			ctx.addFilterMap(filterMap);
 
-			Wrapper wrapper = tomcat.addServlet(ctx, "HomekiServlet", new ServletContainer());
+			Wrapper wrapper = tomcat.addServlet(ctx, "JerseyServlet", new ServletContainer());
 			wrapper.addInitParameter("javax.ws.rs.Application", "com.homeki.core.web.JerseyApplication");
-			wrapper.addMapping("/api/*");
+			wrapper.addMapping("/*");
 			wrapper.setLoadOnStartup(1);
 
 			tomcat.start();
