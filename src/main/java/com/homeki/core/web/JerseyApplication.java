@@ -7,6 +7,7 @@ public class JerseyApplication extends ResourceConfig {
 	public JerseyApplication() {
 		register(JacksonContextResolver.class);
 		register(JacksonJsonProvider.class);
+		register(ExceptionMapper.class);
 		packages(true, "com.homeki.core.web.rest");
 	}
 }

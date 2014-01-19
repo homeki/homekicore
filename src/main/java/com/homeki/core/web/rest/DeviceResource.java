@@ -111,4 +111,19 @@ public class DeviceResource {
 	public Class<DeviceMockResource> continueInMock() {
 		return DeviceMockResource.class;
 	}
+
+	@Path("tellstick")
+	public Class<DeviceTellStickResource> continueInTellStick() {
+		return DeviceTellStickResource.class;
+	}
+
+	@Path("{deviceId}/tellstick")
+	public Class<DeviceTellStickResource> continueInTellStickWithId() {
+		return DeviceTellStickResource.class;
+	}
+
+	@Path("{deviceId}/channel")
+	public Class<DeviceChannelResource> continueInChannel() {
+		return DeviceChannelResource.class;
+	}
 }
