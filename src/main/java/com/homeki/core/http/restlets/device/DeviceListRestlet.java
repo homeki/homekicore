@@ -1,11 +1,11 @@
 package com.homeki.core.http.restlets.device;
 
-import java.util.List;
-
 import com.homeki.core.device.Device;
 import com.homeki.core.http.Container;
 import com.homeki.core.http.KiRestlet;
 import com.homeki.core.http.json.JsonDevice;
+
+import java.util.List;
 
 public class DeviceListRestlet extends KiRestlet {
 	@Override

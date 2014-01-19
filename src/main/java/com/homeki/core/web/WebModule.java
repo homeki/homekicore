@@ -5,33 +5,46 @@ import com.homeki.core.main.Module;
 import org.apache.catalina.Context;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.Wrapper;
+import org.apache.catalina.deploy.FilterDef;
+import org.apache.catalina.deploy.FilterMap;
 import org.apache.catalina.startup.Tomcat;
 import org.glassfish.jersey.servlet.ServletContainer;
 
 public class WebModule implements Module {
 	private Tomcat tomcat;
 
-  @Override
-  public void construct() {
-    tomcat = new Tomcat();
-    tomcat.setPort(5001);
-    tomcat.setBaseDir("");
-
-		Context ctx = tomcat.addContext("", "/tmp");
+	@Override
+	public void construct() {
+		tomcat = new Tomcat();
+		tomcat.setPort(5001);
+		tomcat.setBaseDir("");
 
 		try {
-			Wrapper wrapper = tomcat.addServlet(ctx, "SomeServlet", new ServletContainer());
+			Context ctx = tomcat.addContext("", "/tmp");
+
+			FilterDef filterDef = new FilterDef();
+			filterDef.setFilterName(HibernateSessionFilter.class.getSimpleName());
+			filterDef.setFilter(new HibernateSessionFilter());
+			ctx.addFilterDef(filterDef);
+
+			FilterMap filterMap = new FilterMap();
+			filterMap.setFilterName(HibernateSessionFilter.class.getSimpleName());
+			filterMap.addURLPattern("/api/*");
+			ctx.addFilterMap(filterMap);
+
+			Wrapper wrapper = tomcat.addServlet(ctx, "HomekiServlet", new ServletContainer());
 			wrapper.addInitParameter("javax.ws.rs.Application", "com.homeki.core.web.JerseyApplication");
 			wrapper.addMapping("/api/*");
+			wrapper.setLoadOnStartup(1);
 
 			tomcat.start();
 		} catch (Exception e) {
 			L.e("Failed to start WebModule.", e);
 		}
-  }
+	}
 
-  @Override
-  public void destruct() {
+	@Override
+	public void destruct() {
 		try {
 			tomcat.stop();
 		} catch (LifecycleException e) {
