@@ -1,14 +1,13 @@
 package com.homeki.core.http;
 
+import com.homeki.core.TestUtil;
+import org.testng.annotations.Test;
+
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
-import org.testng.annotations.Test;
 
-import com.homeki.core.TestUtil;
-
-
-public class ServerHandlerTest {
+public class ServerTest {
 	public class JsonServerInfo {
 		public Long uptimeMs;
 		public Long timeMs;

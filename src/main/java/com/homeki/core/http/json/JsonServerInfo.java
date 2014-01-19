@@ -1,9 +1,9 @@
 package com.homeki.core.http.json;
 
+import com.homeki.core.main.Util;
+
 import java.lang.management.ManagementFactory;
 import java.util.Date;
-
-import com.homeki.core.main.Util;
 
 
 public class JsonServerInfo {
@@ -20,6 +20,10 @@ public class JsonServerInfo {
 	public Boolean smtpTls;
 	public String smtpUser;
 	public String smtpPassword;
+
+	public JsonServerInfo() {
+
+	}
 	
 	public JsonServerInfo(String name, Double longitude, Double latitude, String smtpHost, Integer smtpPort, Boolean smtpAuth, Boolean smtpTls, String smtpUser, String smtpPassword) {
 		this.name = name;
