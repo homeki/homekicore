@@ -19,7 +19,7 @@ import static org.testng.Assert.fail;
 public class TestUtil {
 	private static final String DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
 	private static final String DATE_FORMAT = "yyyy-MM-dd";
-	private static final String HOST = "http://localhost:5001";
+	private static final String HOST = "http://localhost:5000";
 	
 	private static final Gson gson = new GsonBuilder()
 		.setPrettyPrinting()

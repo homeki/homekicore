@@ -17,7 +17,7 @@ public class RestApiModule implements Module {
 	@Override
 	public void construct() {
 		tomcat = new Tomcat();
-		tomcat.setPort(5001);
+		tomcat.setPort(5000);
 		tomcat.setBaseDir("");
 
 		try {
