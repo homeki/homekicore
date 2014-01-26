@@ -1,11 +1,11 @@
 package com.homeki.core.actions;
 
 import com.homeki.core.device.Device;
-import com.homeki.core.http.ApiException;
-import com.homeki.core.http.json.actions.JsonAction;
-import com.homeki.core.http.json.actions.JsonChangeChannelValueAction;
-import com.homeki.core.http.json.actions.JsonSendMailAction;
-import com.homeki.core.http.json.actions.JsonTriggerActionGroupAction;
+import com.homeki.core.web.ApiException;
+import com.homeki.core.json.actions.JsonAction;
+import com.homeki.core.json.actions.JsonChangeChannelValueAction;
+import com.homeki.core.json.actions.JsonSendMailAction;
+import com.homeki.core.json.actions.JsonTriggerActionGroupAction;
 import com.homeki.core.storage.Hibernate;
 
 public class ActionParser {

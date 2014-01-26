@@ -1,6 +1,5 @@
 package com.homeki.core.web;
 
-import com.homeki.core.http.ApiException;
 import com.homeki.core.main.Util;
 
 import java.text.ParseException;

@@ -3,9 +3,9 @@ package com.homeki.core.web.rest;
 import com.homeki.core.actions.Action;
 import com.homeki.core.actions.ActionGroup;
 import com.homeki.core.actions.ActionParser;
-import com.homeki.core.http.ApiException;
-import com.homeki.core.http.json.actions.JsonAction;
-import com.homeki.core.http.json.JsonVoid;
+import com.homeki.core.web.ApiException;
+import com.homeki.core.json.actions.JsonAction;
+import com.homeki.core.json.JsonVoid;
 import com.homeki.core.storage.Hibernate;
 import org.hibernate.Session;
 

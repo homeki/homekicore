@@ -1,9 +1,9 @@
 package com.homeki.core.web.rest;
 
 import com.homeki.core.conditions.*;
-import com.homeki.core.http.ApiException;
-import com.homeki.core.http.json.*;
-import com.homeki.core.http.json.conditions.JsonCondition;
+import com.homeki.core.web.ApiException;
+import com.homeki.core.json.*;
+import com.homeki.core.json.conditions.JsonCondition;
 import com.homeki.core.storage.Hibernate;
 import com.homeki.core.triggers.Trigger;
 import org.hibernate.Session;

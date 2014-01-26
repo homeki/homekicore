@@ -2,11 +2,11 @@ package com.homeki.core.conditions;
 
 import com.homeki.core.device.Device;
 import com.homeki.core.events.SpecialValueChangedEvent;
-import com.homeki.core.http.ApiException;
-import com.homeki.core.http.json.conditions.JsonChannelValueCondition;
-import com.homeki.core.http.json.conditions.JsonCondition;
-import com.homeki.core.http.json.conditions.JsonMinuteCondition;
-import com.homeki.core.http.json.conditions.JsonSpecialValueCondition;
+import com.homeki.core.web.ApiException;
+import com.homeki.core.json.conditions.JsonChannelValueCondition;
+import com.homeki.core.json.conditions.JsonCondition;
+import com.homeki.core.json.conditions.JsonMinuteCondition;
+import com.homeki.core.json.conditions.JsonSpecialValueCondition;
 import com.homeki.core.main.Util;
 import com.homeki.core.storage.Hibernate;
 

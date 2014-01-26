@@ -5,8 +5,8 @@ import com.homeki.core.device.mock.MockDimmer;
 import com.homeki.core.device.mock.MockModule;
 import com.homeki.core.device.mock.MockSwitch;
 import com.homeki.core.device.mock.MockThermometer;
-import com.homeki.core.http.ApiException;
-import com.homeki.core.http.json.JsonDevice;
+import com.homeki.core.web.ApiException;
+import com.homeki.core.json.JsonDevice;
 import com.homeki.core.storage.Hibernate;
 
 import javax.ws.rs.*;

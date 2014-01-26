@@ -2,7 +2,7 @@ package com.homeki.core;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.homeki.core.http.json.JsonDevice;
+import com.homeki.core.json.JsonDevice;
 import org.restlet.Client;
 import org.restlet.Request;
 import org.restlet.data.MediaType;

@@ -1,7 +1,6 @@
 package com.homeki.core.web;
 
-import com.homeki.core.http.ApiException;
-import com.homeki.core.http.json.JsonVoid;
+import com.homeki.core.json.JsonVoid;
 import com.homeki.core.logging.L;
 
 import javax.ws.rs.core.Response;

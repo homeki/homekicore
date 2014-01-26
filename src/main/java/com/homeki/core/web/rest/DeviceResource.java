@@ -2,9 +2,9 @@ package com.homeki.core.web.rest;
 
 import com.homeki.core.device.Device;
 import com.homeki.core.device.HistoryPoint;
-import com.homeki.core.http.ApiException;
-import com.homeki.core.http.json.JsonDevice;
-import com.homeki.core.http.json.JsonVoid;
+import com.homeki.core.web.ApiException;
+import com.homeki.core.json.JsonDevice;
+import com.homeki.core.json.JsonVoid;
 import com.homeki.core.main.Util;
 import com.homeki.core.storage.Hibernate;
 import org.hibernate.Session;

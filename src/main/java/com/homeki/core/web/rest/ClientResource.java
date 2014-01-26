@@ -1,9 +1,9 @@
 package com.homeki.core.web.rest;
 
 import com.homeki.core.clientwatch.ClientStore;
-import com.homeki.core.http.ApiException;
-import com.homeki.core.http.json.JsonClient;
-import com.homeki.core.http.json.JsonVoid;
+import com.homeki.core.web.ApiException;
+import com.homeki.core.json.JsonClient;
+import com.homeki.core.json.JsonVoid;
 import com.homeki.core.main.Util;
 
 import javax.ws.rs.*;
