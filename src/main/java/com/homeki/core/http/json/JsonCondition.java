@@ -1,7 +1,7 @@
 package com.homeki.core.http.json;
 
-import java.util.List;
-
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.homeki.core.conditions.ChannelValueCondition;
 import com.homeki.core.conditions.Condition;
 import com.homeki.core.conditions.MinuteCondition;
@@ -9,6 +9,14 @@ import com.homeki.core.conditions.SpecialValueCondition;
 import com.homeki.core.http.ApiException;
 import com.homeki.core.main.OperationException;
 
+import java.util.List;
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonSubTypes({
+								@JsonSubTypes.Type(value = JsonMinuteCondition.class, name = "minute"),
+								@JsonSubTypes.Type(value = JsonChannelValueCondition.class, name = "channelvalue"),
+								@JsonSubTypes.Type(value = JsonSpecialValueCondition.class, name = "specialvalue")
+})
 public class JsonCondition {
 	public String type;
 	public Integer id;

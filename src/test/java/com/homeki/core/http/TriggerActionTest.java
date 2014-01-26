@@ -1,17 +1,16 @@
 package com.homeki.core.http;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
-
-import java.util.HashSet;
-import java.util.Set;
-
+import com.homeki.core.TestUtil;
+import com.homeki.core.TestUtil.MockDeviceType;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import com.homeki.core.TestUtil;
-import com.homeki.core.TestUtil.MockDeviceType;
+import java.util.HashSet;
+import java.util.Set;
+
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 public class TriggerActionTest {
 	private int triggerId;
@@ -83,11 +82,15 @@ public class TriggerActionTest {
 		jact.deviceId = deviceId1;
 		jact.value = 1;
 		jact.channel = 1;
-		
-		assertEquals(TestUtil.sendPost("/trigger/9999/action/add?type=changechannelvalue", jact).statusCode, 400);
-		assertEquals(TestUtil.sendPost("/trigger/" +  triggerId + "/action/add?type=feelchangechannelvalue", jact).statusCode, 400);
-		
-		jact = TestUtil.sendPostAndParseAsJson("/trigger/" + triggerId + "/action/add?type=changechannelvalue", jact, JsonChangeChannelValueAction.class);
+
+		jact.type = "changechannelvalue";
+		assertEquals(TestUtil.sendPost("/trigger/9999/action/add", jact).statusCode, 400);
+
+		jact.type = "feeelchangechannelvalue";
+		assertEquals(TestUtil.sendPost("/trigger/" +  triggerId + "/action/add", jact).statusCode, 400);
+
+		jact.type = "changechannelvalue";
+		jact = TestUtil.sendPostAndParseAsJson("/trigger/" + triggerId + "/action/add", jact, JsonChangeChannelValueAction.class);
 		
 		assertTrue(jact.id > 0);
 		actionId1 = jact.id;
@@ -96,12 +99,13 @@ public class TriggerActionTest {
 	@Test(dependsOnMethods="testAddChangeChannelValueAction")
 	public void testAddTriggerActionGroupAction() {
 		JsonTriggerActionGroupAction jact = new JsonTriggerActionGroupAction();
+		jact.type = "triggeractiongroup";
 		jact.actionGroupId = 9238298;
 		
-		assertEquals(TestUtil.sendPost("/trigger/" + triggerId + "/action/add?type=triggeractiongroup", jact).statusCode, 400);
+		assertEquals(TestUtil.sendPost("/trigger/" + triggerId + "/action/add", jact).statusCode, 400);
 		
 		jact.actionGroupId = actionGroupId;
-		jact = TestUtil.sendPostAndParseAsJson("/trigger/" + triggerId + "/action/add?type=triggeractiongroup", jact, JsonTriggerActionGroupAction.class);
+		jact = TestUtil.sendPostAndParseAsJson("/trigger/" + triggerId + "/action/add", jact, JsonTriggerActionGroupAction.class);
 		
 		assertTrue(jact.id > 0);
 		actionId2 = jact.id;
@@ -110,17 +114,18 @@ public class TriggerActionTest {
 	@Test(dependsOnMethods="testAddTriggerActionGroupAction")
 	public void testAddSendMailAction() {
 		JsonSendMailAction jact = new JsonSendMailAction();
+		jact.type = "sendmail";
 		
-		assertEquals(TestUtil.sendPost("/trigger/" + triggerId + "/action/add?type=sendmail", jact).statusCode, 400);
+		assertEquals(TestUtil.sendPost("/trigger/" + triggerId + "/action/add", jact).statusCode, 400);
 		
 		jact.subject = "Ett ämne";
-		assertEquals(TestUtil.sendPost("/trigger/" + triggerId + "/action/add?type=sendmail", jact).statusCode, 400);
+		assertEquals(TestUtil.sendPost("/trigger/" + triggerId + "/action/add", jact).statusCode, 400);
 		
 		jact.recipients = "en@mottagare.se";
-		assertEquals(TestUtil.sendPost("/trigger/" + triggerId + "/action/add?type=sendmail", jact).statusCode, 400);
+		assertEquals(TestUtil.sendPost("/trigger/" + triggerId + "/action/add", jact).statusCode, 400);
 		
 		jact.text = "En text som ska stå som body i mailet.";
-		jact = TestUtil.sendPostAndParseAsJson("/trigger/" + triggerId + "/action/add?type=sendmail", jact, JsonSendMailAction.class);
+		jact = TestUtil.sendPostAndParseAsJson("/trigger/" + triggerId + "/action/add", jact, JsonSendMailAction.class);
 		
 		assertTrue(jact.id > 0);
 		actionId3 = jact.id;
@@ -143,6 +148,7 @@ public class TriggerActionTest {
 	@Test(dependsOnMethods="testList")
 	public void testSetChangeChannelValueAction() {
 		JsonChangeChannelValueAction jact = new JsonChangeChannelValueAction();
+		jact.type = "changechannelvalue";
 		jact.deviceId = deviceId2;
 		jact.value = 3;
 		jact.channel = 2;
@@ -152,6 +158,7 @@ public class TriggerActionTest {
 	@Test(dependsOnMethods="testSetChangeChannelValueAction")
 	public void testSetSendMailAction() {
 		JsonSendMailAction jact = new JsonSendMailAction();
+		jact.type = "sendmail";
 		jact.subject = "Ett annat ämne";
 		jact.recipients = "enannan@mottagare.se";
 		assertEquals(TestUtil.sendPost("/trigger/" + triggerId + "/action/" + actionId3 + "/set", jact).statusCode, 200);

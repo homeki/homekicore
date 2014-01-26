@@ -1,14 +1,19 @@
 package com.homeki.core.http.json;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.homeki.core.conditions.SpecialValueCondition;
 import com.homeki.core.events.SpecialValueChangedEvent;
 
-
+@JsonTypeName("specialvalue")
 public class JsonSpecialValueCondition extends JsonCondition {
 	public String source;
 	public Integer value;
 	public String operator;
 	public Boolean customSource;
+
+	public JsonSpecialValueCondition() {
+
+	}
 	
 	public JsonSpecialValueCondition(SpecialValueCondition cond) {
 		super(cond);

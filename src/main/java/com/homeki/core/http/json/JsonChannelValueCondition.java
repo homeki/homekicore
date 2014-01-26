@@ -1,13 +1,18 @@
 package com.homeki.core.http.json;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.homeki.core.conditions.ChannelValueCondition;
 
-
+@JsonTypeName("channelvalue")
 public class JsonChannelValueCondition extends JsonCondition {
 	public Integer deviceId;
 	public Integer channel;
 	public Number value;
 	public String operator;
+
+	public JsonChannelValueCondition() {
+
+	}
 	
 	public JsonChannelValueCondition(ChannelValueCondition cond) {
 		super(cond);
