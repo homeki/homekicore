@@ -1,7 +1,6 @@
 package com.homeki.core.http.restlets.trigger.action;
 
 import com.homeki.core.actions.Action;
-import com.homeki.core.actions.ActionParser;
 import com.homeki.core.http.ApiException;
 import com.homeki.core.http.Container;
 import com.homeki.core.http.KiRestlet;
@@ -19,7 +18,8 @@ public class TriggerActionAddRestlet extends KiRestlet {
 		if (trigger == null)
 			throw new ApiException("No trigger with the specified ID found.");
 			
-		Action action = ActionParser.createAction(type, getPost(c));
+		//Action action = ActionParser.createAction(type, getPost(c));
+		Action action = null;
 		
 		trigger.addAction(action);
 		c.ses.save(action);

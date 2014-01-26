@@ -1,13 +1,21 @@
 package com.homeki.core.http.json;
 
-import java.util.List;
-
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.homeki.core.actions.Action;
 import com.homeki.core.actions.ChangeChannelValueAction;
 import com.homeki.core.actions.SendMailAction;
 import com.homeki.core.actions.TriggerActionGroupAction;
 import com.homeki.core.main.OperationException;
 
+import java.util.List;
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonSubTypes({
+								@JsonSubTypes.Type(value = JsonChangeChannelValueAction.class, name = "changechannelvalue"),
+								@JsonSubTypes.Type(value = JsonTriggerActionGroupAction.class, name = "triggeractiongroup"),
+								@JsonSubTypes.Type(value = JsonSendMailAction.class, name = "sendmail")
+})
 public class JsonAction {
 	public String type;
 	public Integer id;

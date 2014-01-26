@@ -1,18 +1,17 @@
 package com.homeki.core.http;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
-
-import java.util.HashSet;
-import java.util.Set;
-
+import com.homeki.core.TestUtil;
+import com.homeki.core.TestUtil.MockDeviceType;
+import com.homeki.core.main.Util;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import com.homeki.core.TestUtil;
-import com.homeki.core.TestUtil.MockDeviceType;
-import com.homeki.core.main.Util;
+import java.util.HashSet;
+import java.util.Set;
+
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 public class ActionGroupTest {
 	private int deviceId1;
@@ -65,11 +64,13 @@ public class ActionGroupTest {
 		jact.deviceId = deviceId2;
 		jact.value = 1;
 		jact.channel = 1;
-		
-		assertEquals(TestUtil.sendPost("/actiongroup/9999/action/add?type=changechannelvalue", jact).statusCode, 400);
-		assertEquals(TestUtil.sendPost("/actiongroup/" +  actionGroupId + "/action/add?type=feelchangechannelvalue", jact).statusCode, 400);
-		
-		jact = TestUtil.sendPostAndParseAsJson("/actiongroup/" + actionGroupId + "/action/add?type=changechannelvalue", jact, JsonChangeChannelValueAction.class);
+
+		jact.type = "feeelchangechannelvalue";
+		assertEquals(TestUtil.sendPost("/actiongroup/9999/action/add", jact).statusCode, 400);
+		assertEquals(TestUtil.sendPost("/actiongroup/" +  actionGroupId + "/action/add", jact).statusCode, 400);
+
+		jact.type = "changechannelvalue";
+		jact = TestUtil.sendPostAndParseAsJson("/actiongroup/" + actionGroupId + "/action/add", jact, JsonChangeChannelValueAction.class);
 		
 		assertTrue(jact.id > 0);
 	}

@@ -1,40 +1,35 @@
 package com.homeki.core.actions;
 
-import com.google.gson.Gson;
 import com.homeki.core.device.Device;
 import com.homeki.core.http.ApiException;
+import com.homeki.core.http.json.JsonAction;
 import com.homeki.core.http.json.JsonChangeChannelValueAction;
 import com.homeki.core.http.json.JsonSendMailAction;
 import com.homeki.core.http.json.JsonTriggerActionGroupAction;
-import com.homeki.core.main.Util;
 import com.homeki.core.storage.Hibernate;
 
 public class ActionParser {
-	private static final Gson gson = Util.constructGson();
-	
-	public static Action createAction(String type, String json) {
-		if (type.equals("changechannelvalue"))
-			return createChangeChannelValue(json);
-		else if (type.equals("triggeractiongroup"))
-			return createTriggerActionGroup(json);
-		else if (type.equals("sendmail"))
-			return createSendMail(json);
+	public static Action createAction(JsonAction jact) {
+		if (jact instanceof JsonChangeChannelValueAction)
+			return createChangeChannelValue((JsonChangeChannelValueAction)jact);
+		else if (jact instanceof JsonTriggerActionGroupAction)
+			return createTriggerActionGroup((JsonTriggerActionGroupAction)jact);
+		else if (jact instanceof JsonSendMailAction)
+			return createSendMail((JsonSendMailAction)jact);
 		else
 			throw new ApiException("No such action type.");
 	}
 	
-	public static void updateAction(Action action, String json) {
+	public static void updateAction(Action action, JsonAction jact) {
 		if (action instanceof ChangeChannelValueAction)
-			updateChangeChannelValue(json, (ChangeChannelValueAction)action);
+			updateChangeChannelValue((JsonChangeChannelValueAction)jact, (ChangeChannelValueAction)action);
 		else if (action instanceof TriggerActionGroupAction)
-			updateTriggerActionGroup(json, (TriggerActionGroupAction)action);
+			updateTriggerActionGroup((JsonTriggerActionGroupAction)jact, (TriggerActionGroupAction)action);
 		else if (action instanceof SendMailAction)
-			updateSendMail(json, (SendMailAction)action);
+			updateSendMail((JsonSendMailAction)jact, (SendMailAction)action);
 	}
 
-	private static void updateChangeChannelValue(String json, ChangeChannelValueAction action) {
-		JsonChangeChannelValueAction jact = gson.fromJson(json, JsonChangeChannelValueAction.class);
-		
+	private static void updateChangeChannelValue(JsonChangeChannelValueAction jact, ChangeChannelValueAction action) {
 		if (jact.deviceId != null) {
 			Device dev = (Device)Hibernate.currentSession().get(Device.class, jact.deviceId);
 			
@@ -51,9 +46,7 @@ public class ActionParser {
 		}
 	}
 	
-	private static void updateTriggerActionGroup(String json, TriggerActionGroupAction action) {
-		JsonTriggerActionGroupAction jact = gson.fromJson(json, JsonTriggerActionGroupAction.class);
-		
+	private static void updateTriggerActionGroup(JsonTriggerActionGroupAction jact, TriggerActionGroupAction action) {
 		if (jact.actionGroupId != null) {
 			ActionGroup actionGroup = (ActionGroup)Hibernate.currentSession().get(ActionGroup.class, jact.actionGroupId);
 			
@@ -64,9 +57,7 @@ public class ActionParser {
 		}
 	}
 	
-	private static void updateSendMail(String json, SendMailAction action) {
-		JsonSendMailAction jact = gson.fromJson(json, JsonSendMailAction.class);
-		
+	private static void updateSendMail(JsonSendMailAction jact, SendMailAction action) {
 		if (jact.subject != null)
 			action.setSubject(jact.subject);
 		if (jact.recipients != null)
@@ -75,9 +66,7 @@ public class ActionParser {
 			action.setText(jact.text);
 	}
 	
-	private static Action createChangeChannelValue(String json) {
-		JsonChangeChannelValueAction jact = gson.fromJson(json, JsonChangeChannelValueAction.class);
-		
+	private static Action createChangeChannelValue(JsonChangeChannelValueAction jact) {
 		if (jact.value == null)
 			throw new ApiException("Missing number.");
 		if (jact.deviceId == null)
@@ -95,9 +84,7 @@ public class ActionParser {
 		return new ChangeChannelValueAction(dev, jact.channel, jact.value);
 	}
 	
-	private static Action createTriggerActionGroup(String json) {
-		JsonTriggerActionGroupAction jact = gson.fromJson(json, JsonTriggerActionGroupAction.class);
-		
+	private static Action createTriggerActionGroup(JsonTriggerActionGroupAction jact) {
 		if (jact.actionGroupId == null)
 			throw new ApiException("Missing action group ID.");
 		
@@ -109,9 +96,7 @@ public class ActionParser {
 		return new TriggerActionGroupAction(actionGroup);
 	}
 	
-	private static Action createSendMail(String json) {
-		JsonSendMailAction jact = gson.fromJson(json, JsonSendMailAction.class);
-		
+	private static Action createSendMail(JsonSendMailAction jact) {
 		if (jact.recipients == null)
 			throw new ApiException("Missing to (recipients).");
 		if (jact.subject == null)

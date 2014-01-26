@@ -2,7 +2,6 @@ package com.homeki.core.http.restlets.actiongroup.action;
 
 import com.homeki.core.actions.Action;
 import com.homeki.core.actions.ActionGroup;
-import com.homeki.core.actions.ActionParser;
 import com.homeki.core.http.ApiException;
 import com.homeki.core.http.Container;
 import com.homeki.core.http.KiRestlet;
@@ -19,7 +18,8 @@ public class ActionGroupActionAddRestlet extends KiRestlet {
 		if (actionGroup == null || !actionGroup.isExplicit())
 			throw new ApiException("No action group with the specified ID found.");
 			
-		Action action = ActionParser.createAction(type, getPost(c));
+		//Action action = ActionParser.createAction(type, getPost(c));
+		Action action = null;
 		
 		actionGroup.addAction(action);
 		c.ses.save(action);
