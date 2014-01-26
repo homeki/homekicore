@@ -7,7 +7,6 @@ import com.homeki.core.conditions.Condition;
 import com.homeki.core.conditions.MinuteCondition;
 import com.homeki.core.conditions.SpecialValueCondition;
 import com.homeki.core.http.ApiException;
-import com.homeki.core.main.OperationException;
 
 import java.util.List;
 
@@ -47,7 +46,7 @@ public class JsonCondition {
 		else if (cond instanceof SpecialValueCondition)
 			return new JsonSpecialValueCondition((SpecialValueCondition)cond);
 		
-		throw new OperationException("Tried to create JSON condition from unknown condition.");
+		throw new ApiException("Tried to create JSON condition from unknown condition.");
 	}
 	
 	protected static String convertIntOperator(int operator) {
@@ -60,7 +59,7 @@ public class JsonCondition {
 		else if (operator == Condition.IGNORE)
 			return "IGNORE";
 		
-		throw new OperationException("Tried to convert unknown int operator value to string representation.");
+		throw new ApiException("Tried to convert unknown int operator value to string representation.");
 	}
 	
 	public static int convertStringOperator(String operator) {

@@ -1,21 +1,10 @@
 package com.homeki.core.device;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.OneToMany;
-
+import com.homeki.core.actions.ChangeChannelValueAction;
+import com.homeki.core.conditions.ChannelValueCondition;
+import com.homeki.core.events.ChannelValueChangedEvent;
+import com.homeki.core.events.EventQueue;
+import com.homeki.core.storage.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -23,12 +12,11 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.criterion.Restrictions;
 
-import com.homeki.core.actions.ChangeChannelValueAction;
-import com.homeki.core.conditions.ChannelValueCondition;
-import com.homeki.core.events.ChannelValueChangedEvent;
-import com.homeki.core.events.EventQueue;
-import com.homeki.core.main.OperationException;
-import com.homeki.core.storage.Hibernate;
+import javax.persistence.*;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -186,6 +174,6 @@ public abstract class Device {
 				return;
 		}
 		
-		throw new OperationException("Tried to operate on invalid channel " + channel + " on device with ID " + id + " (" + getType() + ").");
+		throw new RuntimeException("Tried to operate on invalid channel " + channel + " on device with ID " + id + " (" + getType() + ").");
 	}
 }
