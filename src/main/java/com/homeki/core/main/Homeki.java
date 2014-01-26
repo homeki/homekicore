@@ -11,7 +11,7 @@ import com.homeki.core.logging.L;
 import com.homeki.core.report.ReportModule;
 import com.homeki.core.storage.DatabaseManager;
 import com.homeki.core.storage.Hibernate;
-import com.homeki.core.web.WebModule;
+import com.homeki.core.http.WebModule;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,14 +1,14 @@
-package com.homeki.core.web.rest;
+package com.homeki.core.http.rest;
 
 import com.homeki.core.device.Device;
 import com.homeki.core.device.HistoryPoint;
 import com.homeki.core.device.Settable;
-import com.homeki.core.web.ApiException;
+import com.homeki.core.http.ApiException;
 import com.homeki.core.json.JsonChannel;
 import com.homeki.core.json.JsonHistoryPoint;
 import com.homeki.core.json.JsonVoid;
 import com.homeki.core.storage.Hibernate;
-import com.homeki.core.web.DateParam;
+import com.homeki.core.http.DateParam;
 import org.hibernate.Session;
 
 import javax.ws.rs.*;

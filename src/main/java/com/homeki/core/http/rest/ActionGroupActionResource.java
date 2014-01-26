@@ -1,12 +1,12 @@
-package com.homeki.core.web.rest;
+package com.homeki.core.http.rest;
 
 import com.homeki.core.actions.Action;
+import com.homeki.core.actions.ActionGroup;
 import com.homeki.core.actions.ActionParser;
-import com.homeki.core.web.ApiException;
+import com.homeki.core.http.ApiException;
 import com.homeki.core.json.actions.JsonAction;
 import com.homeki.core.json.JsonVoid;
 import com.homeki.core.storage.Hibernate;
-import com.homeki.core.triggers.Trigger;
 import org.hibernate.Session;
 
 import javax.ws.rs.*;
@@ -15,20 +15,20 @@ import javax.ws.rs.core.Response;
 
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class TriggerActionResource {
+public class ActionGroupActionResource {
 	@POST
 	@Path("/add")
-	public Response add(@PathParam("triggerId") int triggerId, JsonAction jact) {
+	public Response add(@PathParam("actionGroupId") int actionGroupId, JsonAction jact) {
 		Session ses = Hibernate.currentSession();
 
-		Trigger trigger = (Trigger)ses.get(Trigger.class, triggerId);
+		ActionGroup actionGroup = (ActionGroup)ses.get(ActionGroup.class, actionGroupId);
 
-		if (trigger == null)
+		if (actionGroup == null || !actionGroup.isExplicit())
 			throw new ApiException("No action group with the specified ID found.");
 
 		Action action = ActionParser.createAction(jact);
 
-		trigger.addAction(action);
+		actionGroup.addAction(action);
 		ses.save(action);
 
 		JsonAction newid = new JsonAction();
@@ -39,22 +39,22 @@ public class TriggerActionResource {
 
 	@GET
 	@Path("/list")
-	public Response list(@PathParam("triggerId") int triggerId) {
-		Trigger trigger = (Trigger)Hibernate.currentSession().get(Trigger.class, triggerId);
+	public Response list(@PathParam("actionGroupId") int actionGroupId) {
+		ActionGroup actionGroup = (ActionGroup)Hibernate.currentSession().get(ActionGroup.class, actionGroupId);
 
-		if (trigger == null)
+		if (actionGroup == null || !actionGroup.isExplicit())
 			throw new ApiException("No action group with the specified ID found.");
 
-		return Response.ok(JsonAction.convertList(trigger.getActions())).build();
+		return Response.ok(JsonAction.convertList(actionGroup.getActions())).build();
 	}
 
 	@GET
 	@Path("/{actionId}/delete")
-	public Response delete(@PathParam("triggerId") int triggerId, @PathParam("actionId") int actionId) {
+	public Response delete(@PathParam("actionGroupId") int actionGroupId, @PathParam("actionId") int actionId) {
 		Session ses = Hibernate.currentSession();
-		Trigger trigger = (Trigger)ses.get(Trigger.class, triggerId);
+		ActionGroup actionGroup = (ActionGroup)ses.get(ActionGroup.class, actionGroupId);
 
-		if (trigger == null)
+		if (actionGroup == null || !actionGroup.isExplicit())
 			throw new ApiException("No action group with the specified ID found.");
 
 		Action act = (Action)ses.get(Action.class, actionId);
@@ -62,18 +62,18 @@ public class TriggerActionResource {
 		if (act == null)
 			throw new ApiException("No action with the specified ID found.");
 
-		trigger.deleteAction(act);
+		actionGroup.deleteAction(act);
 
 		return Response.ok(new JsonVoid("Action successfully deleted.")).build();
 	}
 
 	@GET
 	@Path("/{actionId}/get")
-	public Response get(@PathParam("triggerId") int triggerId, @PathParam("actionId") int actionId) {
+	public Response get(@PathParam("actionGroupId") int actionGroupId, @PathParam("actionId") int actionId) {
 		Session ses = Hibernate.currentSession();
-		Trigger trigger = (Trigger)ses.get(Trigger.class, triggerId);
+		ActionGroup actionGroup = (ActionGroup)ses.get(ActionGroup.class, actionGroupId);
 
-		if (trigger == null)
+		if (actionGroup == null || !actionGroup.isExplicit())
 			throw new ApiException("No action group with the specified ID found.");
 
 		Action act = (Action)ses.get(Action.class, actionId);
@@ -86,12 +86,12 @@ public class TriggerActionResource {
 
 	@POST
 	@Path("/{actionId}/set")
-	public Response set(@PathParam("triggerId") int triggerId, @PathParam("actionId") int actionId, JsonAction jact) {
+	public Response set(@PathParam("actionGroupId") int actionGroupId, @PathParam("actionId") int actionId, JsonAction jact) {
 		Session ses = Hibernate.currentSession();
 
-		Trigger trigger = (Trigger)ses.get(Trigger.class, triggerId);
+		ActionGroup actionGroup = (ActionGroup)ses.get(ActionGroup.class, actionGroupId);
 
-		if (trigger == null)
+		if (actionGroup == null || !actionGroup.isExplicit())
 			throw new ApiException("No action group with the specified ID found.");
 
 		Action act = (Action)ses.get(Action.class, actionId);

@@ -1,4 +1,4 @@
-package com.homeki.core.web.filters;
+package com.homeki.core.http.filters;
 
 import com.homeki.core.storage.Hibernate;
 import org.hibernate.Session;

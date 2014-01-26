@@ -1,6 +1,6 @@
-package com.homeki.core.web.rest;
+package com.homeki.core.http.rest;
 
-import com.homeki.core.web.ApiException;
+import com.homeki.core.http.ApiException;
 import com.homeki.core.json.JsonTrigger;
 import com.homeki.core.json.JsonVoid;
 import com.homeki.core.main.Util;

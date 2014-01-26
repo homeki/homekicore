@@ -1,8 +1,8 @@
-package com.homeki.core.web.rest;
+package com.homeki.core.http.rest;
 
 import com.homeki.core.events.EventQueue;
 import com.homeki.core.events.SpecialValueChangedEvent;
-import com.homeki.core.web.ApiException;
+import com.homeki.core.http.ApiException;
 import com.homeki.core.json.JsonSpecialValue;
 import com.homeki.core.main.Util;
 

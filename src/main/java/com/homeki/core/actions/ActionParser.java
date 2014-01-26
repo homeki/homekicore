@@ -1,7 +1,7 @@
 package com.homeki.core.actions;
 
 import com.homeki.core.device.Device;
-import com.homeki.core.web.ApiException;
+import com.homeki.core.http.ApiException;
 import com.homeki.core.json.actions.JsonAction;
 import com.homeki.core.json.actions.JsonChangeChannelValueAction;
 import com.homeki.core.json.actions.JsonSendMailAction;

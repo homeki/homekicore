@@ -1,9 +1,9 @@
-package com.homeki.core.web;
+package com.homeki.core.http;
 
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
-import com.homeki.core.web.filters.CharsetResponseFilter;
-import com.homeki.core.web.filters.CrossOriginResourceSharingResponseFilter;
-import com.homeki.core.web.filters.LogRequestFilter;
+import com.homeki.core.http.filters.CharsetResponseFilter;
+import com.homeki.core.http.filters.CrossOriginResourceSharingResponseFilter;
+import com.homeki.core.http.filters.LogRequestFilter;
 import org.glassfish.jersey.server.ResourceConfig;
 
 public class JerseyApplication extends ResourceConfig {

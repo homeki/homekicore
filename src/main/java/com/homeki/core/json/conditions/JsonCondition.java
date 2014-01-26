@@ -6,7 +6,7 @@ import com.homeki.core.conditions.ChannelValueCondition;
 import com.homeki.core.conditions.Condition;
 import com.homeki.core.conditions.MinuteCondition;
 import com.homeki.core.conditions.SpecialValueCondition;
-import com.homeki.core.web.ApiException;
+import com.homeki.core.http.ApiException;
 import com.homeki.core.main.OperationException;
 
 import java.util.List;

@@ -1,11 +1,11 @@
-package com.homeki.core.web.rest;
+package com.homeki.core.http.rest;
 
 import com.homeki.core.device.Device;
 import com.homeki.core.device.tellstick.TellStickDevice;
 import com.homeki.core.device.tellstick.TellStickDimmer;
 import com.homeki.core.device.tellstick.TellStickLearnable;
 import com.homeki.core.device.tellstick.TellStickSwitch;
-import com.homeki.core.web.ApiException;
+import com.homeki.core.http.ApiException;
 import com.homeki.core.json.JsonDevice;
 import com.homeki.core.json.JsonTellStickDevice;
 import com.homeki.core.json.JsonVoid;
