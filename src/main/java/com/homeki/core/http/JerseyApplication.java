@@ -4,6 +4,7 @@ import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import com.homeki.core.http.filters.CharsetResponseFilter;
 import com.homeki.core.http.filters.CrossOriginResourceSharingResponseFilter;
 import com.homeki.core.http.filters.LogRequestFilter;
+import com.homeki.core.http.rest.ServerResource;
 import org.glassfish.jersey.server.ResourceConfig;
 
 public class JerseyApplication extends ResourceConfig {
@@ -14,6 +15,6 @@ public class JerseyApplication extends ResourceConfig {
 		register(JacksonContextResolver.class);
 		register(JacksonJsonProvider.class);
 		register(ExceptionMapper.class);
-		packages(true, "com.homeki.core.web.rest");
+		packages(true, ServerResource.class.getPackage().getName());
 	}
 }

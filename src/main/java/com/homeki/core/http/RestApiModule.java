@@ -34,13 +34,13 @@ public class RestApiModule implements Module {
 			ctx.addFilterMap(filterMap);
 
 			Wrapper wrapper = tomcat.addServlet(ctx, "JerseyServlet", new ServletContainer());
-			wrapper.addInitParameter("javax.ws.rs.Application", "com.homeki.core.web.JerseyApplication");
+			wrapper.addInitParameter("javax.ws.rs.Application", JerseyApplication.class.getName());
 			wrapper.addMapping("/*");
 			wrapper.setLoadOnStartup(1);
 
 			tomcat.start();
 		} catch (Exception e) {
-			L.e("Failed to start WebModule.", e);
+			L.e("Failed to start RestApiModule.", e);
 		}
 	}
 
@@ -49,7 +49,7 @@ public class RestApiModule implements Module {
 		try {
 			tomcat.stop();
 		} catch (LifecycleException e) {
-			L.e("Failed to stop REST API module.", e);
+			L.e("Failed to stop RestApiModule.", e);
 		}
 	}
 }
