@@ -4,7 +4,7 @@ import com.homeki.core.conditions.Condition;
 import com.homeki.core.http.ApiException;
 import com.homeki.core.http.Container;
 import com.homeki.core.http.KiRestlet;
-import com.homeki.core.http.json.JsonCondition;
+import com.homeki.core.http.json.conditions.JsonCondition;
 import com.homeki.core.triggers.Trigger;
 
 public class TriggerConditionGetRestlet extends KiRestlet {

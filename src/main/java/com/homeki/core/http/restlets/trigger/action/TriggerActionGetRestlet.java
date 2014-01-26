@@ -4,7 +4,7 @@ import com.homeki.core.actions.Action;
 import com.homeki.core.http.ApiException;
 import com.homeki.core.http.Container;
 import com.homeki.core.http.KiRestlet;
-import com.homeki.core.http.json.JsonAction;
+import com.homeki.core.http.json.actions.JsonAction;
 import com.homeki.core.triggers.Trigger;
 
 public class TriggerActionGetRestlet extends KiRestlet {

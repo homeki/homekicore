@@ -1,4 +1,4 @@
-package com.homeki.core.http.json;
+package com.homeki.core.http.json.conditions;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.homeki.core.conditions.SpecialValueCondition;

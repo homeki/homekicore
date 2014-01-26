@@ -2,6 +2,7 @@ package com.homeki.core.web;
 
 import com.homeki.core.logging.L;
 import com.homeki.core.main.Module;
+import com.homeki.core.web.filters.HibernateSessionFilter;
 import org.apache.catalina.Context;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.Wrapper;

@@ -1,4 +1,4 @@
-package com.homeki.core.web;
+package com.homeki.core.web.filters;
 
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerResponseContext;

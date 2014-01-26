@@ -5,7 +5,7 @@ import com.homeki.core.actions.ActionGroup;
 import com.homeki.core.http.ApiException;
 import com.homeki.core.http.Container;
 import com.homeki.core.http.KiRestlet;
-import com.homeki.core.http.json.JsonAction;
+import com.homeki.core.http.json.actions.JsonAction;
 
 public class ActionGroupActionAddRestlet extends KiRestlet {
 	@Override

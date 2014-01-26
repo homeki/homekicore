@@ -2,16 +2,16 @@ package com.homeki.core.actions;
 
 import com.homeki.core.device.Device;
 import com.homeki.core.http.ApiException;
-import com.homeki.core.http.json.JsonAction;
-import com.homeki.core.http.json.JsonChangeChannelValueAction;
-import com.homeki.core.http.json.JsonSendMailAction;
-import com.homeki.core.http.json.JsonTriggerActionGroupAction;
+import com.homeki.core.http.json.actions.JsonAction;
+import com.homeki.core.http.json.actions.JsonChangeChannelValueAction;
+import com.homeki.core.http.json.actions.JsonSendMailAction;
+import com.homeki.core.http.json.actions.JsonTriggerActionGroupAction;
 import com.homeki.core.storage.Hibernate;
 
 public class ActionParser {
 	public static Action createAction(JsonAction jact) {
 		if (jact instanceof JsonChangeChannelValueAction)
-			return createChangeChannelValue((JsonChangeChannelValueAction)jact);
+			return createChangeChannelValue((JsonChangeChannelValueAction) jact);
 		else if (jact instanceof JsonTriggerActionGroupAction)
 			return createTriggerActionGroup((JsonTriggerActionGroupAction)jact);
 		else if (jact instanceof JsonSendMailAction)

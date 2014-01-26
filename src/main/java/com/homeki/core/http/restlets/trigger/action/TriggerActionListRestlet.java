@@ -3,7 +3,7 @@ package com.homeki.core.http.restlets.trigger.action;
 import com.homeki.core.http.ApiException;
 import com.homeki.core.http.Container;
 import com.homeki.core.http.KiRestlet;
-import com.homeki.core.http.json.JsonAction;
+import com.homeki.core.http.json.actions.JsonAction;
 import com.homeki.core.triggers.Trigger;
 
 public class TriggerActionListRestlet extends KiRestlet {
