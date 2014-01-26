@@ -11,7 +11,7 @@ import org.apache.catalina.deploy.FilterMap;
 import org.apache.catalina.startup.Tomcat;
 import org.glassfish.jersey.servlet.ServletContainer;
 
-public class WebModule implements Module {
+public class RestApiModule implements Module {
 	private Tomcat tomcat;
 
 	@Override

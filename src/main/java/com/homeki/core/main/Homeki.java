@@ -11,7 +11,6 @@ import com.homeki.core.logging.L;
 import com.homeki.core.report.ReportModule;
 import com.homeki.core.storage.DatabaseManager;
 import com.homeki.core.storage.Hibernate;
-import com.homeki.core.http.WebModule;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,7 +68,7 @@ public class Homeki {
 		modules.add(new TellStickModule());
 		modules.add(new OneWireModule());
 		modules.add(new RestApiModule());
-		modules.add(new WebModule());
+		modules.add(new RestApiModule());
 		modules.add(new WebGuiModule());
 		modules.add(new BroadcastModule());
 		modules.add(new GeneratorModule());
