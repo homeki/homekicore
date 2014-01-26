@@ -1,13 +1,12 @@
 package com.homeki.core.http;
 
-import java.util.Date;
-
+import com.homeki.core.TestUtil;
 import org.testng.annotations.Test;
 
-import com.homeki.core.TestUtil;
+import java.util.Date;
 
 public class DeviceTellStickTest {
-	public class JsonTellStickDevice {
+	public static class JsonTellStickDevice {
 		public Integer id;
 		public String type;
 		public String name;

@@ -10,8 +10,12 @@ import com.homeki.core.main.Util;
 import com.homeki.core.storage.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.criterion.Projections;
-import org.restlet.resource.ClientResource;
 
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Collections;
@@ -19,15 +23,12 @@ import java.util.NoSuchElementException;
 
 public class ReportThread extends ControlledThread {
 	private String macAddress;
-	private ClientResource cr;
-	private InstanceResource resource;
-	
+	private Client client;
+
 	public ReportThread() {
 		super(Configuration.REPORTER_INTERVAL);
 		this.macAddress = getMacAddress();
-		this.cr = new ClientResource(Configuration.REPORTER_URL);
-		this.cr.setRequestEntityBuffering(true);
-		this.resource = cr.wrap(InstanceResource.class);
+		this.client = ClientBuilder.newClient();
 	}
 
 	@Override
@@ -39,24 +40,29 @@ public class ReportThread extends ControlledThread {
 		String serverName = Setting.getString(session, Setting.SERVER_NAME);
 		
 		Report report = new Report();
-		report.setMacAddress(macAddress);
-		report.setVersion(Util.getVersion());
-		report.setServerName(serverName);
-		report.setDeviceCount(deviceCount);
-		report.setHistoryPointRowCount(historyPointCount);
+		report.macAddress = macAddress;
+		report.version = Util.getVersion();
+		report.serverName = serverName;
+		report.deviceCount = deviceCount;
+		report.historyPointRowCount = historyPointCount;
 		
 		Hibernate.closeSession(session);
 		
 		try {
-			resource.store(report);
-			L.i("Instance status was successfully reported.");
+			Response response = client
+														.target(Configuration.REPORTER_URL)
+														.request(MediaType.APPLICATION_JSON)
+														.put(Entity.json(report));
+
+			if (response.getStatus() == 200)
+				L.i("Instance status was successfully reported.");
+			else
+				L.e("Failed to report instance status, HTTP status code was " + response.getStatus() + ".");
 		} catch (Exception e) {
 			L.e("Failed to report instance status.", e);
-		} finally {
-			cr.release();
 		}
 	}
-	
+
 	private String getMacAddress() {
 		try {
 			NetworkInterface netInt = null;

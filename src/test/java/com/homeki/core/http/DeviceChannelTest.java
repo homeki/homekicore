@@ -1,20 +1,19 @@
 package com.homeki.core.http;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
-
+import com.homeki.core.TestUtil;
+import com.homeki.core.TestUtil.MockDeviceType;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import com.homeki.core.TestUtil;
-import com.homeki.core.TestUtil.MockDeviceType;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 public class DeviceChannelTest {
 	private int id1;
 	private int id2;
 	
-	public class JsonState {
+	public static class JsonState {
 		public Object value;
 		public Integer level;
 	}

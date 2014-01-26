@@ -1,15 +1,14 @@
 package com.homeki.core;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
+import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import com.homeki.core.json.JsonDevice;
-import org.restlet.Client;
-import org.restlet.Request;
-import org.restlet.data.MediaType;
-import org.restlet.data.Method;
-import org.restlet.data.Protocol;
 
-import java.lang.reflect.Type;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.MediaType;
 import java.text.SimpleDateFormat;
 import java.util.logging.LogManager;
 
@@ -18,18 +17,14 @@ import static org.testng.Assert.fail;
 
 public class TestUtil {
 	private static final String DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
-	private static final String DATE_FORMAT = "yyyy-MM-dd";
 	private static final String HOST = "http://localhost:5000";
 	
-	private static final Gson gson = new GsonBuilder()
-		.setPrettyPrinting()
-		.setDateFormat(DATETIME_FORMAT)
-		.create();
-	
-	protected static final Client client = new Client(Protocol.HTTP);
+	private static JacksonJsonProvider jacksonJsonProvider = new JacksonJaxbJsonProvider().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+	private static Client client = ClientBuilder.newClient().register(jacksonJsonProvider);
 	
 	static {
 		LogManager.getLogManager().reset();
+		jacksonJsonProvider.locateMapper(Object.class, MediaType.APPLICATION_JSON_TYPE).setDateFormat(new SimpleDateFormat(DATETIME_FORMAT));
 	}
 	
 	public enum MockDeviceType {
@@ -37,14 +32,14 @@ public class TestUtil {
 		DIMMER,
 		THERMOMETER
 	}
-	
+
 	public class Response {
 		public int statusCode;
-		public String content;
+		private javax.ws.rs.core.Response nativeResponse;
 	}
-	
-	public static SimpleDateFormat getDateFormat() {
-		return new SimpleDateFormat(DATE_FORMAT);
+
+	public static class JsonVoid {
+		public String message;
 	}
 	
 	public static SimpleDateFormat getDateTimeFormat() {
@@ -52,17 +47,17 @@ public class TestUtil {
 	}
 	
 	public static Response sendPost(String url, Object obj) {
-		Request request = new Request(Method.POST, HOST + url);
-		String postString = gson.toJson(obj);
 		Response r = null;
 		
 		try {
-			request.setEntity(postString, MediaType.APPLICATION_JSON);
-			org.restlet.Response response = client.handle(request);
+			javax.ws.rs.core.Response response = client
+																						 .target(HOST + url)
+																						 .request(MediaType.APPLICATION_JSON)
+																						 .post(Entity.json(obj));
 			
 			r = new TestUtil().new Response();
-			r.statusCode = response.getStatus().getCode();
-			r.content = response.getEntityAsText();		
+			r.statusCode = response.getStatus();
+			r.nativeResponse = response;
 		}
 		catch (Exception e) {
 			fail("Failed sending POST request, message: " + e.getMessage());
@@ -70,51 +65,45 @@ public class TestUtil {
 		
 		return r;
 	}
-	
-	@SuppressWarnings("unchecked")
-	public static <T> T sendGetAndParseAsJson(String url, Type t) {
-		Response r  = sendGet(url);
-		
-		assertEquals(r.statusCode, 200, r.content);
-		
-		String json = r.content;
-		
-		if (json == null || json.length() == 0)
-			fail("Expected JSON in response, got none.");
-		
-		return (T)gson.fromJson(json, t);
-	}
-	
-	@SuppressWarnings("unchecked")
-	public static <T> T sendPostAndParseAsJson(String url, Object obj, Type t) {
-		Response r  = sendPost(url, obj);
-		
-		assertEquals(r.statusCode, 200, r.content);
-		
-		String json = r.content;
-		
-		if (json == null || json.length() == 0)
-			fail("Expected JSON in response, got none.");
-		
-		return (T)gson.fromJson(json, t);
-	}
-	
+
 	public static Response sendGet(String url) {
-		Request request = new Request(Method.GET, HOST + url);
 		Response r = null;
-		
+
 		try {
-			org.restlet.Response response = client.handle(request);
-			
+			javax.ws.rs.core.Response response = client
+																						 .target(HOST + url)
+																						 .request(MediaType.APPLICATION_JSON)
+																						 .get();
+
 			r = new TestUtil().new Response();
-			r.statusCode = response.getStatus().getCode();
-			r.content = response.getEntityAsText();		
+			r.statusCode = response.getStatus();
+			r.nativeResponse = response;
 		}
 		catch (Exception e) {
 			fail("Failed sending GET request, message: " + e.getMessage());
 		}
-		
+
 		return r;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <T> T sendGetAndParseAsJson(String url, Class<?> t) {
+		Response r = sendGet(url);
+		throwIfError(r);
+		return (T)r.nativeResponse.readEntity(t);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <T> T sendPostAndParseAsJson(String url, Object obj, Class<?> t) {
+		Response r = sendPost(url, obj);
+		throwIfError(r);
+		return (T)r.nativeResponse.readEntity(t);
+	}
+
+	private static void throwIfError(Response r) {
+		if (r.statusCode == 200) return;
+		JsonVoid jv = r.nativeResponse.readEntity(JsonVoid.class);
+		throw new RuntimeException(jv.message);
 	}
 	
 	public static int addMockDevice(MockDeviceType type) {

@@ -68,8 +68,6 @@ public class Homeki {
 		modules.add(new TellStickModule());
 		modules.add(new OneWireModule());
 		modules.add(new RestApiModule());
-		modules.add(new RestApiModule());
-		modules.add(new WebGuiModule());
 		modules.add(new BroadcastModule());
 		modules.add(new GeneratorModule());
 		

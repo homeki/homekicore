@@ -8,7 +8,7 @@ import static org.testng.Assert.assertTrue;
 
 
 public class ServerTest {
-	public class JsonServerInfo {
+	public static class JsonServerInfo {
 		public Long uptimeMs;
 		public Long timeMs;
 		public String time;

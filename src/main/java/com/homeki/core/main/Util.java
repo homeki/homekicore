@@ -1,7 +1,5 @@
 package com.homeki.core.main;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.homeki.core.logging.L;
 
 import java.io.FileInputStream;
@@ -62,13 +60,6 @@ public class Util {
 
 	public static boolean isDevVersion() {
 		return getVersion().endsWith("SNAPSHOT");
-	}
-
-	public static Gson constructGson() {
-		return new GsonBuilder()
-		.setPrettyPrinting()
-		.setDateFormat(Util.getDateTimeFormat().toPattern())
-		.create();
 	}
 	
 	public static void sleep(int ms){

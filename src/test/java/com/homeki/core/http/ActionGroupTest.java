@@ -18,17 +18,17 @@ public class ActionGroupTest {
 	private int deviceId2;
 	private int actionGroupId;
 	
-	public class JsonActionGroup {
+	public static class JsonActionGroup {
 		public Integer id;
 		public String name;
 	}
 	
-	public class JsonAction {
+	public static class JsonAction {
 		public String type;
 		public Integer id;
 	}
 	
-	public class JsonChangeChannelValueAction extends JsonAction {
+	public static class JsonChangeChannelValueAction extends JsonAction {
 		public Integer deviceId;
 		public Integer channel;
 		public Number value;

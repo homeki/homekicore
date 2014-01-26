@@ -21,33 +21,33 @@ public class TriggerActionTest {
 	private int deviceId1;
 	private int deviceId2;
 	
-	public class JsonTrigger {
+	public static class JsonTrigger {
 		public Integer id;
 		public String name;
 	}
 	
-	public class JsonAction {
+	public static class JsonAction {
 		public String type;
 		public Integer id;
 	}
 	
-	public class JsonChangeChannelValueAction extends JsonAction {
+	public static class JsonChangeChannelValueAction extends JsonAction {
 		public Integer deviceId;
 		public Integer channel;
 		public Number value;
 	}
 	
-	public class JsonTriggerActionGroupAction extends JsonAction {
+	public static class JsonTriggerActionGroupAction extends JsonAction {
 		public Integer actionGroupId;
 	}
 	
-	public class JsonSendMailAction extends JsonAction {
+	public static class JsonSendMailAction extends JsonAction {
 		public String subject;
 		public String recipients;
 		public String text;
 	}
 	
-	public class JsonActionGroup {
+	public static class JsonActionGroup {
 		public Integer id;
 		public String name;
 	}

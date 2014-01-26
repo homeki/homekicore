@@ -1,19 +1,18 @@
 package com.homeki.core.http;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
+import com.homeki.core.TestUtil;
+import org.testng.annotations.Test;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import org.testng.annotations.Test;
-
-import com.homeki.core.TestUtil;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 public class TriggerTest {
 	private int triggerId;
 	
-	public class JsonTrigger {
+	public static class JsonTrigger {
 		public Integer id;
 		public String name;
 	}

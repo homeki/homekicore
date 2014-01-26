@@ -32,7 +32,8 @@ public class ActionGroupResource {
 	@POST
 	@Path("/{actionGroupId}/set")
 	public Response set(@PathParam("actionGroupId") int actionGroupId, JsonActionGroup jactgr) {
-		ActionGroup actgrp = (ActionGroup)Hibernate.currentSession().get(ActionGroup.class, actionGroupId);
+		Session ses = Hibernate.currentSession();
+		ActionGroup actgrp = (ActionGroup)ses.get(ActionGroup.class, actionGroupId);
 
 		if (actgrp == null || !actgrp.isExplicit())
 			throw new ApiException("No action group with the specified ID found.");
@@ -43,7 +44,7 @@ public class ActionGroupResource {
 		if (jactgr.name != null)
 			actgrp.setName(jactgr.name);
 
-		// TODO: session.save() needed here?
+		ses.save(actgrp);
 
 		return Response.ok(new JsonVoid("Action group updated successfully.")).build();
 	}

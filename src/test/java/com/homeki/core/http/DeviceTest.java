@@ -1,23 +1,22 @@
 package com.homeki.core.http;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
+import com.homeki.core.TestUtil;
+import com.homeki.core.TestUtil.MockDeviceType;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
 
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
-
-import com.homeki.core.TestUtil;
-import com.homeki.core.TestUtil.MockDeviceType;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 public class DeviceTest {
 	private int[] ids;
 	
-	public class JsonDevice {
+	public static class JsonDevice {
 		public String type;
 		public Integer id;
 		public String name;

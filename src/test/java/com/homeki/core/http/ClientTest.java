@@ -1,13 +1,12 @@
 package com.homeki.core.http;
 
-import static org.testng.Assert.assertEquals;
-
+import com.homeki.core.TestUtil;
 import org.testng.annotations.Test;
 
-import com.homeki.core.TestUtil;
+import static org.testng.Assert.assertEquals;
 
 public class ClientTest {
-	public class JsonClient {
+	public static class JsonClient {
 		public String id;
 	}
 	

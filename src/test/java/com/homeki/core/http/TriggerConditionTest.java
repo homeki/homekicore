@@ -20,31 +20,31 @@ public class TriggerConditionTest {
 	private int conditionId4;
 	private int deviceId;
 	
-	public class JsonTrigger {
+	public static class JsonTrigger {
 		public Integer id;
 		public String name;
 	}
 	
-	public class JsonCondition {
+	public static class JsonCondition {
 		public String type;
 		public Integer id;
 	}
 	
-	public class JsonChannelValueCondition extends JsonCondition {
+	public static class JsonChannelValueCondition extends JsonCondition {
 		public Integer deviceId;
 		public Integer channel;
 		public Number value;
 		public String operator;
 	}
 	
-	public class JsonSpecialValueCondition extends JsonCondition {
+	public static class JsonSpecialValueCondition extends JsonCondition {
 		public String source;
 		public Integer value;
 		public String operator;
 		public Boolean customSource;
 	}
 	
-	public class JsonMinuteCondition extends JsonCondition {
+	public static class JsonMinuteCondition extends JsonCondition {
 		public String weekday;
 		public String day;
 		public Integer hour;
