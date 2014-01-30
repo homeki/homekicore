@@ -17,7 +17,7 @@ import static org.testng.Assert.fail;
 
 public class TestUtil {
 	private static final String DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
-	private static final String HOST = "http://localhost:5000";
+	private static final String HOST = "http://localhost:5000/api";
 	
 	private static JacksonJsonProvider jacksonJsonProvider = new JacksonJaxbJsonProvider().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 	private static Client client = ClientBuilder.newClient().register(jacksonJsonProvider);

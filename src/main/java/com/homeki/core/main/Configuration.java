@@ -18,7 +18,6 @@ public class Configuration {
 		L.i("Development version detected, adjusting configuration.");
 		Configuration.REPORTER_ENABLED = false;
 		Configuration.REPORTER_URL = "http://localhost:8888/report";
-		Configuration.WEBROOT_PATH = "/home/dev/workspace/homeki/homekiweb";
 	}
 	
 	public static void transformForTest() {
