@@ -5,7 +5,6 @@ targetCompatibility = 1.6
 
 repositories {
     mavenCentral()
-    maven { url "http://maven.restlet.org" }
     repositories { flatDir(dirs: "lib") }
 }
 
