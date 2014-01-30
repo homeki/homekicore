@@ -1,47 +1,47 @@
 <?xml version='1.0' encoding='utf-8'?>
 <!DOCTYPE hibernate-configuration PUBLIC
-        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
-        "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
-        
-<hibernate-configuration>
-    <session-factory>
-    	<!--  General settings  -->
-      	<property name="connection.driver_class">org.postgresql.Driver</property>
-        <property name="connection.url">jdbc:postgresql:homeki</property>
-        <property name="connection.username">homeki</property>
-        <property name="connection.password">homeki</property>
-        <property name="connection.pool_size">1</property>
-        <property name="dialect">org.hibernate.dialect.PostgreSQLDialect</property>
-        
-        <property name="current_session_context_class">managed</property>
-        <property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
-        <property name="show_sql">false</property>
-        <property name="hbm2ddl.auto">validate</property>
+  "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 
-		<!--  Mapping classes -->
-		<mapping class="com.homeki.core.main.Setting" />
-        <mapping class="com.homeki.core.device.Device" />
-        <mapping class="com.homeki.core.device.HistoryPoint" />
-        <mapping class="com.homeki.core.device.IntegerHistoryPoint" />
-        <mapping class="com.homeki.core.device.DoubleHistoryPoint" />
-        <mapping class="com.homeki.core.device.mock.MockSwitch" />
-        <mapping class="com.homeki.core.device.mock.MockDimmer" />
-        <mapping class="com.homeki.core.device.mock.MockThermometer" />
-        <mapping class="com.homeki.core.device.onewire.OneWireDevice" />
-        <mapping class="com.homeki.core.device.onewire.OneWireThermometer" />
-        <mapping class="com.homeki.core.device.tellstick.TellStickSwitch" />
-        <mapping class="com.homeki.core.device.tellstick.TellStickDimmer" />
-        <mapping class="com.homeki.core.device.tellstick.TellStickThermometer" />
-        <mapping class="com.homeki.core.triggers.Trigger" />
-        <mapping class="com.homeki.core.actions.Action" />
-        <mapping class="com.homeki.core.actions.ActionGroup" />
-        <mapping class="com.homeki.core.actions.ChangeChannelValueAction" />
-        <mapping class="com.homeki.core.actions.TriggerActionGroupAction" />
-        <mapping class="com.homeki.core.actions.SendMailAction" />
-        <mapping class="com.homeki.core.conditions.Condition" />
-        <mapping class="com.homeki.core.conditions.ConditionGroup" />
-        <mapping class="com.homeki.core.conditions.ChannelValueCondition" />
-        <mapping class="com.homeki.core.conditions.SpecialValueCondition" />
-        <mapping class="com.homeki.core.conditions.MinuteCondition" />
-    </session-factory>
+<hibernate-configuration>
+  <session-factory>
+    <!--  General settings  -->
+    <property name="connection.driver_class">org.postgresql.Driver</property>
+    <property name="connection.url">jdbc:postgresql:homeki</property>
+    <property name="connection.username">homeki</property>
+    <property name="connection.password">homeki</property>
+    <property name="connection.pool_size">1</property>
+    <property name="dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+
+    <property name="current_session_context_class">managed</property>
+    <property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
+    <property name="show_sql">false</property>
+    <property name="hbm2ddl.auto">validate</property>
+
+    <!--  Mapping classes -->
+    <mapping class="com.homeki.core.main.Setting"/>
+    <mapping class="com.homeki.core.device.Device"/>
+    <mapping class="com.homeki.core.device.HistoryPoint"/>
+    <mapping class="com.homeki.core.device.IntegerHistoryPoint"/>
+    <mapping class="com.homeki.core.device.DoubleHistoryPoint"/>
+    <mapping class="com.homeki.core.device.mock.MockSwitch"/>
+    <mapping class="com.homeki.core.device.mock.MockDimmer"/>
+    <mapping class="com.homeki.core.device.mock.MockThermometer"/>
+    <mapping class="com.homeki.core.device.onewire.OneWireDevice"/>
+    <mapping class="com.homeki.core.device.onewire.OneWireThermometer"/>
+    <mapping class="com.homeki.core.device.tellstick.TellStickSwitch"/>
+    <mapping class="com.homeki.core.device.tellstick.TellStickDimmer"/>
+    <mapping class="com.homeki.core.device.tellstick.TellStickThermometer"/>
+    <mapping class="com.homeki.core.triggers.Trigger"/>
+    <mapping class="com.homeki.core.actions.Action"/>
+    <mapping class="com.homeki.core.actions.ActionGroup"/>
+    <mapping class="com.homeki.core.actions.ChangeChannelValueAction"/>
+    <mapping class="com.homeki.core.actions.TriggerActionGroupAction"/>
+    <mapping class="com.homeki.core.actions.SendMailAction"/>
+    <mapping class="com.homeki.core.conditions.Condition"/>
+    <mapping class="com.homeki.core.conditions.ConditionGroup"/>
+    <mapping class="com.homeki.core.conditions.ChannelValueCondition"/>
+    <mapping class="com.homeki.core.conditions.SpecialValueCondition"/>
+    <mapping class="com.homeki.core.conditions.MinuteCondition"/>
+  </session-factory>
 </hibernate-configuration>
