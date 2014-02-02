@@ -3,6 +3,7 @@ package com.homeki.core.http;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.homeki.core.main.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +28,7 @@ public class JacksonContextResolver implements ContextResolver<ObjectMapper> {
     objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
     objectMapper.setDateFormat(Util.getDateTimeFormat());
     objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+		objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
   }
 
   @Override
