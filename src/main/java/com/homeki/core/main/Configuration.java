@@ -16,6 +16,7 @@ public class Configuration {
 	
 	public static void transformForDev() {
 		L.i("Development version detected, adjusting configuration.");
+		Configuration.MOCK_ENABLED = true;
 		Configuration.REPORTER_ENABLED = false;
 		Configuration.REPORTER_URL = "http://localhost:8888/report";
 	}
@@ -33,6 +34,5 @@ public class Configuration {
     }
 
 		Configuration.REPORTER_ENABLED = false;
-		Configuration.MOCK_ENABLED = false;
 	}
 }
