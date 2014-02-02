@@ -1,10 +1,10 @@
 package com.homeki.core.device.tellstick;
 
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
-
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
+
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public enum TellStickApi {
 	// http://developer.telldus.se/browser/telldus-core/client/telldus-core.cpp
@@ -151,7 +151,7 @@ public enum TellStickApi {
     		throw new TellStickNativeException("Failed to set device parameter 'house'.");
 
     	if (!telldus.tdSetDeviceParameter(id, "unit", String.valueOf(unit)))
-    		throw new TellStickNativeException("Failed to set device parameter 'unit	'.");
+    		throw new TellStickNativeException("Failed to set device parameter 'unit'.");
 
     	return id;
     }
@@ -186,6 +186,5 @@ public enum TellStickApi {
     	default:
     		throw new TellStickNativeException();
     	}
-    	
     }
 }

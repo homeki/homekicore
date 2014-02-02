@@ -1,5 +1,12 @@
 package com.homeki.core.device.onewire;
 
+import com.homeki.core.device.Device;
+import com.homeki.core.logging.L;
+import com.homeki.core.main.Configuration;
+import com.homeki.core.main.ControlledThread;
+import com.homeki.core.storage.Hibernate;
+import org.hibernate.Session;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -7,14 +14,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.hibernate.Session;
-
-import com.homeki.core.device.Device;
-import com.homeki.core.logging.L;
-import com.homeki.core.main.Configuration;
-import com.homeki.core.main.ControlledThread;
-import com.homeki.core.storage.Hibernate;
 
 public class OneWireDetectorThread extends ControlledThread {
 	private final static String DETECTOR_LOG_DIFF = "detector";
@@ -64,7 +63,7 @@ public class OneWireDetectorThread extends ControlledThread {
 			Device dev = Device.getByInternalId(s);
 			
 			if (dev == null) {
-				String type = "";
+				String type;
 				
 				try {
 					type = OneWireDevice.getStringVar(deviceDirPath, "type");
