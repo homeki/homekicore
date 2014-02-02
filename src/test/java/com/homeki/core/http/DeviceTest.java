@@ -18,7 +18,7 @@ public class DeviceTest {
 	
 	public static class JsonDevice {
 		public String type;
-		public Integer id;
+		public Integer deviceId;
 		public String name;
 		public String description;
 		public Date added;
@@ -50,12 +50,12 @@ public class DeviceTest {
 	
 	@Test
 	public void testList() {
-		JsonDevice[] jdevices = TestUtil.sendGetAndParseAsJson("/device/list", JsonDevice[].class);
+		JsonDevice[] jdevices = TestUtil.sendGetAndParseAsJson("/devices", JsonDevice[].class);
 		
 		Set<Integer> existingIds = new HashSet<Integer>();
 		
 		for (JsonDevice jd : jdevices)
-			existingIds.add(jd.id);
+			existingIds.add(jd.deviceId);
 			
 		for (int i : ids)
 			assertTrue(existingIds.contains(i));
@@ -63,41 +63,40 @@ public class DeviceTest {
 	
 	@Test(dependsOnMethods="testList")
 	public void testGet() {
-		assertEquals(TestUtil.sendGet("/device/999999/get").statusCode, 400);
-		JsonDevice dev = TestUtil.sendGetAndParseAsJson("/device/" + ids[0] + "/get", JsonDevice.class);
-		assertEquals((int)dev.id, ids[0]);
+		assertEquals(TestUtil.sendGet("/devices/999999").statusCode, 400);
+		JsonDevice dev = TestUtil.sendGetAndParseAsJson("/devices/" + ids[0], JsonDevice.class);
+		assertEquals((int)dev.deviceId, ids[0]);
 	}
 	
 	@Test(dependsOnMethods="testGet")
 	public void testSet() {
-		JsonDevice beforeDev = TestUtil.sendGetAndParseAsJson("/device/" + ids[1] + "/get", JsonDevice.class);
-		assertEquals(beforeDev.name, "");
+		JsonDevice beforeDev = TestUtil.sendGetAndParseAsJson("/devices/" + ids[1], JsonDevice.class);
 		assertEquals(beforeDev.description, "");
 		
 		JsonDevice dev = new JsonDevice();
 		dev.name = "living room corner";	
 		dev.description = "corner lamps in living room";
-		assertEquals(TestUtil.sendPost("/device/" + ids[1] + "/set", dev).statusCode, 200);
+		assertEquals(TestUtil.sendPost("/devices/" + ids[1], dev).statusCode, 200);
 		
-		JsonDevice afterDev = TestUtil.sendGetAndParseAsJson("/device/" + ids[1] + "/get", JsonDevice.class);
+		JsonDevice afterDev = TestUtil.sendGetAndParseAsJson("/devices/" + ids[1], JsonDevice.class);
 		assertEquals(afterDev.name, "living room corner");
 		assertEquals(afterDev.description, "corner lamps in living room");
 	}
 	
 	@Test(dependsOnMethods="testSet")
 	public void testDelete() {
-		assertEquals(TestUtil.sendGet("/device/99999/delete").statusCode, 400);
-		assertEquals(TestUtil.sendGet("/device/" + ids[0] + "/get").statusCode, 200);
-		assertEquals(TestUtil.sendGet("/device/" + ids[0] + "/delete").statusCode, 200);
-		assertEquals(TestUtil.sendGet("/device/" + ids[0] + "/get").statusCode, 400);
+		assertEquals(TestUtil.sendDelete("/devices/99999").statusCode, 400);
+		assertEquals(TestUtil.sendGet("/devices/" + ids[0]).statusCode, 200);
+		assertEquals(TestUtil.sendDelete("/devices/" + ids[0]).statusCode, 200);
+		assertEquals(TestUtil.sendGet("/devices/" + ids[0]).statusCode, 400);
 	}
 	
 	@Test(dependsOnMethods="testDelete")
 	public void testMerge() {
-		assertEquals(TestUtil.sendGet("/device/" + ids[3] + "/get").statusCode, 200);
-		assertEquals(TestUtil.sendGet("/device/" + ids[4] + "/get").statusCode, 200);
-		assertEquals(TestUtil.sendGet("/device/" + ids[3] + "/merge?mergewith=" + ids[4]).statusCode, 200);
-		assertEquals(TestUtil.sendGet("/device/" + ids[3] + "/get").statusCode, 200);
-		assertEquals(TestUtil.sendGet("/device/" + ids[4] + "/get").statusCode, 400);
+		assertEquals(TestUtil.sendGet("/devices/" + ids[3]).statusCode, 200);
+		assertEquals(TestUtil.sendGet("/devices/" + ids[4]).statusCode, 200);
+		assertEquals(TestUtil.sendGet("/devices/" + ids[3] + "/merge?mergewith=" + ids[4]).statusCode, 200);
+		assertEquals(TestUtil.sendGet("/devices/" + ids[3]).statusCode, 200);
+		assertEquals(TestUtil.sendGet("/devices/" + ids[4]).statusCode, 400);
 	}
 }

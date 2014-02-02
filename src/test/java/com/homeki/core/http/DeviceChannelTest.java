@@ -32,29 +32,29 @@ public class DeviceChannelTest {
 	
 	@Test
 	public void testSet() {
-		assertEquals(TestUtil.sendGet("/device/" + id1 + "/channel/5/set?value=0").statusCode, 400);
-		assertEquals(TestUtil.sendGet("/device/" + id1 + "/channel/0/set?value=1").statusCode, 200);
-		assertEquals(TestUtil.sendGet("/device/" + id1 + "/channel/0/set?value=0").statusCode, 200);
-		assertEquals(TestUtil.sendGet("/device/" + id1 + "/channel/0/set?value=1").statusCode, 200);
-		assertEquals(TestUtil.sendGet("/device/" + id1 + "/channel/0/set?value=0").statusCode, 200);
+		assertEquals(TestUtil.sendGet("/devices/" + id1 + "/channel/5/set?value=0").statusCode, 400);
+		assertEquals(TestUtil.sendGet("/devices/" + id1 + "/channel/0/set?value=1").statusCode, 200);
+		assertEquals(TestUtil.sendGet("/devices/" + id1 + "/channel/0/set?value=0").statusCode, 200);
+		assertEquals(TestUtil.sendGet("/devices/" + id1 + "/channel/0/set?value=1").statusCode, 200);
+		assertEquals(TestUtil.sendGet("/devices/" + id1 + "/channel/0/set?value=0").statusCode, 200);
 		
-		assertEquals(TestUtil.sendGet("/device/" + id2 + "/channel/0/set?value=0").statusCode, 200);
-		assertEquals(TestUtil.sendGet("/device/" + id2 + "/channel/0/set?value=1").statusCode, 200);
-		assertEquals(TestUtil.sendGet("/device/" + id2 + "/channel/1/set?value=100").statusCode, 200);
-		assertEquals(TestUtil.sendGet("/device/" + id2 + "/channel/1/set?value=200").statusCode, 200);
-		assertEquals(TestUtil.sendGet("/device/" + id2 + "/channel/1/set?value=220").statusCode, 200);
-		assertEquals(TestUtil.sendGet("/device/" + id2 + "/channel/0/set?value=0").statusCode, 200);
+		assertEquals(TestUtil.sendGet("/devices/" + id2 + "/channel/0/set?value=0").statusCode, 200);
+		assertEquals(TestUtil.sendGet("/devices/" + id2 + "/channel/0/set?value=1").statusCode, 200);
+		assertEquals(TestUtil.sendGet("/devices/" + id2 + "/channel/1/set?value=100").statusCode, 200);
+		assertEquals(TestUtil.sendGet("/devices/" + id2 + "/channel/1/set?value=200").statusCode, 200);
+		assertEquals(TestUtil.sendGet("/devices/" + id2 + "/channel/1/set?value=220").statusCode, 200);
+		assertEquals(TestUtil.sendGet("/devices/" + id2 + "/channel/0/set?value=0").statusCode, 200);
 	}
 	
 	@Test(dependsOnMethods="testSet")
 	public void testList() {
-		JsonState[] states = TestUtil.sendGetAndParseAsJson("/device/" + id1 + "/channel/0/list?from=2000-01-01&to=2100-01-01", JsonState[].class);
+		JsonState[] states = TestUtil.sendGetAndParseAsJson("/devices/" + id1 + "/channel/0/list?from=2000-01-01&to=2100-01-01", JsonState[].class);
 		assertTrue(states.length >= 5);
 		
-		states = TestUtil.sendGetAndParseAsJson("/device/" + id2 + "/channel/0/list?from=2000-01-01&to=2100-01-01", JsonState[].class);
+		states = TestUtil.sendGetAndParseAsJson("/devices/" + id2 + "/channel/0/list?from=2000-01-01&to=2100-01-01", JsonState[].class);
 		assertTrue(states.length >= 4);
 		
-		states = TestUtil.sendGetAndParseAsJson("/device/" + id2 + "/channel/1/list?from=2000-01-01&to=2100-01-01", JsonState[].class);
+		states = TestUtil.sendGetAndParseAsJson("/devices/" + id2 + "/channel/1/list?from=2000-01-01&to=2100-01-01", JsonState[].class);
 		assertTrue(states.length >= 4);
 	}
 }

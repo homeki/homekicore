@@ -1,14 +1,15 @@
 package com.homeki.core.device.mock;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.Entity;
-
 import com.homeki.core.device.Channel;
 import com.homeki.core.device.Device;
 import com.homeki.core.device.Settable;
+import com.homeki.core.json.devices.JsonDevice;
+import com.homeki.core.json.devices.JsonMockDevice;
 import com.homeki.core.logging.L;
+
+import javax.persistence.Entity;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class MockSwitch extends Device implements Settable {
@@ -43,5 +44,10 @@ public class MockSwitch extends Device implements Settable {
 		List<Channel> list = new ArrayList<Channel>();
 		list.add(new Channel(ONOFF_CHANNEL, "onoff", Channel.INT));
 		return list;
+	}
+
+	@Override
+	public JsonDevice toJson() {
+		return new JsonMockDevice(this);
 	}
 }

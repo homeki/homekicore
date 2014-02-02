@@ -1,14 +1,15 @@
 package com.homeki.core.device.mock;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import com.homeki.core.device.Channel;
+import com.homeki.core.device.Device;
+import com.homeki.core.json.devices.JsonDevice;
+import com.homeki.core.json.devices.JsonMockDevice;
 
 import javax.persistence.Entity;
 import javax.persistence.Transient;
-
-import com.homeki.core.device.Channel;
-import com.homeki.core.device.Device;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 @Entity
 public class MockThermometer extends Device {
@@ -52,5 +53,10 @@ public class MockThermometer extends Device {
 		List<Channel> list = new ArrayList<Channel>();
 		list.add(new Channel(TEMPERATURE_CHANNEL, "temperature", Channel.DOUBLE));
 		return list;
+	}
+
+	@Override
+	public JsonDevice toJson() {
+		return new JsonMockDevice(this);
 	}
 }

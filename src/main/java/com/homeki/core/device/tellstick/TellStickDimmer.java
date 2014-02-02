@@ -1,13 +1,12 @@
 package com.homeki.core.device.tellstick;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.Entity;
-
 import com.homeki.core.device.Channel;
 import com.homeki.core.device.IntegerHistoryPoint;
 import com.homeki.core.device.Settable;
+
+import javax.persistence.Entity;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class TellStickDimmer extends TellStickDevice implements Settable, TellStickLearnable {
@@ -68,11 +67,6 @@ public class TellStickDimmer extends TellStickDevice implements Settable, TellSt
 	@Override
 	public void preDelete() {
 		TellStickApi.INSTANCE.removeDevice(Integer.valueOf(internalId));
-	}
-	
-	@Override
-	public String[] getAbilities() {
-		return new String[] { "tellstick" };
 	}
 
 	@Override

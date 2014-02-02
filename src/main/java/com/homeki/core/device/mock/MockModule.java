@@ -32,6 +32,7 @@ public class MockModule implements Module {
 		
 		if (dev == null) {
 			newdev.setInternalId(internalId);
+			newdev.setName(internalId);
 			session.save(newdev);
 		}
 	}

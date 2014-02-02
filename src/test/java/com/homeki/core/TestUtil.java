@@ -3,13 +3,14 @@ package com.homeki.core;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
-import com.homeki.core.json.JsonDevice;
+import com.homeki.core.json.devices.JsonMockDevice;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import java.text.SimpleDateFormat;
+import java.util.UUID;
 import java.util.logging.LogManager;
 
 import static org.testng.Assert.assertEquals;
@@ -66,6 +67,26 @@ public class TestUtil {
 		return r;
 	}
 
+	public static Response sendDelete(String url) {
+		Response r = null;
+
+		try {
+			javax.ws.rs.core.Response response = client
+																						 .target(HOST + url)
+																						 .request(MediaType.APPLICATION_JSON)
+																						 .delete();
+
+			r = new TestUtil().new Response();
+			r.statusCode = response.getStatus();
+			r.nativeResponse = response;
+		}
+		catch (Exception e) {
+			fail("Failed sending DELETE request, message: " + e.getMessage());
+		}
+
+		return r;
+	}
+
 	public static Response sendGet(String url) {
 		Response r = null;
 
@@ -107,15 +128,17 @@ public class TestUtil {
 	}
 	
 	public static int addMockDevice(MockDeviceType type) {
-		JsonDevice dev = new JsonDevice();
-		
+		JsonMockDevice dev = new JsonMockDevice();
+
+		dev.vendor = "mock";
 		dev.type = type.toString().toLowerCase();
+		dev.name = UUID.randomUUID().toString().replace("-", "").substring(0, 7);
 		
-		dev = sendPostAndParseAsJson("/device/mock/add", dev, JsonDevice.class);
-		return dev.id;
+		dev = sendPostAndParseAsJson("/devices", dev, JsonMockDevice.class);
+		return dev.deviceId;
 	}
 	
 	public static void deleteDevice(int id) {
-		assertEquals(sendGet("/device/" + id + "/delete").statusCode, 200);
+		assertEquals(sendDelete("/devices/" + id).statusCode, 200);
 	}
 }

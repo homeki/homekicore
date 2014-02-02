@@ -1,14 +1,18 @@
 package com.homeki.core.json;
 
-import java.util.List;
-
 import com.homeki.core.device.Channel;
+
+import java.util.List;
 
 public class JsonChannel {
 	public int id;
 	public String name;
 	public String dataType;
 	public Object lastValue;
+
+	public JsonChannel() {
+
+	}
 	
 	public JsonChannel(Channel channel) {
 		this.id = channel.id;

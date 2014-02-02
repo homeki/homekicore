@@ -4,6 +4,7 @@ import com.homeki.core.actions.ChangeChannelValueAction;
 import com.homeki.core.conditions.ChannelValueCondition;
 import com.homeki.core.events.ChannelValueChangedEvent;
 import com.homeki.core.events.EventQueue;
+import com.homeki.core.json.devices.JsonDevice;
 import com.homeki.core.storage.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.annotations.Cascade;
@@ -89,10 +90,6 @@ public abstract class Device {
 		return added;
 	}
 	
-	public void setAdded(Date added) {
-		this.added = added;
-	}
-	
 	public Set<HistoryPoint> getHistoryPoints() {
 		return historyPoints;
 	}
@@ -160,10 +157,6 @@ public abstract class Device {
 			EventQueue.INSTANCE.add(new ChannelValueChangedEvent(id, channel, value));
 	}
 	
-	public String[] getAbilities() {
-		return new String[0];
-	}
-	
 	public abstract List<Channel> getChannels();
 	
 	protected void validateChannel(int channel) {
@@ -175,5 +168,9 @@ public abstract class Device {
 		}
 		
 		throw new RuntimeException("Tried to operate on invalid channel " + channel + " on device with ID " + id + " (" + getType() + ").");
+	}
+
+	public JsonDevice toJson() {
+		return new JsonDevice(this);
 	}
 }
