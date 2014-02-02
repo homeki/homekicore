@@ -9,6 +9,6 @@ import java.io.IOException;
 public class LogRequestFilter implements ContainerRequestFilter {
 	@Override
 	public void filter(ContainerRequestContext requestContext) throws IOException {
-		L.i("Received request " + requestContext.getUriInfo().getPath() + ".");
+		L.i("Received request " + requestContext.getMethod() + " " + requestContext.getUriInfo().getPath() + ".");
 	}
 }
