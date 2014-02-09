@@ -211,7 +211,7 @@ public class DeviceResource {
 		return Response.ok(new JsonVoid("Merge-with device successfully merged into device.")).build();
 	}
 
-	@Path("/{deviceId}/channel")
+	@Path("/{deviceId}/channels")
 	public Class<DeviceChannelResource> continueInChannel() {
 		return DeviceChannelResource.class;
 	}

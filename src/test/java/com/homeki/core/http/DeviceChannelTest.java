@@ -12,49 +12,60 @@ import static org.testng.Assert.assertTrue;
 public class DeviceChannelTest {
 	private int id1;
 	private int id2;
-	
-	public static class JsonState {
-		public Object value;
-		public Integer level;
+
+	public static class JsonChannelValue {
+		public int value;
+
+		public JsonChannelValue() {
+
+		}
+
+		public JsonChannelValue(int value) {
+			this.value = value;
+		}
 	}
-	
+
+	public static class JsonHistoryPoint {
+		public Object value;
+	}
+
 	@BeforeClass
 	private void beforeClass() {
 		id1 = TestUtil.addMockDevice(MockDeviceType.SWITCH);
 		id2 = TestUtil.addMockDevice(MockDeviceType.DIMMER);
 	}
-	
+
 	@AfterClass
 	private void afterClass() {
 		TestUtil.deleteDevice(id1);
 		TestUtil.deleteDevice(id2);
 	}
-	
+
 	@Test
 	public void testSet() {
-		assertEquals(TestUtil.sendGet("/devices/" + id1 + "/channel/5/set?value=0").statusCode, 400);
-		assertEquals(TestUtil.sendGet("/devices/" + id1 + "/channel/0/set?value=1").statusCode, 200);
-		assertEquals(TestUtil.sendGet("/devices/" + id1 + "/channel/0/set?value=0").statusCode, 200);
-		assertEquals(TestUtil.sendGet("/devices/" + id1 + "/channel/0/set?value=1").statusCode, 200);
-		assertEquals(TestUtil.sendGet("/devices/" + id1 + "/channel/0/set?value=0").statusCode, 200);
-		
-		assertEquals(TestUtil.sendGet("/devices/" + id2 + "/channel/0/set?value=0").statusCode, 200);
-		assertEquals(TestUtil.sendGet("/devices/" + id2 + "/channel/0/set?value=1").statusCode, 200);
-		assertEquals(TestUtil.sendGet("/devices/" + id2 + "/channel/1/set?value=100").statusCode, 200);
-		assertEquals(TestUtil.sendGet("/devices/" + id2 + "/channel/1/set?value=200").statusCode, 200);
-		assertEquals(TestUtil.sendGet("/devices/" + id2 + "/channel/1/set?value=220").statusCode, 200);
-		assertEquals(TestUtil.sendGet("/devices/" + id2 + "/channel/0/set?value=0").statusCode, 200);
+		assertEquals(TestUtil.sendPost("/devices/" + id1 + "/channels/5", new JsonChannelValue(0)).statusCode, 400);
+		assertEquals(TestUtil.sendPost("/devices/" + id1 + "/channels/0", new JsonChannelValue(1)).statusCode, 200);
+		assertEquals(TestUtil.sendPost("/devices/" + id1 + "/channels/0", new JsonChannelValue(0)).statusCode, 200);
+		assertEquals(TestUtil.sendPost("/devices/" + id1 + "/channels/0", new JsonChannelValue(1)).statusCode, 200);
+		assertEquals(TestUtil.sendPost("/devices/" + id1 + "/channels/0", new JsonChannelValue(0)).statusCode, 200);
+
+		assertEquals(TestUtil.sendPost("/devices/" + id2 + "/channels/0", new JsonChannelValue(0)).statusCode, 200);
+		assertEquals(TestUtil.sendPost("/devices/" + id2 + "/channels/0", new JsonChannelValue(1)).statusCode, 200);
+		assertEquals(TestUtil.sendPost("/devices/" + id2 + "/channels/1", new JsonChannelValue(100)).statusCode, 200);
+		assertEquals(TestUtil.sendPost("/devices/" + id2 + "/channels/1", new JsonChannelValue(200)).statusCode, 200);
+		assertEquals(TestUtil.sendPost("/devices/" + id2 + "/channels/1", new JsonChannelValue(220)).statusCode, 200);
+		assertEquals(TestUtil.sendPost("/devices/" + id2 + "/channels/0", new JsonChannelValue(0)).statusCode, 200);
 	}
-	
-	@Test(dependsOnMethods="testSet")
+
+	@Test(dependsOnMethods = "testSet")
 	public void testList() {
-		JsonState[] states = TestUtil.sendGetAndParseAsJson("/devices/" + id1 + "/channel/0/list?from=2000-01-01&to=2100-01-01", JsonState[].class);
+		JsonHistoryPoint[] states = TestUtil.sendGetAndParseAsJson("/devices/" + id1 + "/channels/0?from=2000-01-01&to=2100-01-01", JsonHistoryPoint[].class);
 		assertTrue(states.length >= 5);
-		
-		states = TestUtil.sendGetAndParseAsJson("/devices/" + id2 + "/channel/0/list?from=2000-01-01&to=2100-01-01", JsonState[].class);
+
+		states = TestUtil.sendGetAndParseAsJson("/devices/" + id2 + "/channels/0?from=2000-01-01&to=2100-01-01", JsonHistoryPoint[].class);
 		assertTrue(states.length >= 4);
-		
-		states = TestUtil.sendGetAndParseAsJson("/devices/" + id2 + "/channel/1/list?from=2000-01-01&to=2100-01-01", JsonState[].class);
+
+		states = TestUtil.sendGetAndParseAsJson("/devices/" + id2 + "/channels/1?from=2000-01-01&to=2100-01-01", JsonHistoryPoint[].class);
 		assertTrue(states.length >= 4);
 	}
 }

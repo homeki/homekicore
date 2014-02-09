@@ -4,11 +4,12 @@ import com.homeki.core.device.Device;
 import com.homeki.core.device.HistoryPoint;
 import com.homeki.core.device.Settable;
 import com.homeki.core.http.ApiException;
+import com.homeki.core.http.DateParam;
 import com.homeki.core.json.JsonChannel;
+import com.homeki.core.json.JsonChannelValue;
 import com.homeki.core.json.JsonHistoryPoint;
 import com.homeki.core.json.JsonVoid;
 import com.homeki.core.storage.Hibernate;
-import com.homeki.core.http.DateParam;
 import org.hibernate.Session;
 
 import javax.ws.rs.*;
@@ -20,7 +21,6 @@ import java.util.List;
 @Produces(MediaType.APPLICATION_JSON)
 public class DeviceChannelResource {
 	@GET
-	@Path("/list")
 	public Response list(@PathParam("deviceId") int deviceId) {
 		Device dev = (Device)Hibernate.currentSession().get(Device.class, deviceId);
 
@@ -30,9 +30,9 @@ public class DeviceChannelResource {
 		return Response.ok(JsonChannel.convertList(dev.getChannels())).build();
 	}
 
-	@GET
-	@Path("/{channel}/set")
-	public Response set(@PathParam("deviceId") int deviceId, @PathParam("channel") int channel, @QueryParam("value") int value) {
+	@POST
+	@Path("/{channel}")
+	public Response set(@PathParam("deviceId") int deviceId, @PathParam("channel") int channel, JsonChannelValue value) {
 		Device dev = (Device)Hibernate.currentSession().get(Device.class, deviceId);
 
 		if (dev == null)
@@ -40,13 +40,13 @@ public class DeviceChannelResource {
 		if (!(dev instanceof Settable))
 			throw new ApiException("Device with specified ID is not settable.");
 
-		((Settable)dev).set(channel, value);
+		((Settable)dev).set(channel, value.value);
 
 		return Response.ok(new JsonVoid("Device channel value successfully changed.")).build();
 	}
 
 	@GET
-	@Path("/{channel}/list")
+	@Path("/{channel}")
 	public Response listValues(@PathParam("deviceId") int deviceId, @PathParam("channel") int channel, @QueryParam("from") DateParam from, @QueryParam("to") DateParam to) {
 		Session ses = Hibernate.currentSession();
 
