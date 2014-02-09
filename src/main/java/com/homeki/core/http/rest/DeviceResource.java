@@ -19,6 +19,7 @@ import com.homeki.core.main.Setting;
 import com.homeki.core.main.Util;
 import com.homeki.core.storage.Hibernate;
 import org.hibernate.Session;
+import org.hibernate.criterion.Order;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -126,7 +127,7 @@ public class DeviceResource {
 
 	@GET
 	public Response list() {
-		List<Device> list = Hibernate.currentSession().createCriteria(Device.class).list();
+		List<Device> list = Hibernate.currentSession().createCriteria(Device.class).addOrder(Order.asc("name")).list();
 		return Response.ok(JsonDevice.convertList(list)).build();
 	}
 
