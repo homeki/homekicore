@@ -35,11 +35,6 @@ public enum TellStickApi {
 		}
 	}
 
-	enum Type {
-		SWITCH,
-		DIMMER
-	}
-
 	private JnaTelldusCore telldus;
 	private BlockingQueue<String> events;
 	private DeviceEventHandler deviceEventHandler;
@@ -52,6 +47,7 @@ public enum TellStickApi {
 		events = new LinkedBlockingQueue<String>();
 		deviceEventHandler = new DeviceEventHandler();
 		telldus = (JnaTelldusCore) Native.loadLibrary("telldus-core", JnaTelldusCore.class);
+		telldus.tdInit();
 		deviceEventHandlerId = telldus.tdRegisterDeviceEvent(deviceEventHandler, Pointer.NULL);
 		checkIfFailed(deviceEventHandlerId);
 	}
