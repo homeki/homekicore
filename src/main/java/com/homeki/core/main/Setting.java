@@ -12,7 +12,6 @@ import org.hibernate.criterion.Restrictions;
 @Entity
 public class Setting {
 	public static final String SERVER_NAME = "SERVER_NAME";
-	public static final String NEXT_HOUSE_KEY = "TELLSTICK_NEXT_HOUSE_VALUE";
 	public static final String LOCATION_LONGITUDE = "LOCATION_LONGITUDE";
 	public static final String LOCATION_LATITUDE = "LOCATION_LATITUDE";
 	public static final String SMTP_HOST = "SMTP_HOST";

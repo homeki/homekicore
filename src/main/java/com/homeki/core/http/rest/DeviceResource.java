@@ -11,11 +11,10 @@ import com.homeki.core.device.tellstick.TellStickDimmer;
 import com.homeki.core.device.tellstick.TellStickLearnable;
 import com.homeki.core.device.tellstick.TellStickSwitch;
 import com.homeki.core.http.ApiException;
+import com.homeki.core.json.JsonVoid;
 import com.homeki.core.json.devices.JsonDevice;
 import com.homeki.core.json.devices.JsonMockDevice;
 import com.homeki.core.json.devices.JsonTellStickDevice;
-import com.homeki.core.json.JsonVoid;
-import com.homeki.core.main.Setting;
 import com.homeki.core.main.Util;
 import com.homeki.core.storage.Hibernate;
 import org.hibernate.Session;
@@ -31,14 +30,10 @@ import java.util.List;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class DeviceResource {
-	private static final int TELLSTICK_UNIT = 3;
-
 	@POST
 	public Response add(JsonDevice jdev) {
-		if (Util.isNullOrEmpty(jdev.type))
-			throw new ApiException("Missing required field 'type' in JSON.");
-		if (Util.isNullOrEmpty(jdev.name))
-			throw new ApiException("Missing required field 'name' in JSON.");
+		if (Util.nullOrEmpty(jdev.type)) throw new ApiException("Missing required field 'type'.");
+		if (Util.nullOrEmpty(jdev.name)) throw new ApiException("Missing required field 'name'.");
 
 		if (jdev instanceof JsonTellStickDevice)
 			return addTellStickDevice((JsonTellStickDevice)jdev);
@@ -58,14 +53,11 @@ public class DeviceResource {
 		else if (jdev.type.equals("thermometer"))
 			dev = new MockThermometer(0.0);
 		else
-			throw new ApiException("Did not recognize type '" + jdev.type + "' as a valid mock device type.");
+			throw new ApiException("Did not recognize type '" + jdev.type + "' as a valid type.");
 
 		dev.setInternalId(jdev.type + MockModule.getNextCount());
-
-		if (jdev.name != null)
-			dev.setName(jdev.name);
-		if (jdev.description != null)
-			dev.setDescription(jdev.description);
+		dev.setName(jdev.name);
+		dev.setDescription(jdev.description);
 
 		Hibernate.currentSession().save(dev);
 
@@ -73,39 +65,24 @@ public class DeviceResource {
 	}
 
 	private Response addTellStickDevice(JsonTellStickDevice jdev) {
-		Session ses = Hibernate.currentSession();
-
-		int house;
-		int unit;
-
-		if (jdev.house == null)
-			house = Setting.getInt(ses, Setting.NEXT_HOUSE_KEY);
-		else
-			house = jdev.house;
-
-		if (jdev.unit == null)
-			unit = TELLSTICK_UNIT;
-		else
-			unit = jdev.unit;
+		if (Util.nullOrEmpty(jdev.protocol)) throw new ApiException("Missing field 'protocol'.");
+		if (Util.nullOrEmpty(jdev.model)) throw new ApiException("Missing field 'model'.");
+		if (Util.nullOrEmpty(jdev.house)) throw new ApiException("Missing field 'house'.");
+		if (Util.nullOrEmpty(jdev.unit)) throw new ApiException("Missing field 'unit'.");
 
 		Device dev;
 
 		if (jdev.type.equals("switch"))
-			dev = new TellStickSwitch(false, house, unit);
+			dev = new TellStickSwitch(false, jdev.protocol, jdev.model, jdev.house, jdev.unit);
 		else if (jdev.type.equals("dimmer"))
-			dev = new TellStickDimmer(255, house, unit);
+			dev = new TellStickDimmer(255, jdev.protocol, jdev.model, jdev.house, jdev.unit);
 		else
-			throw new ApiException("Did not recognize type '" + jdev.type + "' as a valid TellStick type.");
+			throw new ApiException("Did not recognize type '" + jdev.type + "' as a valid type.");
 
-		if (jdev.name != null)
-			dev.setName(jdev.name);
-		if (jdev.description != null)
-			dev.setDescription(jdev.description);
+		dev.setName(jdev.name);
+		dev.setDescription(jdev.description);
 
-		if (jdev.house == null)
-			Setting.putInt(ses, Setting.NEXT_HOUSE_KEY, house+1);
-
-		ses.save(dev);
+		Hibernate.currentSession().save(dev);
 
 		return Response.ok(dev.toJson()).build();
 	}

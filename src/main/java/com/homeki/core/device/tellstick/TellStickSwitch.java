@@ -19,10 +19,10 @@ public class TellStickSwitch extends TellStickDevice implements Settable, TellSt
 		addHistoryPoint(ONOFF_CHANNEL, defaultValue ? 1 : 0);
 	}
 	
-	public TellStickSwitch(boolean defaultValue, int house, int unit) {
+	public TellStickSwitch(boolean defaultValue, String protocol, String model, String house, String unit) {
 		this(defaultValue);
 		
-		int result = TellStickApi.INSTANCE.addSwitch(house, unit);
+		int result = TellStickApi.INSTANCE.addDevice(protocol, model, house, unit);
 		
 		this.internalId = String.valueOf(result);
 	}

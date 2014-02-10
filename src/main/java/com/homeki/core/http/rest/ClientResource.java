@@ -25,7 +25,7 @@ public class ClientResource {
 	@POST
 	@Path("/register")
 	public Response register(JsonClient jclient) {
-		if (Util.isNullOrEmpty(jclient.id))
+		if (Util.nullOrEmpty(jclient.id))
 			throw new ApiException("Client ID cannot be null or empty.");
 
 		ClientStore.INSTANCE.addClient(jclient.id);
@@ -36,7 +36,7 @@ public class ClientResource {
 	@POST
 	@Path("/unregister")
 	public Response unregister(JsonClient jclient) {
-		if (Util.isNullOrEmpty(jclient.id))
+		if (Util.nullOrEmpty(jclient.id))
 			throw new ApiException("Client ID cannot be null or empty.");
 
 		ClientStore.INSTANCE.removeClient(jclient.id);

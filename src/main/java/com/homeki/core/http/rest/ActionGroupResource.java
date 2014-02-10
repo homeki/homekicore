@@ -38,7 +38,7 @@ public class ActionGroupResource {
 		if (actgrp == null || !actgrp.isExplicit())
 			throw new ApiException("No action group with the specified ID found.");
 
-		if (Util.isNullOrEmpty(jactgr.name))
+		if (Util.nullOrEmpty(jactgr.name))
 			throw new ApiException("New action group name cannot be empty.");
 
 		if (jactgr.name != null)
@@ -69,7 +69,7 @@ public class ActionGroupResource {
 	@POST
 	@Path("/add")
 	public Response add(JsonActionGroup jactgrp) {
-		if (Util.isNullOrEmpty(jactgrp.name))
+		if (Util.nullOrEmpty(jactgrp.name))
 			throw new ApiException("Action group name cannot be empty.");
 
 		ActionGroup actionGroup = new ActionGroup();

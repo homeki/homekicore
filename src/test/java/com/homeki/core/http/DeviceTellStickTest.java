@@ -13,8 +13,10 @@ public class DeviceTellStickTest {
 		public String name;
 		public String description;
 		public Date added;
-		public Integer house;
-		public Integer unit;
+		public String protocol;
+		public String model;
+		public String house;
+		public String unit;
 	}
 	
 	@Test
@@ -24,6 +26,10 @@ public class DeviceTellStickTest {
 		dev.name = "tellstick switch 1";
 		dev.description = "switch description";
 		dev.type = "switch";
+		dev.protocol = "arctech";
+		dev.model = "selflearning-switch";
+		dev.house = "12001";
+		dev.unit = "6";
 		JsonTellStickDevice id1 = TestUtil.sendPostAndParseAsJson("/devices", dev, JsonTellStickDevice.class);
 		
 		dev = new JsonTellStickDevice();
@@ -31,6 +37,10 @@ public class DeviceTellStickTest {
 		dev.name = "tellstick dimmer 1";
 		dev.description = "dimmer description";
 		dev.type = "dimmer";
+		dev.protocol = "arctech";
+		dev.model = "selflearning-dimmer";
+		dev.house = "12002";
+		dev.unit = "7";
 		JsonTellStickDevice id2 = TestUtil.sendPostAndParseAsJson("/devices", dev, JsonTellStickDevice.class);
 		
 		dev = new JsonTellStickDevice();
@@ -38,8 +48,10 @@ public class DeviceTellStickTest {
 		dev.name = "tellstick dimmer 2";
 		dev.description = "dimmer description";
 		dev.type = "dimmer";
-		dev.house = 12000;
-		dev.unit = 5;
+		dev.protocol = "arctech";
+		dev.model = "selflearning-dimmer";
+		dev.house = "12000";
+		dev.unit = "5";
 		JsonTellStickDevice id3 = TestUtil.sendPostAndParseAsJson("/devices", dev, JsonTellStickDevice.class);
 		
 		TestUtil.deleteDevice(id1.deviceId);

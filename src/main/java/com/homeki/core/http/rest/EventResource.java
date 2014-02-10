@@ -20,7 +20,7 @@ public class EventResource {
 	@POST
 	@Path("/specialvalue")
 	public Response triggerSpecialValue(JsonSpecialValue jvalue) {
-		if (Util.isNullOrEmpty(jvalue.source))
+		if (Util.nullOrEmpty(jvalue.source))
 			throw new ApiException("Source cannot be empty.");
 		if (jvalue.value == null)
 			throw new ApiException("Value cannot be empty.");

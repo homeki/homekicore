@@ -27,7 +27,7 @@ public class TriggerResource {
 	@POST
 	@Path("/add")
 	public Response add(JsonTrigger jtrigger) {
-		if (Util.isNullOrEmpty(jtrigger.name))
+		if (Util.nullOrEmpty(jtrigger.name))
 			throw new ApiException("Trigger name cannot be empty.");
 
 		Trigger trigger = new Trigger();
@@ -48,7 +48,7 @@ public class TriggerResource {
 		if (trigger == null)
 			throw new ApiException("No trigger with the specified ID found.");
 
-		if (Util.isNullOrEmpty(jtrigger.name))
+		if (Util.nullOrEmpty(jtrigger.name))
 			throw new ApiException("New trigger name cannot be empty.");
 
 		if (jtrigger.name != null)

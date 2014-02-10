@@ -77,7 +77,7 @@ public class Util {
 	   return sb.toString();
 	}
 	
-	public static boolean isNullOrEmpty(String s) {
+	public static boolean nullOrEmpty(String s) {
 		return s == null || s.length() == 0;
 	}
 	

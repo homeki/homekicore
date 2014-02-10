@@ -34,7 +34,7 @@ public class ConditionParser {
 	}
 
 	private static Condition createChannelValueCondition(JsonChannelValueCondition jcond) {
-		if (Util.isNullOrEmpty(jcond.operator))
+		if (Util.nullOrEmpty(jcond.operator))
 			throw new ApiException("Missing operator.");
 		if (jcond.value == null)
 			throw new ApiException("Missing value.");
@@ -55,9 +55,9 @@ public class ConditionParser {
 	}
 
 	private static Condition createSpecialValueCondition(JsonSpecialValueCondition jcond) {
-		if (Util.isNullOrEmpty(jcond.operator))
+		if (Util.nullOrEmpty(jcond.operator))
 			throw new ApiException("Missing operator.");
-		if (Util.isNullOrEmpty(jcond.source))
+		if (Util.nullOrEmpty(jcond.source))
 			throw new ApiException("Missing source.");
 		if (jcond.value == null)
 			throw new ApiException("Missing value.");
@@ -74,9 +74,9 @@ public class ConditionParser {
 	}
 
 	private static Condition createMinuteCondition(JsonMinuteCondition jcond) {
-		if (Util.isNullOrEmpty(jcond.day))
+		if (Util.nullOrEmpty(jcond.day))
 			throw new ApiException("Missing day.");
-		if (Util.isNullOrEmpty(jcond.weekday))
+		if (Util.nullOrEmpty(jcond.weekday))
 			throw new ApiException("Missing weekday.");
 		if (jcond.hour == null)
 			throw new ApiException("Missing hour.");
@@ -89,7 +89,7 @@ public class ConditionParser {
 	}
 
 	private static void updateChannelValueCondition(JsonChannelValueCondition jcond, ChannelValueCondition cond) {
-		if (!Util.isNullOrEmpty(jcond.operator)) {
+		if (!Util.nullOrEmpty(jcond.operator)) {
 			cond.setOperator(JsonCondition.convertStringOperator(jcond.operator));
 		}
 		if (jcond.value != null) {
@@ -111,9 +111,9 @@ public class ConditionParser {
 	}
 
 	private static void updateMinuteCondition(JsonMinuteCondition jcond, MinuteCondition cond) {
-		if (!Util.isNullOrEmpty(jcond.day))
+		if (!Util.nullOrEmpty(jcond.day))
 			cond.setDay(jcond.day);
-		if (!Util.isNullOrEmpty(jcond.weekday))
+		if (!Util.nullOrEmpty(jcond.weekday))
 			cond.setWeekday(jcond.weekday);
 		if (jcond.hour != null)
 			cond.setHour(jcond.hour);
@@ -124,7 +124,7 @@ public class ConditionParser {
 	}
 
 	private static void updateSpecialValueCondition(JsonSpecialValueCondition jcond, SpecialValueCondition cond) {
-		if (!Util.isNullOrEmpty(jcond.operator)) {
+		if (!Util.nullOrEmpty(jcond.operator)) {
 			cond.setOperator(JsonCondition.convertStringOperator(jcond.operator));
 		}
 		if (jcond.value != null) {

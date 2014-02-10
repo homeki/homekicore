@@ -5,8 +5,10 @@ import com.homeki.core.device.Device;
 
 @JsonTypeName("tellstick")
 public class JsonTellStickDevice extends JsonDevice {
-	public Integer house;
-	public Integer unit;
+	public String protocol;
+	public String model;
+	public String house;
+	public String unit;
 
 	public JsonTellStickDevice() {
 

@@ -22,10 +22,10 @@ public class TellStickDimmer extends TellStickDevice implements Settable, TellSt
 		addHistoryPoint(LEVEL_CHANNEL, defaultLevel);
 	}
 	
-	public TellStickDimmer(int defaultLevel, int house, int unit) {
+	public TellStickDimmer(int defaultLevel, String protocol, String model, String house, String unit) {
 		this(defaultLevel);
 		
-		int result = TellStickApi.INSTANCE.addDimmer(house, unit);
+		int result = TellStickApi.INSTANCE.addDevice(protocol, model, house, unit);
 		
 		this.internalId = String.valueOf(result);
 	}
