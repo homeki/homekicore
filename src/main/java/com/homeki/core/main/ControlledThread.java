@@ -6,27 +6,16 @@ import com.homeki.core.logging.L;
 public abstract class ControlledThread extends Thread {
 	private boolean shutdown;
 	private int interval;
-	private boolean quiet;
 
 	public ControlledThread(int interval) {
 		super();
 		this.shutdown = false;
-		this.quiet = false;
 		this.interval = interval;
 		this.setName(this.getClass().getSimpleName());
 	}
 
-	protected boolean keepRunning() {
-		return !shutdown;
-	}
-
-	public void quiet() {
-		this.quiet = true;
-	}
-
 	public void run() {
-		if (!quiet)
-			L.i("Starting thread.");
+		L.i("Starting thread.");
 		
 		try {
 			while (!shutdown) {
@@ -41,7 +30,7 @@ public abstract class ControlledThread extends Thread {
 		
 		if (!shutdown)
 			L.e("Thread was shut down due to exception.");
-		else if (!quiet)
+		else
 			L.i("Thread was shut down normally.");
 	}
 
