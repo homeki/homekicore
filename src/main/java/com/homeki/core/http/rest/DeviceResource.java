@@ -80,7 +80,10 @@ public class DeviceResource {
 			throw new ApiException("Did not recognize type '" + jdev.type + "' as a valid type.");
 
 		dev.setName(jdev.name);
-		dev.setDescription(jdev.description);
+		if (jdev.description != null)
+			dev.setDescription(jdev.description);
+		else
+			dev.setDescription("");
 
 		Hibernate.currentSession().save(dev);
 
