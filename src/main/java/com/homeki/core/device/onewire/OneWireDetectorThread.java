@@ -71,7 +71,7 @@ public class OneWireDetectorThread extends ControlledThread {
 						L.i("Succeeded retrieving device type for 1-wire device, had earlier failed.");
 				} catch (Exception e) {
 					if (loggedSet.add(TYPE_LOG_DIFF + s))
-						L.e("Exception occured when determining type of OneWireDevice. Log message throttled until next success.", e);
+						L.e("Exception occurred when determining type of OneWireDevice. Log message throttled until next success.", e);
 					continue;
 				}
 				

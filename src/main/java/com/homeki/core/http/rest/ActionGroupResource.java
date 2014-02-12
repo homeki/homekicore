@@ -100,7 +100,7 @@ public class ActionGroupResource {
 					ActionGroup actgrp = (ActionGroup)ses.get(ActionGroup.class, actionGroupId);
 					actgrp.execute(ses);
 				} catch (Exception e) {
-					L.e("Error occured during manual trigger of action group.", e);
+					L.e("Error occurred during manual trigger of action group.", e);
 				} finally {
 					Hibernate.closeSession(ses);
 				}

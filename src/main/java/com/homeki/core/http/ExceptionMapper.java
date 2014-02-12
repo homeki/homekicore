@@ -11,11 +11,18 @@ public class ExceptionMapper implements javax.ws.rs.ext.ExceptionMapper<Throwabl
 		try {
 			throw exception;
 		} catch (ApiException e) {
-			L.w("API exception occured: " + e.getMessage());
+			L.w("API exception occurred: " + e.getMessage());
 			return Response.status(400).entity(new JsonVoid(e.getMessage())).build();
 		} catch (Throwable e) {
-			L.e("Unknown exception occured while processing request.", e);
-			return Response.status(400).entity("Unhandled exception occured while processing request: " + e.getMessage()).build();
+			L.e("Unknown exception occurred while processing request.", e);
+
+			String exceptionType = e.getClass().getSimpleName();
+
+			if (e.getMessage() != null) {
+				return Response.status(400).entity("Unhandled " + exceptionType + " occurred while processing request: " + e.getMessage()).build();
+			} else {
+				return Response.status(400).entity("Unhandled " + exceptionType + " occurred while processing request.").build();
+			}
 		}
 	}
 }

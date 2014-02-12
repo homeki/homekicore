@@ -36,7 +36,7 @@ public abstract class ControlledThread extends Thread {
 			}
 		} catch (InterruptedException ignore) { 
 		} catch (Exception e) {
-			L.e("Unhandled exception occured.", e);
+			L.e("Unhandled exception occurred.", e);
 		}
 		
 		if (!shutdown)

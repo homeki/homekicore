@@ -1,17 +1,12 @@
 package com.homeki.core.actions;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-
-import org.hibernate.Session;
-
 import com.homeki.core.device.Device;
 import com.homeki.core.device.Settable;
 import com.homeki.core.logging.L;
 import com.homeki.core.storage.Hibernate;
+import org.hibernate.Session;
+
+import javax.persistence.*;
 
 @Entity
 public class ChangeChannelValueAction extends Action {
@@ -47,7 +42,7 @@ public class ChangeChannelValueAction extends Action {
 			L.e("Device with ID " + device.getId() + " and name '" + device.getName() + "' was about to be switched in a ChangeChannelValueAction, but the device is not Settable.");
 		}
 		catch (Exception ex) {
-			L.e("Unknown exception occured when executing ChangeChannelValueAction on device with ID " + device.getId() + " and name '" + device.getName() + "'.", ex);
+			L.e("Unknown exception occurred when executing ChangeChannelValueAction on device with ID " + device.getId() + " and name '" + device.getName() + "'.", ex);
 		}
 	}
 	
