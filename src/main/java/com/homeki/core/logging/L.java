@@ -1,5 +1,7 @@
 package com.homeki.core.logging;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.logging.Logger;
 
 public class L {
@@ -18,7 +20,14 @@ public class L {
 	}
 	
 	public static void e(String msg, Throwable e) {
-		msg += "\n               Exception: " + e.getMessage();
+		msg += "\n";
+		msg += stackTraceToString(e);
 		e(msg);
+	}
+
+	private static String stackTraceToString(Throwable e) {
+		StringWriter sw = new StringWriter();
+		e.printStackTrace(new PrintWriter(sw));
+		return sw.toString();
 	}
 }
