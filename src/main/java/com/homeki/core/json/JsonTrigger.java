@@ -1,20 +1,22 @@
 package com.homeki.core.json;
 
-import java.util.List;
-
 import com.homeki.core.triggers.Trigger;
 
+import java.util.List;
+
 public class JsonTrigger {
-	public Integer id;
+	public Integer triggerId;
 	public String name;
-	
+	public String description;
+
 	public JsonTrigger() {
 		
 	}
 	
 	public JsonTrigger(Trigger trigger) {
-		this.id = trigger.getId();
+		this.triggerId = trigger.getId();
 		this.name = trigger.getName();
+		this.description = trigger.getDescription();
 	}
 	
 	public static JsonTrigger[] convertList(List<Trigger> triggers) {

@@ -13,30 +13,30 @@ public class TriggerTest {
 	private int triggerId;
 	
 	public static class JsonTrigger {
-		public Integer id;
+		public Integer triggerId;
 		public String name;
 	}
 	
 	@Test
 	public void testAdd() throws Exception {
 		JsonTrigger jtrigger = new JsonTrigger();
-		assertEquals(TestUtil.sendPost("/trigger/add", jtrigger).statusCode, 400);
+		assertEquals(TestUtil.sendPost("/triggers", jtrigger).statusCode, 400);
 		jtrigger.name = "";
-		assertEquals(TestUtil.sendPost("/trigger/add", jtrigger).statusCode, 400);
+		assertEquals(TestUtil.sendPost("/triggers", jtrigger).statusCode, 400);
 		jtrigger.name = "MyTrigger";
-		jtrigger = TestUtil.sendPostAndParseAsJson("/trigger/add", jtrigger, JsonTrigger.class);
-		assertTrue(jtrigger.id > 0);
-		triggerId = jtrigger.id;
+		jtrigger = TestUtil.sendPostAndParseAsJson("/triggers", jtrigger, JsonTrigger.class);
+		assertTrue(jtrigger.triggerId > 0);
+		triggerId = jtrigger.triggerId;
 	}
 	
 	@Test(dependsOnMethods="testAdd")
 	public void testList() {
-		JsonTrigger[] jtriggers = TestUtil.sendGetAndParseAsJson("/trigger/list", JsonTrigger[].class);
+		JsonTrigger[] jtriggers = TestUtil.sendGetAndParseAsJson("/triggers", JsonTrigger[].class);
 		
 		Set<Integer> existingIds = new HashSet<Integer>();
 		
 		for (JsonTrigger jd : jtriggers)
-			existingIds.add(jd.id);
+			existingIds.add(jd.triggerId);
 		
 		assertTrue(existingIds.contains(triggerId));
 	}
@@ -44,16 +44,16 @@ public class TriggerTest {
 	@Test(dependsOnMethods="testList")
 	public void testSet() {
 		JsonTrigger jtrigger = new JsonTrigger();
-		assertEquals(TestUtil.sendPost("/trigger/9999/set", jtrigger).statusCode, 400);
-		assertEquals(TestUtil.sendPost("/trigger/" + triggerId + "/set", jtrigger).statusCode, 400);
+		assertEquals(TestUtil.sendPost("/triggers/9999", jtrigger).statusCode, 400);
+		assertEquals(TestUtil.sendPost("/triggers/" + triggerId, jtrigger).statusCode, 400);
 		jtrigger.name = "MyNewTrigger";
-		assertEquals(TestUtil.sendPost("/trigger/" + triggerId + "/set", jtrigger).statusCode, 200);
+		assertEquals(TestUtil.sendPost("/triggers/" + triggerId, jtrigger).statusCode, 200);
 		
-		JsonTrigger[] jtriggers = TestUtil.sendGetAndParseAsJson("/trigger/list", JsonTrigger[].class);
+		JsonTrigger[] jtriggers = TestUtil.sendGetAndParseAsJson("/triggers", JsonTrigger[].class);
 		
 		boolean found = false;
 		for (JsonTrigger jt : jtriggers) {
-			if (jt.id == triggerId) {
+			if (jt.triggerId == triggerId) {
 				found = true;
 				assertEquals(jt.name, "MyNewTrigger");
 			}
@@ -63,6 +63,6 @@ public class TriggerTest {
 	
 	@Test(dependsOnMethods="testSet")
 	public void testDelete() {
-		assertEquals(TestUtil.sendGet("/trigger/" + triggerId + "/delete").statusCode, 200);
+		assertEquals(TestUtil.sendDelete("/triggers/" + triggerId).statusCode, 200);
 	}
 }

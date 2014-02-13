@@ -1,25 +1,16 @@
 package com.homeki.core.triggers;
 
-import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-
-import org.hibernate.Session;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-
 import com.homeki.core.actions.Action;
 import com.homeki.core.actions.ActionGroup;
 import com.homeki.core.conditions.Condition;
 import com.homeki.core.conditions.ConditionGroup;
 import com.homeki.core.events.Event;
+import org.hibernate.Session;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
+import javax.persistence.*;
+import java.util.List;
 
 
 @Entity
@@ -40,16 +31,13 @@ public class Trigger {
 	
 	@Column
 	private String name;
-	
+
+	@Column
+	private String description;
+
 	public Trigger() {
 		this.conditionGroup = new ConditionGroup();
 		this.actionGroup = new ActionGroup();
-	}
-	
-	public Trigger(Condition condition, Action action) {
-		this();
-		this.conditionGroup.addCondition(condition);
-		this.actionGroup.addAction(action);
 	}
 
 	public boolean update(Event e) {
@@ -74,6 +62,14 @@ public class Trigger {
 	
 	public String getName() {
 		return name;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
 	public void addCondition(Condition condition) {
