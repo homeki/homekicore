@@ -57,7 +57,10 @@ public class DeviceResource {
 
 		dev.setInternalId(jdev.type + MockModule.getNextCount());
 		dev.setName(jdev.name);
-		dev.setDescription(jdev.description);
+		if (jdev.description != null)
+			dev.setDescription(jdev.description);
+		else
+			dev.setDescription("");
 
 		Hibernate.currentSession().save(dev);
 
