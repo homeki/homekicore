@@ -48,7 +48,7 @@ public class TriggerActionTest {
 	}
 	
 	public static class JsonActionGroup {
-		public Integer id;
+		public Integer actionGroupId;
 		public String name;
 	}
 	
@@ -61,8 +61,8 @@ public class TriggerActionTest {
 		
 		JsonActionGroup jactgrp = new JsonActionGroup();
 		jactgrp.name = "Test action group";
-		jactgrp = TestUtil.sendPostAndParseAsJson("/actiongroup/add", jactgrp, JsonActionGroup.class);
-		actionGroupId = jactgrp.id;
+		jactgrp = TestUtil.sendPostAndParseAsJson("/actiongroups", jactgrp, JsonActionGroup.class);
+		actionGroupId = jactgrp.actionGroupId;
 		
 		deviceId1 = TestUtil.addMockDevice(MockDeviceType.SWITCH);
 		deviceId2 = TestUtil.addMockDevice(MockDeviceType.DIMMER);
@@ -73,7 +73,7 @@ public class TriggerActionTest {
 		TestUtil.deleteDevice(deviceId1);
 		TestUtil.deleteDevice(deviceId2);
 		TestUtil.sendDelete("/triggers/" + triggerId);
-		TestUtil.sendGet("/actiongroup/" + actionGroupId + "/delete");
+		TestUtil.sendDelete("/actiongroups/" + actionGroupId);
 	}
 	
 	@Test

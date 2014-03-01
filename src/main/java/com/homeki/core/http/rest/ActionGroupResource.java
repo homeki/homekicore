@@ -8,6 +8,7 @@ import com.homeki.core.logging.L;
 import com.homeki.core.main.Util;
 import com.homeki.core.storage.Hibernate;
 import org.hibernate.Session;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import javax.ws.rs.*;
@@ -15,22 +16,22 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
-@Path("/actiongroup")
+@Path("/actiongroups")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class ActionGroupResource {
 	@GET
-	@Path("/list")
 	public Response list() {
 		@SuppressWarnings("unchecked")
 		List<ActionGroup> list = Hibernate.currentSession().createCriteria(ActionGroup.class)
-															 .add(Restrictions.eq("explicit", true))
-															 .list();
+			.add(Restrictions.eq("explicit", true))
+			.addOrder(Order.asc("name"))
+			.list();
 		return Response.ok(JsonActionGroup.convertList(list)).build();
 	}
 
 	@POST
-	@Path("/{actionGroupId}/set")
+	@Path("/{actionGroupId}")
 	public Response set(@PathParam("actionGroupId") int actionGroupId, JsonActionGroup jactgr) {
 		Session ses = Hibernate.currentSession();
 		ActionGroup actgrp = (ActionGroup)ses.get(ActionGroup.class, actionGroupId);
@@ -43,14 +44,16 @@ public class ActionGroupResource {
 
 		if (jactgr.name != null)
 			actgrp.setName(jactgr.name);
+		if (jactgr.description != null)
+			actgrp.setDescription(jactgr.description);
 
 		ses.save(actgrp);
 
-		return Response.ok(new JsonVoid("Action group updated successfully.")).build();
+		return Response.ok(new JsonActionGroup(actgrp)).build();
 	}
 
-	@GET
-	@Path("/{actionGroupId}/delete")
+	@DELETE
+	@Path("/{actionGroupId}")
 	public Response delete(@PathParam("actionGroupId") int actionGroupId) {
 		Session ses = Hibernate.currentSession();
 
@@ -67,20 +70,20 @@ public class ActionGroupResource {
 	}
 
 	@POST
-	@Path("/add")
 	public Response add(JsonActionGroup jactgrp) {
 		if (Util.nullOrEmpty(jactgrp.name))
 			throw new ApiException("Action group name cannot be empty.");
 
-		ActionGroup actionGroup = new ActionGroup();
-		actionGroup.setName(jactgrp.name);
-		actionGroup.setExplicit(true);
-		Hibernate.currentSession().save(actionGroup);
+		ActionGroup actgrp = new ActionGroup();
+		actgrp.setName(jactgrp.name);
+		if (jactgrp.description != null)
+			actgrp.setDescription(jactgrp.description);
+		else
+			actgrp.setDescription("");
+		actgrp.setExplicit(true);
+		Hibernate.currentSession().save(actgrp);
 
-		JsonActionGroup newid = new JsonActionGroup();
-		newid.id = actionGroup.getId();
-
-		return Response.ok(newid).build();
+		return Response.ok(new JsonActionGroup(actgrp)).build();
 	}
 
 	@GET
@@ -111,7 +114,7 @@ public class ActionGroupResource {
 		return Response.ok("Action group executed successfully.").build();
 	}
 
-	@Path("/{actionGroupId}/action")
+	@Path("/{actionGroupId}/actions")
 	public Class<ActionGroupActionResource> continueInAction() {
 		return ActionGroupActionResource.class;
 	}

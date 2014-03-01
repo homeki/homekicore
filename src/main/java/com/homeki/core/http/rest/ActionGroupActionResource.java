@@ -17,7 +17,6 @@ import javax.ws.rs.core.Response;
 @Produces(MediaType.APPLICATION_JSON)
 public class ActionGroupActionResource {
 	@POST
-	@Path("/add")
 	public Response add(@PathParam("actionGroupId") int actionGroupId, JsonAction jact) {
 		Session ses = Hibernate.currentSession();
 
@@ -26,19 +25,15 @@ public class ActionGroupActionResource {
 		if (actionGroup == null || !actionGroup.isExplicit())
 			throw new ApiException("No action group with the specified ID found.");
 
-		Action action = ActionParser.createAction(jact);
+		Action act = ActionParser.createAction(jact);
 
-		actionGroup.addAction(action);
-		ses.save(action);
+		actionGroup.addAction(act);
+		ses.save(act);
 
-		JsonAction newid = new JsonAction();
-		newid.actionId = action.getId();
-
-		return Response.ok(newid).build();
+		return Response.ok(JsonAction.create(act)).build();
 	}
 
 	@GET
-	@Path("/list")
 	public Response list(@PathParam("actionGroupId") int actionGroupId) {
 		ActionGroup actionGroup = (ActionGroup)Hibernate.currentSession().get(ActionGroup.class, actionGroupId);
 
@@ -48,8 +43,8 @@ public class ActionGroupActionResource {
 		return Response.ok(JsonAction.convertList(actionGroup.getActions())).build();
 	}
 
-	@GET
-	@Path("/{actionId}/delete")
+	@DELETE
+	@Path("/{actionId}")
 	public Response delete(@PathParam("actionGroupId") int actionGroupId, @PathParam("actionId") int actionId) {
 		Session ses = Hibernate.currentSession();
 		ActionGroup actionGroup = (ActionGroup)ses.get(ActionGroup.class, actionGroupId);
@@ -68,7 +63,7 @@ public class ActionGroupActionResource {
 	}
 
 	@GET
-	@Path("/{actionId}/get")
+	@Path("/{actionId}")
 	public Response get(@PathParam("actionGroupId") int actionGroupId, @PathParam("actionId") int actionId) {
 		Session ses = Hibernate.currentSession();
 		ActionGroup actionGroup = (ActionGroup)ses.get(ActionGroup.class, actionGroupId);
@@ -85,7 +80,7 @@ public class ActionGroupActionResource {
 	}
 
 	@POST
-	@Path("/{actionId}/set")
+	@Path("/{actionId}")
 	public Response set(@PathParam("actionGroupId") int actionGroupId, @PathParam("actionId") int actionId, JsonAction jact) {
 		Session ses = Hibernate.currentSession();
 
@@ -103,6 +98,6 @@ public class ActionGroupActionResource {
 
 		ses.save(act);
 
-		return Response.ok(new JsonVoid("Action updated successfully.")).build();
+		return Response.ok(JsonAction.create(act)).build();
 	}
 }

@@ -1,20 +1,22 @@
 package com.homeki.core.json;
 
-import java.util.List;
-
 import com.homeki.core.actions.ActionGroup;
 
+import java.util.List;
+
 public class JsonActionGroup {
-	public Integer id;
+	public Integer actionGroupId;
 	public String name;
+	public String description;
 	
 	public JsonActionGroup() {
 		
 	}
 	
 	public JsonActionGroup(ActionGroup actionGroup) {
-		this.id = actionGroup.getId();
+		this.actionGroupId = actionGroup.getId();
 		this.name = actionGroup.getName();
+		this.description = actionGroup.getDescription();
 	}
 	
 	public static JsonActionGroup[] convertList(List<ActionGroup> actionGroups) {

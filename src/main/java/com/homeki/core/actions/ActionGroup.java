@@ -1,20 +1,18 @@
 package com.homeki.core.actions;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-
+import com.homeki.core.triggers.Trigger;
 import org.hibernate.Session;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
-import com.homeki.core.triggers.Trigger;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 public class ActionGroup extends Action {
@@ -29,12 +27,16 @@ public class ActionGroup extends Action {
 
 	@Column
 	private String name;
+
+	@Column
+	private String description;
 	
 	@Column
 	private boolean explicit;
 	
 	public ActionGroup() {
 		this.actions = new ArrayList<Action>();
+		this.description = "";
 	}
 	
 	public void addAction(Action action) {
@@ -68,6 +70,14 @@ public class ActionGroup extends Action {
 	
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
 	public boolean isExplicit() {

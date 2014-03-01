@@ -38,6 +38,7 @@ public class Trigger {
 	public Trigger() {
 		this.conditionGroup = new ConditionGroup();
 		this.actionGroup = new ActionGroup();
+		this.description = "";
 	}
 
 	public boolean update(Event e) {

@@ -19,7 +19,7 @@ public class ActionGroupTest {
 	private int actionGroupId;
 	
 	public static class JsonActionGroup {
-		public Integer id;
+		public Integer actionGroupId;
 		public String name;
 	}
 	
@@ -49,13 +49,13 @@ public class ActionGroupTest {
 	@Test
 	public void testAdd() throws Exception {
 		JsonActionGroup jactgrp = new JsonActionGroup();
-		assertEquals(TestUtil.sendPost("/actiongroup/add", jactgrp).statusCode, 400);
+		assertEquals(TestUtil.sendPost("/actiongroups", jactgrp).statusCode, 400);
 		jactgrp.name = "";
-		assertEquals(TestUtil.sendPost("/actiongroup/add", jactgrp).statusCode, 400);
+		assertEquals(TestUtil.sendPost("/actiongroups", jactgrp).statusCode, 400);
 		jactgrp.name = "MyActionGroup";
-		jactgrp = TestUtil.sendPostAndParseAsJson("/actiongroup/add", jactgrp, JsonActionGroup.class);
-		assertTrue(jactgrp.id > 0);
-		actionGroupId = jactgrp.id;
+		jactgrp = TestUtil.sendPostAndParseAsJson("/actiongroups", jactgrp, JsonActionGroup.class);
+		assertTrue(jactgrp.actionGroupId > 0);
+		actionGroupId = jactgrp.actionGroupId;
 	}
 	
 	@Test(dependsOnMethods="testAdd")
@@ -66,29 +66,29 @@ public class ActionGroupTest {
 		jact.channel = 1;
 
 		jact.type = "feeelchangechannelvalue";
-		assertEquals(TestUtil.sendPost("/actiongroup/9999/action/add", jact).statusCode, 400);
-		assertEquals(TestUtil.sendPost("/actiongroup/" +  actionGroupId + "/action/add", jact).statusCode, 400);
+		assertEquals(TestUtil.sendPost("/actiongroups/9999/actions", jact).statusCode, 400);
+		assertEquals(TestUtil.sendPost("/actiongroups/" +  actionGroupId + "/actions", jact).statusCode, 400);
 
 		jact.type = "changechannelvalue";
-		jact = TestUtil.sendPostAndParseAsJson("/actiongroup/" + actionGroupId + "/action/add", jact, JsonChangeChannelValueAction.class);
+		jact = TestUtil.sendPostAndParseAsJson("/actiongroups/" + actionGroupId + "/actions", jact, JsonChangeChannelValueAction.class);
 		
 		assertTrue(jact.actionId > 0);
 	}
 	
 	@Test(dependsOnMethods="testAddChangeChannelValueAction")
 	public void testTrigger() {
-		assertEquals(TestUtil.sendGet("/actiongroup/" + actionGroupId + "/trigger").statusCode, 200);
+		assertEquals(TestUtil.sendGet("/actiongroups/" + actionGroupId + "/trigger").statusCode, 200);
 		Util.sleep(2000); // wait for the trigger to complete
 	}
 	
 	@Test(dependsOnMethods="testTrigger")
 	public void testList() {
-		JsonActionGroup[] jactgrps = TestUtil.sendGetAndParseAsJson("/actiongroup/list", JsonActionGroup[].class);
+		JsonActionGroup[] jactgrps = TestUtil.sendGetAndParseAsJson("/actiongroups", JsonActionGroup[].class);
 		
 		Set<Integer> existingIds = new HashSet<Integer>();
 		
 		for (JsonActionGroup jd : jactgrps)
-			existingIds.add(jd.id);
+			existingIds.add(jd.actionGroupId);
 		
 		assertTrue(existingIds.contains(actionGroupId));
 	}
@@ -96,16 +96,16 @@ public class ActionGroupTest {
 	@Test(dependsOnMethods="testList")
 	public void testSet() {
 		JsonActionGroup jactgrp = new JsonActionGroup();
-		assertEquals(TestUtil.sendPost("/actiongroup/9999/set", jactgrp).statusCode, 400);
-		assertEquals(TestUtil.sendPost("/actiongroup/" + actionGroupId + "/set", jactgrp).statusCode, 400);
+		assertEquals(TestUtil.sendPost("/actiongroups/9999/set", jactgrp).statusCode, 400);
+		assertEquals(TestUtil.sendPost("/actiongroups/" + actionGroupId, jactgrp).statusCode, 400);
 		jactgrp.name = "MyNewActionGroup";
-		assertEquals(TestUtil.sendPost("/actiongroup/" + actionGroupId + "/set", jactgrp).statusCode, 200);
+		assertEquals(TestUtil.sendPost("/actiongroups/" + actionGroupId, jactgrp).statusCode, 200);
 		
-		JsonActionGroup[] jactgrps = TestUtil.sendGetAndParseAsJson("/actiongroup/list", JsonActionGroup[].class);
+		JsonActionGroup[] jactgrps = TestUtil.sendGetAndParseAsJson("/actiongroups", JsonActionGroup[].class);
 		
 		boolean found = false;
 		for (JsonActionGroup jt : jactgrps) {
-			if (jt.id == actionGroupId) {
+			if (jt.actionGroupId == actionGroupId) {
 				found = true;
 				assertEquals(jt.name, "MyNewActionGroup");
 			}
@@ -115,6 +115,6 @@ public class ActionGroupTest {
 	
 	@Test(dependsOnMethods="testSet")
 	public void testDelete() {
-		assertEquals(TestUtil.sendGet("/actiongroup/" + actionGroupId + "/delete").statusCode, 200);
+		assertEquals(TestUtil.sendDelete("/actiongroups/" + actionGroupId).statusCode, 200);
 	}
 }
