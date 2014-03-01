@@ -27,7 +27,7 @@ public class TriggerConditionTest {
 	
 	public static class JsonCondition {
 		public String type;
-		public Integer id;
+		public Integer conditionId;
 	}
 	
 	public static class JsonChannelValueCondition extends JsonCondition {
@@ -82,8 +82,8 @@ public class TriggerConditionTest {
 		
 		jcond = TestUtil.sendPostAndParseAsJson("/triggers/" + triggerId + "/conditions", jcond, JsonChannelValueCondition.class);
 		
-		assertTrue(jcond.id > 0);
-		conditionId2 = jcond.id;
+		assertTrue(jcond.conditionId > 0);
+		conditionId2 = jcond.conditionId;
 	}
 	
 	@Test(dependsOnMethods="testAddChannelValueCondition")
@@ -106,8 +106,8 @@ public class TriggerConditionTest {
 		jcond.weekday = "*";
 		jcond = TestUtil.sendPostAndParseAsJson("/triggers/" + triggerId + "/conditions", jcond, JsonMinuteCondition.class);
 		
-		assertTrue(jcond.id > 0);
-		conditionId1 = jcond.id;
+		assertTrue(jcond.conditionId > 0);
+		conditionId1 = jcond.conditionId;
 	}
 	
 	@Test(dependsOnMethods="testAddMinuteCondition")
@@ -129,8 +129,8 @@ public class TriggerConditionTest {
 		
 		jcond = TestUtil.sendPostAndParseAsJson("/triggers/" + triggerId + "/conditions", jcond, JsonSpecialValueCondition.class);
 		
-		assertTrue(jcond.id > 0);
-		conditionId3 = jcond.id;
+		assertTrue(jcond.conditionId > 0);
+		conditionId3 = jcond.conditionId;
 
 		jcond.type = "specialvalue";
 		jcond.operator = "EQ";
@@ -140,8 +140,8 @@ public class TriggerConditionTest {
 		
 		jcond = TestUtil.sendPostAndParseAsJson("/triggers/" + triggerId + "/conditions", jcond, JsonSpecialValueCondition.class);
 		
-		assertTrue(jcond.id > 0);
-		conditionId4 = jcond.id;
+		assertTrue(jcond.conditionId > 0);
+		conditionId4 = jcond.conditionId;
 	}
 	
 	@Test(dependsOnMethods="testAddSpecialValueCondition")
@@ -151,7 +151,7 @@ public class TriggerConditionTest {
 		Set<Integer> existingIds = new HashSet<Integer>();
 		
 		for (JsonCondition jc : jconditions)
-			existingIds.add(jc.id);
+			existingIds.add(jc.conditionId);
 		
 		assertTrue(existingIds.contains(conditionId1));
 		assertTrue(existingIds.contains(conditionId2));

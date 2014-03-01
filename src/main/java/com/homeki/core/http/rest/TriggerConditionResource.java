@@ -23,15 +23,12 @@ public class TriggerConditionResource {
 		if (trigger == null)
 			throw new ApiException("No trigger with the specified ID found.");
 
-		Condition condition = ConditionParser.createCondition(jcond);
+		Condition cond = ConditionParser.createCondition(jcond);
 
-		trigger.addCondition(condition);
-		ses.save(condition);
+		trigger.addCondition(cond);
+		ses.save(cond);
 
-		JsonCondition newid = new JsonCondition();
-		newid.id = condition.getId();
-
-		return Response.ok(newid).build();
+		return Response.ok(JsonCondition.create(cond)).build();
 	}
 
 	@GET
@@ -97,6 +94,6 @@ public class TriggerConditionResource {
 		ConditionParser.updateCondition(cond, jcond);
 		ses.save(cond);
 
-		return Response.ok(new JsonVoid("Condition updated successfully.")).build();
+		return Response.ok(JsonCondition.create(cond)).build();
 	}
 }

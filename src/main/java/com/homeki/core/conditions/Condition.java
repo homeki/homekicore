@@ -1,16 +1,8 @@
 package com.homeki.core.conditions;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-
 import com.homeki.core.events.Event;
+
+import javax.persistence.*;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -19,7 +11,7 @@ public abstract class Condition {
 	public static final int LT = 1;
 	public static final int GT = 2;
 	public static final int IGNORE = 3;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;

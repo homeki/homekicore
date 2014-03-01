@@ -124,16 +124,14 @@ public class ConditionParser {
 	}
 
 	private static void updateSpecialValueCondition(JsonSpecialValueCondition jcond, SpecialValueCondition cond) {
-		if (!Util.nullOrEmpty(jcond.operator)) {
+		if (!Util.nullOrEmpty(jcond.operator))
 			cond.setOperator(JsonCondition.convertStringOperator(jcond.operator));
-		}
-		if (jcond.value != null) {
+		if (jcond.value != null)
 			cond.setValue(jcond.value);
-		}
 		if (jcond.source != null) {
 			jcond.source = jcond.source.toUpperCase();
 
-			if (!SpecialValueChangedEvent.verifySource(jcond.source))
+			if (!jcond.customSource && !SpecialValueChangedEvent.verifySource(jcond.source))
 				throw new ApiException("No source '" + jcond.source + "' exists.");
 
 			cond.setSource(jcond.source);

@@ -20,6 +20,6 @@ public class JsonSpecialValueCondition extends JsonCondition {
 		this.source = cond.getSource();
 		this.value = cond.getValue();
 		this.operator = convertIntOperator(cond.getOperator());
-		this.customSource = SpecialValueChangedEvent.verifySource(cond.getSource());
+		this.customSource = !SpecialValueChangedEvent.verifySource(cond.getSource());
 	}
 }

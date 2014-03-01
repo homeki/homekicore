@@ -18,14 +18,14 @@ import java.util.List;
 })
 public class JsonCondition {
 	public String type;
-	public Integer id;
+	public Integer conditionId;
 	
 	public JsonCondition() {
 		
 	}
 	
 	public JsonCondition(Condition condition) {
-		this.id = condition.getId();
+		this.conditionId = condition.getId();
 		this.type = condition.getType();
 	}
 	
