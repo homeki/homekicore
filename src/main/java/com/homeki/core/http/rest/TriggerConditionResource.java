@@ -16,7 +16,6 @@ import javax.ws.rs.core.Response;
 @Produces(MediaType.APPLICATION_JSON)
 public class TriggerConditionResource {
 	@POST
-	@Path("/add")
 	public Response add(@PathParam("triggerId") int triggerId, JsonCondition jcond) {
 		Session ses = Hibernate.currentSession();
 		Trigger trigger = (Trigger)ses.get(Trigger.class, triggerId);
@@ -36,7 +35,6 @@ public class TriggerConditionResource {
 	}
 
 	@GET
-	@Path("/list")
 	public Response list(@PathParam("triggerId") int triggerId) {
 		Trigger trigger = (Trigger)Hibernate.currentSession().get(Trigger.class, triggerId);
 
@@ -46,8 +44,8 @@ public class TriggerConditionResource {
 		return Response.ok(JsonCondition.convertList(trigger.getConditions())).build();
 	}
 
-	@GET
-	@Path("/{conditionId}/delete")
+	@DELETE
+	@Path("/{conditionId}")
 	public Response delete(@PathParam("triggerId") int triggerId, @PathParam("conditionId") int conditionId) {
 		Session ses = Hibernate.currentSession();
 		Trigger trigger = (Trigger)ses.get(Trigger.class, triggerId);
@@ -66,7 +64,7 @@ public class TriggerConditionResource {
 	}
 
 	@GET
-	@Path("/{conditionId}/get")
+	@Path("/{conditionId}")
 	public Response get(@PathParam("triggerId") int triggerId, @PathParam("conditionId") int conditionId) {
 		Session ses = Hibernate.currentSession();
 		Trigger trigger = (Trigger)ses.get(Trigger.class, triggerId);
@@ -83,7 +81,7 @@ public class TriggerConditionResource {
 	}
 
 	@POST
-	@Path("/{conditionId}/set")
+	@Path("/{conditionId}")
 	public Response set(@PathParam("triggerId") int triggerId, @PathParam("conditionId") int conditionId, JsonCondition jcond) {
 		Session ses = Hibernate.currentSession();
 		Trigger trigger = (Trigger)ses.get(Trigger.class, triggerId);

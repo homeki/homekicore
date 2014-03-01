@@ -78,7 +78,7 @@ public class TriggerResource {
 		return TriggerActionResource.class;
 	}
 
-	@Path("/{triggerId}/condition")
+	@Path("/{triggerId}/conditions")
 	public Class<TriggerConditionResource> continueInCondition() {
 		return TriggerConditionResource.class;
 	}
