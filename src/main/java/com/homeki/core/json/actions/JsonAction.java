@@ -18,14 +18,14 @@ import java.util.List;
 })
 public class JsonAction {
 	public String type;
-	public Integer id;
+	public Integer actionId;
 	
 	public JsonAction() {
 		
 	}
 	
 	public JsonAction(Action action) {
-		this.id = action.getId();
+		this.actionId = action.getId();
 		this.type = action.getType();
 	}
 	

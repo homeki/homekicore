@@ -25,7 +25,7 @@ public class ActionGroupTest {
 	
 	public static class JsonAction {
 		public String type;
-		public Integer id;
+		public Integer actionId;
 	}
 	
 	public static class JsonChangeChannelValueAction extends JsonAction {
@@ -72,7 +72,7 @@ public class ActionGroupTest {
 		jact.type = "changechannelvalue";
 		jact = TestUtil.sendPostAndParseAsJson("/actiongroup/" + actionGroupId + "/action/add", jact, JsonChangeChannelValueAction.class);
 		
-		assertTrue(jact.id > 0);
+		assertTrue(jact.actionId > 0);
 	}
 	
 	@Test(dependsOnMethods="testAddChangeChannelValueAction")

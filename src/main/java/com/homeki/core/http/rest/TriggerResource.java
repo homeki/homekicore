@@ -73,7 +73,7 @@ public class TriggerResource {
 		return Response.ok(new JsonVoid("Trigger successfully deleted.")).build();
 	}
 
-	@Path("/{triggerId}/action")
+	@Path("/{triggerId}/actions")
 	public Class<TriggerActionResource> continueInAction() {
 		return TriggerActionResource.class;
 	}

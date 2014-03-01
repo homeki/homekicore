@@ -17,7 +17,6 @@ import javax.ws.rs.core.Response;
 @Produces(MediaType.APPLICATION_JSON)
 public class TriggerActionResource {
 	@POST
-	@Path("/add")
 	public Response add(@PathParam("triggerId") int triggerId, JsonAction jact) {
 		Session ses = Hibernate.currentSession();
 
@@ -26,19 +25,15 @@ public class TriggerActionResource {
 		if (trigger == null)
 			throw new ApiException("No action group with the specified ID found.");
 
-		Action action = ActionParser.createAction(jact);
+		Action act = ActionParser.createAction(jact);
 
-		trigger.addAction(action);
-		ses.save(action);
+		trigger.addAction(act);
+		ses.save(act);
 
-		JsonAction newid = new JsonAction();
-		newid.id = action.getId();
-
-		return Response.ok(newid).build();
+		return Response.ok(JsonAction.create(act)).build();
 	}
 
 	@GET
-	@Path("/list")
 	public Response list(@PathParam("triggerId") int triggerId) {
 		Trigger trigger = (Trigger)Hibernate.currentSession().get(Trigger.class, triggerId);
 
@@ -48,8 +43,8 @@ public class TriggerActionResource {
 		return Response.ok(JsonAction.convertList(trigger.getActions())).build();
 	}
 
-	@GET
-	@Path("/{actionId}/delete")
+	@DELETE
+	@Path("/{actionId}")
 	public Response delete(@PathParam("triggerId") int triggerId, @PathParam("actionId") int actionId) {
 		Session ses = Hibernate.currentSession();
 		Trigger trigger = (Trigger)ses.get(Trigger.class, triggerId);
@@ -68,7 +63,7 @@ public class TriggerActionResource {
 	}
 
 	@GET
-	@Path("/{actionId}/get")
+	@Path("/{actionId}")
 	public Response get(@PathParam("triggerId") int triggerId, @PathParam("actionId") int actionId) {
 		Session ses = Hibernate.currentSession();
 		Trigger trigger = (Trigger)ses.get(Trigger.class, triggerId);
@@ -85,7 +80,7 @@ public class TriggerActionResource {
 	}
 
 	@POST
-	@Path("/{actionId}/set")
+	@Path("/{actionId}")
 	public Response set(@PathParam("triggerId") int triggerId, @PathParam("actionId") int actionId, JsonAction jact) {
 		Session ses = Hibernate.currentSession();
 
@@ -103,6 +98,6 @@ public class TriggerActionResource {
 
 		ses.save(act);
 
-		return Response.ok(new JsonVoid("Action updated successfully.")).build();
+		return Response.ok(JsonAction.create(act)).build();
 	}
 }

@@ -28,7 +28,7 @@ public class TriggerActionTest {
 	
 	public static class JsonAction {
 		public String type;
-		public Integer id;
+		public Integer actionId;
 	}
 	
 	public static class JsonChangeChannelValueAction extends JsonAction {
@@ -84,16 +84,16 @@ public class TriggerActionTest {
 		jact.channel = 1;
 
 		jact.type = "changechannelvalue";
-		assertEquals(TestUtil.sendPost("/triggers/9999/action/add", jact).statusCode, 400);
+		assertEquals(TestUtil.sendPost("/triggers/9999/actions", jact).statusCode, 400);
 
 		jact.type = "feeelchangechannelvalue";
-		assertEquals(TestUtil.sendPost("/triggers/" +  triggerId + "/action/add", jact).statusCode, 400);
+		assertEquals(TestUtil.sendPost("/triggers/" +  triggerId + "/actions", jact).statusCode, 400);
 
 		jact.type = "changechannelvalue";
-		jact = TestUtil.sendPostAndParseAsJson("/triggers/" + triggerId + "/action/add", jact, JsonChangeChannelValueAction.class);
+		jact = TestUtil.sendPostAndParseAsJson("/triggers/" + triggerId + "/actions", jact, JsonChangeChannelValueAction.class);
 		
-		assertTrue(jact.id > 0);
-		actionId1 = jact.id;
+		assertTrue(jact.actionId > 0);
+		actionId1 = jact.actionId;
 	}
 	
 	@Test(dependsOnMethods="testAddChangeChannelValueAction")
@@ -102,13 +102,13 @@ public class TriggerActionTest {
 		jact.type = "triggeractiongroup";
 		jact.actionGroupId = 9238298;
 		
-		assertEquals(TestUtil.sendPost("/triggers/" + triggerId + "/action/add", jact).statusCode, 400);
+		assertEquals(TestUtil.sendPost("/triggers/" + triggerId + "/actions", jact).statusCode, 400);
 		
 		jact.actionGroupId = actionGroupId;
-		jact = TestUtil.sendPostAndParseAsJson("/triggers/" + triggerId + "/action/add", jact, JsonTriggerActionGroupAction.class);
+		jact = TestUtil.sendPostAndParseAsJson("/triggers/" + triggerId + "/actions", jact, JsonTriggerActionGroupAction.class);
 		
-		assertTrue(jact.id > 0);
-		actionId2 = jact.id;
+		assertTrue(jact.actionId > 0);
+		actionId2 = jact.actionId;
 	}
 	
 	@Test(dependsOnMethods="testAddTriggerActionGroupAction")
@@ -116,29 +116,29 @@ public class TriggerActionTest {
 		JsonSendMailAction jact = new JsonSendMailAction();
 		jact.type = "sendmail";
 		
-		assertEquals(TestUtil.sendPost("/triggers/" + triggerId + "/action/add", jact).statusCode, 400);
+		assertEquals(TestUtil.sendPost("/triggers/" + triggerId + "/actions", jact).statusCode, 400);
 		
 		jact.subject = "Ett ämne";
-		assertEquals(TestUtil.sendPost("/triggers/" + triggerId + "/action/add", jact).statusCode, 400);
+		assertEquals(TestUtil.sendPost("/triggers/" + triggerId + "/actions", jact).statusCode, 400);
 		
 		jact.recipients = "en@mottagare.se";
-		assertEquals(TestUtil.sendPost("/triggers/" + triggerId + "/action/add", jact).statusCode, 400);
+		assertEquals(TestUtil.sendPost("/triggers/" + triggerId + "/actions", jact).statusCode, 400);
 		
 		jact.text = "En text som ska stå som body i mailet.";
-		jact = TestUtil.sendPostAndParseAsJson("/triggers/" + triggerId + "/action/add", jact, JsonSendMailAction.class);
+		jact = TestUtil.sendPostAndParseAsJson("/triggers/" + triggerId + "/actions", jact, JsonSendMailAction.class);
 		
-		assertTrue(jact.id > 0);
-		actionId3 = jact.id;
+		assertTrue(jact.actionId > 0);
+		actionId3 = jact.actionId;
 	}
 	
 	@Test(dependsOnMethods="testAddSendMailAction")
 	public void testList() {
-		JsonAction[] jactions = TestUtil.sendGetAndParseAsJson("/triggers/" + triggerId + "/action/list", JsonAction[].class);
+		JsonAction[] jactions = TestUtil.sendGetAndParseAsJson("/triggers/" + triggerId + "/actions", JsonAction[].class);
 		
 		Set<Integer> existingIds = new HashSet<Integer>();
 		
 		for (JsonAction jc : jactions)
-			existingIds.add(jc.id);
+			existingIds.add(jc.actionId);
 		
 		assertTrue(existingIds.contains(actionId1));
 		assertTrue(existingIds.contains(actionId2));
@@ -152,7 +152,7 @@ public class TriggerActionTest {
 		jact.deviceId = deviceId2;
 		jact.value = 3;
 		jact.channel = 2;
-		assertEquals(TestUtil.sendPost("/triggers/" + triggerId + "/action/" + actionId1 + "/set", jact).statusCode, 200);
+		assertEquals(TestUtil.sendPost("/triggers/" + triggerId + "/actions/" + actionId1, jact).statusCode, 200);
 	}
 	
 	@Test(dependsOnMethods="testSetChangeChannelValueAction")
@@ -161,12 +161,12 @@ public class TriggerActionTest {
 		jact.type = "sendmail";
 		jact.subject = "Ett annat ämne";
 		jact.recipients = "enannan@mottagare.se";
-		assertEquals(TestUtil.sendPost("/triggers/" + triggerId + "/action/" + actionId3 + "/set", jact).statusCode, 200);
+		assertEquals(TestUtil.sendPost("/triggers/" + triggerId + "/actions/" + actionId3, jact).statusCode, 200);
 	}
 	
 	@Test(dependsOnMethods="testSetSendMailAction")
 	public void testGetChangeChannelValueAction() {
-		JsonChangeChannelValueAction jact = TestUtil.sendGetAndParseAsJson("/triggers/" + triggerId + "/action/" + actionId1 + "/get", JsonChangeChannelValueAction.class);
+		JsonChangeChannelValueAction jact = TestUtil.sendGetAndParseAsJson("/triggers/" + triggerId + "/actions/" + actionId1, JsonChangeChannelValueAction.class);
 		assertEquals((int)jact.channel, 2);
 		assertEquals(jact.value.intValue(), 3);
 		assertEquals((int)jact.deviceId, deviceId2);
@@ -174,7 +174,7 @@ public class TriggerActionTest {
 	
 	@Test(dependsOnMethods="testGetChangeChannelValueAction")
 	public void testGetSendMailAction() {
-		JsonSendMailAction jact = TestUtil.sendGetAndParseAsJson("/triggers/" + triggerId + "/action/" + actionId3 + "/get", JsonSendMailAction.class);
+		JsonSendMailAction jact = TestUtil.sendGetAndParseAsJson("/triggers/" + triggerId + "/actions/" + actionId3, JsonSendMailAction.class);
 		assertEquals(jact.subject, "Ett annat ämne");
 		assertEquals(jact.recipients, "enannan@mottagare.se");
 		assertEquals(jact.text, "En text som ska stå som body i mailet.");
@@ -182,8 +182,8 @@ public class TriggerActionTest {
 	
 	@Test(dependsOnMethods="testGetSendMailAction")
 	public void testDelete() {
-		assertEquals(TestUtil.sendGet("/triggers/" + triggerId + "/action/" + actionId1 + "/get").statusCode, 200);
-		assertEquals(TestUtil.sendGet("/triggers/" + triggerId + "/action/" + actionId1 + "/delete").statusCode, 200);
-		assertEquals(TestUtil.sendGet("/triggers/" + triggerId + "/action/" + actionId1 + "/get").statusCode, 400);
+		assertEquals(TestUtil.sendGet("/triggers/" + triggerId + "/actions/" + actionId1).statusCode, 200);
+		assertEquals(TestUtil.sendDelete("/triggers/" + triggerId + "/actions/" + actionId1).statusCode, 200);
+		assertEquals(TestUtil.sendGet("/triggers/" + triggerId + "/actions/" + actionId1).statusCode, 400);
 	}
 }

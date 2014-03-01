@@ -32,7 +32,7 @@ public class ActionGroupActionResource {
 		ses.save(action);
 
 		JsonAction newid = new JsonAction();
-		newid.id = action.getId();
+		newid.actionId = action.getId();
 
 		return Response.ok(newid).build();
 	}
