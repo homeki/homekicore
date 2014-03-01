@@ -17,7 +17,6 @@ import javax.ws.rs.core.Response;
 @Produces(MediaType.APPLICATION_JSON)
 public class ServerResource {
 	@GET
-	@Path("/get")
 	public Response get() {
 		Session ses = Hibernate.currentSession();
 		
@@ -35,7 +34,6 @@ public class ServerResource {
 	}
 
 	@POST
-	@Path("/set")
 	public Response set(JsonServerInfo jinfo) {
 		Session ses = Hibernate.currentSession();
 

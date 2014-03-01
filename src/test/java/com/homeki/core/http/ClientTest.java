@@ -13,18 +13,14 @@ public class ClientTest {
 	@Test
 	public void testRegister() throws Exception {
 		JsonClient jclient = new JsonClient();
-		assertEquals(TestUtil.sendPost("/client/register", jclient).statusCode, 400);
+		assertEquals(TestUtil.sendPost("/clients", jclient).statusCode, 400);
 		
 		jclient.id = "someid";
-		assertEquals(TestUtil.sendPost("/client/register", jclient).statusCode, 200);
+		assertEquals(TestUtil.sendPost("/clients", jclient).statusCode, 200);
 	}
 	
 	@Test
 	public void testUnregister() throws Exception {
-		JsonClient jclient = new JsonClient();
-		assertEquals(TestUtil.sendPost("/client/unregister", jclient).statusCode, 400);
-		
-		jclient.id = "someid";
-		assertEquals(TestUtil.sendPost("/client/unregister", jclient).statusCode, 200);
+		assertEquals(TestUtil.sendDelete("/clients/someid").statusCode, 200);
 	}
 }

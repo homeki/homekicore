@@ -27,7 +27,7 @@ public class ServerTest {
 	@Test
 	public void testSet() throws Exception {
 		JsonServerInfo jinfo = new JsonServerInfo();
-		assertEquals(TestUtil.sendPost("/server/set", jinfo).statusCode, 200);
+		assertEquals(TestUtil.sendPost("/server", jinfo).statusCode, 200);
 		
 		jinfo.name = "MyServer";
 		jinfo.locationLongitude = 12.03;
@@ -38,12 +38,12 @@ public class ServerTest {
 		jinfo.smtpPort = 25;
 		jinfo.smtpTls = true;
 		jinfo.smtpUser = "some@user.com";
-		assertEquals(TestUtil.sendPost("/server/set", jinfo).statusCode, 200);
+		assertEquals(TestUtil.sendPost("/server", jinfo).statusCode, 200);
 	}
 	
 	@Test(dependsOnMethods="testSet")
 	public void testGet() throws Exception {
-		JsonServerInfo jinfo = TestUtil.sendGetAndParseAsJson("/server/get", JsonServerInfo.class);
+		JsonServerInfo jinfo = TestUtil.sendGetAndParseAsJson("/server", JsonServerInfo.class);
 		TestUtil.getDateTimeFormat().parse(jinfo.time);
 		assertTrue(jinfo.timeMs > 0);
 		assertTrue(jinfo.uptimeMs > 0);

@@ -11,36 +11,31 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
-@Path("/client")
+@Path("/clients")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class ClientResource {
 	@GET
-	@Path("/list")
 	public Response list() {
 		List<String> clients = ClientStore.INSTANCE.listClients();
 		return Response.ok(clients).build();
 	}
 
 	@POST
-	@Path("/register")
 	public Response register(JsonClient jclient) {
 		if (Util.nullOrEmpty(jclient.id))
 			throw new ApiException("Client ID cannot be null or empty.");
 
 		ClientStore.INSTANCE.addClient(jclient.id);
 
-		return Response.ok(new JsonVoid("Client registered successfully as " + jclient.id + ".")).build();
+		return Response.ok(jclient).build();
 	}
 
-	@POST
-	@Path("/unregister")
-	public Response unregister(JsonClient jclient) {
-		if (Util.nullOrEmpty(jclient.id))
-			throw new ApiException("Client ID cannot be null or empty.");
+	@DELETE
+	@Path("/{clientId}")
+	public Response unregister(@PathParam("clientId") String clientId) {
+		ClientStore.INSTANCE.removeClient(clientId);
 
-		ClientStore.INSTANCE.removeClient(jclient.id);
-
-		return Response.ok(new JsonVoid("Client with ID " + jclient.id + " successfully removed.")).build();
+		return Response.ok(new JsonVoid("Client with ID " + clientId + " removed if it existed.")).build();
 	}
 }
