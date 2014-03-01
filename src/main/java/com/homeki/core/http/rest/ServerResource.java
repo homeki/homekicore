@@ -2,7 +2,6 @@ package com.homeki.core.http.rest;
 
 import com.homeki.core.http.ApiException;
 import com.homeki.core.json.JsonServerInfo;
-import com.homeki.core.json.JsonVoid;
 import com.homeki.core.main.Setting;
 import com.homeki.core.main.Util;
 import com.homeki.core.storage.Hibernate;
@@ -59,6 +58,6 @@ public class ServerResource {
 		if (jinfo.smtpPassword != null)
 			Setting.putString(ses, Setting.SMTP_PASSWORD, jinfo.smtpPassword);
 
-		return Response.ok(new JsonVoid("Server information updated successfully.")).build();
+		return get();
 	}
 }
