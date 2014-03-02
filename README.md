@@ -21,8 +21,7 @@ This will start the jar built through gradle on a vm. To debug, add the `debug` 
 
 Run the API tests
 -----------------
-
-To run the API test, an instance of Homeki is started in test mode. Test mode clears the database and performs some configuration changes to mock devices and such.
+To run the API test, an instance of Homeki need to be started in test mode. Test mode clears the database and performs some configuration changes to mock devices and such.
 
 1. `cd homekicore`
 2. `cd vagrant`
