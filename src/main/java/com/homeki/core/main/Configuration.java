@@ -4,6 +4,7 @@ import com.homeki.core.logging.L;
 import com.homeki.core.storage.DatabaseManager;
 
 public class Configuration {
+	public static boolean ENABLE_CORS_HEADERS = false;
 	public static boolean MOCK_ENABLED = false;
 	public static int ONEWIRE_DETECTOR_INTERVAL = 2*60*1000;
 	public static int ONEWIRE_COLLECTOR_INTERVAL = 15*60*1000;
@@ -19,6 +20,7 @@ public class Configuration {
 		Configuration.MOCK_ENABLED = true;
 		Configuration.REPORTER_ENABLED = false;
 		Configuration.REPORTER_URL = "http://localhost:8888/report";
+		Configuration.ENABLE_CORS_HEADERS = true;
 	}
 	
 	public static void transformForTest() {
@@ -34,5 +36,6 @@ public class Configuration {
     }
 
 		Configuration.REPORTER_ENABLED = false;
+		Configuration.ENABLE_CORS_HEADERS = true;
 	}
 }

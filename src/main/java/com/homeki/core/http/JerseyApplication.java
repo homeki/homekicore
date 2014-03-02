@@ -5,11 +5,17 @@ import com.homeki.core.http.filters.CacheControlResponseFilter;
 import com.homeki.core.http.filters.CrossOriginResourceSharingResponseFilter;
 import com.homeki.core.http.filters.LogRequestFilter;
 import com.homeki.core.http.rest.ServerResource;
+import com.homeki.core.logging.L;
+import com.homeki.core.main.Configuration;
 import org.glassfish.jersey.server.ResourceConfig;
 
 public class JerseyApplication extends ResourceConfig {
 	public JerseyApplication() {
-		register(CrossOriginResourceSharingResponseFilter.class);
+		if (Configuration.ENABLE_CORS_HEADERS) {
+			L.i("CORS headers enabled.");
+			register(CrossOriginResourceSharingResponseFilter.class);
+		}
+
 		register(CacheControlResponseFilter.class);
 		register(LogRequestFilter.class);
 		register(JacksonContextResolver.class);
