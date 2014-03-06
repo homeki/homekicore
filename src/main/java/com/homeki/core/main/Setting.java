@@ -1,16 +1,13 @@
 package com.homeki.core.main;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
+import javax.persistence.*;
+
 @Entity
 public class Setting {
+	public static final String SERVER_UUID = "SERVER_UUID";
 	public static final String SERVER_NAME = "SERVER_NAME";
 	public static final String LOCATION_LONGITUDE = "LOCATION_LONGITUDE";
 	public static final String LOCATION_LATITUDE = "LOCATION_LATITUDE";
