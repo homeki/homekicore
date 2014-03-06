@@ -16,18 +16,12 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.util.Collections;
-import java.util.NoSuchElementException;
 
 public class ReportThread extends ControlledThread {
-	private String macAddress;
 	private Client client;
 
 	public ReportThread() {
 		super(Configuration.REPORTER_INTERVAL);
-		this.macAddress = getMacAddress();
 		this.client = ClientBuilder.newClient();
 	}
 
@@ -37,12 +31,11 @@ public class ReportThread extends ControlledThread {
 		
 		int deviceCount = ((Number)session.createCriteria(Device.class).setProjection(Projections.rowCount()).uniqueResult()).intValue();
 		long historyPointCount = ((Number)session.createCriteria(HistoryPoint.class).setProjection(Projections.rowCount()).uniqueResult()).longValue();
-		String serverName = Setting.getString(session, Setting.SERVER_NAME);
-		
+
 		Report report = new Report();
-		report.macAddress = macAddress;
+		report.serverUuid = Setting.getString(session, Setting.SERVER_UUID);
+		report.serverName = Setting.getString(session, Setting.SERVER_NAME);
 		report.version = Util.getVersion();
-		report.serverName = serverName;
 		report.deviceCount = deviceCount;
 		report.historyPointRowCount = historyPointCount;
 		
@@ -61,35 +54,5 @@ public class ReportThread extends ControlledThread {
 		} catch (Exception e) {
 			L.e("Failed to report instance status.", e);
 		}
-	}
-
-	private String getMacAddress() {
-		try {
-			NetworkInterface netInt = NetworkInterface.getByName("eth0");
-			if (netInt == null) netInt = NetworkInterface.getByName("wlan0");
-			if (netInt == null) netInt = NetworkInterface.getByName("eth1");
-			if (netInt == null) netInt = NetworkInterface.getByName("wlan1");
-			if (netInt == null) netInt = NetworkInterface.getByName("bge0");
-			if (netInt == null) netInt = getFirstNetworkInterface();
-			if (netInt == null) throw new NoSuchElementException("Failed to find any network interface to fetch MAC address from.");
-			
-			StringBuilder sb = new StringBuilder();
-			for (byte b : netInt.getHardwareAddress())
-				sb.append(String.format("%02x:", b & 0xff));
-			sb.deleteCharAt(sb.length()-1);
-			
-			return sb.toString();
-		} catch (SocketException e) {
-			throw new NoSuchElementException("Failed to find any network interface to fetch MAC address from (socket error).");
-		}
-	}
-
-	private NetworkInterface getFirstNetworkInterface() throws SocketException {
-		for (NetworkInterface ni : Collections.list(NetworkInterface.getNetworkInterfaces())) {
-			if (ni.isLoopback()) continue;
-			if (ni.getHardwareAddress() == null) continue;
-			return ni;
-		}
-		return null;
 	}
 }

@@ -1,7 +1,7 @@
 package com.homeki.core.report;
 
 public class Report {
-	public String macAddress;
+	public String serverUuid;
 	public String serverName;
 	public String version;
 	public long historyPointRowCount;
