@@ -19,7 +19,7 @@ public class Configuration {
 		L.i("Development version detected, adjusting configuration.");
 		Configuration.MOCK_ENABLED = true;
 		Configuration.REPORTER_ENABLED = false;
-		Configuration.REPORTER_URL = "http://localhost:8888/report";
+		Configuration.REPORTER_URL = "http://10.0.2.2:8080/report";
 		Configuration.ENABLE_CORS_HEADERS = true;
 	}
 	
