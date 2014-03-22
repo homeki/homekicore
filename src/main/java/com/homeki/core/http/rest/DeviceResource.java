@@ -94,7 +94,7 @@ public class DeviceResource {
 	}
 
 	@GET
-	@Path("/tellstick/learn")
+	@Path("/{deviceId}/tellstick/learn")
 	public Response learn(@PathParam("deviceId") int deviceId) {
 		TellStickDevice dev = (TellStickDevice)Hibernate.currentSession().get(TellStickDevice.class, deviceId);
 
