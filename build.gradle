@@ -12,25 +12,41 @@ configurations {
     dist
 }
 
+ext {
+    ANT_DEB_VERSION = '0.0.1'
+    HIBERNATE_ANNOTATION_VERSION = '3.5.6-Final'
+    HIBERNATE_VERSION = '3.6.8.Final'
+    JACKSON_JAXRS_JSON_VERSION = '2.2.3'
+    JAVAASSIST_VERSION = '3.12.0.GA'
+    JAVAX_MAIL_VERSION = '1.4'
+    JERSEY_VERSION = '2.5.1'
+    JNA_VERSION = '3.2.7'
+    LIQUIBASE_VERSION = '3.0.7'
+    POSTGRES_VERSION = '9.1-901.jdbc4'
+    SLF4J_VERSION = '1.7.5'
+    TEST_NG_VERSION = '6.5.1'
+    TOMCAT_VERSION = '7.0.47'
+}
+
 dependencies {
-    compile "org.liquibase:liquibase-core:3.0.7"
-    compile "javax.mail:mail:1.4"
-    compile "org.hibernate:hibernate-annotations:3.5.6-Final"
-    compile "org.slf4j:slf4j-api:1.7.5"
-    compile "net.java.dev.jna:jna:3.2.7"
+    compile "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:$ext.JACKSON_JAXRS_JSON_VERSION"
+    compile "javax.mail:mail:$ext.JAVAX_MAIL_VERSION"
     compile "mikereedell-sunrisesunsetlib:mikereedell-sunrisesunsetlib"
-    compile "org.apache.tomcat.embed:tomcat-embed-core:7.0.47"
-    compile "org.apache.tomcat.embed:tomcat-embed-logging-juli:7.0.47"
-    compile "org.glassfish.jersey.containers:jersey-container-servlet:2.5.1"
-    compile "org.glassfish.jersey.core:jersey-client:2.5.1"
-    compile "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.2.3"
-    runtime "postgresql:postgresql:9.1-901.jdbc4"
-    runtime "org.hibernate:hibernate-core:3.6.8.Final"
-    runtime "org.slf4j:slf4j-nop:1.6.1"
-    runtime "javassist:javassist:3.12.0.GA" // required for hibernate
-    runtime "org.glassfish.jersey.ext:jersey-bean-validation:2.5.1" // required for jersey
-    testCompile "org.testng:testng:6.5.1"
-    dist "ant-deb:ant-deb:0.0.1"
+    compile "net.java.dev.jna:jna:$ext.JNA_VERSION"
+    compile "org.apache.tomcat.embed:tomcat-embed-core:$ext.TOMCAT_VERSION"
+    compile "org.apache.tomcat.embed:tomcat-embed-logging-juli:$ext.TOMCAT_VERSION"
+    compile "org.glassfish.jersey.containers:jersey-container-servlet:$ext.JERSEY_VERSION"
+    compile "org.glassfish.jersey.core:jersey-client:$ext.JERSEY_VERSION"
+    compile "org.hibernate:hibernate-annotations:$ext.HIBERNATE_ANNOTATION_VERSION"
+    compile "org.liquibase:liquibase-core:$ext.LIQUIBASE_VERSION"
+    compile "org.slf4j:slf4j-api:$ext.SLF4J_VERSION"
+    runtime "javassist:javassist:$ext.JAVAASSIST_VERSION" // required for hibernate
+    runtime "org.glassfish.jersey.ext:jersey-bean-validation:$ext.JERSEY_VERSION" // required for jersey
+    runtime "org.hibernate:hibernate-core:$ext.HIBERNATE_VERSION"
+    runtime "org.slf4j:slf4j-nop:$ext.SLF4J_VERSION"
+    runtime "postgresql:postgresql:$ext.POSTGRES_VERSION"
+    testCompile "org.testng:testng:$ext.TEST_NG_VERSION"
+    dist "ant-deb:ant-deb:$ext.ANT_DEB_VERSION"
 }
 
 jar {
