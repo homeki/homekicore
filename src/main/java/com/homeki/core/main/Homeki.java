@@ -21,7 +21,7 @@ public class Homeki {
 	private List<Module> modules;
 	
 	public Homeki() {
-		modules = new ArrayList<Module>();
+		modules = new ArrayList<>();
 		addShutdownHook();
 	}
 	

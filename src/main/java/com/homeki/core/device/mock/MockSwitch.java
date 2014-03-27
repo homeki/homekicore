@@ -19,10 +19,6 @@ public class MockSwitch extends Device implements Settable {
 		
 	}
 	
-	public MockSwitch(int id) {
-		this.id = id;
-	}
-	
 	public MockSwitch(boolean defaultValue) {
 		addHistoryPoint(ONOFF_CHANNEL, defaultValue ? 1 : 0);
 	}
@@ -41,7 +37,7 @@ public class MockSwitch extends Device implements Settable {
 	
 	@Override
 	public List<Channel> getChannels() {
-		List<Channel> list = new ArrayList<Channel>();
+		List<Channel> list = new ArrayList<>();
 		list.add(new Channel(ONOFF_CHANNEL, "onoff", Channel.INT));
 		return list;
 	}

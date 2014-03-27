@@ -35,7 +35,7 @@ public class ActionGroup extends Action {
 	private boolean explicit;
 	
 	public ActionGroup() {
-		this.actions = new ArrayList<Action>();
+		this.actions = new ArrayList<>();
 		this.description = "";
 	}
 	

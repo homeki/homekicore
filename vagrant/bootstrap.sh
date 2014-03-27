@@ -30,7 +30,7 @@ popd
 apt-get update
 
 # From standard repositories
-apt-get install -y openjdk-6-jre-headless postgresql-9.1 libjna-java libgnumail-java vim
+apt-get install -y openjdk-7-jre-headless postgresql-9.1 libjna-java libgnumail-java vim
 
 # Set db su user password and enable client connections
 echo "ALTER USER postgres WITH PASSWORD 'password';" | sudo -u postgres psql

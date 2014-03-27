@@ -15,7 +15,7 @@ public enum ClientStore {
 	private Set<String> clients;
 	
 	private ClientStore() {
-		this.clients = new HashSet<String>();
+		this.clients = new HashSet<>();
 	}
 	
 	public synchronized void addClient(String id) {
@@ -32,6 +32,6 @@ public enum ClientStore {
 	}
 
 	public synchronized List<String> listClients() {
-		return new ArrayList<String>(clients);
+		return new ArrayList<>(clients);
 	}
 }

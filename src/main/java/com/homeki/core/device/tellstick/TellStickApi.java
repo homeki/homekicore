@@ -44,7 +44,7 @@ public enum TellStickApi {
 		if (events != null)
 			throw new RuntimeException("May only call TellstickNative.open() once.");
 
-		events = new LinkedBlockingQueue<String>();
+		events = new LinkedBlockingQueue<>();
 		deviceEventHandler = new DeviceEventHandler();
 		telldus = (JnaTelldusCore) Native.loadLibrary("telldus-core", JnaTelldusCore.class);
 		telldus.tdInit();

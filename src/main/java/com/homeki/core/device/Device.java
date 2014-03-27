@@ -58,7 +58,7 @@ public abstract class Device {
 	private String description;
 	
 	public Device() {
-		this.historyPoints = new HashSet<HistoryPoint>();
+		this.historyPoints = new HashSet<>();
 		this.name = "";
 		this.internalId = "";
 		this.added = new Date();

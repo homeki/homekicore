@@ -1,20 +1,18 @@
 package com.homeki.core.conditions;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-
+import com.homeki.core.events.Event;
+import com.homeki.core.triggers.Trigger;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
-import com.homeki.core.events.Event;
-import com.homeki.core.triggers.Trigger;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 public class ConditionGroup extends Condition {
@@ -28,8 +26,8 @@ public class ConditionGroup extends Condition {
 	private Set<Trigger> triggers;
 	
 	public ConditionGroup() {
-		this.conditions = new ArrayList<Condition>();
-		this.triggers = new HashSet<Trigger>();
+		this.conditions = new ArrayList<>();
+		this.triggers = new HashSet<>();
 	}
 	
 	@Override

@@ -1,23 +1,22 @@
 package com.homeki.core.device.onewire;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
-
 import com.homeki.core.logging.L;
 import com.homeki.core.main.Configuration;
 import com.homeki.core.main.ControlledThread;
 import com.homeki.core.storage.Hibernate;
+import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class OneWireCollectorThread extends ControlledThread {
 	private Set<String> loggedSet;
 	
 	public OneWireCollectorThread() {
 		super(Configuration.ONEWIRE_COLLECTOR_INTERVAL);
-		loggedSet = new HashSet<String>();
+		loggedSet = new HashSet<>();
 	}
 	
 	@Override

@@ -1,7 +1,7 @@
 apply plugin: "java"
 
-sourceCompatibility = 1.6
-targetCompatibility = 1.6
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
 
 repositories {
     mavenCentral()
@@ -78,7 +78,7 @@ task dist(dependsOn: jar) << {
     new File("build/dist").mkdir()
 
     ant.taskdef(name: "deb", classname: "com.googlecode.ant_deb_task.Deb", classpath: configurations.dist.asPath)
-    ant.deb(todir: "build/dist", package: "homeki", section: "misc",  depends: "openjdk-6-jre-headless, postgresql-9.1, telldus, owfs, libjna-java", prerm: "dist/prerm",  postinst: "dist/postinst", preinst: "dist/preinst", architecture: "all", version: version) {
+    ant.deb(todir: "build/dist", package: "homeki", section: "misc",  depends: "openjdk-7-jre-headless, postgresql-9.1, telldus, owfs, libjna-java", prerm: "dist/prerm",  postinst: "dist/postinst", preinst: "dist/preinst", architecture: "all", version: version) {
         description(synopsis: "Unified interface for all your sensors and devices connected to your computer.", "Provides a REST HTTP API for accessing, logging, modifying and managing various devices and sensors connected to your computer.")
         maintainer(name: "Homeki Development Team", email: "contact@homeki.com")
         tarfileset(file: "build/libs/homekicore-${version}.jar", fullpath: "/opt/homeki/homekicore.jar", filemode: "755")

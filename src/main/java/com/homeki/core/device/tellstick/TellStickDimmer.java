@@ -71,7 +71,7 @@ public class TellStickDimmer extends TellStickDevice implements Settable, TellSt
 
 	@Override
 	public List<Channel> getChannels() {
-		List<Channel> list = new ArrayList<Channel>();
+		List<Channel> list = new ArrayList<>();
 		list.add(new Channel(ONOFF_CHANNEL, "onoff", Channel.INT));
 		list.add(new Channel(LEVEL_CHANNEL, "level", Channel.BYTE));
 		return list;

@@ -24,11 +24,11 @@ public class OneWireDetectorThread extends ControlledThread {
 	
 	public OneWireDetectorThread() {
 		super(Configuration.ONEWIRE_DETECTOR_INTERVAL);
-		loggedSet = new HashSet<String>();
+		loggedSet = new HashSet<>();
 	}
 	
 	private List<String> findInternalIds() {
-		List<String> dirList = new ArrayList<String>();
+		List<String> dirList = new ArrayList<>();
 		File root = new File(Configuration.ONEWIRE_PATH);
 		
 		String[] items = root.list();
