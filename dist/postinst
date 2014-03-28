@@ -52,14 +52,8 @@ if [ "$1" = "configure" ] ; then
 	chmod a+w /opt/homeki/stderr.log
 	echo "done"
 	
-	# Remove old left-over S99homeki from rc2.d
-	# (can be removed when all servers are updated)
-	rm -f /etc/rc2.d/S99homeki
-
 	update-rc.d homekid defaults 99
 
-	update-alternatives --set java /usr/lib/jvm/java-7-openjdk-armhf/jre/bin/java
-	
 	echo "------------------- APT: STARTED HOMEKI -------------------" >> /opt/homeki/stdout.log
 	/etc/init.d/homekid start
 fi
