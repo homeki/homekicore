@@ -83,6 +83,7 @@ task dist(dependsOn: jar) << {
         maintainer(name: "Homeki Development Team", email: "contact@homeki.com")
         tarfileset(file: "build/libs/homekicore-${version}.jar", fullpath: "/opt/homeki/homekicore.jar", filemode: "755")
         tarfileset(file: "dist/homekid", prefix: "/etc/init.d/", filemode: "755")
+        tarfileset(file: "dist/06-zwave.rules", prefix: "/etc/udev/rules.d/", "644")
         tarfileset(file: "dist/start.sh", prefix: "/opt/homeki/", filemode: "755")
         tarfileset(file: "logging.properties", prefix: "/opt/homeki/", filemode: "755")
     }
