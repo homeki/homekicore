@@ -32,6 +32,7 @@ dependencies {
     compile "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:$ext.JACKSON_JAXRS_JSON_VERSION"
     compile "javax.mail:mail:$ext.JAVAX_MAIL_VERSION"
     compile "mikereedell-sunrisesunsetlib:mikereedell-sunrisesunsetlib"
+    compile "com.github.zgmnkv:zwave4j:0.2-SNAPSHOT"
     compile "net.java.dev.jna:jna:$ext.JNA_VERSION"
     compile "org.apache.tomcat.embed:tomcat-embed-core:$ext.TOMCAT_VERSION"
     compile "org.apache.tomcat.embed:tomcat-embed-logging-juli:$ext.TOMCAT_VERSION"

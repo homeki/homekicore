@@ -45,3 +45,5 @@ apt-get install -y telldus owfs
 echo "CREATE USER homeki WITH PASSWORD 'homeki';" | sudo -u postgres psql
 echo "CREATE DATABASE homeki WITH owner = homeki;" | sudo -u postgres psql
 
+# Setup udev rule for zstick
+echo "ATTRS{idVendor}==\"10c4\", ATTRS{idProduct}==\"ea60\", SYMLINK+=\"zstick\", GROUP:=\"plugdev" > /etc/udev/rules.d/06-zwave.rules
