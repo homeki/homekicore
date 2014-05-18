@@ -34,6 +34,7 @@
     <mapping class="com.homeki.core.device.tellstick.TellStickDimmer"/>
     <mapping class="com.homeki.core.device.tellstick.TellStickThermometer"/>
     <mapping class="com.homeki.core.device.zwave.ZWaveChannel"/>
+    <mapping class="com.homeki.core.device.zwave.ZWaveDevice"/>
     <mapping class="com.homeki.core.triggers.Trigger"/>
     <mapping class="com.homeki.core.actions.Action"/>
     <mapping class="com.homeki.core.actions.ActionGroup"/>

@@ -435,13 +435,16 @@
             <column name="genre" type="VARCHAR(50)">
                 <constraints nullable="false" />
             </column>
+            <column name="value_type" type="VARCHAR(50)">
+                <constraints nullable="false" />
+            </column>
             <column name="command_class_id" type="INTEGER">
                 <constraints nullable="false" />
             </column>
             <column name="instance" type="INTEGER">
                 <constraints nullable="false" />
             </column>
-            <column name="index" type="INTEGER">
+            <column name="zindex" type="INTEGER">
                 <constraints nullable="false" />
             </column>
         </createTable>

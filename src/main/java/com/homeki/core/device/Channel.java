@@ -24,7 +24,8 @@ public class Channel {
 	private String description;
 
 	public Channel() {
-
+		this.name = "";
+		this.description = "";
 	}
 	
 	public Channel(int id, String name, DataType dataType) {
@@ -43,5 +44,21 @@ public class Channel {
 
 	public DataType getDataType() {
 		return dataType;
+	}
+
+	public Device getDevice() {
+		return device;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setDataType(DataType dataType) {
+		this.dataType = dataType;
+	}
+
+	public void setDevice(Device device) {
+		this.device = device;
 	}
 }
