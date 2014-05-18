@@ -161,6 +161,7 @@ public class ZWaveWatcher implements NotificationWatcher {
 		} else {
 			dev = new ZWaveDevice();
 			dev.setInternalId("zw-" + nodeId);
+			dev.setName("ZWave " + nodeId);
 			session.save(dev);
 			L.i("Z-Wave new/added node with internal ID zw-" + nodeId + " not found, created new device.");
 		}
