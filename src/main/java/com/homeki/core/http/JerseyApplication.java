@@ -7,6 +7,7 @@ import com.homeki.core.http.filters.LogRequestFilter;
 import com.homeki.core.http.rest.ServerResource;
 import com.homeki.core.logging.L;
 import com.homeki.core.main.Configuration;
+import org.glassfish.jersey.media.sse.SseFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 
 public class JerseyApplication extends ResourceConfig {
@@ -21,6 +22,7 @@ public class JerseyApplication extends ResourceConfig {
 		register(JacksonContextResolver.class);
 		register(JacksonJsonProvider.class);
 		register(ExceptionMapper.class);
+		register(SseFeature.class);
 		packages(true, ServerResource.class.getPackage().getName());
 	}
 }

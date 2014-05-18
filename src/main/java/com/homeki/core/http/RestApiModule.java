@@ -8,6 +8,7 @@ import com.homeki.core.main.Module;
 import org.apache.catalina.Context;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.Wrapper;
+import org.apache.catalina.connector.Connector;
 import org.apache.catalina.deploy.FilterDef;
 import org.apache.catalina.deploy.FilterMap;
 import org.apache.catalina.servlets.DefaultServlet;
@@ -22,8 +23,12 @@ public class RestApiModule implements Module {
 	@Override
 	public void construct() {
 		tomcat = new Tomcat();
-		tomcat.setPort(5000);
-		tomcat.getConnector().setURIEncoding("UTF-8");
+
+		Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
+		connector.setURIEncoding("UTF-8");
+		connector.setPort(5000);
+		tomcat.getService().addConnector(connector);
+		tomcat.setConnector(connector);
 
 		try {
 			Context ctx;
@@ -35,6 +40,7 @@ public class RestApiModule implements Module {
 				ctx.addWelcomeFile("index.html");
 
 				Wrapper wrapper = tomcat.addServlet(ctx, "DefaultServlet", new DefaultServlet());
+				wrapper.setAsyncSupported(true);
 				wrapper.addInitParameter("listings", "false");
 				wrapper.addMapping("/");
 				wrapper.setLoadOnStartup(1);
@@ -49,6 +55,7 @@ public class RestApiModule implements Module {
 			addCharacterEncodingFilter(ctx);
 
 			Wrapper wrapper = tomcat.addServlet(ctx, "JerseyServlet", new ServletContainer());
+			wrapper.setAsyncSupported(true);
 			wrapper.addInitParameter("javax.ws.rs.Application", JerseyApplication.class.getName());
 			wrapper.addMapping("/api/*");
 			wrapper.setLoadOnStartup(1);
@@ -74,6 +81,7 @@ public class RestApiModule implements Module {
 		FilterDef filterDef = new FilterDef();
 		filterDef.setFilterName(CharsetFilter.class.getSimpleName());
 		filterDef.setFilter(new CharsetFilter());
+		filterDef.setAsyncSupported("true");
 		ctx.addFilterDef(filterDef);
 
 		FilterMap filterMap = new FilterMap();
@@ -86,6 +94,7 @@ public class RestApiModule implements Module {
 		FilterDef filterDef = new FilterDef();
 		filterDef.setFilterName(HibernateSessionFilter.class.getSimpleName());
 		filterDef.setFilter(new HibernateSessionFilter());
+		filterDef.setAsyncSupported("true");
 		ctx.addFilterDef(filterDef);
 
 		FilterMap filterMap = new FilterMap();

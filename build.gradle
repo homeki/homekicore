@@ -38,6 +38,7 @@ dependencies {
     compile "org.apache.tomcat.embed:tomcat-embed-logging-juli:$ext.TOMCAT_VERSION"
     compile "org.glassfish.jersey.containers:jersey-container-servlet:$ext.JERSEY_VERSION"
     compile "org.glassfish.jersey.core:jersey-client:$ext.JERSEY_VERSION"
+    compile "org.glassfish.jersey.media:jersey-media-sse:$ext.JERSEY_VERSION"
     compile "org.hibernate:hibernate-annotations:$ext.HIBERNATE_ANNOTATION_VERSION"
     compile "org.liquibase:liquibase-core:$ext.LIQUIBASE_VERSION"
     compile "org.slf4j:slf4j-api:$ext.SLF4J_VERSION"
