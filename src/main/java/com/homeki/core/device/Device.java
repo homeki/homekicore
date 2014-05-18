@@ -165,12 +165,11 @@ public abstract class Device {
 	
 	public abstract List<Channel> getChannels();
 	
-	protected void validateChannel(int channel) {
+	protected Channel getChannel(int channel) {
 		List<Channel> channels = getChannels();
 		
 		for (Channel c : channels) {
-			if (c.getId() == channel)
-				return;
+			if (c.getId() == channel) return c;
 		}
 		
 		throw new RuntimeException("Tried to operate on invalid channel " + channel + " on device with ID " + id + " (" + getType() + ").");

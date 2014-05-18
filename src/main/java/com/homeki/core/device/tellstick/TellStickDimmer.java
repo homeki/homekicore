@@ -33,7 +33,7 @@ public class TellStickDimmer extends TellStickDevice implements Settable, TellSt
 
 	@Override
 	public void set(int channel, int value) {
-		validateChannel(channel);
+		getChannel(channel);
 		
 		int internalId = Integer.parseInt(getInternalId());
 		IntegerHistoryPoint level = (IntegerHistoryPoint)getLatestHistoryPoint(LEVEL_CHANNEL);

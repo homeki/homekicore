@@ -30,7 +30,7 @@ public class TellStickSwitch extends TellStickDevice implements Settable, TellSt
 	
 	@Override
 	public void set(int channel, int value) {
-		validateChannel(channel);
+		getChannel(channel);
 		
 		boolean on = value > 0;
 		int internalId = Integer.parseInt(getInternalId());

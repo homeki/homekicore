@@ -28,7 +28,7 @@ public class MockDimmer extends Device implements Settable {
 
 	@Override
 	public void set(int channel, int value) {
-		validateChannel(channel);
+		getChannel(channel);
 		
 		if (channel == ONOFF_CHANNEL)
 			addHistoryPoint(ONOFF_CHANNEL, value > 0 ? 1 : 0);

@@ -2,6 +2,7 @@ package com.homeki.core.device.zwave;
 
 import com.homeki.core.device.Channel;
 import com.homeki.core.device.Device;
+import com.homeki.core.device.Settable;
 import com.homeki.core.json.devices.JsonDevice;
 import com.homeki.core.json.devices.JsonZWaveDevice;
 
@@ -11,15 +12,11 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-public class ZWaveDevice extends Device {
+public class ZWaveDevice extends Device implements Settable {
 	@Override
 	public String getType() {
 		Set<String> switchNames = new HashSet<String>() {{
 			add("Switch");
-		}};
-		Set<String> dimmerNames = new HashSet<String>() {{
-			add("Switch");
-			add("Level");
 		}};
 		Set<String> switchMeterNames = new HashSet<String>() {{
 			add("Switch");
@@ -27,17 +24,8 @@ public class ZWaveDevice extends Device {
 			add("Voltage");
 			add("Current");
 		}};
-		Set<String> dimmerMeterNames = new HashSet<String>() {{
-			add("Switch");
-			add("Level");
-			add("Power");
-			add("Voltage");
-			add("Current");
-		}};
 
-		if (channelsContains(dimmerMeterNames)) return "dimmermeter";
 		if (channelsContains(switchMeterNames)) return "switchmeter";
-		if (channelsContains(dimmerNames)) return "dimmer";
 		if (channelsContains(switchNames)) return "switch";
 		return "unknown";
 	}
@@ -58,5 +46,12 @@ public class ZWaveDevice extends Device {
 		}
 
 		return names.size() == 0;
+	}
+
+	@Override
+	public void set(int channel, int value) {
+		ZWaveChannel c = (ZWaveChannel)getChannel(channel);
+		short nodeId = Short.parseShort(internalId.replace("zw-", ""));
+		ZWaveApi.INSTANCE.setValue(c.getCommandClassId(), nodeId, c.getGenre(), c.getIndex(), c.getInstance(), c.getValueType(), value);
 	}
 }

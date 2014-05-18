@@ -94,6 +94,31 @@ public enum ZWaveApi {
 		return manager.getValueLabel(vid);
 	}
 
+	public short getControllerNodeId() {
+		return manager.getControllerNodeId(homeId);
+	}
+
+	public void setValue(short commandClassId, short nodeId, ValueGenre genre, short index, short instance, ValueType valueType, int value) {
+		ValueId vid = new ValueId(homeId, nodeId, genre, commandClassId, instance, index, valueType);
+
+		switch (vid.getType()) {
+			case BOOL:
+				manager.setValueAsBool(vid, value > 0);
+				break;
+			case BYTE:
+				manager.setValueAsByte(vid, (short)value);
+				break;
+			case INT:
+				manager.setValueAsInt(vid, value);
+				break;
+			case SHORT:
+				manager.setValueAsShort(vid, (short)value);
+				break;
+			default:
+				L.e("Cannot set value of type " + vid.getType() + ", not supported.");
+		}
+	}
+
 	public static DataType convertValueType(ValueType valueType) {
 		switch (valueType) {
 			case BOOL:
@@ -115,9 +140,5 @@ public enum ZWaveApi {
 		if (new File("/dev/ttyAMA0").exists()) return "/dev/ttyAMA0";
 		L.w("No Z-Wave controller found, Z-Wave module not initialized.");
 		return null;
-	}
-
-	public short getControllerNodeId() {
-		return manager.getControllerNodeId(homeId);
 	}
 }

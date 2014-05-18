@@ -26,7 +26,7 @@ public class MockSwitch extends Device implements Settable {
 
 	@Override
 	public void set(int channel, int value) {
-		validateChannel(channel);
+		getChannel(channel);
 		addHistoryPoint(ONOFF_CHANNEL, value > 0 ? 1 : 0);
 		L.i("MockSwitch with internal ID '" + getInternalId() + "' changed channel " + channel + " to " + value + ".");
 	}
