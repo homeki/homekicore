@@ -18,6 +18,7 @@ public class ZWaveWatcher implements NotificationWatcher {
 		try {
 			switch (notf.getType()) {
 				case DRIVER_READY:
+					ZWaveApi.INSTANCE.ready(notf.getHomeId());
 					L.i("Z-Wave controller ready.");
 					break;
 				case DRIVER_FAILED:
@@ -29,7 +30,6 @@ public class ZWaveWatcher implements NotificationWatcher {
 				case ALL_NODES_QUERIED:
 				case ALL_NODES_QUERIED_SOME_DEAD:
 					L.i("Z-Wave nodes queried.");
-					ZWaveApi.INSTANCE.ready(notf.getHomeId());
 					break;
 				case NODE_ADDED:
 					nodeAdded(session, notf.getNodeId());
@@ -148,6 +148,8 @@ public class ZWaveWatcher implements NotificationWatcher {
 	}
 
 	private void nodeAdded(Session session, short nodeId) {
+		if (nodeId == ZWaveApi.INSTANCE.getControllerNodeId()) return;
+
 		Device dev = Device.getByInternalId("zw-" + nodeId);
 
 		if (dev != null && dev.isActive()) {

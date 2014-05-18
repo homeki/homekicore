@@ -116,4 +116,8 @@ public enum ZWaveApi {
 		L.w("No Z-Wave controller found, Z-Wave module not initialized.");
 		return null;
 	}
+
+	public short getControllerNodeId() {
+		return manager.getControllerNodeId(homeId);
+	}
 }
