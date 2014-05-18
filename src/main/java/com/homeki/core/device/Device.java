@@ -14,10 +14,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.criterion.Restrictions;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -45,7 +42,7 @@ public abstract class Device {
 	@OneToMany(mappedBy = "device", orphanRemoval = true)
 	@Cascade({ CascadeType.SAVE_UPDATE, CascadeType.DELETE })
 	@LazyCollection(LazyCollectionOption.EXTRA)
-	private Set<Channel> channels;
+	protected List<Channel> channels;
 	
 	@Column
 	protected String internalId;
@@ -66,7 +63,7 @@ public abstract class Device {
 		this.historyPoints = new HashSet<>();
 		this.channelValueConditions = new HashSet<>();
 		this.changeChannelValueActions = new HashSet<>();
-		this.channels = new HashSet<>();
+		this.channels = new ArrayList<>();
 		this.name = "";
 		this.internalId = "";
 		this.added = new Date();
@@ -159,6 +156,7 @@ public abstract class Device {
 		dhp.setDevice(this);
 		dhp.setRegistered(new Date());
 		dhp.setValue(value);
+		dhp.setChannel(channel);
 		historyPoints.add(dhp);
 		
 		if (id > 0)

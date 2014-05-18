@@ -12,7 +12,7 @@ import org.zwave4j.ValueId;
 public class ZWaveWatcher implements NotificationWatcher {
 	@Override
 	public void onNotification(Notification notf, Object o) {
-		Thread.currentThread().setName("ZWaveWatcher");
+		Thread.currentThread().setName("ZWaveWatcherThread");
 		Session session = Hibernate.openSession();
 
 		try {
@@ -51,14 +51,8 @@ public class ZWaveWatcher implements NotificationWatcher {
 	}
 
 	private void valueAdded(Session session, ValueId vid) {
-		if (vid.getGenre() != ValueGenre.USER) {
-			L.i("Z-Wave value added for node with internal ID zw-" + vid.getNodeId() + ", but not a USER value so ignored.");
-			return;
-		}
-		if (ZWaveApi.convertValueType(vid.getType()) == null) {
-			L.i("Z-Wave value added for node with internal ID zw-" + vid.getNodeId() + ", but value was of unsupported type " + vid.getType().name() + " so ignored.");
-			return;
-		}
+		if (vid.getGenre() != ValueGenre.USER) return;
+		if (ZWaveApi.convertValueType(vid.getType()) == null) return;
 
 		Device dev = Device.getByInternalId("zw-" + vid.getNodeId());
 
@@ -69,10 +63,7 @@ public class ZWaveWatcher implements NotificationWatcher {
 
 		ZWaveChannel channel = ZWaveChannel.getByDeviceAndIndex(dev, vid.getIndex());
 
-		if (channel != null) {
-			L.i("Z-Wave value added for device with ID " + dev.getId() + ", but channel already existed.");
-			return;
-		}
+		if (channel != null) return;
 
 		channel = new ZWaveChannel();
 		channel.setDevice(dev);
@@ -84,13 +75,30 @@ public class ZWaveWatcher implements NotificationWatcher {
 		channel.setDataType(ZWaveApi.convertValueType(vid.getType()));
 		channel.setGenre(vid.getGenre());
 		session.save(channel);
-
-		valueChanged(session, vid);
+		session.flush();
 
 		L.i("Z-Wave value added for device with ID " + dev.getId() + ", created new channel with name " + channel.getName() + ".");
+
+		switch (channel.getDataType()) {
+			case DOUBLE:
+				dev.addHistoryPoint(channel.getId(), 0.0d);
+				break;
+			case INT:
+			case BOOL:
+			case BYTE:
+				dev.addHistoryPoint(channel.getId(), 0);
+				break;
+			default:
+				L.w("No initial value will exist for channel " + channel.getName() + " on device with ID " + dev.getId() + ".");
+		}
+
+		session.save(dev);
 	}
 
 	private void valueChanged(Session session, ValueId vid) {
+		if (vid.getGenre() != ValueGenre.USER) return;
+		if (ZWaveApi.convertValueType(vid.getType()) == null) return;
+
 		Device dev = Device.getByInternalId("zw-" + vid.getNodeId());
 
 		if (dev == null) {
@@ -107,6 +115,7 @@ public class ZWaveWatcher implements NotificationWatcher {
 
 		switch (channel.getDataType()) {
 			case INT:
+			case BYTE:
 				int intValue = ZWaveApi.INSTANCE.getIntValue(vid);
 				dev.addHistoryPoint(channel.getId(), intValue);
 				L.i("Z-Wave channel " + channel.getName() + " changed to " + intValue + ".");
@@ -131,10 +140,7 @@ public class ZWaveWatcher implements NotificationWatcher {
 	private void nodeRemoved(Session session, short nodeId) {
 		Device dev = Device.getByInternalId("zw-" + nodeId);
 
-		if (dev == null) {
-			L.i("Z-Wave removed node with internal ID zw-" + nodeId + ", but no such device existed.");
-			return;
-		}
+		if (dev == null) return;
 
 		dev.setActive(false);
 		session.save(dev);

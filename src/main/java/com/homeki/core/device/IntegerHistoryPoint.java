@@ -15,16 +15,6 @@ public class IntegerHistoryPoint extends HistoryPoint {
 		super(0);
 	}
 	
-	public IntegerHistoryPoint(int value) {
-		super(0);
-		this.value = value;
-	}
-	
-	public IntegerHistoryPoint(int channel, int value) {
-		super(channel);
-		this.value = value;
-	}
-	
 	public Integer getValue() {
 		return value;
 	}

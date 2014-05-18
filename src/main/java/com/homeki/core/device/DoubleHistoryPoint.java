@@ -14,11 +14,6 @@ public class DoubleHistoryPoint extends HistoryPoint {
 	public DoubleHistoryPoint() {
 		super(0);
 	}
-	
-	public DoubleHistoryPoint(Double value) {
-		super(0);
-		this.value = value;
-	}
 
 	public Double getValue() {
 		return value;

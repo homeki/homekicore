@@ -105,8 +105,6 @@ public enum ZWaveApi {
 			case INT:
 			case SHORT:
 				return DataType.INT;
-			case STRING:
-				return DataType.STRING;
 			default:
 				return null;
 		}
