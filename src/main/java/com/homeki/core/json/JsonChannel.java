@@ -20,8 +20,10 @@ public class JsonChannel {
 		this.dataType = channel.getDataType().toString();
 	}
 	
-	public JsonChannel(int id, Object lastValue) {
-		this.id = id;
+	public JsonChannel(Channel channel, Object lastValue) {
+		this.id = channel.getId();
+		this.name = channel.getName();
+		this.dataType = channel.getDataType().toString();
 		this.lastValue = lastValue;
 	}
 	

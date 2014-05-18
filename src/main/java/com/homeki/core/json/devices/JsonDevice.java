@@ -25,7 +25,7 @@ public class JsonDevice {
 	public String description;
 	public Date added;
 	public Boolean active;
-	public JsonChannel[] channelValues;
+	public JsonChannel[] channels;
 
 	public JsonDevice() {
 		
@@ -39,13 +39,13 @@ public class JsonDevice {
 		active = d.isActive();
 		description = d.getDescription();
 
-		List<Channel> channels = d.getChannels();
-		channelValues = new JsonChannel[channels.size()];
+		List<Channel> deviceChannels = d.getChannels();
+		channels = new JsonChannel[deviceChannels.size()];
 		
-		for (int i = 0; i < channels.size(); i++) {
-			int channelId = channels.get(i).getId();
-			HistoryPoint p = d.getLatestHistoryPoint(channelId);
-			channelValues[i] = new JsonChannel(channelId, p.getValue());
+		for (int i = 0; i < deviceChannels.size(); i++) {
+			Channel c = deviceChannels.get(i);
+			HistoryPoint p = d.getLatestHistoryPoint(c.getId());
+			channels[i] = new JsonChannel(c, p.getValue());
 		}
 	}
 
