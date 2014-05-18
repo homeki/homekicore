@@ -41,6 +41,11 @@ public abstract class Device {
 	@Cascade({ CascadeType.SAVE_UPDATE, CascadeType.DELETE })
 	@LazyCollection(LazyCollectionOption.EXTRA)
 	private Set<ChangeChannelValueAction> changeChannelValueActions;
+
+	@OneToMany(mappedBy = "device", orphanRemoval = true)
+	@Cascade({ CascadeType.SAVE_UPDATE, CascadeType.DELETE })
+	@LazyCollection(LazyCollectionOption.EXTRA)
+	private Set<Channel> channels;
 	
 	@Column
 	protected String internalId;
@@ -59,6 +64,9 @@ public abstract class Device {
 	
 	public Device() {
 		this.historyPoints = new HashSet<>();
+		this.channelValueConditions = new HashSet<>();
+		this.changeChannelValueActions = new HashSet<>();
+		this.channels = new HashSet<>();
 		this.name = "";
 		this.internalId = "";
 		this.added = new Date();
@@ -163,7 +171,7 @@ public abstract class Device {
 		List<Channel> channels = getChannels();
 		
 		for (Channel c : channels) {
-			if (c.id == channel)
+			if (c.getId() == channel)
 				return;
 		}
 		

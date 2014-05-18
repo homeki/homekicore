@@ -1,6 +1,7 @@
 package com.homeki.core.device.mock;
 
 import com.homeki.core.device.Channel;
+import com.homeki.core.device.DataType;
 import com.homeki.core.device.Device;
 import com.homeki.core.json.devices.JsonDevice;
 import com.homeki.core.json.devices.JsonMockDevice;
@@ -51,7 +52,7 @@ public class MockThermometer extends Device {
 	@Override
 	public List<Channel> getChannels() {
 		List<Channel> list = new ArrayList<Channel>();
-		list.add(new Channel(TEMPERATURE_CHANNEL, "temperature", Channel.DOUBLE));
+		list.add(new Channel(TEMPERATURE_CHANNEL, "temperature", DataType.DOUBLE));
 		return list;
 	}
 

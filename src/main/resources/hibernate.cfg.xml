@@ -21,6 +21,7 @@
     <!--  Mapping classes -->
     <mapping class="com.homeki.core.main.Setting"/>
     <mapping class="com.homeki.core.device.Device"/>
+    <mapping class="com.homeki.core.device.Channel"/>
     <mapping class="com.homeki.core.device.HistoryPoint"/>
     <mapping class="com.homeki.core.device.IntegerHistoryPoint"/>
     <mapping class="com.homeki.core.device.DoubleHistoryPoint"/>
@@ -32,6 +33,7 @@
     <mapping class="com.homeki.core.device.tellstick.TellStickSwitch"/>
     <mapping class="com.homeki.core.device.tellstick.TellStickDimmer"/>
     <mapping class="com.homeki.core.device.tellstick.TellStickThermometer"/>
+    <mapping class="com.homeki.core.device.zwave.ZWaveChannel"/>
     <mapping class="com.homeki.core.triggers.Trigger"/>
     <mapping class="com.homeki.core.actions.Action"/>
     <mapping class="com.homeki.core.actions.ActionGroup"/>

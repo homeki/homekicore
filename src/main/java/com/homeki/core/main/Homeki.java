@@ -3,6 +3,7 @@ package com.homeki.core.main;
 import com.homeki.core.device.mock.MockModule;
 import com.homeki.core.device.onewire.OneWireModule;
 import com.homeki.core.device.tellstick.TellStickModule;
+import com.homeki.core.device.zwave.ZWaveModule;
 import com.homeki.core.events.ChannelValueChangedEvent;
 import com.homeki.core.events.EventHandlerModule;
 import com.homeki.core.generators.GeneratorModule;
@@ -55,6 +56,7 @@ public class Homeki {
 		modules.add(new EventHandlerModule());
 		modules.add(new MockModule());
 		modules.add(new TellStickModule());
+		modules.add(new ZWaveModule());
 		modules.add(new OneWireModule());
 		modules.add(new RestApiModule());
 		modules.add(new BroadcastModule());

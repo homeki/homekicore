@@ -1,14 +1,13 @@
 package com.homeki.core.events;
 
-import java.util.List;
-
-import org.hibernate.Session;
-
 import com.homeki.core.device.Channel;
 import com.homeki.core.device.Device;
 import com.homeki.core.device.HistoryPoint;
 import com.homeki.core.logging.L;
 import com.homeki.core.storage.Hibernate;
+import org.hibernate.Session;
+
+import java.util.List;
 
 public class ChannelValueChangedEvent extends Event {
 	public final int deviceId;
@@ -34,8 +33,8 @@ public class ChannelValueChangedEvent extends Event {
 			List<Channel> channels = d.getChannels();
 			
 			for (Channel c : channels) {
-				HistoryPoint p = d.getLatestHistoryPoint(c.id);
-				EventQueue.INSTANCE.add(new ChannelValueChangedEvent(d.getId(), c.id, p.getValue()));
+				HistoryPoint p = d.getLatestHistoryPoint(c.getId());
+				EventQueue.INSTANCE.add(new ChannelValueChangedEvent(d.getId(), c.getId(), p.getValue()));
 			}
 		}
 		

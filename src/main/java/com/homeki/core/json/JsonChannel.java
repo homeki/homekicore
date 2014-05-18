@@ -15,9 +15,9 @@ public class JsonChannel {
 	}
 	
 	public JsonChannel(Channel channel) {
-		this.id = channel.id;
-		this.name = channel.name;
-		this.dataType = channel.dataType;
+		this.id = channel.getId();
+		this.name = channel.getName();
+		this.dataType = channel.getDataType().toString();
 	}
 	
 	public JsonChannel(int id, Object lastValue) {

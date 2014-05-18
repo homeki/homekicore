@@ -1,6 +1,7 @@
 package com.homeki.core.device.tellstick;
 
 import com.homeki.core.device.Channel;
+import com.homeki.core.device.DataType;
 import com.homeki.core.device.Device;
 
 import javax.persistence.Entity;
@@ -27,7 +28,7 @@ public class TellStickThermometer extends Device {
 	@Override
 	public List<Channel> getChannels() {
 		List<Channel> list = new ArrayList<>();
-		list.add(new Channel(TEMPERATURE_CHANNEL, "temperature", Channel.DOUBLE));
+		list.add(new Channel(TEMPERATURE_CHANNEL, "temperature", DataType.DOUBLE));
 		return list;
 	}
 }

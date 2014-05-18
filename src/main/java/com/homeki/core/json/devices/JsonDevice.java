@@ -43,7 +43,7 @@ public class JsonDevice {
 		channelValues = new JsonChannel[channels.size()];
 		
 		for (int i = 0; i < channels.size(); i++) {
-			int channelId = channels.get(i).id;
+			int channelId = channels.get(i).getId();
 			HistoryPoint p = d.getLatestHistoryPoint(channelId);
 			channelValues[i] = new JsonChannel(channelId, p.getValue());
 		}

@@ -1,6 +1,7 @@
 package com.homeki.core.device.tellstick;
 
 import com.homeki.core.device.Channel;
+import com.homeki.core.device.DataType;
 import com.homeki.core.device.IntegerHistoryPoint;
 import com.homeki.core.device.Settable;
 
@@ -72,8 +73,8 @@ public class TellStickDimmer extends TellStickDevice implements Settable, TellSt
 	@Override
 	public List<Channel> getChannels() {
 		List<Channel> list = new ArrayList<>();
-		list.add(new Channel(ONOFF_CHANNEL, "onoff", Channel.INT));
-		list.add(new Channel(LEVEL_CHANNEL, "level", Channel.BYTE));
+		list.add(new Channel(ONOFF_CHANNEL, "onoff", DataType.INT));
+		list.add(new Channel(LEVEL_CHANNEL, "level", DataType.BYTE));
 		return list;
 	}
 }

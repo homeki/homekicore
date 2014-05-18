@@ -1,6 +1,7 @@
 package com.homeki.core.device.mock;
 
 import com.homeki.core.device.Channel;
+import com.homeki.core.device.DataType;
 import com.homeki.core.device.Device;
 import com.homeki.core.device.Settable;
 import com.homeki.core.json.devices.JsonDevice;
@@ -38,7 +39,7 @@ public class MockSwitch extends Device implements Settable {
 	@Override
 	public List<Channel> getChannels() {
 		List<Channel> list = new ArrayList<>();
-		list.add(new Channel(ONOFF_CHANNEL, "onoff", Channel.INT));
+		list.add(new Channel(ONOFF_CHANNEL, "onoff", DataType.INT));
 		return list;
 	}
 

@@ -1,6 +1,7 @@
 package com.homeki.core.device.tellstick;
 
 import com.homeki.core.device.Channel;
+import com.homeki.core.device.DataType;
 import com.homeki.core.device.Settable;
 
 import javax.persistence.Entity;
@@ -58,7 +59,7 @@ public class TellStickSwitch extends TellStickDevice implements Settable, TellSt
 	@Override
 	public List<Channel> getChannels() {
 		List<Channel> list = new ArrayList<>();
-		list.add(new Channel(ONOFF_CHANNEL, "onoff", Channel.INT));
+		list.add(new Channel(ONOFF_CHANNEL, "onoff", DataType.INT));
 		return list;
 	}
 }
