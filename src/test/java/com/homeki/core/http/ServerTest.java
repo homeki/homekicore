@@ -30,8 +30,8 @@ public class ServerTest {
 		assertEquals(TestUtil.sendPost("/server", jinfo).statusCode, 200);
 		
 		jinfo.name = "MyServer";
-		jinfo.locationLongitude = 12.03;
 		jinfo.locationLatitude = 15.05;
+		jinfo.locationLongitude = 12.03;
 		jinfo.smtpAuth = true;
 		jinfo.smtpHost = "some.host.com";
 		jinfo.smtpPassword = "somepass";
@@ -49,8 +49,8 @@ public class ServerTest {
 		assertTrue(jinfo.uptimeMs > 0);
 		assertTrue(jinfo.version.length() > 0);
 		assertEquals(jinfo.name, "MyServer");
-		assertEquals(jinfo.locationLongitude, 12.03, 0.01);
 		assertEquals(jinfo.locationLatitude, 15.05, 0.01);
+		assertEquals(jinfo.locationLongitude, 12.03, 0.01);
 		assertEquals((boolean)jinfo.smtpAuth, true);
 		assertEquals(jinfo.smtpHost, "some.host.com");
 		assertEquals(jinfo.smtpPassword, "somepass");

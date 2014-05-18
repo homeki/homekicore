@@ -1,9 +1,5 @@
 package com.homeki.core.generators;
 
-import java.util.Calendar;
-
-import org.hibernate.Session;
-
 import com.homeki.core.events.EventQueue;
 import com.homeki.core.events.MinuteChangedEvent;
 import com.homeki.core.events.SpecialValueChangedEvent;
@@ -13,6 +9,9 @@ import com.homeki.core.main.Setting;
 import com.homeki.core.storage.Hibernate;
 import com.luckycatlabs.sunrisesunset.SunriseSunsetCalculator;
 import com.luckycatlabs.sunrisesunset.dto.Location;
+import org.hibernate.Session;
+
+import java.util.Calendar;
 
 public class ClockGeneratorThread extends ControlledThread {
 	private final Calendar now = Calendar.getInstance();
@@ -56,8 +55,8 @@ public class ClockGeneratorThread extends ControlledThread {
 	
 	private void updateSunriseSunsetTimes() {
 		Session ses = Hibernate.openSession();
-		double lo = Setting.getDouble(ses, Setting.LOCATION_LONGITUDE);
 		double la = Setting.getDouble(ses, Setting.LOCATION_LATITUDE);
+		double lo = Setting.getDouble(ses, Setting.LOCATION_LONGITUDE);
 		Hibernate.closeSession(ses);
 		Location location = new Location(la, lo);
 		SunriseSunsetCalculator calc = new SunriseSunsetCalculator(location, now.getTimeZone().getID());

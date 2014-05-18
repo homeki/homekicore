@@ -12,8 +12,8 @@ public class JsonServerInfo {
 	public String time;
 	public String version;
 	public String name;
-	public Double locationLongitude;
 	public Double locationLatitude;
+	public Double locationLongitude;
 	public String smtpHost;
 	public Integer smtpPort;
 	public Boolean smtpAuth;
@@ -31,8 +31,8 @@ public class JsonServerInfo {
 		this.version = Util.getVersion();
 		this.timeMs = System.currentTimeMillis();
 		this.uptimeMs = ManagementFactory.getRuntimeMXBean().getUptime();
-		this.locationLongitude = longitude;
 		this.locationLatitude = latitude;
+		this.locationLongitude = longitude;
 		this.smtpHost = smtpHost;
 		this.smtpPort = smtpPort;
 		this.smtpAuth = smtpAuth;
