@@ -52,7 +52,7 @@ public class MockThermometer extends Device {
 	@Override
 	public List<Channel> getChannels() {
 		List<Channel> list = new ArrayList<Channel>();
-		list.add(new Channel(TEMPERATURE_CHANNEL, "temperature", DataType.DOUBLE));
+		list.add(new Channel(TEMPERATURE_CHANNEL, "Temperature", DataType.DOUBLE));
 		return list;
 	}
 

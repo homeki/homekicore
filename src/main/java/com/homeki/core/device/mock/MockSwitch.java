@@ -39,7 +39,7 @@ public class MockSwitch extends Device implements Settable {
 	@Override
 	public List<Channel> getChannels() {
 		List<Channel> list = new ArrayList<>();
-		list.add(new Channel(ONOFF_CHANNEL, "onoff", DataType.INT));
+		list.add(new Channel(ONOFF_CHANNEL, "Switch", DataType.INT));
 		return list;
 	}
 

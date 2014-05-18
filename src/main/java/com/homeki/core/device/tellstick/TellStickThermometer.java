@@ -28,7 +28,7 @@ public class TellStickThermometer extends Device {
 	@Override
 	public List<Channel> getChannels() {
 		List<Channel> list = new ArrayList<>();
-		list.add(new Channel(TEMPERATURE_CHANNEL, "temperature", DataType.DOUBLE));
+		list.add(new Channel(TEMPERATURE_CHANNEL, "Temperature", DataType.DOUBLE));
 		return list;
 	}
 }

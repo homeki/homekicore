@@ -46,8 +46,8 @@ public class MockDimmer extends Device implements Settable {
 	@Override
 	public List<Channel> getChannels() {
 		List<Channel> list = new ArrayList<Channel>();
-		list.add(new Channel(ONOFF_CHANNEL, "onoff", DataType.INT));
-		list.add(new Channel(LEVEL_CHANNEL, "level", DataType.BYTE));
+		list.add(new Channel(ONOFF_CHANNEL, "Switch", DataType.INT));
+		list.add(new Channel(LEVEL_CHANNEL, "Level", DataType.BYTE));
 		return list;
 	}
 
