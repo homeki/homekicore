@@ -136,7 +136,7 @@ public class ZWaveWatcher implements NotificationWatcher {
 
 			session.save(dev);
 		} catch (NumberFormatException e) {
-			L.e("Z-Wave channel " + channel.getName() + " changed, but received wrong value type.", e);
+			L.e("Z-Wave channel " + channel.getName() + " changed, but received wrong value type: " + e.getMessage());
 		}
 	}
 
