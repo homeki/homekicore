@@ -75,7 +75,6 @@ public class ZWaveWatcher implements NotificationWatcher {
 		channel.setDataType(ZWaveApi.convertValueType(vid.getType()));
 		channel.setGenre(vid.getGenre());
 		session.save(channel);
-		session.flush();
 
 		L.i("Z-Wave value added for device with ID " + dev.getId() + ", created new channel with name " + channel.getName() + ".");
 
@@ -113,28 +112,32 @@ public class ZWaveWatcher implements NotificationWatcher {
 			return;
 		}
 
-		switch (channel.getDataType()) {
-			case INT:
-			case BYTE:
-				int intValue = ZWaveApi.INSTANCE.getIntValue(vid);
-				dev.addHistoryPoint(channel.getId(), intValue);
-				L.i("Z-Wave channel " + channel.getName() + " changed to " + intValue + ".");
-				break;
-			case BOOL:
-				int boolValue = ZWaveApi.INSTANCE.getBoolValue(vid) ? 1 : 0;
-				dev.addHistoryPoint(channel.getId(), boolValue);
-				L.i("Z-Wave channel " + channel.getName() + " changed to " + boolValue + ".");
-				break;
-			case DOUBLE:
-				double doubleValue = ZWaveApi.INSTANCE.getDoubleValue(vid);
-				dev.addHistoryPoint(channel.getId(), doubleValue);
-				L.i("Z-Wave channel " + channel.getName() + " changed to " + doubleValue + ".");
-				break;
-			default:
-				L.i("Z-Wave channel " + channel.getName() + " received value but unknown data type, ignored.");
-		}
+		try {
+			switch (channel.getDataType()) {
+				case INT:
+				case BYTE:
+					int intValue = ZWaveApi.INSTANCE.getIntValue(vid);
+					dev.addHistoryPoint(channel.getId(), intValue);
+					L.i("Z-Wave channel " + channel.getName() + " changed to " + intValue + ".");
+					break;
+				case BOOL:
+					int boolValue = ZWaveApi.INSTANCE.getBoolValue(vid) ? 1 : 0;
+					dev.addHistoryPoint(channel.getId(), boolValue);
+					L.i("Z-Wave channel " + channel.getName() + " changed to " + boolValue + ".");
+					break;
+				case DOUBLE:
+					double doubleValue = ZWaveApi.INSTANCE.getDoubleValue(vid);
+					dev.addHistoryPoint(channel.getId(), doubleValue);
+					L.i("Z-Wave channel " + channel.getName() + " changed to " + doubleValue + ".");
+					break;
+				default:
+					L.i("Z-Wave channel " + channel.getName() + " received value but unknown data type, ignored.");
+			}
 
-		session.save(dev);
+			session.save(dev);
+		} catch (NumberFormatException e) {
+			L.e("Z-Wave channel " + channel.getName() + " changed, but received wrong value type.", e);
+		}
 	}
 
 	private void nodeRemoved(Session session, short nodeId) {
@@ -153,7 +156,7 @@ public class ZWaveWatcher implements NotificationWatcher {
 		Device dev = Device.getByInternalId("zw-" + nodeId);
 
 		if (dev != null && dev.isActive()) {
-				L.i("Z-Wave new/added node with internal ID zw-" + nodeId + " already exists and is active, no action taken.");
+			L.i("Z-Wave new/added node with internal ID zw-" + nodeId + " already exists and is active, no action taken.");
 		} else if (dev != null && !dev.isActive()) {
 			dev.setActive(true);
 			session.save(dev);

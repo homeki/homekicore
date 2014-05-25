@@ -61,8 +61,7 @@ public enum ZWaveApi {
 				Manager.get().getValueAsShort(vid, s);
 				return s.get();
 			default:
-				L.e("Wrong value type, will return 0.");
-				return 0;
+				throw new NumberFormatException("Wrong value type, expected int but received " + vid.getType() + ".");
 		}
 	}
 
@@ -73,8 +72,7 @@ public enum ZWaveApi {
 				Manager.get().getValueAsBool(vid, b);
 				return b.get();
 			default:
-				L.e("Wrong value type, will return false.");
-				return false;
+				throw new NumberFormatException("Wrong value type, expected bool but received " + vid.getType() + ".");
 		}
 	}
 
@@ -85,8 +83,7 @@ public enum ZWaveApi {
 				Manager.get().getValueAsFloat(vid, b);
 				return b.get();
 			default:
-				L.e("Wrong value type, will return 0.0.");
-				return 0.0;
+				throw new NumberFormatException("Wrong value type, expected double but received " + vid.getType() + ".");
 		}
 	}
 
