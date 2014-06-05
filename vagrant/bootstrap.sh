@@ -28,6 +28,7 @@ rm homeki-public.key
 popd
 
 apt-get update
+apt-get upgrade -y
 
 # From standard repositories
 apt-get install -y openjdk-7-jre-headless postgresql-9.1 libjna-java libgnumail-java vim
@@ -46,4 +47,4 @@ echo "CREATE USER homeki WITH PASSWORD 'homeki';" | sudo -u postgres psql
 echo "CREATE DATABASE homeki WITH owner = homeki;" | sudo -u postgres psql
 
 # Setup udev rule for zstick
-echo "ATTRS{idVendor}==\"10c4\", ATTRS{idProduct}==\"ea60\", SYMLINK+=\"zstick\", GROUP:=\"plugdev" > /etc/udev/rules.d/06-zwave.rules
+echo "ATTRS{idVendor}==\"10c4\", ATTRS{idProduct}==\"ea60\", SYMLINK+=\"zstick\", GROUP:=\"plugdev\"" > /etc/udev/rules.d/06-zwave.rules
