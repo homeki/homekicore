@@ -12,7 +12,7 @@ if [ "$1" = "remove" ] ; then
 	rm -rf /opt/homeki/log
 	echo "done"
 	
-	update-rc.d homekid remove
+	update-rc.d -f homekid remove
 fi
 
 exit 0
