@@ -28,3 +28,14 @@ To run the API test, an instance of Homeki need to be started in test mode. Test
 3. `run-test-server.sh` (`debug` parameter works just as for `run-server.sh`)
 4. `cd ..`
 5. `./gradlew build -DrunTests` (or run them from inside your editor)
+
+Build release
+-------------
+Publishing the release requires access to the Homeki debian repository.
+
+1. `cd homekicore`
+2. Edit `gradle.properties`, remove the `-SNAPSHOT` from the version.
+3. `./gradlew dist`
+4. Copy the `build/dist/homeki_*.deb` to the Homeki debian repository.
+5. Edit `gradle.properties`, increment the version and re-add the `-SNAPSHOT` label.
+6. Commit and push the version changes.
