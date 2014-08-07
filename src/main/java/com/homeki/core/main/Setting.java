@@ -9,6 +9,7 @@ import javax.persistence.*;
 public class Setting {
 	public static final String SERVER_UUID = "SERVER_UUID";
 	public static final String SERVER_NAME = "SERVER_NAME";
+	public static final String SERVER_HOSTNAME = "SERVER_HOSTNAME";
 	public static final String LOCATION_LATITUDE = "LOCATION_LATITUDE";
 	public static final String LOCATION_LONGITUDE = "LOCATION_LONGITUDE";
 	public static final String SMTP_HOST = "SMTP_HOST";

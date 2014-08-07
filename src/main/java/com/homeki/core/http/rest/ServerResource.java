@@ -20,6 +20,7 @@ public class ServerResource {
 		Session ses = Hibernate.currentSession();
 		
 		String name = Setting.getString(ses, Setting.SERVER_NAME);
+		String hostname = Setting.getString(ses, Setting.SERVER_HOSTNAME);
 		Double latitude = Setting.getDouble(ses, Setting.LOCATION_LATITUDE);
 		Double longitude = Setting.getDouble(ses, Setting.LOCATION_LONGITUDE);
 		String smtpHost = Setting.getString(ses, Setting.SMTP_HOST);
@@ -29,7 +30,7 @@ public class ServerResource {
 		String smtpUser = Setting.getString(ses, Setting.SMTP_USER);
 		String smtpPassword = Setting.getString(ses, Setting.SMTP_PASSWORD);
 
-		return Response.ok(new JsonServerInfo(name, latitude, longitude, smtpHost, smtpPort, smtpAuth, smtpTls, smtpUser, smtpPassword)).build();
+		return Response.ok(new JsonServerInfo(name, hostname, latitude, longitude, smtpHost, smtpPort, smtpAuth, smtpTls, smtpUser, smtpPassword)).build();
 	}
 
 	@POST
@@ -41,6 +42,8 @@ public class ServerResource {
 
 		if (jinfo.name != null)
 			Setting.putString(ses, Setting.SERVER_NAME, jinfo.name);
+		if (jinfo.hostname != null)
+			Setting.putString(ses, Setting.SERVER_HOSTNAME, jinfo.hostname);
 		if (jinfo.locationLatitude != null)
 			Setting.putDouble(ses, Setting.LOCATION_LATITUDE, jinfo.locationLatitude);
 		if (jinfo.locationLongitude != null)

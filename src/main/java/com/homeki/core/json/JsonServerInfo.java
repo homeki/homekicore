@@ -12,6 +12,7 @@ public class JsonServerInfo {
 	public String time;
 	public String version;
 	public String name;
+	public String hostname;
 	public Double locationLatitude;
 	public Double locationLongitude;
 	public String smtpHost;
@@ -25,8 +26,9 @@ public class JsonServerInfo {
 
 	}
 	
-	public JsonServerInfo(String name, Double latitude, Double longitude, String smtpHost, Integer smtpPort, Boolean smtpAuth, Boolean smtpTls, String smtpUser, String smtpPassword) {
+	public JsonServerInfo(String name, String hostname, Double latitude, Double longitude, String smtpHost, Integer smtpPort, Boolean smtpAuth, Boolean smtpTls, String smtpUser, String smtpPassword) {
 		this.name = name;
+		this.hostname = hostname;
 		this.time = Util.getDateTimeFormat().format(new Date());
 		this.version = Util.getVersion();
 		this.timeMs = System.currentTimeMillis();

@@ -14,6 +14,7 @@ public class ServerTest {
 		public String time;
 		public String version;
 		public String name;
+		public String hostname;
 		public Double locationLongitude;
 		public Double locationLatitude;
 		public String smtpHost;
@@ -30,6 +31,7 @@ public class ServerTest {
 		assertEquals(TestUtil.sendPost("/server", jinfo).statusCode, 200);
 		
 		jinfo.name = "MyServer";
+		jinfo.hostname = "http://this.is.my.server.com:12345/";
 		jinfo.locationLatitude = 15.05;
 		jinfo.locationLongitude = 12.03;
 		jinfo.smtpAuth = true;
@@ -49,6 +51,7 @@ public class ServerTest {
 		assertTrue(jinfo.uptimeMs > 0);
 		assertTrue(jinfo.version.length() > 0);
 		assertEquals(jinfo.name, "MyServer");
+		assertEquals(jinfo.hostname, "http://this.is.my.server.com:12345/");
 		assertEquals(jinfo.locationLatitude, 15.05, 0.01);
 		assertEquals(jinfo.locationLongitude, 12.03, 0.01);
 		assertEquals((boolean)jinfo.smtpAuth, true);
