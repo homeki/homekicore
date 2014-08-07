@@ -1,13 +1,12 @@
 package com.homeki.core.main;
 
+import com.homeki.core.logging.L;
+import com.homeki.core.storage.Hibernate;
+import org.hibernate.Session;
+
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
-
-import org.hibernate.Session;
-
-import com.homeki.core.logging.L;
-import com.homeki.core.storage.Hibernate;
 
 // Protocol
 // ===============================
@@ -17,7 +16,7 @@ import com.homeki.core.storage.Hibernate;
 // "HOMEKI"
 //
 // Response:
-// "[HOMEKI_VERSION]|[HOMEKI_SERVER_NAME]"
+// "[HOMEKI_SERVER_NAME]|[HOMEKI_SERVER_HOSTNAME]"
 //
 public class BroadcastListenerThread extends ControlledThread {
 	private DatagramSocket socket;
@@ -39,7 +38,7 @@ public class BroadcastListenerThread extends ControlledThread {
 				L.i("Received broadcast from " + requestPacket.getAddress().getHostAddress() + ".");
 				
 				Session session = Hibernate.openSession();
-				String response = Util.getVersion() + "|" + Setting.getString(session, Setting.SERVER_NAME);
+				String response = Setting.getString(session, Setting.SERVER_NAME) + "|" + Setting.getString(session, Setting.SERVER_HOSTNAME);
 				Hibernate.closeSession(session);
 				
 				byte[] data = response.getBytes();
