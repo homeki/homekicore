@@ -1,6 +1,6 @@
 dependencies:
   override:
-    - ./gradlew tasks
+    - script/install-dependencies.sh
 
 test:
   override:
