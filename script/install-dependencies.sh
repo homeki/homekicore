@@ -2,7 +2,7 @@
 
 # This script installs dependencies used by CircleCI.
 
-DEPS="$ANDROID_HOME/installed-dependencies"
+DEPS="$BUILD_META_HOME/installed-dependencies"
 
 if [ ! -e $DEPS ]; then
   ./gradlew tasks && # trigger gradle download

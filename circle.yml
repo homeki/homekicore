@@ -1,4 +1,10 @@
+machine:
+  environment:
+    BUILD_META_HOME: /home/ubuntu/buildmeta
+
 dependencies:
+  cached_directories:
+    - ~/buildmeta
   override:
     - script/install-dependencies.sh
 
