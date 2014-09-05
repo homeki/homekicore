@@ -1,6 +1,6 @@
 dependencies:
   override:
-
+    - ./gradlew tasks
 
 test:
   override:
@@ -10,4 +10,4 @@ deployment:
   prod:
     branch: master
     commands:
-      - ./gradlew clean dist
+      - ./gradlew dist
