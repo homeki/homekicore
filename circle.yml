@@ -5,9 +5,3 @@ dependencies:
 test:
   override:
     - ./gradlew clean jar
-
-deployment:
-  prod:
-    branch: master
-    commands:
-      - ./gradlew dist
