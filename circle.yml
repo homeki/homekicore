@@ -1,0 +1,13 @@
+dependencies:
+  override:
+
+
+test:
+  override:
+    - ./gradlew clean jar
+
+deployment:
+  prod:
+    branch: master
+    commands:
+      - ./gradlew clean dist
