@@ -3,7 +3,7 @@ machine:
     BUILD_META_HOME: /home/ubuntu/buildmeta
 
 dependencies:
-  cached_directories:
+  cache_directories:
     - ~/buildmeta
   override:
     - script/install-dependencies.sh
