@@ -16,8 +16,8 @@ deployment:
   unstable:
     branch: develop
     commands:
-      - ./deploy.sh unstable
+      - ./script/deploy.sh unstable
   stable:
     branch: master
     commands:
-      - ./deploy.sh stable
+      - ./script/deploy.sh stable
