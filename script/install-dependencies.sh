@@ -6,6 +6,7 @@ DEPS="$BUILD_META_HOME/installed-dependencies"
 
 if [ ! -e $DEPS ]; then
   mkdir $BUILD_META_HOME &&
-  ./gradlew tasks && # trigger gradle download
+  ./gradlew tasks &&
+  gem install deb-s3 &&
   touch $DEPS
 fi
