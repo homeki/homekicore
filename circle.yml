@@ -11,3 +11,13 @@ dependencies:
 test:
   override:
     - ./gradlew jar
+
+deployment:
+  unstable:
+    branch: develop
+    commands:
+      - ./deploy.sh unstable
+  stable:
+    branch: master
+    commands:
+      - ./deploy.sh stable
