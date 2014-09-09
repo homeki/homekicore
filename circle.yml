@@ -3,8 +3,12 @@ machine:
     BUILD_META_HOME: /home/ubuntu/buildmeta
 
 dependencies:
+  machine:
+    ruby:
+      version: 1.9.3-p448
   cache_directories:
     - ~/buildmeta
+    - ~/.rvm
   override:
     - script/install-dependencies.sh
 
