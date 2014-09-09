@@ -6,6 +6,7 @@ targetCompatibility = 1.7
 task prepareDist {
     def cmd = 'git rev-list HEAD --count'
     project.version = '3.0.' + cmd.execute().text.trim()
+    println 'project version set to ' + project.version
 }
 
 repositories {
@@ -80,6 +81,7 @@ test {
 }
 
 task dist(dependsOn: jar) << {
+    println 'building deb ' + version
     new File("build/dist").mkdir()
 
     ant.taskdef(name: "deb", classname: "com.googlecode.ant_deb_task.Deb", classpath: configurations.dist.asPath)
