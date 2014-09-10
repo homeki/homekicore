@@ -1,0 +1,2 @@
+source 'http://rubygems.org'
+gem 'deb-s3', '~> 0.6.2'
