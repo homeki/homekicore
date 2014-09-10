@@ -4,8 +4,9 @@ sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
 task prepareDist {
-    def cmd = 'git rev-list HEAD --count'
-    project.version = '3.0.' + cmd.execute().text.trim()
+    def cmdTimestamp = 'git show -s --format=%ct HEAD'
+    def cmdSha = 'git show -s --pretty=%h'
+    project.version = '3.' + cmdTimestamp.execute().text.trim() + '.' + cmdSha.execute().text.trim()
     println 'project version set to ' + project.version
 }
 
