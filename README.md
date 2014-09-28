@@ -6,7 +6,7 @@ Read more on the [wiki](../../wiki).
 ## Compile and run
 
 Prereqs needed:
- * vagrant and virtualbox
+ * vagrant, virtualbox
  * java
 
 1. `git clone https://github.com/homeki/homekicore.git`
