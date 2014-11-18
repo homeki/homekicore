@@ -1,3 +1,5 @@
 source 'http://rubygems.org'
 #gem 'deb-s3', '~> 0.6.2'
-gem 'deb-s3', :git => 'git://github.com/krobertson/deb-s3.git', :ref => '014ef3ff7b6c6e6b6f7bd31cac21bb99c7146a8c'
+#gem 'deb-s3', :git => 'git://github.com/krobertson/deb-s3.git', :ref => '014ef3ff7b6c6e6b6f7bd31cac21bb99c7146a8c'
+gem 'deb-s3', :git => 'git://github.com/joscarsson/deb-s3.git', :branch => 'add-suite-option'
+#gem 'deb-s3', :path => '/Users/joscarsson/dev/private/deb-s3'

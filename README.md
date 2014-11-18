@@ -52,5 +52,6 @@ If it does not exist, use `gpg --import <key>.asc` to import it.
 Install [deb-s3](https://github.com/krobertson/deb-s3) and upload debian package with:
 
 ```
-deb-s3 upload --endpoint s3-eu-west-1.amazonaws.com --access-key-id <id> --secret-access-key <secret> --codename <stable|unstable> --sign <gpg_key_id> --bucket repository.homeki.com --prefix packages <debfile>
+deb-s3 upload --endpoint s3-eu-west-1.amazonaws.com --access-key-id <id> --secret-access-key <secret> --codename <stable|unstable> --sign <gpg_key_id> --bucket repository.homeki.com --origin homeki.com --suite <stable/unstable>
+--prefix packages <debfile>
 ```
