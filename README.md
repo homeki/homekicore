@@ -32,16 +32,9 @@ the database and performs some configuration changes to mock devices and such.
 
 ## Build release
 
-Publishing the release requires access to the Homeki debian repository.
+Releases are available in a Debian repository at http://repository.homeki.com. There are two "suites", `unstable` and `stable`. `git push` to `develop` updates the package in `unstable`, `git push` to `master` updates the package in `stable`.
 
-1. `cd homekicore`
-2. Edit `gradle.properties`, remove the `-SNAPSHOT` from the version.
-3. `./gradlew dist`
-4. Copy the `build/dist/homeki_*.deb` to the Homeki debian repository.
-5. Edit `gradle.properties`, increment the version and re-add the `-SNAPSHOT` label.
-6. Commit and push the version changes.
-
-## Upload packages to debian repo
+## Manually upload packages to debian repo
 
 The packages must be signed with the Homeki gpg key when they are uploaded to the
 debian repo. To check if the gpg is present, use `gpg --list-secret-keys`, make sure
@@ -52,6 +45,5 @@ If it does not exist, use `gpg --import <key>.asc` to import it.
 Install [deb-s3](https://github.com/krobertson/deb-s3) and upload debian package with:
 
 ```
-deb-s3 upload --endpoint s3-eu-west-1.amazonaws.com --access-key-id <id> --secret-access-key <secret> --codename <stable|unstable> --sign <gpg_key_id> --bucket repository.homeki.com --origin homeki.com --suite <stable/unstable>
---prefix packages <debfile>
+deb-s3 upload --endpoint s3-eu-west-1.amazonaws.com --access-key-id <id> --secret-access-key <secret> --codename <stable|unstable> --sign <gpg_key_id> --bucket repository.homeki.com --origin homeki.com --suite <stable/unstable> --prefix packages <debfile>
 ```
