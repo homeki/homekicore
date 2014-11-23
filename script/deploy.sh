@@ -6,14 +6,14 @@ set -e
 
 DEB_CODENAME=$1
 
-./gradlew dist
-
 echo $GPG_PRIVATE_KEY | base64 --decode > homeki-private-gpg.asc
 set +e
 gpg --import homeki-private-gpg.asc
 rm homeki-private-gpg.asc
 set -e
-mv build/dist/homeki_*_all.deb build/dist/homeki_${DEB_CODENAME}.deb
+DEB_FILENAME=`ls build/dist`
+DEB_FULL_FILENAME=${DEB_FILENAME/.deb/_$DEB_CODENAME.deb}
+mv build/dist/$DEB_FILENAME build/dist/$DEB_FULL_FILENAME
 pushd script > /dev/null
 bundle exec deb-s3 upload \
   --endpoint s3-eu-west-1.amazonaws.com \
@@ -25,5 +25,5 @@ bundle exec deb-s3 upload \
   --origin homeki.com \
   --bucket repository.homeki.com \
   --suite $DEB_CODENAME \
-  ../build/dist/homeki_${DEB_CODENAME}.deb
+  ../build/dist/$DEB_FULL_FILENAME
 popd > /dev/null

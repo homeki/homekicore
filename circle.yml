@@ -12,7 +12,7 @@ dependencies:
 
 test:
   override:
-    - ./gradlew jar
+    - ./gradlew dist
 
 deployment:
   unstable:
