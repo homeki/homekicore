@@ -7,7 +7,7 @@ task prepareDist {
     def cmdTimestamp = 'git show -s --format=%ct HEAD'
     def cmdSha = 'git show -s --pretty=%h'
 
-    def onCircle = System.getenv('CIRCLE') != null
+    def onCircle = System.getenv('CIRCLECI') != null
     if (onCircle)
         project.version = '3.' + cmdTimestamp.execute().text.trim() + '.' + cmdSha.execute().text.trim()
     else
