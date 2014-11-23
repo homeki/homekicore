@@ -49,17 +49,12 @@ public class Util {
 	}
 
 	public static String getVersion() {
-		Package p = new Util().getClass().getPackage();
-		String version = p.getImplementationVersion();
-
-		if (version == null)
-			version = "SNAPSHOT";
-
-		return version;
+		Package p = Util.class.getPackage();
+		return p.getImplementationVersion();
 	}
 
 	public static boolean isDevVersion() {
-		return getVersion().endsWith("SNAPSHOT");
+		return getVersion().equals("dev");
 	}
 	
 	public static void sleep(int ms){

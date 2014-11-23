@@ -5,4 +5,4 @@ if [[ $# > 0 ]]; then
     EXTRA="-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5050"
 fi
 
-vagrant ssh -- -t "java $EXTRA -jar -Djava.util.logging.config.file=/host/logging-dev.properties -Djna.library.path=/opt/telldus/lib /host/build/libs/homekicore-*-SNAPSHOT.jar"
+vagrant ssh -- -t "java $EXTRA -jar -Djava.util.logging.config.file=/host/logging-dev.properties -Djna.library.path=/opt/telldus/lib /host/build/libs/homekicore-dev.jar"

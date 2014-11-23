@@ -6,7 +6,13 @@ targetCompatibility = 1.7
 task prepareDist {
     def cmdTimestamp = 'git show -s --format=%ct HEAD'
     def cmdSha = 'git show -s --pretty=%h'
-    project.version = '3.' + cmdTimestamp.execute().text.trim() + '.' + cmdSha.execute().text.trim()
+
+    def onCircle = System.getenv('CIRCLE') != null
+    if (onCircle)
+        project.version = '3.' + cmdTimestamp.execute().text.trim() + '.' + cmdSha.execute().text.trim()
+    else
+        project.version = 'dev'
+
     println 'project version set to ' + project.version
 }
 
