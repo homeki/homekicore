@@ -79,7 +79,24 @@ public class OneWireDetectorThread extends ControlledThread {
 					dev = new OneWireThermometer(0.0);
 					dev.setInternalId(s);
 					dev.setName("Thermometer " + s);
+					dev.setScale(1.0);
+					dev.setUnit("°C")
 					session.save(dev);
+				} else if (type.equals("DS2762")) {
+					dev = new OneWireThermocouple(0.0);
+					dev.setInternalId(s);
+					dev.setName("Thermocouple " + s);  
+					dev.setScale(1.0);
+					dev.setUnit("°C");
+					session.save(dev);	
+				} else if (type.equals("DS2423")) {
+					dev = new OneWireCounter(0.0);
+					dev.setInternalId(s);
+					dev.setName("Counter " + s);
+					dev.setScale(1.0);
+					dev.setUnit("");
+					session.save(dev);
+				}
 				} else if (loggedSet.add(NOCORR_LOG_DIFF + s)) {
 					L.e("Found no corresponding device for 1-wire device with internal ID " + s + " and type " + type + ". Log message throttled until application restart.");
 				}

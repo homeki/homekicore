@@ -22,16 +22,26 @@ public class Channel {
 
 	@Column
 	private String description;
+	
+	@Column(nullable = true)
+	private String unit;
+	
+	@Column(nullable = true)
+	private double scale;
 
 	public Channel() {
 		this.name = "";
 		this.description = "";
+		this.unit = "";
+		this.scale = 1.0;
 	}
 	
-	public Channel(int id, String name, DataType dataType) {
+	public Channel(int id, String name, DataType dataType, String unit, double scale) {
 		this.id = id;
 		this.name = name;
 		this.dataType = dataType;
+		this.unit = unit;
+		this.scale = scale;
 	}
 
 	public int getId() {
@@ -49,6 +59,24 @@ public class Channel {
 	public Device getDevice() {
 		return device;
 	}
+	
+	public String getUnit() {
+		if(unit != null){
+			return unit;
+		}
+		else {
+			return "";
+		}			
+	}
+	
+	public double getScale() {
+		if(scale != null) {
+			return scale;
+		}
+		else {
+			return 1.0;
+		}
+	}
 
 	public void setName(String name) {
 		this.name = name;
@@ -60,5 +88,13 @@ public class Channel {
 
 	public void setDevice(Device device) {
 		this.device = device;
+	}
+	
+	public void setUnit(String unit) {
+		this.unit = unit;
+	}
+	
+	public void setScale(double scale) {
+		this.scale = scale;
 	}
 }
