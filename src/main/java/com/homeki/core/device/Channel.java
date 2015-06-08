@@ -36,6 +36,14 @@ public class Channel {
 		this.scale = 1.0;
 	}
 	
+	public Channel(int id, String name, DataType dataType) {
+		this.id = id;
+		this.name = name;
+		this.dataType = dataType;
+		this.unit = "";
+		this.scale = 1.0;
+	}
+	
 	public Channel(int id, String name, DataType dataType, String unit, double scale) {
 		this.id = id;
 		this.name = name;
