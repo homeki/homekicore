@@ -22,8 +22,8 @@ public class OneWireThermocouple extends OneWireDevice implements OneWireInterva
 	
 	@Override
 	public void updateValue() throws FileNotFoundException {
-		double value = getDoubleVar("typeK/temperature"); // Sökväg till fil med temperatur
-		addHistoryPoint(TEMPERATURE_CHANNEL, value * scale);
+		double value = getDoubleVar("typeK/temperature"); // Path to file with temperature
+		addHistoryPoint(TEMPERATURE_CHANNEL, value);
 	}
 	
 	@Override
@@ -34,7 +34,7 @@ public class OneWireThermocouple extends OneWireDevice implements OneWireInterva
 	@Override
 	public List<Channel> getChannels() {
 		List<Channel> list = new ArrayList<Channel>();
-		list.add(new Channel(TEMPERATURE_CHANNEL, "Temperature", DataType.DOUBLE));
+		list.add(new Channel(TEMPERATURE_CHANNEL, "Temperature", DataType.DOUBLE, "Â°C", 1.0));
 		return list;
 	}
 }

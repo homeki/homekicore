@@ -26,7 +26,7 @@ public class OneWireCounter extends OneWireDevice implements OneWireIntervalLogg
 	public void updateValue() throws FileNotFoundException {
 		double value = getDoubleVar("counters.A");
 		addHistoryPoint(COUNTER_CHANNEL_A, value);  		
-		value = getDoubleVar("counters.B");}
+		value = getDoubleVar("counters.B");
 		addHistoryPoint(COUNTER_CHANNEL_B, value);
 	}
 	
@@ -38,8 +38,8 @@ public class OneWireCounter extends OneWireDevice implements OneWireIntervalLogg
 	@Override
 	public List<Channel> getChannels() {
 		List<Channel> list = new ArrayList<Channel>();
-		list.add(new Channel(COUNTER_CHANNEL_A, "Counter", DataType.INT));
-		list.add(new Channel(COUNTER_CHANNEL_B, "Counter", DataType.INT));
+		list.add(new Channel(COUNTER_CHANNEL_A, "Counter", DataType.INT, "", 1.0));
+		list.add(new Channel(COUNTER_CHANNEL_B, "Counter", DataType.INT, "", 1.0));
 		return list;
 	}
 }

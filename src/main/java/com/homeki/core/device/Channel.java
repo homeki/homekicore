@@ -27,7 +27,7 @@ public class Channel {
 	private String unit;
 	
 	@Column(nullable = true)
-	private double scale;
+	private Double scale;
 
 	public Channel() {
 		this.name = "";
@@ -44,7 +44,7 @@ public class Channel {
 		this.scale = 1.0;
 	}
 	
-	public Channel(int id, String name, DataType dataType, String unit, double scale) {
+	public Channel(int id, String name, DataType dataType, String unit, Double scale) {
 		this.id = id;
 		this.name = name;
 		this.dataType = dataType;
@@ -77,7 +77,7 @@ public class Channel {
 		}			
 	}
 	
-	public double getScale() {
+	public Double getScale() {
 		if(scale != null) {
 			return scale;
 		}
@@ -102,7 +102,7 @@ public class Channel {
 		this.unit = unit;
 	}
 	
-	public void setScale(double scale) {
+	public void setScale(Double scale) {
 		this.scale = scale;
 	}
 }
