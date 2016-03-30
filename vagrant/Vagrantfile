@@ -1,5 +1,6 @@
 Vagrant.configure("2") do |config|
-  config.vm.box = "joscarsson/debian-wheezy64"
+  config.vm.box = "debian/wheezy64"
+  config.vm.box_version = "7.9.1"
   config.vm.provision :shell, :path => "bootstrap.sh"
   config.vm.synced_folder "../", "/host"
   config.vm.network "forwarded_port", guest: 5050, host: 5050 # remote debugger

@@ -3,6 +3,8 @@
 # Halt on errors
 set -e
 
+export DEBIAN_FRONTEND=noninteractive
+
 # Set timezone to Swedish timezone
 echo "Europe/Stockholm" > /etc/timezone
 dpkg-reconfigure -f noninteractive tzdata
@@ -28,7 +30,7 @@ rm homeki-public.key
 popd
 
 apt-get update
-apt-get upgrade -y
+apt-get upgrade -y -q
 
 # From standard repositories
 apt-get install -y openjdk-7-jre-headless postgresql-9.1 libjna-java libgnumail-java vim
