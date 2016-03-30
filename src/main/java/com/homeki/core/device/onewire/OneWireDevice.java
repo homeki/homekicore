@@ -38,7 +38,7 @@ public abstract class OneWireDevice extends Device {
 		return Double.parseDouble(getStringVar(var));
 	}
 
-	protected double getIntegerVar(String var) throws FileNotFoundException {
+	protected int getIntegerVar(String var) throws FileNotFoundException {
 		return Integer.parseInt(getStringVar(var));
 	}
 }

@@ -24,7 +24,7 @@ public class OneWireCounter extends OneWireDevice implements OneWireIntervalLogg
 	
 	@Override
 	public void updateValue() throws FileNotFoundException {
-		double value = getIntegerVar("counters.A");
+		int value = getIntegerVar("counters.A");
 		addHistoryPoint(COUNTER_CHANNEL_A, value);  		
 		value = getIntegerVar("counters.B");
 		addHistoryPoint(COUNTER_CHANNEL_B, value);
