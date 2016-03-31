@@ -22,7 +22,8 @@ public class OneWireThermometer extends OneWireDevice implements OneWireInterval
 	
 	@Override
 	public void updateValue() throws FileNotFoundException {
-		double value = getDoubleVar("temperature");
+		String temperaturePath = getStringVar("type").equals("DS2760") ? "typeK/temperature" : "temperature";
+		double value = getDoubleVar(temperaturePath);
 		addHistoryPoint(TEMPERATURE_CHANNEL, value);
 	}
 	
