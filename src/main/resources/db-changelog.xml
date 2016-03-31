@@ -449,15 +449,4 @@
             </column>
         </createTable>
     </changeSet>
-    
-    <changeSet id="42" author="peter">
-        <addColumn tableName="channel">        
-            <column name="unit" type="VARCHAR(50)">
-                <constraints nullable="true" />
-            </column>
-            <column name="scale" type="DOUBLE">
-                <constraints nullable="true" />
-            </column>
-        </addColumn>
-    </changeSet>
 </databaseChangeLog>
