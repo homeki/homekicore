@@ -75,7 +75,7 @@ public class OneWireDetectorThread extends ControlledThread {
 					continue;
 				}
 				
-				if (type.equals("DS18S20") || type.equals("DS18B20") || type.equals("DS2762")) {
+				if (type.equals("DS18S20") || type.equals("DS18B20") || type.equals("DS2760")) {
 					dev = new OneWireThermometer(0.0);
 					dev.setInternalId(s);
 					dev.setName("Thermometer " + s);
