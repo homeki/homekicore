@@ -7,7 +7,7 @@ public class Configuration {
 	public static boolean ENABLE_CORS_HEADERS = false;
 	public static boolean MOCK_ENABLED = false;
 	public static int ONEWIRE_DETECTOR_INTERVAL = 2 * 60 * 1000;
-	public static int ONEWIRE_COLLECTOR_INTERVAL = 15 * 60 * 1000;
+	public static int ONEWIRE_COLLECTOR_INTERVAL = 1 * 60 * 1000;
 	public static int REPORTER_INTERVAL = 30 * 60 * 1000;
 	public static boolean REPORTER_ENABLED = true;
 	public static int SUNSET_SUNRISE_OFFSET_MINUTES = 90;

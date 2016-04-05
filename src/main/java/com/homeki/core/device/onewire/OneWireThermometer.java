@@ -2,11 +2,13 @@ package com.homeki.core.device.onewire;
 
 import com.homeki.core.device.Channel;
 import com.homeki.core.device.DataType;
+import com.homeki.core.device.HistoryPoint;
 
 import javax.persistence.Entity;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
 
 @Entity
 public class OneWireThermometer extends OneWireDevice implements OneWireIntervalLoggable {
@@ -22,9 +24,20 @@ public class OneWireThermometer extends OneWireDevice implements OneWireInterval
 	
 	@Override
 	public void updateValue() throws FileNotFoundException {
-		String temperaturePath = getStringVar("type").equals("DS2760") ? "typeK/temperature" : "temperature";
-		double value = getDoubleVar(temperaturePath);
-		addHistoryPoint(TEMPERATURE_CHANNEL, value);
+		boolean skipLogging = false;
+		HistoryPoint hp = this.getLatestHistoryPoint(TEMPERATURE_CHANNEL);
+		if (hp != null) {
+			Date dateNow = new Date();
+			long diff = dateNow.getTime() - hp.getRegistered().getTime();
+			if(diff < this.getLoggingInterval()) {
+				skipLogging = true;
+			}
+		}
+		if (!skipLogging) {
+			String temperaturePath = getStringVar("type").equals("DS2760") ? "typeK/temperature" : "temperature";
+			double value = getDoubleVar(temperaturePath);
+			addHistoryPoint(TEMPERATURE_CHANNEL, value);
+		}
 	}
 	
 	@Override

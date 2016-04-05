@@ -25,6 +25,7 @@ public class JsonDevice {
 	public String description;
 	public Date added;
 	public Boolean active;
+	public Integer loggingInterval;
 	public JsonChannel[] channels;
 
 	public JsonDevice() {
@@ -38,6 +39,7 @@ public class JsonDevice {
 		added = d.getAdded();
 		active = d.isActive();
 		description = d.getDescription();
+		loggingInterval = d.getLoggingInterval();
 
 		List<Channel> deviceChannels = d.getChannels();
 		channels = new JsonChannel[deviceChannels.size()];
