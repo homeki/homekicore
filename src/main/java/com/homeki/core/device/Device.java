@@ -58,6 +58,9 @@ public abstract class Device {
 	
 	@Column
 	private String description;
+
+	@Column
+	private int loggingInterval;
 	
 	public Device() {
 		this.historyPoints = new HashSet<>();
@@ -69,6 +72,7 @@ public abstract class Device {
 		this.added = new Date();
 		this.description = "";
 		this.active = true;
+		this.loggingInterval = 15 * 60 * 1000;
 	}
 	
 	public int getId() {
@@ -125,10 +129,14 @@ public abstract class Device {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
+	public void setLoggingInterval(int loggingInterval) { this.loggingInterval = loggingInterval; }
+
+	public int getLoggingInterval() { return this.loggingInterval; }
+
 	public HistoryPoint getLatestHistoryPoint(int channel) {
 		Session ses = Hibernate.currentSession();
-		
+
 		HistoryPoint p = (HistoryPoint)ses.createFilter(historyPoints, "where channel = ? order by registered desc")
 				.setInteger(0, channel)
 				.setMaxResults(1)

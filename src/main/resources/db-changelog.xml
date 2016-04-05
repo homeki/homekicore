@@ -449,4 +449,12 @@
             </column>
         </createTable>
     </changeSet>
+
+	<changeSet id="42" author="peter">
+		<addColumn tableName="device">
+			<column name="logging_interval" type="INTEGER" defaultValue="900000">
+				<constraints nullable="false" />
+			</column>
+		</addColumn>
+	</changeSet>
 </databaseChangeLog>

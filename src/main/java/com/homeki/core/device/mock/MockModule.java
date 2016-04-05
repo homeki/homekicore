@@ -20,8 +20,12 @@ public class MockModule implements Module {
 			addMockDevice(session, "switch1", new MockSwitch(false));
 			addMockDevice(session, "switch2", new MockSwitch(false));
 			addMockDevice(session, "dimmer1", new MockDimmer(0));
-			addMockDevice(session, "temp1", new MockThermometer(0.0));
-			addMockDevice(session, "temp2", new MockThermometer(0.0));
+			Device md = new MockThermometer(0.0);
+			md.setLoggingInterval(1*60*1000);
+			addMockDevice(session, "temp1", md);
+			md = new MockThermometer(0.0);
+			md.setLoggingInterval(2*60*1000);
+			addMockDevice(session, "temp2", md);
 			
 			Hibernate.closeSession(session);
 		}

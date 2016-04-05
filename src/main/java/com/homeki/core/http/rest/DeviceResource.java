@@ -142,6 +142,8 @@ public class DeviceResource {
 			dev.setName(jdev.name);
 		if (jdev.description != null)
 			dev.setDescription(jdev.description);
+		if (jdev.loggingInterval != null)
+			dev.setLoggingInterval(jdev.loggingInterval);
 
 		ses.save(dev);
 
